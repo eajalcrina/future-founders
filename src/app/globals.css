@@ -1,26 +1,40 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-brand-blue: #1a27c9;
+  --color-brand-gold: #f7e05f;
+  --color-brand-blue-light: #2d3fd4;
+  --color-brand-gold-dim: #c9b84c;
+  --color-bg: #050508;
+  --color-surface: #0d0d14;
+  --color-surface-2: #12121c;
+  --color-border: rgba(255,255,255,0.08);
+  --color-text: #ffffff;
+  --color-text-muted: rgba(255,255,255,0.55);
+  /* Fonts */
+  --font-display: var(--font-spline), 'Spline Sans', sans-serif;
+  --font-subtitle: 'Courier New', Courier, monospace;
+  --font-badge: var(--font-badge), 'Barlow Condensed', sans-serif;
+  --font-heading: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
+  --font-body: var(--font-dm-sans), 'DM Sans', sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  background-color: #050508;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+h1, h2 {
+  font-family: var(--font-display);
+  font-weight: 300;
+}
+
+h3, h4, h5, h6 {
+  font-family: var(--font-heading);
 }
