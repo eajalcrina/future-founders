@@ -1,5 +1,17 @@
 "use client";
+import { useState, useEffect } from "react";
 import { TK } from "./theme";
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
 
 const PHASES = [
   {
@@ -50,6 +62,7 @@ interface RoadmapProps {
 }
 
 export default function Roadmap({ activePhaseId, onPhaseSelect }: RoadmapProps) {
+  const isMobile = useIsMobile();
   return (
     <div style={{ padding: "32px 0 28px" }}>
       {/* Header */}
@@ -70,30 +83,7 @@ export default function Roadmap({ activePhaseId, onPhaseSelect }: RoadmapProps) 
       </div>
 
       {/* Phase track */}
-      <div style={{ position: "relative" }}>
-        {/* Connector line */}
-        <div
-          style={{
-            position: "absolute",
-            top: 28,
-            left: 28,
-            right: 28,
-            height: 2,
-            background: `linear-gradient(to right, ${TK.phase1}, ${TK.phase2}, ${TK.phase3}, ${TK.phase4}, ${TK.phase5})`,
-            opacity: 0.25,
-            zIndex: 0,
-          }}
-        />
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(5, 1fr)",
-            gap: 12,
-            position: "relative",
-            zIndex: 1,
-          }}
-        >
+      <div style={isMobile ? { display: "flex", gap: 10, overflowX: "auto", paddingBottom: 8 } : { display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12 }}>
           {PHASES.map((phase) => {
             const isActive = activePhaseId === phase.id;
             return (
@@ -110,6 +100,7 @@ export default function Roadmap({ activePhaseId, onPhaseSelect }: RoadmapProps) 
                   transition: "all 0.18s",
                   boxShadow: isActive ? `0 4px 20px ${phase.color}22` : TK.shadowXs,
                   fontFamily: TK.font,
+                  ...(isMobile ? { minWidth: 148, flexShrink: 0 } : {}),
                 }}
                 onMouseEnter={(e) => {
                   if (!isActive) {
@@ -234,7 +225,6 @@ export default function Roadmap({ activePhaseId, onPhaseSelect }: RoadmapProps) 
               </button>
             );
           })}
-        </div>
       </div>
     </div>
   );

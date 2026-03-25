@@ -10,6 +10,7 @@ import Phase4 from "./Phase4";
 import Phase5 from "./Phase5";
 import { generateGlobalReport } from "./pdfReport";
 import { TK } from "./theme";
+import { useIsMobile } from "./CalcCard";
 
 const PHASES = [
   { id: "fase-01", label: "Infiltración", num: "01" },
@@ -29,6 +30,7 @@ function Navbar({ activePhaseId }: { activePhaseId: string }) {
   const { user, logout } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 40);
@@ -112,7 +114,7 @@ function Navbar({ activePhaseId }: { activePhaseId: string }) {
         </a>
 
         {/* Phase nav — hidden on mobile */}
-        <div
+        {!isMobile && <div
           style={{
             display: "flex",
             gap: 2,
@@ -154,7 +156,7 @@ function Navbar({ activePhaseId }: { activePhaseId: string }) {
               {p.label}
             </button>
           ))}
-        </div>
+        </div>}
 
         {/* User + CTA */}
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
@@ -871,6 +873,7 @@ function InnerApp() {
   const [activePhaseId, setActivePhaseId] = useState<string | null>(null);
   const [activeNavPhase, setActiveNavPhase] = useState("");
   const [hasInteracted, setHasInteracted] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const onScroll = () => {
@@ -911,13 +914,13 @@ function InnerApp() {
           borderBottom: `1px solid ${TK.border}`,
         }}
       >
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: isMobile ? "0 16px" : "0 24px" }}>
           <Roadmap activePhaseId={activePhaseId} onPhaseSelect={handleSelectPhase} />
         </div>
       </div>
 
       {/* Phases */}
-      <main style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+      <main style={{ maxWidth: 1200, margin: "0 auto", padding: isMobile ? "0 16px" : "0 24px" }}>
         <div
           style={{
             textAlign: "center",
