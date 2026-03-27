@@ -494,25 +494,35 @@ export default function DiagnosticoSection() {
     const score = Object.values(answers).reduce((sum, a) => sum + a.score, 0);
     const archetype = getArchetype(score);
 
+    // Build shared payload
+    const leadPayload = {
+      firstName: leadData.firstName,
+      lastName: leadData.lastName,
+      email: leadData.email,
+      phone: leadData.phone,
+      country: leadData.country,
+      yearsExperience: leadData.yearsExperience,
+      archetype: archetype.name,
+      archetypeNumber: archetype.number,
+      score,
+      maxScore: 27,
+      situacion: answers[1]?.text ?? "",
+      disposicionInversion: answers[8]?.text ?? "",
+      urgencia: answers[9]?.text ?? "",
+    };
+
     // Fire and forget — don't block UI
     fetch("/api/brevo", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        firstName: leadData.firstName,
-        lastName: leadData.lastName,
-        email: leadData.email,
-        phone: leadData.phone,
-        country: leadData.country,
-        yearsExperience: leadData.yearsExperience,
-        archetype: archetype.name,
-        archetypeNumber: archetype.number,
-        score,
-        maxScore: 27,
-        situacion: answers[1]?.text ?? "",
-        disposicionInversion: answers[8]?.text ?? "",
-        urgencia: answers[9]?.text ?? "",
-      }),
+      body: JSON.stringify(leadPayload),
+    }).catch(() => {});
+
+    // Save to Supabase (fire and forget)
+    fetch("/api/quiz-lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(leadPayload),
     }).catch(() => {});
 
     // Increment marketing counter
