@@ -87,6 +87,13 @@ export const OPTIONS = {
 
 export type OptionKey = keyof typeof OPTIONS;
 
+// Encabezados de la pestaña «Fractional» del Google Sheet, en el orden en que se escribe cada fila.
+export const SHEET_HEADERS = [
+  "Fecha (Lima)", "Nombre", "Apellido", "Correo", "Teléfono", "LinkedIn", "País", "Ciudad", "Función", "Experiencia",
+  "Industrias", "Situación", "Disponibilidad", "Desde", "Modalidad", "Idiomas", "Honorario", "Propuesta", "Boletín",
+  "Idioma", "Estado", "UTM", "Referente",
+] as const;
+
 export const LIMITS = { name: 80, email: 160, phone: 40, url: 200, city: 80, roleOther: 80, summary: 500, maxIndustries: 3 };
 
 export type FractionalProfile = {
@@ -195,7 +202,7 @@ export const FORM_TEXT = {
     fee: "Honorario mensual esperado por empresa (opcional)",
     summary: "¿Qué problema resuelves para una empresa?",
     summaryHint: "En 2 o 3 frases: el problema, para quién y qué resultado has logrado.",
-    consent: "Acepto que Future Founders trate mis datos para evaluar mi perfil y contactarme con oportunidades fractional, según la",
+    consent: "Acepto que Redesign Ventures S.A.C. (Future Founders) trate mis datos para evaluar mi perfil y contactarme con oportunidades fractional, según la",
     privacyLink: "política de privacidad",
     newsletter: "Quiero recibir novedades de Future Founders por correo (opcional).",
     select: "Selecciona",
@@ -233,7 +240,7 @@ export const FORM_TEXT = {
     fee: "Expected monthly fee per company (optional)",
     summary: "What problem do you solve for a company?",
     summaryHint: "In 2 or 3 sentences: the problem, for whom, and what result you have achieved.",
-    consent: "I agree that Future Founders may process my data to review my profile and contact me about fractional opportunities, under its",
+    consent: "I agree that Redesign Ventures S.A.C. (Future Founders) may process my data to review my profile and contact me about fractional opportunities, under its",
     privacyLink: "privacy policy",
     newsletter: "I'd like to receive Future Founders news by email (optional).",
     select: "Select",

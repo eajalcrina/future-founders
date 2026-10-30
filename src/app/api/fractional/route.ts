@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { brevoConfigured, sendEmail, upsertContact } from "@/lib/brevo";
-import { label, parseProfile, type FractionalProfile } from "@/lib/fractional";
+import { SHEET_HEADERS, label, parseProfile, type FractionalProfile } from "@/lib/fractional";
+import { appendRow } from "@/lib/sheets";
 import { EMAIL } from "@/lib/site";
 
 // Límite simple en memoria: 5 envíos por IP y hora (por instancia).
@@ -14,39 +14,38 @@ function rateLimited(ip: string) {
   return recent.length > 5;
 }
 
-async function saveToSupabase(p: FractionalProfile, attribution: unknown) {
-  const admin = getSupabaseAdmin();
-  if (!admin) throw new Error("Supabase no configurado");
-  const { error } = await admin.from("fractional_profiles").upsert(
-    {
-      first_name: p.firstName,
-      last_name: p.lastName,
-      email: p.email,
-      phone: p.phone || null,
-      linkedin: p.linkedin,
-      country: p.country,
-      city: p.city || null,
-      role: p.role,
-      role_other: p.roleOther || null,
-      experience: p.experience,
-      industries: p.industries,
-      situation: p.situation,
-      availability: p.availability,
-      start: p.start,
-      modality: p.modality,
-      languages: p.languages,
-      fee: p.fee || null,
-      summary: p.summary,
-      consent: p.consent,
-      consent_at: new Date().toISOString(),
-      newsletter: p.newsletter,
-      lang: p.lang,
-      attribution: attribution ?? null,
-      updated_at: new Date().toISOString(),
-    },
-    { onConflict: "email" },
-  );
-  if (error) throw new Error(error.message);
+// Una fila por registro en la pestaña «Fractional» (columnas en SHEET_HEADERS).
+async function saveToSheet(p: FractionalProfile, attribution: unknown) {
+  const l = "es" as const;
+  const lima = new Date().toLocaleString("sv-SE", { timeZone: "America/Lima" });
+  const a = (attribution ?? {}) as Record<string, string | null>;
+  const row = [
+    lima,
+    p.firstName,
+    p.lastName,
+    p.email,
+    p.phone,
+    p.linkedin,
+    label("country", p.country, l),
+    p.city,
+    p.role === "other" ? `Otra: ${p.roleOther}` : label("role", p.role, l),
+    label("experience", p.experience, l),
+    p.industries.map((i) => label("industries", i, l)).join(", "),
+    label("situation", p.situation, l),
+    label("availability", p.availability, l),
+    label("start", p.start, l),
+    p.modality.map((m) => label("modality", m, l)).join(", "),
+    p.languages.map((m) => label("languages", m, l)).join(", "),
+    p.fee ? label("fee", p.fee, l) : "",
+    p.summary,
+    p.newsletter ? "Sí" : "No",
+    p.lang,
+    "nuevo",
+    [a.utm_source, a.utm_medium, a.utm_campaign].filter(Boolean).join(" / "),
+    a.referrer ?? "",
+  ];
+  if (row.length !== SHEET_HEADERS.length) throw new Error("Columnas de la hoja desalineadas");
+  await appendRow(process.env.GOOGLE_SHEET_TAB_FRACTIONAL || "Fractional", row);
 }
 
 async function saveToBrevo(p: FractionalProfile) {
@@ -117,17 +116,17 @@ export async function POST(req: NextRequest) {
   const { profile, errors } = parseProfile(body);
   if (errors.length) return NextResponse.json({ ok: false, error: "invalid", fields: errors }, { status: 422 });
 
-  const [db, contact, mail] = await Promise.allSettled([
-    saveToSupabase(profile, body.attribution),
+  const [sheet, contact, mail] = await Promise.allSettled([
+    saveToSheet(profile, body.attribution),
     saveToBrevo(profile),
     notifyTeam(profile),
   ]);
-  for (const [name, r] of [["supabase", db], ["brevo", contact], ["aviso", mail]] as const) {
+  for (const [name, r] of [["sheets", sheet], ["brevo", contact], ["aviso", mail]] as const) {
     if (r.status === "rejected") console.error(`[fractional] ${name}:`, r.reason);
   }
 
   // El perfil se pierde solo si no quedó en ningún lado.
-  if (db.status === "rejected" && contact.status === "rejected" && mail.status === "rejected") {
+  if (sheet.status === "rejected" && contact.status === "rejected" && mail.status === "rejected") {
     return NextResponse.json({ ok: false, error: "storage" }, { status: 502 });
   }
   return NextResponse.json({ ok: true });

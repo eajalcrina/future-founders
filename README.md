@@ -4,7 +4,7 @@ Sitio de Future Founders: acompañamiento para ejecutivos con trayectoria que qu
 
 - Diseño: sistema **B+D 1 · Plano con firma**, con tokens en `src/app/globals.css`. La referencia es el sistema de diseño «Future Founders» en Claude Design.
 - Idiomas: español en `/` e inglés en `/en`. Cada idioma tiene su propio layout raíz con `<html lang>`.
-- Stack: Next.js 16 (App Router), Tailwind 4, Supabase, Brevo y Vercel Analytics, que no usa cookies.
+- Stack: Next.js 16 (App Router), Tailwind 4, Google Sheets, Brevo y Vercel Analytics, que no usa cookies. Supabase solo lo usa el toolkit.
 
 ## Rutas
 
@@ -19,23 +19,29 @@ Sitio de Future Founders: acompañamiento para ejecutivos con trayectoria que qu
 
 El texto público está en `src/lib/content.ts`, en los dos idiomas. Las bios solo usan hechos con versión «público» validada en la base de perfil. El formulario y su validación comparten una sola definición, `src/lib/fractional.ts`.
 
-## Red Fractional: base de datos
+## Red Fractional: dónde se guardan los perfiles
 
-1. En Supabase, ejecuta `supabase/migrations/20261030_fractional_profiles.sql`. Crea la tabla `fractional_profiles` con RLS activo y sin políticas públicas, de modo que solo el servidor escribe.
-2. Configura las variables de entorno en Vercel.
+Se usa la misma fórmula que en Bio Business School y Redesign Lab: **Google Sheets + Brevo**.
 
-Cada registro se guarda en paralelo en Supabase y como contacto en Brevo, y además envía un aviso por correo al equipo. Solo devuelve error si fallan los tres. Tiene campo trampa, tiempo mínimo de llenado y un límite de 5 envíos por IP y hora.
+1. En el Google Sheet del proyecto, crea una pestaña llamada `Fractional` (o el nombre que pongas en `GOOGLE_SHEET_TAB_FRACTIONAL`) con estos encabezados en la fila 1, en este orden (`SHEET_HEADERS` en `src/lib/fractional.ts`):
+   `Fecha (Lima) · Nombre · Apellido · Correo · Teléfono · LinkedIn · País · Ciudad · Función · Experiencia · Industrias · Situación · Disponibilidad · Desde · Modalidad · Idiomas · Honorario · Propuesta · Boletín · Idioma · Estado · UTM · Referente`
+2. Comparte el Sheet con la cuenta de servicio (`GOOGLE_SERVICE_ACCOUNT_EMAIL`) como editora.
+3. Configura las variables de entorno en Vercel.
+
+Cada registro agrega una fila a la hoja, crea o actualiza el contacto en Brevo (lista `BREVO_LIST_FRACTIONAL`) y avisa al equipo por correo, los tres en paralelo. Solo devuelve error si fallan los tres. La columna «Estado» empieza en «nuevo» y sirve para el seguimiento manual. Tiene campo trampa, tiempo mínimo de llenado y un límite de 5 envíos por IP y hora.
 
 ## Variables de entorno
 
 | Variable | Uso |
 |---|---|
-| `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | Base de datos de perfiles |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Inicio de sesión del toolkit |
+| `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_PRIVATE_KEY` | Cuenta de servicio de Google (la llave con `\n` literales) |
+| `GOOGLE_SHEET_ID` | Id del Google Sheet |
+| `GOOGLE_SHEET_TAB_FRACTIONAL` | Pestaña de los perfiles (por defecto `Fractional`) |
 | `BREVO_API_KEY` | Contactos y correo |
 | `BREVO_LIST_FRACTIONAL` | Id de la lista de Brevo para la Red Fractional |
 | `EMAIL_FROM` | Remitente verificado en Brevo (por defecto `ff@redesignlab.org`) |
 | `EMAIL_NOTIFY` | Destinatario del aviso de cada registro (por defecto `ff@redesignlab.org`) |
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Solo para el inicio de sesión del toolkit |
 | `SITE_LIVE` | `0` bloquea la indexación (las vistas previas de Vercel se bloquean solas) |
 
 ## Desarrollo
