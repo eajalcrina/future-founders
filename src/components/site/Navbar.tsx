@@ -54,7 +54,7 @@ export default function Navbar() {
         </div>
 
         <div className="flex lg:hidden gap-4 items-center">
-          <Link href="/kit" className="btn" style={{ minHeight: 40, padding: "0 14px", fontSize: 16 }}>
+          <Link href="/kit" className="btn" style={{ minHeight: 40, padding: "0 14px" }}>
             Kit gratis
           </Link>
           <button

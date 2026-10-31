@@ -23,6 +23,7 @@
   --breakpoint-lg: 64rem;
 }
 
+@layer components {
 html {
   -webkit-text-size-adjust: 100%;
 }
@@ -45,11 +46,9 @@ body {
 .site h1,
 .site h2,
 .site h3 {
-  margin: 0;
   text-wrap: balance;
 }
 .site p {
-  margin: 0;
   text-wrap: pretty;
 }
 .site a {
@@ -481,8 +480,8 @@ textarea.field {
   display: inline-block;
   overflow: hidden;
   vertical-align: top;
-  padding-bottom: 0.08em;
-  margin-bottom: -0.08em;
+  padding: 0.2em 0.04em 0.1em;
+  margin: -0.2em -0.04em -0.1em;
 }
 .lines .w > span {
   display: inline-block;
@@ -504,4 +503,6 @@ textarea.field {
 .tc:hover {
   background: var(--color-ink);
   color: var(--color-paper);
+}
+
 }
