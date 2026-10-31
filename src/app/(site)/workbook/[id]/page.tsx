@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!p) return {};
   return {
     title: `Plantilla ${p.code}: ${p.title}`,
-    description: `${p.purpose ?? p.intro ?? ""} ${p.where}.`.trim(),
+    description: `${p.purpose ?? p.intro ?? ""} ${p.where}.`.replace(/<\/?em>/g, "").trim(),
     alternates: { canonical: `/workbook/${id}` },
   };
 }

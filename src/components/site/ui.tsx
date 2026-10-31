@@ -28,22 +28,23 @@ export function Jn({ parts }: { parts: string[] }) {
   );
 }
 
-/** Siglas en versalitas dentro de texto corrido (USD, CVM, EPS...). */
-export function Sc({ text }: { text: string }) {
+function scPart(text: string, k: string) {
   const parts = text.split(/(\bUSD\b|\bCVM\b|\bEPS\b|\bCTS\b|\bAFP\b)/g);
-  return (
-    <>
-      {parts.map((p, i) =>
-        /^(USD|CVM|EPS|CTS|AFP)$/.test(p) ? (
-          <span key={i} className="sc">
-            {p}
-          </span>
-        ) : (
-          <span key={i}>{p.replace(/(USD|S\/|MXN) (?=\d)/g, "$1 ")}</span>
-        )
-      )}
-    </>
+  return parts.map((p, i) =>
+    /^(USD|CVM|EPS|CTS|AFP)$/.test(p) ? (
+      <span key={`${k}-${i}`} className="sc">
+        {p}
+      </span>
+    ) : (
+      <span key={`${k}-${i}`}>{p.replace(/(USD|S\/|MXN) (?=\d)/g, "$1\u00a0")}</span>
+    )
   );
+}
+
+/** Siglas en versalitas dentro de texto corrido (USD, CVM, EPS...) y cursivas marcadas con <em>. */
+export function Sc({ text }: { text: string }) {
+  const chunks = text.split(/<em>(.*?)<\/em>/g);
+  return <>{chunks.map((c, i) => (i % 2 ? <i key={i}>{scPart(c, `e${i}`)}</i> : scPart(c, `t${i}`)))}</>;
 }
 
 /** Titular con revelado por línea (las palabras suben detrás de una máscara). */

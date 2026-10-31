@@ -23,7 +23,7 @@ export default function DiagnosticoPage() {
             <Lines text="Diagnóstico de nivel" />
           </h1>
           <p className="wt mt-5 lg:mt-7">
-            Responde con lo que ves en tu estado de cuenta, no con lo que esperas. El resultado te ubica en uno de los cuatro niveles de la escalera y te dice qué toca hacer ahora.
+            Responde con lo que ves hoy en tu estado de cuenta. El resultado te ubica en uno de los cuatro niveles de la escalera y te dice qué toca hacer ahora.
           </p>
           <ol className="mt-8 border-b border-ink rv-kids">
             {LEVELS.map((l, k) => (
