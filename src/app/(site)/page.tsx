@@ -348,7 +348,7 @@ function Proof() {
     <section className="bg-warm grain" aria-labelledby="cifras-t">
       <div className="wrap pt-12 pb-[52px] lg:pt-[88px] lg:pb-24">
         <div className="lg:flex lg:justify-between lg:items-end gap-10">
-          <SecHead id="cifras-t" label={["Prueba social", "Trayectoria"]} title="Future Founders en cifras" />
+          <SecHead id="cifras-t" label={["En cifras", "Trayectoria"]} title="Future Founders en cifras" />
           <p className="text-[14px] lg:text-[15px] text-ink2 mt-4 lg:mt-0 lg:max-w-[360px] lg:text-right">Cifras que Future Founders publica hoy en futurefounders.pe.</p>
         </div>
         <dl className="rv-kids grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-6 lg:gap-8 mt-7 lg:mt-12">
