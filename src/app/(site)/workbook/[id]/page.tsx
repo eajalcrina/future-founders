@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import BookButtons from "@/components/site/BookButtons";
-import { Arrow, Icon, Jn, Lines, Mono, Nota, Sc } from "@/components/site/ui";
+import PlantillaCalc from "@/components/site/PlantillaCalc";
+import RunwayCalc from "@/components/site/RunwayCalc";
+import { Arrow, Jn, Lines, Mono, Nota, Sc } from "@/components/site/ui";
 import { PLANTILLAS, PARTES, type Plantilla } from "@/content/workbook";
 import { allWorkbookIds, kindLabel, partTemplates } from "@/content/workbook-util";
 
@@ -30,14 +31,14 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!p) return {};
   return {
     title: `Plantilla ${p.code}: ${p.title}`,
-    description: `${p.purpose ?? p.intro ?? ""} ${p.where}.`.replace(/<\/?em>/g, "").trim(),
+    description: `${p.purpose ?? p.intro ?? ""} ${p.where}.${p.calc ? " Con calculadora en línea." : ""}`.replace(/<\/?em>/g, "").trim(),
     alternates: { canonical: `/workbook/${id}` },
   };
 }
 
 function Meta({ items }: { items: [string, string][] }) {
   return (
-    <dl className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-5 mt-8 lg:mt-10">
+    <dl className="grid grid-cols-2 lg:grid-cols-5 gap-x-6 gap-y-5 mt-8 lg:mt-10">
       {items.map(([k, v]) => (
         <div key={k} className="border-t-2 border-ink pt-2.5">
           <dt className="wm text-ink2">{k}</dt>
@@ -93,7 +94,11 @@ function TemplatePage({ p }: { p: Plantilla }) {
     ["En el libro", p.where],
     ...(p.level ? ([["Nivel", p.level]] as [string, string][]) : []),
     ...(p.who ? ([["Ejemplo resuelto", p.who]] as [string, string][]) : []),
+    ...(p.pages.libro || p.pages.workbook
+      ? ([["Páginas", [p.pages.libro && `libro ${p.pages.libro}`, p.pages.workbook && `workbook ${p.pages.workbook}`].filter(Boolean).join(", ")]] as [string, string][])
+      : []),
   ];
+  const hasCalc = Boolean(p.calc) && p.id !== "k1";
   return (
     <>
       <section className="grain">
@@ -143,53 +148,83 @@ function TemplatePage({ p }: { p: Plantilla }) {
                 </ul>
               </>
             )}
+            {p.uses.length > 0 && (
+              <>
+                <div className="wm text-ink2 mt-9">Necesitas antes</div>
+                <ul className="flex flex-wrap gap-x-6 gap-y-2 mt-2.5">
+                  {p.uses.map((u) => {
+                    const t = PLANTILLAS.find((x) => x.id === u.id);
+                    return (
+                      <li key={u.id}>
+                        <Link href={`/workbook/${u.id}`} className="ul text-[17px] font-semibold">
+                          {u.code} {t?.title}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
+            )}
+            {p.check.length > 0 && !hasCalc && (
+              <>
+                <div className="wm text-ink2 mt-9 mb-1.5">Sabrás que terminaste cuando…</div>
+                <ul className="border-b border-ink">
+                  {p.check.map((c) => (
+                    <li key={c} className="grid grid-cols-[28px_minmax(0,1fr)] py-3 border-t border-ink">
+                      <span className="block w-2 h-2 mt-2 border border-ink" aria-hidden="true" />
+                      <span className="text-[17px] leading-[1.45]">
+                        <Sc text={c} />
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </div>
           <aside className="grid gap-5">
-            {p.toolkit && (
-              <div className="card bg-paper p-6">
-                <div className="flex gap-2.5 items-center">
-                  <Icon name="formula" size={20} />
-                  <span className="wm">Calculadora del toolkit</span>
-                </div>
-                <p className="ws text-[22px] mt-3">{p.toolkit.label}</p>
-                <p className="text-[15px] text-ink2 mt-2">Hace la misma cuenta que esta plantilla, con tus números.</p>
-                <Link href={p.toolkit.href} className="btn2 w-full mt-5">
-                  <span>Abrir la calculadora</span>
-                  <Arrow />
-                </Link>
-              </div>
+            {hasCalc && p.calc && (
+              <PlantillaCalc
+                id={p.id}
+                code={p.code}
+                calc={p.calc}
+                avisos={p.avisos}
+                who={p.who}
+                check={p.check}
+                next={next ? { id: next.id, code: next.code, title: next.title } : null}
+              />
             )}
-            {p.id === "k1" && (
-              <Link href="/kit#calculadora" className="group card bg-sal p-6 block" style={{ borderLeft: "2px solid var(--color-sald)" }}>
-                <span className="wm" style={{ color: "var(--color-sald)" }}>
-                  Prueba en línea
-                </span>
-                <span className="block ws text-[20px] mt-2">
-                  <span className="lnk">K.1 con los números de Carmen</span>
-                </span>
-              </Link>
-            )}
-            <div className="bg-warm p-6">
+            <div id="donde" className="bg-warm p-6">
               <div className="wm text-ink2">Dónde se llena</div>
               <p className="text-[16px] leading-[1.45] mt-2">
                 {p.kind === "kit"
-                  ? "En el kit «Plan de salida», gratis, o en el workbook del libro."
-                  : "En el workbook del libro, en el iPad o en papel. Viene con el ejemplo resuelto y una columna para tus números."}
+                  ? "En el kit «Plan de salida» o en el workbook. Los dos se descargan gratis."
+                  : "En el workbook, en una tableta, en la computadora o en papel. La plantilla te dice en qué página del libro está su ejemplo resuelto."}
               </p>
               <div className="mt-5">
                 {p.kind === "kit" ? (
-                  <Link href="/kit" className="btn w-full">
+                  <Link href="/kit#formulario" className="btn w-full">
                     <span>Descarga el kit</span>
                     <Arrow />
                   </Link>
                 ) : (
-                  <BookButtons full />
+                  <Link href="/workbook#descarga" className="btn w-full">
+                    <span>Descarga el workbook</span>
+                    <Arrow />
+                  </Link>
                 )}
               </div>
             </div>
           </aside>
         </div>
       </section>
+
+      {p.id === "k1" && (
+        <section id="calculadora" className="bg-warm grid-paper border-t border-ink scroll-mt-4" aria-label="Calculadora en línea de la K.1">
+          <div className="wrap py-12 lg:py-[88px]">
+            <RunwayCalc />
+          </div>
+        </section>
+      )}
 
       <nav aria-label="Otras plantillas" className="border-t border-ink">
         <div className="wrap py-8 grid gap-4 sm:grid-cols-3 items-center">

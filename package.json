@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:calc": "node --no-warnings scripts/test-calc.mjs",
+    "test": "npm run test:calc",
+    "workbook": "python3 scripts/gen-workbook.py"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.118.0",
