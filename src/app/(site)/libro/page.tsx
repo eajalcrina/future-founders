@@ -7,6 +7,7 @@ import FinalCta from "@/components/site/FinalCta";
 import Parallax from "@/components/site/Parallax";
 import { AMAZON_URL, FOUNDERS, LEARN, SITE_URL } from "@/content/sitio";
 import { checkoutHref } from "@/components/site/BookButtons";
+import { PART_LEVELS, PARTES } from "@/content/workbook";
 import { Arrow, CropMarks, Icon, Jn, JsonLd, Lectura, Lines, Lvl, Mono, Nota, Sc, SecHead } from "@/components/site/ui";
 
 export const metadata: Metadata = {
@@ -18,14 +19,23 @@ export const metadata: Metadata = {
 };
 
 type Toc = { code: string; n1: string; n2: string; lv: number[] | null; items: [string, string][] };
+
+/** «Nivel 0», «Niveles 0 y 1», «Niveles 0 a 2»: el rótulo sale de los niveles que exporta gen-workbook.py. */
+function levelLabel(lv: number[]) {
+  if (lv.length === 1) return `Nivel ${lv[0]}`;
+  if (lv.length === 2) return `Niveles ${lv[0]} y ${lv[1]}`;
+  return `Niveles ${lv[0]} a ${lv[lv.length - 1]}`;
+}
+const part = (code: string, items: [string, string][]): Toc => ({ code, n1: PARTES[code], n2: levelLabel(PART_LEVELS[code]), lv: PART_LEVELS[code], items });
+
 const TOC: Toc[] = [
   { code: "AP", n1: "Apertura", n2: "y kit", lv: null, items: [["", "Manifiesto: dos roles a la vista"], ["", "Los cuatro arquetipos"], ["", "La escalera: de un sueldo a varios ingresos"], ["", "Cómo usar este libro"], ["K", "Kit «Plan de salida», plantillas K.1 a K.5"]] },
-  { code: "01", n1: "Diagnóstico", n2: "Nivel 0", lv: [0], items: [["1", "El riesgo que no se ve"], ["2", "Tu costo de vida real"], ["3", "Tu criterio ejecutivo es vendible"], ["4", "Juego limpio: contrato, conflicto de interés y transparencia"], ["5", "Si te despiden mañana"]] },
-  { code: "02", n1: "Mercado", n2: "Niveles 0 y 1", lv: [0, 1], items: [["6", "El problema de los USD 100.000"], ["7", "Tu puerto de entrada"], ["8", "Quién decide y por qué compra"], ["9", "¿Alcanza el mercado?"]] },
-  { code: "03", n1: "Oferta", n2: "Niveles 1 a 3", lv: [1, 2, 3], items: [["10", "Tu propuesta de valor, en números"], ["11", "Tu primer rol parcial: formato, precio y contrato"], ["12", "De servicio a producto"], ["13", "La unidad económica"]] },
-  { code: "04", n1: "Primeros clientes", n2: "Niveles 1 y 2", lv: [1, 2], items: [["14", "Tu red como canal"], ["15", "La conversación de diagnóstico"], ["16", "El primer contrato y el primer comprobante"], ["17", "Tu agenda, tu energía y tu familia"]] },
-  { code: "05", n1: "Transición", n2: "Niveles 2 y 3", lv: [2, 3], items: [["18", "Del primer rol al portafolio"], ["19", "El punto de no retorno"], ["20", "La conversación con tu empleador"], ["21", "Independencia: saltar o quedarte"]] },
-  { code: "AN", n1: "Cierre", n2: "y anexos", lv: null, items: [["", "Lo que sigue"], ["", "Anexos por país: Perú, México, Colombia y Chile"], ["", "Glosario, notas y fuentes"]] },
+  part("01", [["1", "El riesgo que no se ve"], ["2", "Tu costo de vida real"], ["3", "Tu criterio ejecutivo es vendible"], ["4", "Juego limpio: contrato, conflicto de interés y transparencia"], ["5", "Si te despiden mañana"]]),
+  part("02", [["6", "El problema de los USD 100.000"], ["7", "Tu puerto de entrada"], ["8", "Quién decide y por qué compra"], ["9", "¿Alcanza el mercado?"]]),
+  part("03", [["10", "Tu propuesta de valor, en números"], ["11", "Tu primer rol parcial: formato, precio y contrato"], ["12", "De servicio a producto"], ["13", "La unidad económica"]]),
+  part("04", [["14", "Tu red como canal"], ["15", "La conversación de diagnóstico"], ["16", "El primer contrato y el primer comprobante"], ["17", "Tu agenda, tu energía y tu familia"]]),
+  part("05", [["18", "Del primer rol al portafolio"], ["19", "El punto de no retorno"], ["20", "La conversación con tu empleador"], ["21", "Independencia: saltar o quedarte"]]),
+  { code: "AN", n1: "Cierre", n2: "y anexos", lv: null, items: [["", "Lo que sigue"], ["", "Anexos por país: Perú, México, Colombia y Chile"], ["", "Glosario e índices"]] },
 ];
 
 const SAMPLES = [
@@ -37,7 +47,7 @@ const SAMPLES = [
 
 const INCL: { icon: "plantilla" | "documento" | "accion" | "formula"; t: string; d: string }[] = [
   { icon: "plantilla", t: "Kit «Plan de salida»", d: "Cinco plantillas, K.1 a K.5, para tu runway, tu contrato, tu salida, tus primeros 30 días y tus primeras 20 llamadas." },
-  { icon: "documento", t: "21 plantillas, una por capítulo", d: "Cada una tarda de 20 a 30 minutos y deja una decisión o un dato nuevo sobre tu situación." },
+  { icon: "documento", t: "21 plantillas, una por capítulo", d: "Cada una toma de 15 a 40 minutos con los datos a mano y deja una decisión o un dato nuevo sobre tu situación." },
   { icon: "accion", t: "Las tres acciones de cada capítulo", d: "Lo que haces esa semana, escrito y con fecha." },
   { icon: "formula", t: "Los cálculos de los cuatro arquetipos", d: "Las cuentas de Carmen, Javier, Andrea y Rodrigo, para que compares con las tuyas." },
 ];
@@ -96,7 +106,7 @@ function Hero() {
             <BookButtons />
           </div>
           <Mono className="text-ink2 mt-4 lg:mt-[18px]">
-            <Jn parts={["Ebook", "Impreso", "PDF con workbook", "21 capítulos en 5 partes"]} />
+            <Jn parts={["Ebook", "Impreso", "PDF", "Workbook gratis", "21 capítulos en 5 partes"]} />
           </Mono>
         </div>
       </div>
@@ -140,7 +150,7 @@ function Back() {
           <Lectura
             className="mt-7"
             bg="var(--color-paper)"
-            text="Los cuatro arquetipos están armados a partir de conversaciones con más de 30 ejecutivos. Sus sueldos y gastos están en el rango de las guías salariales de cada país, y puedes revisar cada cálculo en el workbook."
+            text="Los cuatro arquetipos están armados a partir de conversaciones con más de 30 ejecutivos. Sus sueldos y gastos están en el rango de las guías salariales de cada país, y puedes revisar cada cálculo en el libro."
           />
         </div>
       </div>
@@ -243,7 +253,7 @@ function Workbook() {
             className="max-w-[640px]"
             label={["Workbook", "Se usa junto al libro"]}
             title="El libro explica, el workbook es donde lo haces"
-            sub="Llenas las plantillas en el iPad o en papel. Los ejemplos ya vienen resueltos con los números de los arquetipos, y la última columna es para los tuyos."
+            sub="Llenas las plantillas en una tableta, en la computadora o en papel. Cada una te dice en qué página del libro está su ejemplo resuelto, y las que hacen cuentas tienen su calculadora en línea."
           />
           <ul className="rv-kids mt-8 lg:mt-9 border-b border-ink">
             {INCL.map((x) => (
@@ -259,7 +269,7 @@ function Workbook() {
             ))}
           </ul>
           <Link href="/workbook" className="ul inline-block mt-6 text-[17px] font-bold">
-            Ver las plantillas del workbook
+            Ver las plantillas y descargar el workbook gratis
           </Link>
         </div>
         <div className="lg:pt-3 rv">
@@ -316,13 +326,13 @@ function Workbook() {
 function Formats() {
   const ck = checkoutHref();
   const fmts = [
-    { n: "Ebook", w: "Amazon", d: "Para leer en Kindle, en el iPad o en la computadora.", b: "Comprar en Amazon", href: AMAZON_URL, k: 1 },
+    { n: "Ebook", w: "Amazon", d: "Para leer en Kindle, en una tableta o en la computadora.", b: "Comprar en Amazon", href: AMAZON_URL, k: 1 },
     { n: "Impreso", w: "Amazon", d: "Edición de bolsillo ejecutivo de 150 × 220 mm, impresa por Amazon.", b: "Comprar en Amazon", href: AMAZON_URL, k: 2 },
     {
-      n: "PDF con workbook",
+      n: "Libro en PDF",
       w: "Compra directa",
-      d: "El libro en PDF y el workbook con todas sus plantillas, para llenar en el iPad o imprimir. Lo compras directo a Future Founders y te llega a tu correo.",
-      b: "Compra directa: PDF + workbook",
+      d: "El libro en PDF, para leer en una tableta o en la computadora. El workbook se descarga gratis.",
+      b: "Compra directa: libro en PDF",
       href: ck,
       k: 2,
     },
@@ -336,7 +346,7 @@ function Formats() {
           className="max-w-[860px]"
           label={["Formatos", "Dónde comprar"]}
           title="Elige tu formato"
-          sub="El ebook y el impreso se venden en Amazon. El PDF con el workbook se compra directo a Future Founders, desde esta página."
+          sub="El ebook y el impreso se venden en Amazon. El libro en PDF se compra directo a Future Founders, desde esta página. El workbook es gratis para todos."
         />
         <div className="rv-kids grid gap-5 lg:gap-6 md:grid-cols-3 mt-8 lg:mt-12">
           {fmts.map((f) => (
@@ -355,7 +365,7 @@ function Formats() {
           ))}
         </div>
         {!process.env.NEXT_PUBLIC_CHECKOUT_URL && (
-          <p className="text-[15px] text-ink2 mt-4">La compra directa se coordina por WhatsApp: te enviamos el enlace de pago y, al confirmarlo, el PDF con el workbook.</p>
+          <p className="text-[15px] text-ink2 mt-4">La compra directa se coordina por WhatsApp: te enviamos el enlace de pago y, al confirmarlo, el libro en PDF.</p>
         )}
         <Nota className="mt-6 lg:mt-8 max-w-[980px]">
           El libro no promete ingresos ni plazos. Cada persona parte de un sueldo, un ahorro y un mercado distintos, y el libro te ayuda a medir los tuyos. Nada de lo que contiene

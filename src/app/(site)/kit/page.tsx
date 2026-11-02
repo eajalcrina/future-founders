@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import KitForm from "@/components/site/KitForm";
+import DownloadForm from "@/components/site/DownloadForm";
+import { DESCARGAS, kitFallback } from "@/lib/descargas";
 import RunwayCalc from "@/components/site/RunwayCalc";
 import FinalCta from "@/components/site/FinalCta";
 import Parallax from "@/components/site/Parallax";
@@ -45,7 +46,7 @@ export default function KitPage() {
             </dl>
           </div>
           <div id="formulario" className="scroll-mt-6">
-            <KitForm />
+            <DownloadForm producto="kit" file={DESCARGAS.kit} fallback={kitFallback()} />
           </div>
         </div>
       </section>
@@ -65,7 +66,7 @@ export default function KitPage() {
             <SecHead id="que-t" size="md" className="max-w-[640px]" label={["Qué es", "Cómo se usa"]} title="Cinco plantillas, en orden" />
             <div className="wt mt-5 lg:mt-[26px] rv">
               <p>
-                Llénalo en el orden en que aparece, porque cada plantilla usa un dato de la anterior. Si ya te despidieron y todavía no firmaste tu salida, empieza hoy por la K.3 y
+                Llénalo en el orden en que aparece; las plantillas usan datos de las anteriores. Si ya te despidieron y todavía no firmaste tu salida, empieza hoy por la K.3 y
                 después vuelve a la K.1.
               </p>
               <p>
@@ -125,7 +126,7 @@ export default function KitPage() {
             size="md"
             className="max-w-[900px]"
             label={["Calculadora", "Plantilla K.1"]}
-            title="Prueba la K.1 con los números de Carmen"
+            title="Prueba la K.1 con los números de Carmen o de Javier"
             sub="Así funciona la primera plantilla del kit. Cambia los dos números por los tuyos y verás tu runway con un decimal."
           />
           <div className="mt-8 lg:mt-12">
@@ -136,7 +137,7 @@ export default function KitPage() {
 
       <FinalCta
         title="Llénalo esta semana"
-        text="La K.1 toma 20 minutos y te deja el dato del que parte todo el método. Las otras cuatro plantillas suman unas 2 horas."
+        text="La K.1 toma 20 minutos y te deja el dato del que parte todo el método. Las cinco suman unas 2 horas."
         button="Enviarme el kit"
         folio="K.5"
       />

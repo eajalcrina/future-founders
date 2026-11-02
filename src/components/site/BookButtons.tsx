@@ -25,7 +25,7 @@ export default function BookButtons({ variant = "paper", full = false }: { varia
           Comprar en Amazon
         </Ext>
         <Ext href={checkoutHref()} className={`btn2 ${w}`} arrow={false}>
-          Compra directa: PDF + workbook
+          Compra directa: libro en PDF
         </Ext>
       </div>
     );
@@ -35,7 +35,7 @@ export default function BookButtons({ variant = "paper", full = false }: { varia
         Comprar en Amazon
       </Ext>
       <Ext href={checkoutHref()} className={`btn2 ${w}`} arrow={false}>
-        Compra directa: PDF + workbook
+        Compra directa: libro en PDF
       </Ext>
     </div>
   );

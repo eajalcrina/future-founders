@@ -8,14 +8,49 @@ import { Arrow } from "./ui";
 const SIT = ["Tengo empleo", "Acabo de salir", "Tengo un proyecto"];
 const COUNTRIES = ["Perú", "México", "Colombia", "Chile", "Otro país"];
 
-/** Formulario del kit «Plan de salida»: nombre, correo, situación y país. */
-export default function KitForm() {
+export type Producto = "kit" | "workbook";
+
+const COPY: Record<Producto, { h: string; intro: string; lead: string; button: string; next: string; wa: string }> = {
+  kit: {
+    h: "Descarga el kit",
+    intro: "Las cinco plantillas del kit, con los ejemplos de Carmen y Javier y la regla de cada país, en un PDF que puedes llenar.",
+    lead: "Kit Plan de salida",
+    button: "Descargar el kit",
+    next: "Empieza por la K.1: son 20 minutos y te deja el dato del que parte todo el método.",
+    wa: "el kit «Plan de salida»",
+  },
+  workbook: {
+    h: "Descarga el workbook",
+    intro: "Las 31 plantillas del libro en un PDF que puedes llenar en una tableta o una computadora, o imprimir.",
+    lead: "Workbook",
+    button: "Descargar el workbook",
+    next: "Abre primero «Tu nivel en la escalera», al comienzo del workbook, y anota tu nivel con la fecha.",
+    wa: "el workbook de Doble Agente",
+  },
+};
+
+/**
+ * Formulario de descarga del kit o del workbook: nombre, correo, situación y país.
+ * Con o sin respuesta de Brevo, al enviar muestra el enlace al PDF.
+ * `file` es la ruta pública del PDF; `fallback` se usa si ese PDF todavía no está publicado.
+ */
+export default function DownloadForm({
+  producto,
+  file,
+  fallback,
+}: {
+  producto: Producto;
+  file: string;
+  fallback?: { file: string; label: string; note: string };
+}) {
+  const c = COPY[producto];
   const id = useId();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [sit, setSit] = useState(SIT[0]);
   const [country, setCountry] = useState(COUNTRIES[0]);
-  const [state, setState] = useState<"idle" | "sending" | "ok" | "error">("idle");
+  const [state, setState] = useState<"idle" | "sending" | "done">("idle");
+  const [sent, setSent] = useState(false);
   const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
 
   async function onSubmit(e: React.FormEvent) {
@@ -30,19 +65,36 @@ export default function KitForm() {
     }
     setState("sending");
     const [firstName, ...rest] = name.trim().split(/\s+/);
-    const r = await sendLead({ firstName, lastName: rest.join(" "), email: email.trim(), country, situacion: sit, archetype: "Kit Plan de salida" });
-    setState(r.ok ? "ok" : "error");
+    const r = await sendLead({ firstName, lastName: rest.join(" "), email: email.trim(), country, situacion: sit, archetype: c.lead });
+    setSent(r.ok);
+    setState("done");
   }
 
   return (
     <div className="border border-ink bg-paper px-5 py-7 lg:px-9 lg:pt-9 lg:pb-[34px]">
-      <h2 className="ws text-[26px] lg:text-[30px] leading-[1.1]">Recibe el kit en tu correo</h2>
-      <p className="text-[16px] leading-[1.45] text-ink2 mt-2.5">Cinco plantillas en PDF, con los ejemplos de Carmen y Javier resueltos.</p>
+      <h2 className="ws text-[26px] lg:text-[30px] leading-[1.1]">{c.h}</h2>
+      <p className="text-[16px] leading-[1.45] text-ink2 mt-2.5">{c.intro}</p>
 
-      {state === "ok" ? (
+      {state === "done" ? (
         <div role="status" className="mt-7 border-t-2 border-ink pt-5">
-          <p className="text-[20px] font-bold">Listo, {name.trim().split(/\s+/)[0]}. El kit va camino a {email.trim()}.</p>
-          <p className="text-[16px] text-ink2 mt-2">Empieza por la K.1: son 20 minutos y te deja el dato del que parte todo el método.</p>
+          <p className="text-[20px] font-bold">
+            Listo, {name.trim().split(/\s+/)[0]}. Aquí está tu PDF.{sent ? ` También te lo enviamos a ${email.trim()}.` : ""}
+          </p>
+          <a href={fallback ? fallback.file : file} download className="btn w-full mt-5">
+            <span>{fallback ? fallback.label : "Descargar el PDF"}</span>
+            <Arrow />
+          </a>
+          {fallback && <p className="text-[15px] leading-[1.45] mt-3">{fallback.note}</p>}
+          <p className="text-[16px] text-ink2 mt-3">{c.next}</p>
+          {!sent && (
+            <p className="text-[15px] leading-[1.45] mt-3 border-l-2 border-magt pl-3">
+              No pudimos registrar tu correo en este momento. Si quieres recibir las novedades del libro, escríbenos por{" "}
+              <a className="ul font-bold" href={whatsappUrl(`Hola, soy ${name.trim()}. Descargué ${c.wa} y quiero recibir las novedades en ${email.trim()}.`)} target="_blank" rel="noopener noreferrer">
+                WhatsApp
+              </a>
+              .
+            </p>
+          )}
         </div>
       ) : (
         <form onSubmit={onSubmit} noValidate className="grid gap-[18px] mt-6 lg:mt-[26px]">
@@ -113,21 +165,10 @@ export default function KitForm() {
             </select>
           </div>
           <button type="submit" className="btn w-full mt-2" disabled={state === "sending"}>
-            <span>{state === "sending" ? "Enviando..." : "Enviarme el kit"}</span>
+            <span>{state === "sending" ? "Enviando..." : c.button}</span>
             <Arrow />
           </button>
-          <div aria-live="polite">
-            {state === "error" && (
-              <p className="text-[15px] leading-[1.45] border-l-2 border-magt pl-3">
-                No pudimos registrar tus datos en este momento. Pídenos el kit por{" "}
-                <a className="ul font-bold" href={whatsappUrl(`Hola, soy ${name.trim()}. Quiero recibir el kit «Plan de salida» en ${email.trim()}.`)} target="_blank" rel="noopener noreferrer">
-                  WhatsApp
-                </a>{" "}
-                y te lo enviamos.
-              </p>
-            )}
-          </div>
-          <p className="text-[14px] leading-[1.45] text-ink2">Te enviamos el kit a este correo. Puedes darte de baja con un clic.</p>
+          <p className="text-[14px] leading-[1.45] text-ink2">Al enviar, descargas el PDF aquí mismo y te lo enviamos a este correo. Puedes darte de baja con un clic.</p>
         </form>
       )}
     </div>
