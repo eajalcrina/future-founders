@@ -11,7 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/diagnostico", 0.8],
     ["/programas", 0.8],
     ["/workbook", 0.6],
-    ["/toolkit", 0.5],
+    ["/actualizaciones", 0.5],
   ];
   return [
     ...main.map(([p, priority]) => ({ url: `${SITE_URL}${p}`, lastModified: now, changeFrequency: "monthly" as const, priority })),

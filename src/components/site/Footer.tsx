@@ -6,7 +6,7 @@ type L = { label: string; href: string; ext?: boolean };
 const COLS: { title: string; links: L[] }[] = [
   { title: "El método", links: [{ label: "La escalera", href: "/#metodo" }, { label: "Para quién es", href: "/#para-quien" }, { label: "Programas", href: "/programas" }, { label: "Nosotros", href: "/#nosotros" }] },
   { title: "El libro", links: [{ label: "Doble Agente", href: "/libro" }, { label: "El workbook", href: "/workbook" }, { label: "Dónde comprar", href: "/libro#formatos" }] },
-  { title: "Recursos", links: [{ label: "Kit «Plan de salida»", href: "/kit" }, { label: "Diagnóstico de nivel", href: "/diagnostico" }, { label: "Calculadora de runway", href: "/kit#calculadora" }, { label: "Toolkit de calculadoras", href: "/toolkit" }] },
+  { title: "Recursos", links: [{ label: "Kit «Plan de salida»", href: "/kit" }, { label: "Diagnóstico de nivel", href: "/diagnostico" }, { label: "Calculadora de runway", href: "/kit#calculadora" }, { label: "Valores del año", href: "/actualizaciones" }] },
   {
     title: "Contacto",
     links: [
