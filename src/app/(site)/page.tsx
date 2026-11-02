@@ -108,7 +108,7 @@ function Method() {
           <Lectura text={LECTURA} className="hidden lg:block w-[420px] shrink-0 rv" />
         </div>
         <div className="hidden lg:block mt-14 pt-3.5 border-t-2 border-ink">
-          <h3 className="ws text-[24px] leading-[1.2]">Se sube de nivel con una señal que puedes comprobar, no con una fecha</h3>
+          <h3 className="ws text-[24px] leading-[1.2]">Subes de nivel cuando aparece una señal en tus comprobantes o tu estado de cuenta</h3>
           <p className="text-[16px] text-ink2 mt-1.5">Los cuatro niveles, la ruta de los 21 capítulos del libro y dónde empieza cada arquetipo</p>
         </div>
         <div className="mt-7 lg:mt-[68px]">
@@ -169,11 +169,11 @@ function Who() {
         <SecHead
           id="quien-t"
           className="max-w-[980px]"
-          label={["Para quién es", "Tres puntos de partida"]}
+          label={["Para quién es", "Cuatro puntos de partida"]}
           title="Para quién es"
-          sub="Para gerentes, directores y VP de 38 a 55 años, con 12 a 25 años de carrera en empresas grandes de Latinoamérica. Cada punto de partida empieza por una plantilla distinta del kit."
+          sub="Para gerentes, directores y VP de 38 a 55 años, con 12 a 25 años de carrera en empresas grandes de Latinoamérica. Cada punto de partida empieza por una plantilla distinta."
         />
-        <div className="rv-kids grid gap-4 lg:gap-8 lg:grid-cols-3 mt-7 lg:mt-14">
+        <div className="rv-kids grid gap-4 lg:gap-6 md:grid-cols-2 2xl:grid-cols-4 mt-7 lg:mt-14">
           {ARCH.map((a) => (
             <ArchCard key={a.who} a={a} />
           ))}
@@ -259,7 +259,7 @@ function Products() {
           className="max-w-[900px]"
           label={["Programas", "Ordenados por nivel"]}
           title="Lo que te acompaña en cada nivel"
-          sub="Empiezas por lo gratuito y avanzas cuando aparece la señal de tu nivel. Ningún programa se vende a empresas: todos te hablan a ti."
+          sub="Empiezas por lo gratuito y avanzas cuando aparece la señal de tu nivel. Todos los programas son para personas."
         />
         <div className="rv-kids grid gap-5 md:grid-cols-2 xl:grid-cols-4 mt-7 lg:mt-14 items-start">
           {PRODUCTS.map((col, k) => (

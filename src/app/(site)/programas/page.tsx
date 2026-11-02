@@ -8,7 +8,7 @@ import { LEVELS, agendaUrl, whatsappUrl } from "@/content/sitio";
 export const metadata: Metadata = {
   title: "Programas por nivel",
   description:
-    "Taller «Tu primer rol parcial», programa Primer Mandato, mastermind Portafolio, sesiones 1:1 de transición y coconstrucción: cada uno para un nivel de la escalera.",
+    "Taller «Tu primer rol parcial», programa Primer Mandato, mastermind Portafolio, sesiones individuales de transición y coconstrucción: cada uno para un nivel de la escalera.",
   alternates: { canonical: "/programas" },
   openGraph: { title: "Programas por nivel", url: "/programas" },
 };
@@ -28,7 +28,7 @@ export default function ProgramasPage() {
             <Lines text="Lo que te acompaña en cada nivel" />
           </h1>
           <p className="wt mt-5 lg:mt-8 max-w-[760px]">
-            Empiezas por lo gratuito y avanzas cuando aparece la señal de tu nivel. Ningún programa se vende a empresas: todos te hablan a ti. Las fechas, los cupos y las
+            Empiezas por lo gratuito y avanzas cuando aparece la señal de tu nivel. Todos los programas son para personas. Las fechas, los cupos y las
             condiciones se publican con cada convocatoria.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 mt-7 lg:mt-9">
@@ -51,7 +51,7 @@ export default function ProgramasPage() {
                 <div className="px-5 py-4 lg:p-6 border-b lg:border-b-0 lg:border-r border-ink flex lg:flex-col justify-between gap-3" style={{ background: FILL[p.level], color: p.level === 3 ? "var(--color-paper)" : undefined }}>
                   <div>
                     <span className="wm" style={{ color: p.level === 3 ? "var(--color-ink20)" : "var(--color-ink2)" }}>
-                      Nivel {p.level}
+                      {p.levelLabel}
                     </span>
                     <div className="wh text-[26px] lg:text-[30px] mt-1.5">{LEVELS[p.level]}</div>
                   </div>

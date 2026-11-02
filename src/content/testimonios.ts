@@ -69,7 +69,7 @@ export const TESTIMONIOS: Testimonio[] = [
     cargo: "Directora de Marketing",
     ciudad: "Quito",
     cita: "En las sesiones armamos mi calendario de las primeras cuatro semanas después de salir. Llegaba a cada reunión con la plantilla llena.",
-    programa: "Sesiones 1:1 de transición",
+    programa: "Sesiones individuales de transición",
     ejemplo: true,
   },
 ];

@@ -29,7 +29,7 @@ export const LOOK = [
 ];
 
 export const SIGNAL = [
-  "Emitiste tu primer comprobante por un rol parcial.",
+  "Emitiste o recibiste tu primer comprobante por un rol parcial.",
   "Tus ingresos propios netos cubren tu costo de vida tres meses seguidos.",
   "Cumples las dos condiciones del punto de no retorno.",
   "Es el último nivel.",
@@ -40,11 +40,11 @@ export const CHAPS = ["Partes 01 a 04", "Capítulo 18", "Capítulos 19 y 20", "C
 export const DO_NOW: { head: string; body: string }[] = [
   {
     head: "Mide lo que ya tienes antes de ofrecer nada.",
-    body: "Calcula tu runway, tu costo de vida real y lo que te permite tu contrato. Son las plantillas K.1 y K.2 del kit, unos 50 minutos en total.",
+    body: "Calcula tu runway y lo que te permite tu contrato. Son las plantillas K.1 y K.2 del kit, unos 50 minutos en total.",
   },
   {
-    head: "Consigue un cliente propio, junto a tu cargo o después de él.",
-    body: "Defines una oferta en una página, le pones precio con el sueldo de mercado del cargo equivalente y firmas un contrato. Carmen empieza como CFO fractional de una agroexportadora, un día por semana, por USD 2.200 al mes.",
+    head: "Suma un segundo rol sin que un cliente pese demasiado.",
+    body: "Suma un segundo rol o un producto sin que un cliente pase de la mitad de tus ingresos. Mides tus roles juntos cada mes en el tablero de la 18.1.",
   },
   {
     head: "Suma roles hasta que tus ingresos propios paguen los gastos de tu casa.",
@@ -61,17 +61,12 @@ export const WITH: WithItem[][] = [
   [
     { name: "Kit «Plan de salida»", meta: "Gratis", href: "/kit" },
     { name: "Diagnóstico de nivel", meta: "Gratis", href: "/diagnostico" },
-    { name: "Doble Agente, partes 01 a 04", meta: "Libro", href: "/libro" },
-  ],
-  [
     { name: "Taller «Tu primer rol parcial»", meta: "2 sesiones de 3 horas", href: "/programas#taller" },
     { name: "Programa «Primer Mandato»", meta: "Cohorte de 8 semanas", href: "/programas#primer-mandato" },
   ],
   [{ name: "Mastermind «Portafolio»", meta: "Grupos de 8 a 10", href: "/programas#mastermind" }],
-  [
-    { name: "Sesiones 1:1 de transición", meta: "6 a 8 sesiones", href: "/programas#sesiones" },
-    { name: "Coconstrucción", meta: "Sprint de 90 días", href: "/programas#coconstruccion" },
-  ],
+  [{ name: "Sesiones individuales de transición", meta: "6 a 8 sesiones", href: "/programas#sesiones" }],
+  [{ name: "Coconstrucción", meta: "Sprint de 90 días", href: "/programas#coconstruccion" }],
 ];
 
 export const HERE = [
@@ -82,10 +77,10 @@ export const HERE = [
 ];
 
 export const LECTURA =
-  "La mayor parte del libro está en el nivel 0. Las cuatro primeras partes preparan el primer cliente, que en nuestras conversaciones es el paso que más ejecutivos postergan. Una vez que existe, los niveles siguientes se construyen sobre clientes reales.";
+  "La mayor parte del libro está en el nivel 0. Las cuatro primeras partes preparan el primer cliente, que en nuestras conversaciones es el paso que más ejecutivos postergan. Desde el primer cliente, la Parte 05 trabaja con tus cobros reales.";
 
 export type Arch = {
-  who: "carmen" | "javier" | "andrea";
+  who: "carmen" | "javier" | "andrea" | "rodrigo";
   tag: string;
   name: string;
   role: string;
@@ -144,18 +139,32 @@ export const ARCH: Arch[] = [
     start: "K.2 Lo que dice tu contrato y la autorización por escrito",
     href: "/workbook/k2",
   },
+  {
+    who: "rodrigo",
+    tag: "Con proyecto propio",
+    name: "Rodrigo",
+    role: "Exgerente de Operaciones de una cadena de tiendas en Santiago, hoy socio de una pyme de reparto, 49 años",
+    rows: [
+      ["Años de carrera", "23, 11 en la última empresa"],
+      ["Ahorro líquido", "USD 38.000"],
+      ["Costo de vida", "USD 7.000 al mes"],
+      ["Runway", "5,4 meses"],
+    ],
+    voice:
+      "Su pyme le deja USD 3.600 netos y un rol de operaciones en una cadena de farmacias, unos 4.000. Suma 7.600 frente a un costo de vida de 7.000, así que empieza en el nivel 2.",
+    start: "19.1 El punto de no retorno",
+    href: "/workbook/19-1",
+  },
 ];
 
 export const ARCH_NOTE =
-  "Carmen, Javier y Andrea son arquetipos del libro, armados a partir de conversaciones reales. No son personas reales.";
+  "Carmen, Javier, Andrea y Rodrigo son arquetipos del libro, armados a partir de conversaciones reales. No son personas reales.";
 
 export type Product = { tag: string; name: string; desc: string; meta: string; cta: string; href: string };
 export const PRODUCTS: Product[][] = [
   [
     { tag: "Libro", name: "Doble Agente", desc: "21 capítulos en cinco partes, con una plantilla del workbook por capítulo.", meta: "Ebook, impreso y PDF", cta: "Ver el libro", href: "/libro" },
     { tag: "Gratis", name: "Kit «Plan de salida» y diagnóstico de nivel", desc: "Cinco plantillas para saber cuántos meses aguantas sin sueldo y un cuestionario que te dice en qué nivel estás.", meta: "Unas 2 horas", cta: "Descargar el kit", href: "/kit" },
-  ],
-  [
     { tag: "Taller", name: "Tu primer rol parcial", desc: "Escribes tu oferta en una página y le pones precio, junto a ejecutivos que están en el mismo punto.", meta: "2 sesiones de 3 horas en vivo", cta: "Ver fechas", href: "/programas#taller" },
     { tag: "Programa", name: "Primer Mandato", desc: "Cohorte en vivo para llegar a tu primer comprobante, con oferta, precio, contrato modelo, 30 cuentas objetivo y 10 conversaciones.", meta: "8 semanas, de 12 a 20 personas", cta: "Ver la próxima cohorte", href: "/programas#primer-mandato" },
   ],
@@ -163,7 +172,9 @@ export const PRODUCTS: Product[][] = [
     { tag: "Mastermind", name: "Portafolio", desc: "Grupos de pares que revisan oportunidades, precios y referidos cada quince días.", meta: "Grupos de 8 a 10, de 6 a 12 meses", cta: "Postular", href: "/programas#mastermind" },
   ],
   [
-    { tag: "Acompañamiento", name: "Sesiones 1:1 de transición", desc: "Planificas tu salida con las dos condiciones del punto de no retorno a la vista.", meta: "6 a 8 sesiones", cta: "Agenda 30 minutos", href: "/programas#sesiones" },
+    { tag: "Acompañamiento", name: "Sesiones individuales de transición", desc: "Planificas tu salida con las dos condiciones del punto de no retorno a la vista.", meta: "6 a 8 sesiones", cta: "Agenda 30 minutos", href: "/programas#sesiones" },
+  ],
+  [
     { tag: "Coconstrucción", name: "Firma o producto propio", desc: "Convertimos tu portafolio en una firma o un producto, junto a ti, en un sprint de 90 días.", meta: "Sprint de 90 días", cta: "Conversemos", href: "/programas#coconstruccion" },
   ],
 ];
@@ -228,5 +239,5 @@ export const AMAZON_URL =
   process.env.NEXT_PUBLIC_AMAZON_URL || "https://www.amazon.com/s?k=Doble+Agente+Ajalcri%C3%B1a+Ortiz";
 export const CHECKOUT_URL = process.env.NEXT_PUBLIC_CHECKOUT_URL || "";
 export const CHECKOUT_WHATSAPP = whatsappUrl(
-  "Hola, quiero comprar Doble Agente en PDF con el workbook. ¿Me indican cómo pagar?"
+  "Hola, quiero comprar Doble Agente en PDF. ¿Me indican cómo pagar?"
 );

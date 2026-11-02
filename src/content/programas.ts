@@ -3,6 +3,8 @@
 export type Programa = {
   id: string;
   level: number;
+  /** Rótulo de nivel, como en el cierre del libro. */
+  levelLabel: string;
   tag: string;
   name: string;
   desc: string;
@@ -14,7 +16,8 @@ export type Programa = {
 export const PROGRAMAS: Programa[] = [
   {
     id: "taller",
-    level: 1,
+    level: 0,
+    levelLabel: "Nivel 0, preparando el 1",
     tag: "Taller",
     name: "Tu primer rol parcial",
     desc: "Escribes tu oferta en una página y le pones precio, junto a ejecutivos que están en el mismo punto.",
@@ -24,7 +27,8 @@ export const PROGRAMAS: Programa[] = [
   },
   {
     id: "primer-mandato",
-    level: 1,
+    level: 0,
+    levelLabel: "Nivel 0, preparando el 1",
     tag: "Programa",
     name: "Primer Mandato",
     desc: "Cohorte en vivo para llegar a tu primer comprobante, con oferta, precio, contrato modelo, 30 cuentas objetivo y 10 conversaciones.",
@@ -34,7 +38,8 @@ export const PROGRAMAS: Programa[] = [
   },
   {
     id: "mastermind",
-    level: 2,
+    level: 1,
+    levelLabel: "Nivel 1, camino al 2",
     tag: "Mastermind",
     name: "Portafolio",
     desc: "Grupos de pares que revisan oportunidades, precios y referidos cada quince días.",
@@ -44,9 +49,10 @@ export const PROGRAMAS: Programa[] = [
   },
   {
     id: "sesiones",
-    level: 3,
+    level: 2,
+    levelLabel: "Nivel 2, camino al 3",
     tag: "Acompañamiento",
-    name: "Sesiones 1:1 de transición",
+    name: "Sesiones individuales de transición",
     desc: "Planificas tu salida con las dos condiciones del punto de no retorno a la vista.",
     format: "6 a 8 sesiones",
     forWho: "Tus ingresos propios se acercan a 1,2 veces tu costo de vida y estás decidiendo si sales de tu cargo y cuándo.",
@@ -55,6 +61,7 @@ export const PROGRAMAS: Programa[] = [
   {
     id: "coconstruccion",
     level: 3,
+    levelLabel: "Nivel 3",
     tag: "Coconstrucción",
     name: "Firma o producto propio",
     desc: "Convertimos tu portafolio en una firma o un producto, junto a ti, en un sprint de 90 días.",

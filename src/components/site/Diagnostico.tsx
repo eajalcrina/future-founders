@@ -12,21 +12,21 @@ const QS: Q[] = [
   { id: "situacion", text: "¿Cuál describe tu situación hoy?", options: ["Tengo empleo", "Acabo de salir de mi empresa", "Tengo un proyecto o una pyme propia"] },
   {
     id: "comprobante",
-    text: "En los últimos 12 meses, ¿emitiste un comprobante a un cliente propio por un rol parcial, una asesoría o un proyecto?",
+    text: "¿Ya emitiste o recibiste tu primer comprobante por un rol parcial, una asesoría o un proyecto con un cliente propio?",
     help: "Comprobante es la factura, el recibo por honorarios, el CFDI o la boleta de honorarios, según tu país.",
     options: ["No", "Sí, a un cliente", "Sí, a más de un cliente"],
   },
   { id: "roles", text: "¿Cuántos roles, clientes o productos propios te pagan hoy de forma recurrente?", options: ["Ninguno", "Uno", "De 2 a 4", "Más de 4"] },
   {
     id: "cobertura",
-    text: "En cada uno de los últimos tres meses, ¿cuánto de tu costo de vida mensual cubrieron tus ingresos propios netos?",
-    help: "Ingresos propios son los que no vienen de un empleador: roles parciales, clientes, productos o tu empresa.",
+    text: "En cada uno de los últimos tres meses, ¿cuánto de tu costo de vida mensual sin empleo cubrieron tus ingresos propios netos?",
+    help: "Ingresos propios son los que no vienen de un empleador: roles parciales, clientes, productos o tu empresa. Usa tu costo de vida sin empleo: lo que gastas hoy más lo que paga tu empleador y tendrías que pagar tú (plantilla 2.1). Si ya saliste, es lo que gastas hoy.",
     options: ["Nada o casi nada", "Menos de la mitad", "Entre la mitad y casi todo", "Todo, pero menos de 1,2 veces", "1,2 veces o más"],
   },
   {
     id: "colchon",
     text: "¿Cuántos meses de tu costo de vida cubre hoy tu ahorro líquido?",
-    help: "Es tu runway: el dinero que puedes usar en una semana sin una penalidad grande, dividido entre tu costo de vida mensual.",
+    help: "Es tu runway: el dinero que puedes usar en una semana sin una penalidad grande, dividido entre tu costo de vida mensual. Usa tu costo de vida sin empleo: lo que gastas hoy más lo que paga tu empleador y tendrías que pagar tú (plantilla 2.1). Si ya saliste, es lo que gastas hoy.",
     options: ["Menos de 3", "De 3 a menos de 6", "6 o más", "No lo he calculado"],
   },
 ];
@@ -34,8 +34,20 @@ const QS: Q[] = [
 function levelOf(ans: number[]): { level: number; why: string } {
   const [, comp, roles, cob, col] = ans;
   const hasClient = comp > 0 || roles > 0;
-  if (!hasClient) return { level: 0, why: "Todavía no emites un comprobante a un cliente propio, así que todo tu ingreso viene de un empleador." };
+  if (!hasClient)
+    return {
+      level: 0,
+      why:
+        ans[0] === 1
+          ? "Si ya saliste, tu nivel lo marcan tus ingresos propios: sin un comprobante emitido estás en el 0, aunque ya no tengas sueldo."
+          : "Todavía no emites un comprobante a un cliente propio, así que todo tu ingreso viene de un empleador.",
+    };
   if (cob < 3) return { level: 1, why: "Ya cobraste a un cliente propio, pero tus ingresos propios todavía no cubren tu costo de vida tres meses seguidos." };
+  if (cob === 4 && col === 3)
+    return {
+      level: 2,
+      why: "Tus ingresos propios llegan a 1,2 veces tu costo de vida. Para saber si estás en el nivel 3 te falta calcular tu colchón: es la K.1, 20 minutos.",
+    };
   if (cob < 4 || col !== 2)
     return {
       level: 2,
@@ -158,7 +170,16 @@ export default function Diagnostico() {
 function Result({ ans, onRestart, headRef }: { ans: number[]; onRestart: () => void; headRef: React.RefObject<HTMLHeadingElement | null> }) {
   const { level: k, why } = levelOf(ans);
   const nx = NEXT[k];
-  const noCalc = ans[4] === 3 || ans[4] === 0;
+  const noCalc = ans[4] !== 2;
+  const justOut = ans[0] === 1 && k === 0;
+  const project = ans[0] === 2;
+  const doNow = justOut
+    ? {
+        head: "Revisa tu salida antes de firmar.",
+        body: "Antes de firmar tu salida, llena la K.3 y anota la fecha límite para impugnar o reclamar. Revisa tu liquidación con un abogado laboral, después recalcula tu runway con la K.1 y lee el capítulo 5.",
+      }
+    : DO_NOW[k];
+  const btn = justOut ? { label: "Abrir la K.3 Tu salida en números", href: "/workbook/k3", ext: false } : nx;
   return (
     <div className="grid gap-6">
       <div className="border border-ink bg-paper">
@@ -174,26 +195,34 @@ function Result({ ans, onRestart, headRef }: { ans: number[]; onRestart: () => v
         <div className="px-5 lg:px-8 pt-6 pb-8 grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
           <div>
             <p className="text-[17px] leading-[1.45]">
-              <b>Cómo se ve:</b> {LOOK[k]} {why}
+              <b>Cómo se ve:</b> {justOut ? "" : `${LOOK[k]} `}{why}
             </p>
-            <h3 className="ws text-[24px] lg:text-[28px] mt-6">{DO_NOW[k].head}</h3>
+            <h3 className="ws text-[24px] lg:text-[28px] mt-6">{doNow.head}</h3>
             <p className="wt mt-3">
-              <Sc text={DO_NOW[k].body} />
+              <Sc text={doNow.body} />
             </p>
-            {noCalc && k < 3 && (
+            {project && (
+              <p className="text-[16px] leading-[1.45] mt-4">
+                Tu capítulo de referencia es el 13, la unidad económica, con el ejemplo de Rodrigo.{" "}
+                <Link href="/workbook/13-1" className="ul font-semibold">
+                  Ver la plantilla 13.1
+                </Link>
+              </p>
+            )}
+            {noCalc && k < 3 && !justOut && (
               <p className="text-[15px] leading-[1.45] mt-4 px-3 py-2.5 bg-warm">
                 Tu colchón todavía no cubre 6 meses o no lo has calculado. Antes de cualquier paso, llena la K.1 del kit: son 20 minutos.
               </p>
             )}
             <div className="flex flex-col sm:flex-row gap-3 mt-7">
-              {nx.ext ? (
+              {btn.ext ? (
                 <a href={agendaUrl()} target="_blank" rel="noopener noreferrer" className="btn">
-                  <span>{nx.label}</span>
+                  <span>{btn.label}</span>
                   <Arrow />
                 </a>
               ) : (
-                <Link href={nx.href} className="btn">
-                  <span>{nx.label}</span>
+                <Link href={btn.href} className="btn">
+                  <span>{btn.label}</span>
                   <Arrow />
                 </Link>
               )}
@@ -201,6 +230,7 @@ function Result({ ans, onRestart, headRef }: { ans: number[]; onRestart: () => v
                 Ver la escalera
               </Link>
             </div>
+            <p className="text-[15px] leading-[1.45] text-ink2 mt-5">Anota tu nivel con la fecha en «Tu nivel en la escalera», al comienzo del workbook.</p>
           </div>
           <div>
             <div className="wm text-ink2">Señal para pasar al siguiente</div>
