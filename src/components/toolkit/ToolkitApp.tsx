@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import { AuthProvider, useAuth } from "./AuthContext";
 import AuthModal from "./AuthModal";
@@ -67,7 +68,7 @@ function Navbar({ activePhaseId }: { activePhaseId: string }) {
         }}
       >
         {/* Logo */}
-        <a
+        <Link
           href="/"
           style={{
             display: "flex",
@@ -111,7 +112,7 @@ function Navbar({ activePhaseId }: { activePhaseId: string }) {
           >
             Toolkit
           </span>
-        </a>
+        </Link>
 
         {/* Phase nav — hidden on mobile */}
         {!isMobile && <div
@@ -845,7 +846,7 @@ function Footer() {
           Herramienta de apoyo educativo. No sustituye asesoría financiera, legal ni contable.
         </p>
         <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
-          <a
+          <Link
             href="/"
             style={{
               fontSize: 13,
@@ -856,7 +857,7 @@ function Footer() {
             }}
           >
             ← futurefounders.pe
-          </a>
+          </Link>
           <span style={{ width: 1, height: 12, background: TK.borderMid }} />
           <span style={{ fontSize: 12, color: TK.textMuted, fontFamily: TK.font }}>
             © 2026 Future Founders

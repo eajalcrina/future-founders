@@ -1,0 +1,1687 @@
+{
+ "_nota": "Decisiones R2 de PLAN-R2-LIBRO.md (2.1 niveles, 2.2 calculadoras, trae C10-1 a C15-6) que la maqueta todavía no trae. gen-workbook.py usa el valor de meta.json o wb.json cuando ya lo tiene y este archivo solo para lo que falta. Cuando la maqueta R2 esté aplicada, este archivo debe quedar sin efecto (el generador lo avisa).",
+ "level": {
+  "06": "Nivel 0",
+  "07": "Nivel 0",
+  "08": "Nivel 0",
+  "09": "Nivel 0",
+  "10": "Nivel 0",
+  "11": "Nivel 0",
+  "14": "Nivel 0",
+  "15": "Nivel 0",
+  "16": "Nivel 0",
+  "12": "Niveles 0 a 2",
+  "13": "Niveles 0 a 2",
+  "17": "Niveles 0 y 1",
+  "18": "Nivel 1",
+  "19": "Nivel 2",
+  "20": "Niveles 1 y 2",
+  "21": "Niveles 2 y 3"
+ },
+ "trae": {
+  "10": "Trae tu plantilla 6.1 y tu CVM piso de la 2.1.",
+  "11": "Trae tu rango de la 10.1 y una guía salarial de tu país.",
+  "12": "Trae tus últimos tres entregables y tu TAM de la 9.1.",
+  "13": "Trae los ingresos y costos de tu negocio de los últimos tres meses, o tu tarifa de la 11.1 si tu ruta es un rol parcial.",
+  "15": "Trae la 11.1, tu lista de la 14.1 y tu mapa del comprador de la 8.1."
+ },
+ "summary": {
+  "anexo-colombia": {
+   "old": "Si un contrato vale 3.500 UVT o más en un año, te inscribes como responsable de IVA antes de firmarlo.",
+   "new": "Si un contrato vale 3.500 UVT o más por toda su duración, o tus ingresos del año pasado o de este año pasan de 3.500 UVT, te inscribes como responsable de IVA antes de firmarlo."
+  }
+ },
+ "calc": {
+  "k1": {
+   "rows": [
+    {
+     "field": "A",
+     "tag": "A",
+     "label": "Ahorro líquido",
+     "ej": "61.600"
+    },
+    {
+     "field": "B",
+     "tag": "B",
+     "label": "Costo de vida mensual",
+     "ej": "8.800"
+    },
+    {
+     "field": "runway",
+     "label": "Runway",
+     "expr": "A / B",
+     "show": "A ÷ B",
+     "dec": 1,
+     "unit": "meses",
+     "ej": "7,0"
+    }
+   ],
+   "avisos": [
+    {
+     "when": "runway < 6",
+     "text": "Tu runway está bajo el mínimo de 6 meses del método."
+    }
+   ]
+  },
+  "1-1": {
+   "rows": [
+    {
+     "band": "Lo que tienes"
+    },
+    {
+     "field": "A",
+     "tag": "A",
+     "label": "Ahorro líquido",
+     "from": "k1:A",
+     "ej": "61.600"
+    },
+    {
+     "field": "B",
+     "tag": "B",
+     "label": "Costo de vida mensual",
+     "from": "k1:B",
+     "ej": "8.800"
+    },
+    {
+     "field": "base",
+     "label": "Runway base",
+     "expr": "A / B",
+     "show": "A ÷ B",
+     "dec": 1,
+     "unit": "meses",
+     "ej": "7,0"
+    },
+    {
+     "field": "C",
+     "tag": "C",
+     "label": "Indemnización neta estimada (K.3)",
+     "ej": "163.000",
+     "note": "La fila de la K.3 de tu país con lo que recibirías neto si te despiden sin causa."
+    },
+    {
+     "field": "salida",
+     "label": "Runway de salida",
+     "expr": "(A + C) / B",
+     "show": "(A + C) ÷ B",
+     "dec": 1,
+     "unit": "meses",
+     "ej": "25,5"
+    },
+    {
+     "field": "D",
+     "tag": "D",
+     "label": "Costo de vida recortado",
+     "ej": "7.400"
+    },
+    {
+     "field": "recorte",
+     "label": "Runway con recorte",
+     "expr": "A / D",
+     "show": "A ÷ D",
+     "dec": 1,
+     "unit": "meses",
+     "ej": "8,3"
+    },
+    {
+     "band": "Tu meta"
+    },
+    {
+     "field": "meta",
+     "label": "Meta de runway base, en meses",
+     "ej": "9"
+    },
+    {
+     "field": "colchon",
+     "label": "Colchón meta",
+     "expr": "meta * B",
+     "show": "meta × B",
+     "ej": "79.200"
+    },
+    {
+     "field": "brecha",
+     "label": "Brecha",
+     "expr": "max(colchon - A, 0)",
+     "show": "colchón meta − A",
+     "ej": "17.600"
+    },
+    {
+     "band": "Tu plan"
+    },
+    {
+     "field": "aporte1",
+     "label": "Primer ahorro o pago extraordinario",
+     "ej": "12.000",
+     "note": "Utilidades, gratificaciones o bonos."
+    },
+    {
+     "field": "mes1",
+     "label": "Mes del primer aporte",
+     "kind": "text",
+     "ej": "abril"
+    },
+    {
+     "field": "aporte2",
+     "label": "Segundo ahorro o pago extraordinario",
+     "ej": "5.600",
+     "opt": true
+    },
+    {
+     "field": "mes2",
+     "label": "Mes del segundo aporte",
+     "kind": "text",
+     "ej": "julio",
+     "opt": true
+    },
+    {
+     "field": "mes",
+     "label": "Mes en que cierras la brecha",
+     "expr": "if(brecha <= 0, \"ya la cerraste\", if(aporte1 >= brecha, mes1, if(aporte1 + aporte2 >= brecha, mes2, \"todavía no\")))",
+     "fmt": "text",
+     "ej": "julio"
+    }
+   ],
+   "avisos": [
+    {
+     "when": "base < 6",
+     "text": "Tu runway base está bajo el mínimo de 6 meses del método."
+    },
+    {
+     "when": "1",
+     "text": "Para decidir, usa el runway base."
+    },
+    {
+     "when": "brecha > aporte1 + aporte2",
+     "text": "Con estos dos aportes todavía no cierras la brecha. Suma otro aporte o revisa la meta."
+    }
+   ]
+  },
+  "2-1": {
+   "rows": [
+    {
+     "band": "Lo que gastas hoy"
+    },
+    {
+     "field": "fijos",
+     "label": "Fijos",
+     "ej": "5.900"
+    },
+    {
+     "field": "variables",
+     "label": "Variables",
+     "ej": "2.200"
+    },
+    {
+     "field": "anuales",
+     "label": "Anuales prorrateados",
+     "note": "Total del año ÷ 12.",
+     "ej": "700"
+    },
+    {
+     "field": "deudas",
+     "label": "Deudas aparte de la vivienda",
+     "ej": "0",
+     "opt": true
+    },
+    {
+     "field": "A",
+     "tag": "A",
+     "label": "CVM actual",
+     "expr": "fijos + variables + anuales + deudas",
+     "show": "suma de las cuatro",
+     "ej": "8.800"
+    },
+    {
+     "band": "Sin tu empleador"
+    },
+    {
+     "field": "B",
+     "tag": "B",
+     "label": "Beneficios que hoy paga tu empleador, a precio de reemplazo",
+     "note": "Si ya saliste, deja B en 0: lo que pagaba tu empleador ya está en A.",
+     "ej": "600",
+     "opt": true
+    },
+    {
+     "field": "C",
+     "tag": "C",
+     "label": "CVM sin empleo",
+     "expr": "A + B",
+     "show": "A + B",
+     "ej": "9.400"
+    },
+    {
+     "band": "Tu piso"
+    },
+    {
+     "field": "D",
+     "tag": "D",
+     "label": "Recortes acordados en casa, sin salud ni educación",
+     "ej": "1.400",
+     "opt": true
+    },
+    {
+     "field": "E",
+     "tag": "E",
+     "label": "CVM piso",
+     "expr": "C - D",
+     "show": "C − D",
+     "ej": "8.000"
+    },
+    {
+     "band": "Lo que cambia"
+    },
+    {
+     "field": "ahorro",
+     "label": "Ahorro líquido (A de la 1.1)",
+     "from": "1-1:A",
+     "ej": "61.600"
+    },
+    {
+     "field": "runway_c",
+     "label": "Runway con CVM sin empleo",
+     "expr": "ahorro / C",
+     "show": "ahorro ÷ C",
+     "dec": 1,
+     "unit": "meses",
+     "ej": "6,6"
+    },
+    {
+     "field": "runway_e",
+     "label": "Runway con CVM piso",
+     "expr": "ahorro / E",
+     "show": "ahorro ÷ E",
+     "dec": 1,
+     "unit": "meses",
+     "ej": "7,7"
+    },
+    {
+     "field": "nivel2",
+     "label": "Ingreso propio neto que pedirá el nivel 2",
+     "expr": "C",
+     "show": "C",
+     "ej": "9.400"
+    },
+    {
+     "field": "retorno",
+     "label": "Ingreso propio neto que pedirá el punto de no retorno",
+     "expr": "1.2 * C",
+     "show": "1,2 × C",
+     "ej": "11.280"
+    }
+   ],
+   "avisos": [
+    {
+     "when": "runway_c < 6",
+     "text": "Con tu CVM sin empleo, tu runway queda bajo el mínimo de 6 meses del método."
+    }
+   ]
+  },
+  "5-1": {
+   "rows": [
+    {
+     "band": "Tu punto de partida"
+    },
+    {
+     "field": "saldo",
+     "label": "Saldo inicial del primer mes",
+     "from": "k1:A",
+     "ej": "61.150"
+    },
+    {
+     "field": "gasto",
+     "label": "Gasto mensual: CVM piso, o CVM sin empleo si sigues empleado",
+     "from": "2-1:E",
+     "ej": "10.000"
+    },
+    {
+     "field": "ingreso",
+     "label": "Ingreso neto esperado al mes",
+     "ej": "3.850",
+     "opt": true
+    },
+    {
+     "field": "inicio",
+     "label": "Mes en que llega ese ingreso (del 1 al 6)",
+     "note": "Si tu cliente paga a 30 o 60 días, corre el primer ingreso a ese mes.",
+     "ej": "3"
+    },
+    {
+     "band": "Tu saldo mínimo"
+    },
+    {
+     "field": "pares",
+     "label": "Meses de saldo mínimo",
+     "note": "Lo que tardaron tres pares de tu nivel y tu sector en volver a un empleo. Nunca menos de 2.",
+     "ej": "2"
+    },
+    {
+     "field": "minimo",
+     "label": "Saldo mínimo",
+     "expr": "max(pares, 2) * gasto",
+     "show": "meses × gasto, nunca menos de 2 meses",
+     "ej": "20.000"
+    },
+    {
+     "field": "f1",
+     "hide": true,
+     "label": "Con rol, mes 1",
+     "expr": "saldo - gasto + if(inicio <= 1, ingreso, 0)",
+     "ej": "51.150"
+    },
+    {
+     "field": "f2",
+     "hide": true,
+     "label": "Con rol, mes 2",
+     "expr": "f1 - gasto + if(inicio <= 2, ingreso, 0)",
+     "ej": "41.150"
+    },
+    {
+     "field": "f3",
+     "hide": true,
+     "label": "Con rol, mes 3",
+     "expr": "f2 - gasto + if(inicio <= 3, ingreso, 0)",
+     "ej": "35.000"
+    },
+    {
+     "field": "f4",
+     "hide": true,
+     "label": "Con rol, mes 4",
+     "expr": "f3 - gasto + if(inicio <= 4, ingreso, 0)",
+     "ej": "28.850"
+    },
+    {
+     "field": "f5",
+     "hide": true,
+     "label": "Con rol, mes 5",
+     "expr": "f4 - gasto + if(inicio <= 5, ingreso, 0)",
+     "ej": "22.700"
+    },
+    {
+     "field": "f6",
+     "hide": true,
+     "label": "Con rol, mes 6",
+     "expr": "f5 - gasto + if(inicio <= 6, ingreso, 0)",
+     "ej": "16.550"
+    },
+    {
+     "field": "r1",
+     "hide": true,
+     "label": "Runway con rol, mes 1",
+     "expr": "f1 / gasto",
+     "dec": 1,
+     "ej": "5,1"
+    },
+    {
+     "field": "r2",
+     "hide": true,
+     "label": "Runway con rol, mes 2",
+     "expr": "f2 / gasto",
+     "dec": 1,
+     "ej": "4,1"
+    },
+    {
+     "field": "r3",
+     "hide": true,
+     "label": "Runway con rol, mes 3",
+     "expr": "f3 / gasto",
+     "dec": 1,
+     "ej": "3,5"
+    },
+    {
+     "field": "r4",
+     "hide": true,
+     "label": "Runway con rol, mes 4",
+     "expr": "f4 / gasto",
+     "dec": 1,
+     "ej": "2,9"
+    },
+    {
+     "field": "r5",
+     "hide": true,
+     "label": "Runway con rol, mes 5",
+     "expr": "f5 / gasto",
+     "dec": 1,
+     "ej": "2,3"
+    },
+    {
+     "field": "r6",
+     "hide": true,
+     "label": "Runway con rol, mes 6",
+     "expr": "f6 / gasto",
+     "dec": 1,
+     "ej": "1,7"
+    },
+    {
+     "field": "s1",
+     "hide": true,
+     "label": "Sin ingresos, mes 1",
+     "expr": "saldo - gasto",
+     "ej": "51.150"
+    },
+    {
+     "field": "s2",
+     "hide": true,
+     "label": "Sin ingresos, mes 2",
+     "expr": "s1 - gasto",
+     "ej": "41.150"
+    },
+    {
+     "field": "s3",
+     "hide": true,
+     "label": "Sin ingresos, mes 3",
+     "expr": "s2 - gasto",
+     "ej": "31.150"
+    },
+    {
+     "field": "s4",
+     "hide": true,
+     "label": "Sin ingresos, mes 4",
+     "expr": "s3 - gasto",
+     "ej": "21.150"
+    },
+    {
+     "field": "s5",
+     "hide": true,
+     "label": "Sin ingresos, mes 5",
+     "expr": "s4 - gasto",
+     "ej": "11.150"
+    },
+    {
+     "field": "s6",
+     "hide": true,
+     "label": "Sin ingresos, mes 6",
+     "expr": "s5 - gasto",
+     "ej": "1.150"
+    },
+    {
+     "field": "q1",
+     "hide": true,
+     "label": "Runway sin ingresos, mes 1",
+     "expr": "s1 / gasto",
+     "dec": 1,
+     "ej": "5,1"
+    },
+    {
+     "field": "q2",
+     "hide": true,
+     "label": "Runway sin ingresos, mes 2",
+     "expr": "s2 / gasto",
+     "dec": 1,
+     "ej": "4,1"
+    },
+    {
+     "field": "q3",
+     "hide": true,
+     "label": "Runway sin ingresos, mes 3",
+     "expr": "s3 / gasto",
+     "dec": 1,
+     "ej": "3,1"
+    },
+    {
+     "field": "q4",
+     "hide": true,
+     "label": "Runway sin ingresos, mes 4",
+     "expr": "s4 / gasto",
+     "dec": 1,
+     "ej": "2,1"
+    },
+    {
+     "field": "q5",
+     "hide": true,
+     "label": "Runway sin ingresos, mes 5",
+     "expr": "s5 / gasto",
+     "dec": 1,
+     "ej": "1,1"
+    },
+    {
+     "field": "q6",
+     "hide": true,
+     "label": "Runway sin ingresos, mes 6",
+     "expr": "s6 / gasto",
+     "dec": 1,
+     "ej": "0,1"
+    },
+    {
+     "table": "Tu proyección con un rol",
+     "head": [
+      "Mes",
+      "Saldo final",
+      "Runway"
+     ],
+     "cells": [
+      [
+       "Mes 1",
+       "f1",
+       "r1"
+      ],
+      [
+       "Mes 2",
+       "f2",
+       "r2"
+      ],
+      [
+       "Mes 3",
+       "f3",
+       "r3"
+      ],
+      [
+       "Mes 4",
+       "f4",
+       "r4"
+      ],
+      [
+       "Mes 5",
+       "f5",
+       "r5"
+      ],
+      [
+       "Mes 6",
+       "f6",
+       "r6"
+      ]
+     ],
+     "mark": "minimo"
+    },
+    {
+     "table": "Tu proyección sin ingresos",
+     "head": [
+      "Mes",
+      "Saldo final",
+      "Runway"
+     ],
+     "cells": [
+      [
+       "Mes 1",
+       "s1",
+       "q1"
+      ],
+      [
+       "Mes 2",
+       "s2",
+       "q2"
+      ],
+      [
+       "Mes 3",
+       "s3",
+       "q3"
+      ],
+      [
+       "Mes 4",
+       "s4",
+       "q4"
+      ],
+      [
+       "Mes 5",
+       "s5",
+       "q5"
+      ],
+      [
+       "Mes 6",
+       "s6",
+       "q6"
+      ]
+     ],
+     "mark": "minimo"
+    },
+    {
+     "field": "cae_rol",
+     "label": "Con un rol, primer mes bajo el saldo mínimo",
+     "expr": "if(f1 < minimo, 1, if(f2 < minimo, 2, if(f3 < minimo, 3, if(f4 < minimo, 4, if(f5 < minimo, 5, if(f6 < minimo, 6, 0))))))",
+     "fmt": "mes",
+     "ej": "mes 6"
+    },
+    {
+     "field": "cae_sin",
+     "label": "Sin ingresos, primer mes bajo el saldo mínimo",
+     "expr": "if(s1 < minimo, 1, if(s2 < minimo, 2, if(s3 < minimo, 3, if(s4 < minimo, 4, if(s5 < minimo, 5, if(s6 < minimo, 6, 0))))))",
+     "fmt": "mes",
+     "ej": "mes 5"
+    }
+   ],
+   "avisos": [
+    {
+     "when": "cae_sin > 0",
+     "text": "Sin ingresos, tu saldo cae bajo el mínimo dentro de los seis meses. Ese mes es el que fija tu línea de decisión."
+    },
+    {
+     "when": "f6 < 0 || s6 < 0",
+     "text": "En algún escenario el saldo pasa a negativo antes del mes 6."
+    }
+   ]
+  },
+  "6-1": {
+   "rows": [
+    {
+     "field": "costo",
+     "label": "Costo anual del problema 1",
+     "note": "La cuenta con datos que el cliente reconocería: tasas, horas, ventas que no se hacen, multas.",
+     "ej": "150.000"
+    },
+    {
+     "field": "noactuar",
+     "label": "Costo de no actuar al mes",
+     "expr": "costo / 12",
+     "show": "costo anual ÷ 12",
+     "ej": "12.500"
+    },
+    {
+     "field": "honorarios",
+     "label": "Honorarios anuales que sostiene",
+     "expr": "costo / 5",
+     "show": "costo anual ÷ 5",
+     "ej": "30.000"
+    }
+   ],
+   "avisos": [
+    {
+     "when": "costo < 100000",
+     "text": "El problema cuesta menos de USD 100.000 al año. Revisa la cuenta o busca uno más grande antes de seguir."
+    }
+   ]
+  },
+  "9-1": {
+   "rows": [
+    {
+     "band": "Tu cuenta"
+    },
+    {
+     "field": "perimetro",
+     "label": "Clientes dentro de tu perímetro",
+     "note": "Sin los que no podrías atender por conflicto de interés.",
+     "ej": "240"
+    },
+    {
+     "field": "precio",
+     "label": "Precio anual por cliente",
+     "note": "El que vas a poner en tu propuesta, antes de retenciones.",
+     "ej": "1.800"
+    },
+    {
+     "field": "tam",
+     "label": "TAM",
+     "expr": "perimetro * precio",
+     "show": "perímetro × precio",
+     "ej": "432.000"
+    },
+    {
+     "field": "necesitas",
+     "label": "Clientes que necesitas en el primer año",
+     "ej": "15"
+    },
+    {
+     "field": "tasa",
+     "label": "Tasa de captura",
+     "expr": "necesitas / perimetro * 100",
+     "show": "clientes que necesitas ÷ perímetro",
+     "dec": 2,
+     "fmt": "pct",
+     "ej": "6,25 %"
+    },
+    {
+     "field": "perimetro_chico",
+     "label": "Perímetro más chico",
+     "note": "Por ejemplo, solo tu país.",
+     "ej": "60",
+     "opt": true
+    },
+    {
+     "field": "tasa_chica",
+     "label": "La misma tasa con el perímetro más chico",
+     "expr": "if(perimetro_chico > 0, necesitas / perimetro_chico * 100, 0)",
+     "show": "clientes que necesitas ÷ perímetro más chico",
+     "dec": 0,
+     "fmt": "pct",
+     "ej": "25 %"
+    },
+    {
+     "band": "Tu tiempo de venta"
+    },
+    {
+     "field": "conversaciones",
+     "label": "Conversaciones que necesitas en el año",
+     "note": "Suma las segundas conversaciones si cada venta las pide.",
+     "ej": "60"
+    },
+    {
+     "field": "horas",
+     "label": "Horas por conversación, con la preparación",
+     "ej": "2"
+    },
+    {
+     "field": "horas_total",
+     "label": "Horas de venta en el año",
+     "expr": "conversaciones * horas",
+     "show": "conversaciones × horas",
+     "ej": "120"
+    }
+   ],
+   "avisos": [
+    {
+     "when": "tasa <= 10",
+     "text": "Tu tasa de captura es de hasta 10 %: sigues."
+    },
+    {
+     "when": "tasa > 10",
+     "text": "Tu tasa de captura pasa del 10 %: amplías el perímetro. Si después de ampliar sigue sobre 10 %, replanteas."
+    },
+    {
+     "when": "perimetro_chico > 0 && tasa_chica > 10 && tasa <= 10",
+     "text": "Con el perímetro más chico la tasa pasa del 10 %. El perímetro amplio es el que sostiene la decisión."
+    }
+   ]
+  },
+  "10-1": {
+   "rows": [
+    {
+     "band": "El problema y su valor"
+    },
+    {
+     "field": "A",
+     "tag": "A",
+     "label": "Valor anual",
+     "note": "Con cifras que el cliente puede comprobar.",
+     "from": "6-1:costo",
+     "ej": "150.000"
+    },
+    {
+     "band": "El techo"
+    },
+    {
+     "field": "B",
+     "tag": "B",
+     "label": "Techo anual",
+     "expr": "A / 5",
+     "show": "A ÷ 5",
+     "ej": "30.000"
+    },
+    {
+     "field": "C",
+     "tag": "C",
+     "label": "Techo mensual",
+     "expr": "B / 12",
+     "show": "B ÷ 12",
+     "ej": "2.500"
+    },
+    {
+     "band": "El piso"
+    },
+    {
+     "field": "D",
+     "tag": "D",
+     "label": "CVM piso (2.1)",
+     "note": "O el gasto acordado en la K.4 si ya saliste, como Javier.",
+     "from": "2-1:E",
+     "ej": "8.000"
+    },
+    {
+     "field": "E",
+     "tag": "E",
+     "label": "Piso neto por día semanal",
+     "expr": "D / 5",
+     "show": "D ÷ 5",
+     "ej": "1.600"
+    },
+    {
+     "field": "F",
+     "tag": "F",
+     "label": "Factor neto de tu país",
+     "kind": "select",
+     "options": [
+      {
+       "label": "Perú, 0,75",
+       "value": "0,75"
+      },
+      {
+       "label": "México, 0,65",
+       "value": "0,65"
+      },
+      {
+       "label": "Colombia, 0,70",
+       "value": "0,70"
+      },
+      {
+       "label": "Chile, 0,8475",
+       "value": "0,8475"
+      }
+     ],
+     "note": "Es una estimación del libro. Confirma el tuyo con quien lleva tus impuestos.",
+     "ej": "0,75"
+    },
+    {
+     "field": "G",
+     "tag": "G",
+     "label": "Piso bruto mensual por día semanal",
+     "expr": "E / F",
+     "show": "E ÷ F",
+     "ej": "2.133"
+    },
+    {
+     "band": "Tu rango"
+    },
+    {
+     "field": "dias",
+     "label": "Días por semana que vas a ofrecer",
+     "ej": "1"
+    },
+    {
+     "field": "piso",
+     "label": "Rango mensual, desde",
+     "expr": "G * dias",
+     "show": "G × días",
+     "ej": "2.133"
+    },
+    {
+     "field": "techo",
+     "label": "Rango mensual, hasta",
+     "expr": "C",
+     "show": "C",
+     "ej": "2.500"
+    }
+   ],
+   "avisos": [
+    {
+     "when": "piso > techo",
+     "text": "G × días pasa a C: revisa el problema o los días antes de ofrecer nada."
+    }
+   ]
+  },
+  "11-1": {
+   "rows": [
+    {
+     "band": "La tarifa"
+    },
+    {
+     "field": "A",
+     "tag": "A",
+     "label": "Sueldo mensual de mercado",
+     "note": "De una guía salarial pública de tu país.",
+     "ej": "8.333"
+    },
+    {
+     "field": "dias",
+     "label": "Días por semana",
+     "from": "10-1:dias",
+     "ej": "1"
+    },
+    {
+     "field": "B",
+     "tag": "B",
+     "label": "Días por semana ÷ 5",
+     "expr": "dias / 5",
+     "show": "días ÷ 5",
+     "dec": 1,
+     "ej": "0,2"
+    },
+    {
+     "field": "C",
+     "tag": "C",
+     "label": "Prima",
+     "note": "De 1,2 a 1,5.",
+     "ej": "1,32"
+    },
+    {
+     "field": "tarifa",
+     "label": "Tarifa mensual",
+     "expr": "A * B * C",
+     "show": "A × B × C",
+     "ej": "2.200"
+    },
+    {
+     "band": "Tu rango de la 10.1"
+    },
+    {
+     "field": "piso10",
+     "label": "Piso del rango (G × días de la 10.1)",
+     "from": "10-1:piso",
+     "ej": "2.133"
+    },
+    {
+     "field": "techo10",
+     "label": "Techo del rango (C de la 10.1)",
+     "from": "10-1:C",
+     "ej": "2.500"
+    },
+    {
+     "field": "rango",
+     "label": "¿Dentro del rango de la 10.1?",
+     "expr": "tarifa >= piso10 && tarifa <= techo10",
+     "fmt": "sino",
+     "ej": "Sí"
+    },
+    {
+     "field": "prima_piso",
+     "label": "Prima de tu piso",
+     "expr": "piso10 * 5 / (A * dias)",
+     "show": "piso × 5 ÷ (A × días)",
+     "dec": 2,
+     "ej": "1,28"
+    },
+    {
+     "field": "prima_techo",
+     "label": "Prima de tu techo",
+     "expr": "techo10 * 5 / (A * dias)",
+     "show": "techo × 5 ÷ (A × días)",
+     "dec": 2,
+     "ej": "1,50"
+    },
+    {
+     "band": "La regla de valor"
+    },
+    {
+     "field": "valor",
+     "label": "Valor anual (A de la 10.1)",
+     "from": "10-1:A",
+     "ej": "150.000"
+    },
+    {
+     "field": "veces",
+     "label": "Valor anual ÷ tarifa anual",
+     "expr": "valor / (tarifa * 12)",
+     "show": "valor ÷ (tarifa × 12), al menos 5",
+     "dec": 1,
+     "ej": "5,7"
+    }
+   ],
+   "avisos": [
+    {
+     "when": "C < 1.2 || C > 1.5",
+     "text": "La prima va de 1,2 a 1,5."
+    },
+    {
+     "when": "tarifa > techo10",
+     "text": "Tu tarifa pasa el techo de la 10.1: baja el alcance o la prima."
+    },
+    {
+     "when": "tarifa < piso10",
+     "text": "Tu tarifa queda bajo el piso de la 10.1: revisa los días."
+    },
+    {
+     "when": "veces < 5",
+     "text": "El valor anual no llega a 5 veces tu tarifa anual."
+    }
+   ]
+  },
+  "13-1": {
+   "rows": [
+    {
+     "band": "Segmento actual"
+    },
+    {
+     "field": "a1",
+     "tag": "A",
+     "label": "Ingreso por cliente al mes",
+     "ej": "2.500"
+    },
+    {
+     "field": "b1",
+     "tag": "B",
+     "label": "Costos variables por cliente",
+     "ej": "1.750"
+    },
+    {
+     "field": "c1",
+     "tag": "C",
+     "label": "Margen de contribución",
+     "expr": "a1 - b1",
+     "show": "A − B",
+     "ej": "750"
+    },
+    {
+     "field": "cp1",
+     "label": "Margen sobre el ingreso",
+     "expr": "c1 / a1 * 100",
+     "show": "C ÷ A",
+     "fmt": "pct",
+     "ej": "30 %"
+    },
+    {
+     "field": "d1",
+     "tag": "D",
+     "label": "Vida promedio en meses",
+     "ej": "24"
+    },
+    {
+     "field": "e1",
+     "tag": "E",
+     "label": "LTV",
+     "expr": "c1 * d1",
+     "show": "C × D",
+     "ej": "18.000"
+    },
+    {
+     "field": "f1",
+     "tag": "F",
+     "label": "CAC",
+     "ej": "2.500"
+    },
+    {
+     "field": "lc1",
+     "label": "LTV ÷ CAC",
+     "expr": "e1 / f1",
+     "show": "E ÷ F",
+     "dec": 1,
+     "ej": "7,2"
+    },
+    {
+     "field": "rc1",
+     "label": "Meses para recuperar el CAC",
+     "expr": "f1 / c1",
+     "show": "F ÷ C",
+     "dec": 1,
+     "ej": "3,3"
+    },
+    {
+     "band": "Segmento nuevo"
+    },
+    {
+     "field": "a2",
+     "tag": "A",
+     "label": "Ingreso por cliente al mes",
+     "ej": "2.000"
+    },
+    {
+     "field": "b2",
+     "tag": "B",
+     "label": "Costos variables por cliente",
+     "ej": "1.200"
+    },
+    {
+     "field": "c2",
+     "tag": "C",
+     "label": "Margen de contribución",
+     "expr": "a2 - b2",
+     "show": "A − B",
+     "ej": "800"
+    },
+    {
+     "field": "cp2",
+     "label": "Margen sobre el ingreso",
+     "expr": "c2 / a2 * 100",
+     "show": "C ÷ A",
+     "fmt": "pct",
+     "ej": "40 %"
+    },
+    {
+     "field": "d2",
+     "tag": "D",
+     "label": "Vida promedio en meses",
+     "ej": "15"
+    },
+    {
+     "field": "e2",
+     "tag": "E",
+     "label": "LTV",
+     "expr": "c2 * d2",
+     "show": "C × D",
+     "ej": "12.000"
+    },
+    {
+     "field": "f2",
+     "tag": "F",
+     "label": "CAC",
+     "ej": "1.600"
+    },
+    {
+     "field": "lc2",
+     "label": "LTV ÷ CAC",
+     "expr": "e2 / f2",
+     "show": "E ÷ F",
+     "dec": 1,
+     "ej": "7,5"
+    },
+    {
+     "field": "rc2",
+     "label": "Meses para recuperar el CAC",
+     "expr": "f2 / c2",
+     "show": "F ÷ C",
+     "dec": 1,
+     "ej": "2,0"
+    },
+    {
+     "band": "Clientes nuevos del segmento nuevo"
+    },
+    {
+     "field": "G",
+     "tag": "G",
+     "label": "Clientes nuevos",
+     "ej": "4"
+    },
+    {
+     "field": "H",
+     "tag": "H",
+     "label": "Costo fijo adicional",
+     "note": "El que sube con el volumen: una furgoneta, una persona más.",
+     "ej": "800",
+     "opt": true
+    },
+    {
+     "field": "I",
+     "tag": "I",
+     "label": "Utilidad incremental antes de impuestos",
+     "expr": "G * c2 - H",
+     "show": "G × C − H",
+     "ej": "2.400"
+    },
+    {
+     "field": "tasa",
+     "label": "Tasa de impuesto, en %",
+     "note": "La que confirmaste con quien lleva tus impuestos.",
+     "ej": "25"
+    },
+    {
+     "field": "J",
+     "tag": "J",
+     "label": "Impuesto",
+     "expr": "max(I, 0) * tasa / 100",
+     "show": "I × tasa",
+     "ej": "600"
+    },
+    {
+     "field": "K",
+     "tag": "K",
+     "label": "Utilidad neta incremental",
+     "expr": "I - J",
+     "show": "I − J",
+     "ej": "1.800"
+    },
+    {
+     "field": "pct",
+     "label": "Tu porcentaje de la empresa",
+     "note": "100 si la empresa es solo tuya.",
+     "ej": "50"
+    },
+    {
+     "field": "parte",
+     "label": "Tu parte",
+     "expr": "K * pct / 100",
+     "show": "K × tu porcentaje",
+     "ej": "900"
+    },
+    {
+     "band": "Tu brecha"
+    },
+    {
+     "field": "hoy",
+     "label": "Tu ingreso neto total hoy",
+     "ej": "7.600"
+    },
+    {
+     "field": "total",
+     "label": "Tu ingreso neto con los clientes nuevos",
+     "expr": "hoy + parte",
+     "show": "hoy + tu parte",
+     "ej": "8.500"
+    },
+    {
+     "field": "brecha",
+     "label": "Tu brecha mensual",
+     "note": "Lo que te falta al mes para tu meta de ingreso neto.",
+     "ej": "800"
+    },
+    {
+     "field": "cierran",
+     "label": "Clientes que la cierran",
+     "expr": "if(c2 > 0 && tasa < 100 && pct > 0, max(ceil((brecha / ((1 - tasa / 100) * pct / 100) + H) / c2), 0), 0)",
+     "show": "el menor número de clientes cuya parte cubre la brecha",
+     "ej": "4"
+    }
+   ],
+   "avisos": [
+    {
+     "when": "lc1 < 3 || lc2 < 3",
+     "text": "En un segmento, LTV ÷ CAC queda bajo 3. Revisa qué cambiar para llegar antes de pagar por clientes nuevos."
+    },
+    {
+     "when": "parte < brecha",
+     "text": "Con estos clientes nuevos tu parte no cubre la brecha."
+    }
+   ]
+  },
+  "14-1": {
+   "rows": [
+    {
+     "band": "Cuentas por grupo"
+    },
+    {
+     "field": "g_jefes",
+     "label": "Quienes fueron tus jefes o directores",
+     "ej": "5",
+     "opt": true
+    },
+    {
+     "field": "g_clientes",
+     "label": "Clientes y proveedores de empleos anteriores",
+     "ej": "10",
+     "opt": true
+    },
+    {
+     "field": "g_colegas",
+     "label": "Colegas que ya trabajan por su cuenta",
+     "ej": "5",
+     "opt": true
+    },
+    {
+     "field": "g_firmas",
+     "label": "Firmas de búsqueda y consultoras",
+     "ej": "4",
+     "opt": true
+    },
+    {
+     "field": "g_gremio",
+     "label": "Gremio, asociación y universidad",
+     "ej": "6",
+     "opt": true
+    },
+    {
+     "field": "g_total",
+     "label": "Total",
+     "expr": "g_jefes + g_clientes + g_colegas + g_firmas + g_gremio",
+     "show": "suma de los grupos",
+     "ej": "30"
+    },
+    {
+     "band": "Tu embudo"
+    },
+    {
+     "field": "e_escribiste",
+     "label": "Cuentas a las que escribiste",
+     "ej": "30"
+    },
+    {
+     "field": "e_respuestas",
+     "label": "Respuestas",
+     "ej": "19"
+    },
+    {
+     "field": "p_respuestas",
+     "label": "Respuestas sobre cuentas",
+     "expr": "e_respuestas / e_escribiste * 100",
+     "show": "respuestas ÷ cuentas",
+     "fmt": "pct",
+     "ej": "63 %"
+    },
+    {
+     "field": "e_conversaciones",
+     "label": "Conversaciones",
+     "ej": "8"
+    },
+    {
+     "field": "p_conversaciones",
+     "label": "Conversaciones sobre respuestas",
+     "expr": "e_conversaciones / e_respuestas * 100",
+     "show": "conversaciones ÷ respuestas",
+     "fmt": "pct",
+     "ej": "42 %"
+    },
+    {
+     "field": "e_propuestas",
+     "label": "Propuestas",
+     "ej": "3"
+    },
+    {
+     "field": "p_propuestas",
+     "label": "Propuestas sobre conversaciones",
+     "expr": "e_propuestas / e_conversaciones * 100",
+     "show": "propuestas ÷ conversaciones",
+     "fmt": "pct",
+     "ej": "38 %"
+    },
+    {
+     "field": "e_firmadas",
+     "label": "Firmadas",
+     "ej": "2"
+    },
+    {
+     "field": "p_firmadas",
+     "label": "Firmadas sobre propuestas",
+     "expr": "e_firmadas / e_propuestas * 100",
+     "show": "firmadas ÷ propuestas",
+     "fmt": "pct",
+     "ej": "67 %"
+    }
+   ],
+   "avisos": [
+    {
+     "when": "g_total < 30",
+     "text": "Tu lista tiene menos de 30 cuentas."
+    }
+   ]
+  },
+  "17-1": {
+   "rows": [
+    {
+     "band": "Horas por semana de cada bloque"
+    },
+    {
+     "field": "bloque1",
+     "label": "Bloque 1",
+     "ej": "3"
+    },
+    {
+     "field": "bloque2",
+     "label": "Bloque 2",
+     "ej": "2,5",
+     "opt": true
+    },
+    {
+     "field": "bloque3",
+     "label": "Bloque 3",
+     "ej": "1,2",
+     "opt": true
+    },
+    {
+     "field": "revision",
+     "label": "Revisión semanal",
+     "ej": "0,5",
+     "opt": true
+    },
+    {
+     "field": "margen",
+     "label": "Margen",
+     "ej": "0,8",
+     "opt": true
+    },
+    {
+     "field": "total",
+     "label": "Total semanal",
+     "expr": "bloque1 + bloque2 + bloque3 + revision + margen",
+     "show": "suma de los bloques, tope 8",
+     "dec": 1,
+     "unit": "horas",
+     "ej": "8,0"
+    }
+   ],
+   "avisos": [
+    {
+     "when": "total > 8",
+     "text": "Tu semana pasa de ocho horas. Decide qué delegas o qué pospones antes de seguir."
+    }
+   ]
+  },
+  "18-1": {
+   "rows": [
+    {
+     "band": "Tus roles, bruto al mes"
+    },
+    {
+     "field": "bruto1",
+     "label": "Rol 1",
+     "ej": "6.700"
+    },
+    {
+     "field": "bruto2",
+     "label": "Rol 2",
+     "ej": "6.300",
+     "opt": true
+    },
+    {
+     "field": "bruto3",
+     "label": "Rol 3",
+     "ej": "1.500",
+     "opt": true
+    },
+    {
+     "field": "bruto4",
+     "label": "Rol 4",
+     "ej": "0",
+     "opt": true
+    },
+    {
+     "field": "factor",
+     "label": "Factor neto",
+     "note": "El 0,70 es una estimación del libro para ingresos medios. Pide a tu contador o contadora el factor de tu caso.",
+     "ej": "0,70"
+    },
+    {
+     "field": "neto1",
+     "hide": true,
+     "label": "Neto del rol 1",
+     "expr": "bruto1 * factor",
+     "ej": "4.690"
+    },
+    {
+     "field": "neto2",
+     "hide": true,
+     "label": "Neto del rol 2",
+     "expr": "bruto2 * factor",
+     "ej": "4.410"
+    },
+    {
+     "field": "neto3",
+     "hide": true,
+     "label": "Neto del rol 3",
+     "expr": "bruto3 * factor",
+     "ej": "1.050"
+    },
+    {
+     "field": "neto4",
+     "hide": true,
+     "label": "Neto del rol 4",
+     "expr": "bruto4 * factor",
+     "ej": "0"
+    },
+    {
+     "field": "total",
+     "label": "Total neto con success fee promedio",
+     "expr": "neto1 + neto2 + neto3 + neto4",
+     "show": "suma de los netos",
+     "ej": "10.150"
+    },
+    {
+     "field": "peso1",
+     "hide": true,
+     "label": "Peso del rol 1",
+     "expr": "neto1 / total * 100",
+     "fmt": "pct",
+     "ej": "46 %"
+    },
+    {
+     "field": "peso2",
+     "hide": true,
+     "label": "Peso del rol 2",
+     "expr": "neto2 / total * 100",
+     "fmt": "pct",
+     "ej": "43 %"
+    },
+    {
+     "field": "peso3",
+     "hide": true,
+     "label": "Peso del rol 3",
+     "expr": "neto3 / total * 100",
+     "fmt": "pct",
+     "ej": "10 %"
+    },
+    {
+     "field": "peso4",
+     "hide": true,
+     "label": "Peso del rol 4",
+     "expr": "neto4 / total * 100",
+     "fmt": "pct",
+     "ej": "0 %"
+    },
+    {
+     "table": "Neto y peso de cada rol",
+     "head": [
+      "Rol",
+      "Neto",
+      "Peso"
+     ],
+     "cells": [
+      [
+       "Rol 1",
+       "neto1",
+       "peso1"
+      ],
+      [
+       "Rol 2",
+       "neto2",
+       "peso2"
+      ],
+      [
+       "Rol 3",
+       "neto3",
+       "peso3"
+      ],
+      [
+       "Rol 4",
+       "neto4",
+       "peso4"
+      ]
+     ]
+    },
+    {
+     "band": "Este mes"
+    },
+    {
+     "field": "cvm",
+     "label": "CVM sin empleo (2.1)",
+     "from": "2-1:C",
+     "ej": "10.000"
+    },
+    {
+     "field": "cubriste",
+     "label": "¿Lo cubriste este mes?",
+     "expr": "total >= cvm",
+     "fmt": "sino",
+     "ej": "Sí"
+    },
+    {
+     "band": "Punto de no retorno"
+    },
+    {
+     "field": "brechaing",
+     "label": "Brecha de ingreso",
+     "expr": "max(1.2 * cvm - total, 0)",
+     "show": "1,2 × CVM − neto promedio",
+     "ej": "1.850"
+    },
+    {
+     "field": "colchon",
+     "label": "Colchón actual",
+     "ej": "23.460"
+    },
+    {
+     "field": "brechacol",
+     "label": "Brecha de colchón",
+     "expr": "max(6 * cvm - colchon, 0)",
+     "show": "6 × CVM − colchón",
+     "ej": "36.540"
+    }
+   ],
+   "avisos": [
+    {
+     "when": "peso1 > 50 || peso2 > 50 || peso3 > 50 || peso4 > 50",
+     "text": "Un cliente pasa del 50 % de tu ingreso. Abre cuentas nuevas antes de su renovación."
+    },
+    {
+     "when": "1",
+     "text": "Cada mes, pasa el total neto y tu colchón al registro mensual, al comienzo del workbook."
+    }
+   ]
+  },
+  "19-1": {
+   "rows": [
+    {
+     "band": "Tu CVM"
+    },
+    {
+     "field": "A",
+     "tag": "A",
+     "label": "CVM sin empleo (2.1)",
+     "from": "2-1:C",
+     "ej": "7.000"
+    },
+    {
+     "band": "Condición 1, ingreso"
+    },
+    {
+     "field": "c1",
+     "label": "Condición 1",
+     "expr": "1.2 * A",
+     "show": "1,2 × A",
+     "ej": "8.400"
+    },
+    {
+     "field": "mes1",
+     "label": "Ingreso propio neto, mes 1",
+     "ej": "8.500"
+    },
+    {
+     "field": "mes2",
+     "label": "Ingreso propio neto, mes 2",
+     "ej": "8.500"
+    },
+    {
+     "field": "mes3",
+     "label": "Ingreso propio neto, mes 3",
+     "ej": "8.500"
+    },
+    {
+     "field": "cumple1",
+     "label": "¿Cumple la condición 1 los tres meses?",
+     "expr": "min(mes1, mes2, mes3) >= c1",
+     "fmt": "sino",
+     "ej": "Sí"
+    },
+    {
+     "band": "Condición 2, colchón"
+    },
+    {
+     "field": "c2",
+     "label": "Condición 2",
+     "expr": "6 * A",
+     "show": "6 × A",
+     "ej": "42.000"
+    },
+    {
+     "field": "colchon",
+     "label": "Colchón actual",
+     "note": "Tu ahorro líquido.",
+     "ej": "46.700"
+    },
+    {
+     "field": "cumple2",
+     "label": "¿Cumple la condición 2?",
+     "expr": "colchon >= c2",
+     "fmt": "sino",
+     "ej": "Sí"
+    },
+    {
+     "band": "Lo que te falta"
+    },
+    {
+     "field": "brechaing",
+     "label": "Brecha de ingreso",
+     "expr": "max(c1 - min(mes1, mes2, mes3), 0)",
+     "show": "condición 1 − el mes más bajo de los tres",
+     "ej": "0"
+    },
+    {
+     "field": "brechacol",
+     "label": "Brecha de colchón",
+     "expr": "max(c2 - colchon, 0)",
+     "show": "condición 2 − colchón",
+     "ej": "0"
+    }
+   ],
+   "avisos": [
+    {
+     "when": "!cumple1 && !cumple2",
+     "text": "Cumples: ninguna. Te falta: las dos. Qué haces: sigues en el nivel 1 o 2. Trabajas el portafolio del capítulo 18 y separas un monto fijo para el colchón cada mes."
+    },
+    {
+     "when": "!cumple1 && cumple2",
+     "text": "Cumples: colchón. Te falta: ingreso. Qué haces: sigues en el nivel en que estás. Subes el ingreso con el portafolio: precio en las renovaciones, un rol más o un producto. El colchón queda para emergencias y no se usa para tapar la brecha de ingreso."
+    },
+    {
+     "when": "cumple1 && !cumple2",
+     "text": "Cumples: ingreso. Te falta: colchón. Qué haces: ahorras todo el excedente sobre tu CVM hasta cerrar la brecha, antes de cualquier salto."
+    },
+    {
+     "when": "cumple1 && cumple2",
+     "text": "Cumples: las dos. Te falta: nada. Qué haces: estás en el nivel 3. Revisas las dos condiciones cada mes, como explica el capítulo 21."
+    }
+   ]
+  }
+ }
+}
