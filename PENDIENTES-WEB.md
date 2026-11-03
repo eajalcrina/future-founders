@@ -10,8 +10,8 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 - [ ] **Enlace de agenda.** Definir `NEXT_PUBLIC_AGENDA_URL` (Calendly, Cal.com u otro). Sin ella, «Agenda 30 minutos» y `/agenda` abren WhatsApp. El QR del cierre del libro apunta a `futurefounders.pe/agenda`, que redirige a esta agenda.
 - [ ] **Credenciales.** Confirmar `BREVO_API_KEY` y las variables de Supabase en el hosting (ver `.env.example`).
 - [ ] **Correo del kit y del workbook en Brevo.** El formulario ya entrega el PDF en pantalla; el correo es un respaldo. Crear las dos plantillas de correo con el enlace a `/descargas/doble-agente-kit.pdf` y `/descargas/doble-agente-workbook.pdf` (atributo `archetype`: «Kit Plan de salida» o «Workbook»).
-- [ ] **PDF del kit.** Copiar `entrega/doble-agente-kit.pdf` (paso N-05 del plan del libro) a `public/descargas/`. Mientras no esté, el formulario del kit entrega el workbook y avisa que el kit está en sus páginas 5 a 13.
-- [ ] **PDF del workbook R2.** `public/descargas/doble-agente-workbook.pdf` es el de `entrega/` del 31 de octubre. Reemplazarlo por el workbook de la segunda edición cuando salga del build del libro, con el mismo nombre.
+- [x] **PDF del kit.** Copiar `entrega/doble-agente-kit.pdf` (paso N-05 del plan del libro) a `public/descargas/`. Mientras no esté, el formulario del kit entrega el workbook y avisa que el kit está en sus páginas 5 a 13.
+- [x] **PDF del workbook R2.** `public/descargas/doble-agente-workbook.pdf` es el de `entrega/` del 31 de octubre. Reemplazarlo por el workbook de la segunda edición cuando salga del build del libro, con el mismo nombre.
 - [ ] **Puerta de impresión.** Antes de mandar el libro a imprenta: cada plantilla con «Calculadora en línea» en el workbook tiene su calculadora en `/workbook/<id>` en producción (hoy: K.1, 1.1, 2.1, 5.1, 6.1, 9.1, 10.1, 11.1, 13.1, 14.1, 17.1, 18.1 y 19.1), y `futurefounders.pe/workbook`, `/kit`, `/actualizaciones` y `/agenda` responden.
 - [ ] **Privacidad y términos.** Redactar las dos páginas. Hoy los enlaces del pie abren un correo.
 
