@@ -10,8 +10,10 @@ export type CalcRow = {
   /** Fórmula para mostrar en texto («A ÷ B»). */
   show?: string;
   dec?: number;
-  /** Valor del arquetipo tal como lo imprime el libro. */
+  /** Valor del arquetipo que la calculadora carga (entradas) o debe dar (fórmulas). */
   ej?: string;
+  /** Texto del libro cuando trae más que la cifra: «7,0 y 4,9», «25 % (solo México)». */
+  ejLibro?: string;
   unit?: string;
   note?: string;
   kind?: "num" | "text" | "select";
@@ -50,6 +52,8 @@ export type Plantilla = {
   uses: { code: string; id: string }[];
   /** Primera página del ejemplo resuelto en el libro y de la plantilla en el workbook (folio = página del PDF). */
   pages: { libro: number | null; workbook: number | null };
+  /** Datos de una línea que la hoja pide arriba, partidos en campos («Cuenta», «Persona», «Fecha»). */
+  head: { label: string; parts: { field: string; label: string }[] }[];
   calc: CalcItem[] | null;
   avisos: Aviso[];
 };
@@ -76,25 +80,28 @@ export const PLANTILLAS: Plantilla[] = [
   "who": "Carmen y Javier",
   "summary": [],
   "check": [
-   "Tengas tu runway con un decimal."
+   "Tienes tu runway con un decimal."
   ],
   "uses": [],
   "pages": {
    "libro": 22,
-   "workbook": 5
+   "workbook": 8
   },
+  "head": [],
   "calc": [
    {
     "field": "A",
     "tag": "A",
     "label": "Ahorro líquido",
-    "ej": "61.600"
+    "ej": "61.600",
+    "ejLibro": "61.600 y 61.150"
    },
    {
     "field": "B",
     "tag": "B",
     "label": "Costo de vida mensual",
-    "ej": "8.800"
+    "ej": "8.800",
+    "ejLibro": "8.800 y 12.500"
    },
    {
     "field": "runway",
@@ -103,7 +110,8 @@ export const PLANTILLAS: Plantilla[] = [
     "show": "A ÷ B",
     "dec": 1,
     "unit": "meses",
-    "ej": "7,0"
+    "ej": "7,0",
+    "ejLibro": "7,0 y 4,9"
    }
   ],
   "avisos": [
@@ -129,13 +137,14 @@ export const PLANTILLAS: Plantilla[] = [
   "who": "Carmen",
   "summary": [],
   "check": [
-   "Cada fila tenga una respuesta o una pregunta para el abogado."
+   "Cada fila tiene una respuesta o una pregunta para el abogado."
   ],
   "uses": [],
   "pages": {
    "libro": 23,
-   "workbook": 6
+   "workbook": 9
   },
+  "head": [],
   "calc": null,
   "avisos": []
  },
@@ -155,13 +164,14 @@ export const PLANTILLAS: Plantilla[] = [
   "who": "Javier",
   "summary": [],
   "check": [
-   "Sepas cuánto te correspondería y qué diferencia tienes con lo que te ofrecen."
+   "Sabes cuánto te correspondería y qué diferencia tienes con lo que te ofrecen."
   ],
   "uses": [],
   "pages": {
-   "libro": 26,
-   "workbook": 8
+   "libro": 25,
+   "workbook": 11
   },
+  "head": [],
   "calc": null,
   "avisos": []
  },
@@ -181,7 +191,7 @@ export const PLANTILLAS: Plantilla[] = [
   "who": "Javier",
   "summary": [],
   "check": [
-   "Cada semana tenga al menos una decisión tuya escrita."
+   "Cada semana tiene al menos una decisión tuya escrita."
   ],
   "uses": [
    {
@@ -194,9 +204,10 @@ export const PLANTILLAS: Plantilla[] = [
    }
   ],
   "pages": {
-   "libro": 28,
-   "workbook": 10
+   "libro": 27,
+   "workbook": 14
   },
+  "head": [],
   "calc": null,
   "avisos": []
  },
@@ -216,13 +227,14 @@ export const PLANTILLAS: Plantilla[] = [
   "who": "Javier",
   "summary": [],
   "check": [
-   "Tengas 20 nombres y la fecha de la primera llamada."
+   "Tienes 20 nombres y la fecha de la primera llamada."
   ],
   "uses": [],
   "pages": {
-   "libro": 29,
-   "workbook": 12
+   "libro": 28,
+   "workbook": 16
   },
+  "head": [],
   "calc": null,
   "avisos": []
  },
@@ -267,9 +279,10 @@ export const PLANTILLAS: Plantilla[] = [
    }
   ],
   "pages": {
-   "libro": 40,
-   "workbook": 15
+   "libro": 41,
+   "workbook": 20
   },
+  "head": [],
   "calc": [
    {
     "band": "Lo que tienes"
@@ -408,7 +421,7 @@ export const PLANTILLAS: Plantilla[] = [
   "time": "40 minutos",
   "kind": "capitulo",
   "purpose": "Te llevas tu CVM actual, tu CVM sin empleo y tu piso, con el runway recalculado.",
-  "intro": "Necesitas tres meses de estados de cuenta de todas tus tarjetas y cuentas, y los pagos anuales del último año. Anota los montos por mes, en tu moneda o en dólares, pero en la misma en toda la plantilla. El libro usa USD 1 = S/ 3,60 = COP 4.000 = MXN 18,50 = CLP 950.",
+  "intro": "Necesitas tres meses de estados de cuenta de todas tus tarjetas y cuentas, y los pagos anuales del último año. Anota los montos por mes, en tu moneda o en dólares, pero en la misma en todo el workbook. El libro usa USD 1 = S/ 3,60 = COP 4.000 = MXN 18,50 = CLP 950.",
   "trae": "Trae tres meses de estados de cuenta y los pagos anuales del último año.",
   "where": "Capítulo 2, Tu costo de vida real",
   "chapter": {
@@ -434,8 +447,9 @@ export const PLANTILLAS: Plantilla[] = [
   "uses": [],
   "pages": {
    "libro": 50,
-   "workbook": 17
+   "workbook": 23
   },
+  "head": [],
   "calc": [
    {
     "band": "Lo que gastas hoy"
@@ -588,9 +602,10 @@ export const PLANTILLAS: Plantilla[] = [
   ],
   "uses": [],
   "pages": {
-   "libro": 62,
-   "workbook": 21
+   "libro": 63,
+   "workbook": 27
   },
+  "head": [],
   "calc": null,
   "avisos": []
  },
@@ -632,8 +647,9 @@ export const PLANTILLAS: Plantilla[] = [
   ],
   "pages": {
    "libro": 73,
-   "workbook": 26
+   "workbook": 32
   },
+  "head": [],
   "calc": null,
   "avisos": []
  },
@@ -644,7 +660,7 @@ export const PLANTILLAS: Plantilla[] = [
   "time": "30 minutos",
   "kind": "capitulo",
   "purpose": "Te llevas seis meses proyectados en dos escenarios y tu línea de decisión por escrito.",
-  "intro": "Necesitas tu saldo de la K.1, tu piso de la K.4 o del capítulo 2 y la fecha probable de tu primer rol. Anota los montos en tu moneda o en dólares, pero en la misma en toda la plantilla; el libro usa USD 1 = S/ 3,60 = COP 4.000 = MXN 18,50 = CLP 950. Si todavía tienes empleo, usa tu CVM sin empleo y no cuentes la indemnización.",
+  "intro": "Necesitas tu saldo de la K.1, tu piso de la K.4 o del capítulo 2 y la fecha probable de tu primer rol. Anota los montos en tu moneda o en dólares, pero en la misma en todo el workbook; el libro usa USD 1 = S/ 3,60 = COP 4.000 = MXN 18,50 = CLP 950. Si todavía tienes empleo, usa tu CVM sin empleo y no cuentes la indemnización.",
   "trae": "Trae tu saldo de la K.1 y tu piso de la K.4 o del capítulo 2.",
   "where": "Capítulo 5, Si te despiden mañana",
   "chapter": {
@@ -678,9 +694,10 @@ export const PLANTILLAS: Plantilla[] = [
    }
   ],
   "pages": {
-   "libro": 85,
-   "workbook": 30
+   "libro": 86,
+   "workbook": 36
   },
+  "head": [],
   "calc": [
    {
     "band": "Tu punto de partida"
@@ -701,7 +718,8 @@ export const PLANTILLAS: Plantilla[] = [
     "field": "ingreso",
     "label": "Ingreso neto esperado al mes",
     "ej": "3.850",
-    "opt": true
+    "opt": true,
+    "ejLibro": "3.850 desde mayo"
    },
    {
     "field": "inicio",
@@ -1050,9 +1068,10 @@ export const PLANTILLAS: Plantilla[] = [
    }
   ],
   "pages": {
-   "libro": 97,
-   "workbook": 33
+   "libro": 99,
+   "workbook": 41
   },
+  "head": [],
   "calc": [
    {
     "field": "costo",
@@ -1123,9 +1142,10 @@ export const PLANTILLAS: Plantilla[] = [
    }
   ],
   "pages": {
-   "libro": 108,
-   "workbook": 36
+   "libro": 110,
+   "workbook": 44
   },
+  "head": [],
   "calc": null,
   "avisos": []
  },
@@ -1166,9 +1186,10 @@ export const PLANTILLAS: Plantilla[] = [
    }
   ],
   "pages": {
-   "libro": 119,
-   "workbook": 40
+   "libro": 122,
+   "workbook": 48
   },
+  "head": [],
   "calc": null,
   "avisos": []
  },
@@ -1209,9 +1230,10 @@ export const PLANTILLAS: Plantilla[] = [
    }
   ],
   "pages": {
-   "libro": 131,
-   "workbook": 43
+   "libro": 134,
+   "workbook": 51
   },
+  "head": [],
   "calc": [
    {
     "band": "Tu cuenta"
@@ -1263,7 +1285,8 @@ export const PLANTILLAS: Plantilla[] = [
     "show": "clientes que necesitas ÷ perímetro más chico",
     "dec": 0,
     "fmt": "pct",
-    "ej": "25 %"
+    "ej": "25 %",
+    "ejLibro": "25 % (solo México)"
    },
    {
     "band": "Tu tiempo de venta"
@@ -1343,9 +1366,10 @@ export const PLANTILLAS: Plantilla[] = [
    }
   ],
   "pages": {
-   "libro": 143,
-   "workbook": 47
+   "libro": 147,
+   "workbook": 56
   },
+  "head": [],
   "calc": [
    {
     "band": "El problema y su valor"
@@ -1481,7 +1505,7 @@ export const PLANTILLAS: Plantilla[] = [
   "level": "Nivel 0",
   "who": "Carmen",
   "summary": [
-   "Tu primer rol cabe en una página con cinco partes: el problema, el resultado con su cifra, el formato y la dedicación, el precio y las condiciones del contrato.",
+   "Tu primer rol cabe en una página con seis partes: el problema, el resultado con su cifra, el formato y la dedicación, el precio, la duración y las condiciones del contrato.",
    "La tarifa es el sueldo de mercado del cargo equivalente, por tus días ÷ 5 y por una prima de 1,2 a 1,5. La de Carmen es de USD 2.200 al mes.",
    "El contrato trae diez cláusulas mínimas. Si tienes empleo, tus horas quedan fuera del horario de tu empleador."
   ],
@@ -1498,9 +1522,10 @@ export const PLANTILLAS: Plantilla[] = [
    }
   ],
   "pages": {
-   "libro": 153,
-   "workbook": 50
+   "libro": 157,
+   "workbook": 59
   },
+  "head": [],
   "calc": [
    {
     "band": "La tarifa"
@@ -1561,7 +1586,8 @@ export const PLANTILLAS: Plantilla[] = [
     "label": "¿Dentro del rango de la 10.1?",
     "expr": "tarifa >= piso10 && tarifa <= techo10",
     "fmt": "sino",
-    "ej": "Sí"
+    "ej": "Sí",
+    "ejLibro": "Sí: 2.133 a 2.500"
    },
    {
     "field": "prima_piso",
@@ -1653,9 +1679,10 @@ export const PLANTILLAS: Plantilla[] = [
    }
   ],
   "pages": {
-   "libro": 163,
-   "workbook": 55
+   "libro": 168,
+   "workbook": 64
   },
+  "head": [],
   "calc": null,
   "avisos": []
  },
@@ -1696,9 +1723,10 @@ export const PLANTILLAS: Plantilla[] = [
    }
   ],
   "pages": {
-   "libro": 174,
-   "workbook": 59
+   "libro": 179,
+   "workbook": 68
   },
+  "head": [],
   "calc": [
    {
     "band": "Segmento actual"
@@ -1860,8 +1888,8 @@ export const PLANTILLAS: Plantilla[] = [
     "ej": "2.400"
    },
    {
-    "field": "tasa",
-    "label": "Tasa de impuesto, en %",
+    "field": "tasa_pct",
+    "label": "Tasa de impuesto (%)",
     "note": "La que confirmaste con quien lleva tus impuestos.",
     "ej": "25"
    },
@@ -1869,7 +1897,7 @@ export const PLANTILLAS: Plantilla[] = [
     "field": "J",
     "tag": "J",
     "label": "Impuesto",
-    "expr": "max(I, 0) * tasa / 100",
+    "expr": "max(I, 0) * tasa_pct / 100",
     "show": "I × tasa",
     "ej": "600"
    },
@@ -1882,15 +1910,15 @@ export const PLANTILLAS: Plantilla[] = [
     "ej": "1.800"
    },
    {
-    "field": "pct",
-    "label": "Tu porcentaje de la empresa",
-    "note": "100 si la empresa es solo tuya.",
+    "field": "parte_pct",
+    "label": "Tu porcentaje de la empresa (%)",
+    "note": "Si no compartes la empresa, 100.",
     "ej": "50"
    },
    {
     "field": "parte",
     "label": "Tu parte",
-    "expr": "K * pct / 100",
+    "expr": "K * parte_pct / 100",
     "show": "K × tu porcentaje",
     "ej": "900"
    },
@@ -1898,14 +1926,14 @@ export const PLANTILLAS: Plantilla[] = [
     "band": "Tu brecha"
    },
    {
-    "field": "hoy",
+    "field": "total",
     "label": "Tu ingreso neto total hoy",
     "ej": "7.600"
    },
    {
-    "field": "total",
+    "field": "total_nuevo",
     "label": "Tu ingreso neto con los clientes nuevos",
-    "expr": "hoy + parte",
+    "expr": "total + parte",
     "show": "hoy + tu parte",
     "ej": "8.500"
    },
@@ -1918,7 +1946,7 @@ export const PLANTILLAS: Plantilla[] = [
    {
     "field": "cierran",
     "label": "Clientes que la cierran",
-    "expr": "if(c2 > 0 && tasa < 100 && pct > 0, max(ceil((brecha / ((1 - tasa / 100) * pct / 100) + H) / c2), 0), 0)",
+    "expr": "if(c2 > 0 && tasa_pct < 100 && parte_pct > 0, max(ceil((brecha / ((1 - tasa_pct / 100) * parte_pct / 100) + H) / c2), 0), 0)",
     "show": "el menor número de clientes cuya parte cubre la brecha",
     "ej": "4"
    }
@@ -1975,9 +2003,10 @@ export const PLANTILLAS: Plantilla[] = [
    }
   ],
   "pages": {
-   "libro": 188,
-   "workbook": 62
+   "libro": 192,
+   "workbook": 73
   },
+  "head": [],
   "calc": [
    {
     "band": "Cuentas por grupo"
@@ -2110,7 +2139,7 @@ export const PLANTILLAS: Plantilla[] = [
   "summary": [
    "En la primera reunión preguntas por hechos del pasado y dejas que el cliente calcule cuánto le cuesta su problema.",
    "Una hora se reparte en cinco momentos, y tú hablas sobre todo en los diez minutos del último.",
-   "La gerenta calculó con sus propios números un ahorro de USD 150.000 al año y acordó una reunión con fecha."
+   "La gerenta de la agroexportadora calculó con sus propios números un ahorro de USD 150.000 al año y acordó una reunión con fecha."
   ],
   "check": [
    "Tienes un guion escrito con tus preguntas.",
@@ -2132,9 +2161,28 @@ export const PLANTILLAS: Plantilla[] = [
    }
   ],
   "pages": {
-   "libro": 199,
-   "workbook": 70
+   "libro": 203,
+   "workbook": 81
   },
+  "head": [
+   {
+    "label": "Cuenta, persona y fecha de la reunión",
+    "parts": [
+     {
+      "field": "cuenta",
+      "label": "Cuenta"
+     },
+     {
+      "field": "persona",
+      "label": "Persona"
+     },
+     {
+      "field": "fecha",
+      "label": "Fecha"
+     }
+    ]
+   }
+  ],
   "calc": null,
   "avisos": []
  },
@@ -2165,7 +2213,8 @@ export const PLANTILLAS: Plantilla[] = [
   ],
   "check": [
    "Tienes la declaración al empleador y su respuesta por escrito, si te correspondía.",
-   "Cuando llegue: el contrato está firmado por las dos partes y emitiste tu primer comprobante; anota la fecha en el registro mensual, al comienzo del workbook."
+   "Cuando llegue: el contrato está firmado por las dos partes.",
+   "Emitiste tu primer comprobante y anotaste la fecha en el registro mensual, al comienzo del workbook."
   ],
   "uses": [
    {
@@ -2178,9 +2227,10 @@ export const PLANTILLAS: Plantilla[] = [
    }
   ],
   "pages": {
-   "libro": 213,
-   "workbook": 74
+   "libro": 215,
+   "workbook": 85
   },
+  "head": [],
   "calc": null,
   "avisos": []
  },
@@ -2216,9 +2266,10 @@ export const PLANTILLAS: Plantilla[] = [
   ],
   "uses": [],
   "pages": {
-   "libro": 226,
-   "workbook": 77
+   "libro": 227,
+   "workbook": 89
   },
+  "head": [],
   "calc": [
    {
     "band": "Horas por semana de cada bloque"
@@ -2226,31 +2277,36 @@ export const PLANTILLAS: Plantilla[] = [
    {
     "field": "bloque1",
     "label": "Bloque 1",
-    "ej": "3"
+    "ej": "3",
+    "ejLibro": "3 h"
    },
    {
     "field": "bloque2",
     "label": "Bloque 2",
     "ej": "2,5",
-    "opt": true
+    "opt": true,
+    "ejLibro": "2,5 h"
    },
    {
     "field": "bloque3",
     "label": "Bloque 3",
     "ej": "1,2",
-    "opt": true
+    "opt": true,
+    "ejLibro": "1,2 h"
    },
    {
     "field": "revision",
     "label": "Revisión semanal",
     "ej": "0,5",
-    "opt": true
+    "opt": true,
+    "ejLibro": "0,5 h"
    },
    {
     "field": "margen",
     "label": "Margen",
     "ej": "0,8",
-    "opt": true
+    "opt": true,
+    "ejLibro": "0,8 h"
    },
    {
     "field": "total",
@@ -2259,7 +2315,8 @@ export const PLANTILLAS: Plantilla[] = [
     "show": "suma de los bloques, tope 8",
     "dec": 1,
     "unit": "horas",
-    "ej": "8,0"
+    "ej": "8,0",
+    "ejLibro": "8"
    }
   ],
   "avisos": [
@@ -2302,8 +2359,9 @@ export const PLANTILLAS: Plantilla[] = [
   "uses": [],
   "pages": {
    "libro": 240,
-   "workbook": 81
+   "workbook": 94
   },
+  "head": [],
   "calc": [
    {
     "band": "Tus roles, bruto al mes"
@@ -2521,9 +2579,10 @@ export const PLANTILLAS: Plantilla[] = [
    }
   ],
   "pages": {
-   "libro": 253,
-   "workbook": 86
+   "libro": 252,
+   "workbook": 98
   },
+  "head": [],
   "calc": [
    {
     "band": "Tu CVM"
@@ -2669,8 +2728,9 @@ export const PLANTILLAS: Plantilla[] = [
   ],
   "pages": {
    "libro": 264,
-   "workbook": 90
+   "workbook": 102
   },
+  "head": [],
   "calc": null,
   "avisos": []
  },
@@ -2681,7 +2741,7 @@ export const PLANTILLAS: Plantilla[] = [
   "time": "30 minutos",
   "kind": "capitulo",
   "purpose": "Te llevas tu plan de 90 días o tus criterios para quedarte, con su fecha, y tu revisión mensual en el calendario.",
-  "intro": "Llena la versión que corresponde a tu decisión. Usa tu plantilla 19.1, tu tablero 18.1 y su registro mensual de niveles, con las cifras en dólares.",
+  "intro": "Llena la versión que corresponde a tu decisión. Usa tu plantilla 19.1, tu tablero 18.1 y el registro mensual, al comienzo del workbook, con las cifras en dólares.",
   "trae": "Trae tu plantilla 19.1 y tu tablero 18.1.",
   "where": "Capítulo 21, Independencia: saltar o quedarte",
   "chapter": {
@@ -2716,9 +2776,10 @@ export const PLANTILLAS: Plantilla[] = [
    }
   ],
   "pages": {
-   "libro": 275,
-   "workbook": 94
+   "libro": 274,
+   "workbook": 106
   },
+  "head": [],
   "calc": null,
   "avisos": []
  },
@@ -2744,9 +2805,10 @@ export const PLANTILLAS: Plantilla[] = [
   "check": [],
   "uses": [],
   "pages": {
-   "libro": 295,
-   "workbook": 98
+   "libro": 296,
+   "workbook": 111
   },
+  "head": [],
   "calc": null,
   "avisos": []
  },
@@ -2772,9 +2834,10 @@ export const PLANTILLAS: Plantilla[] = [
   "check": [],
   "uses": [],
   "pages": {
-   "libro": 309,
-   "workbook": 102
+   "libro": 310,
+   "workbook": 115
   },
+  "head": [],
   "calc": null,
   "avisos": []
  },
@@ -2800,9 +2863,10 @@ export const PLANTILLAS: Plantilla[] = [
   "check": [],
   "uses": [],
   "pages": {
-   "libro": 323,
-   "workbook": 106
+   "libro": 324,
+   "workbook": 119
   },
+  "head": [],
   "calc": null,
   "avisos": []
  },
@@ -2828,9 +2892,10 @@ export const PLANTILLAS: Plantilla[] = [
   "check": [],
   "uses": [],
   "pages": {
-   "libro": 336,
-   "workbook": 110
+   "libro": 337,
+   "workbook": 123
   },
+  "head": [],
   "calc": null,
   "avisos": []
  },
@@ -2856,9 +2921,10 @@ export const PLANTILLAS: Plantilla[] = [
   "check": [],
   "uses": [],
   "pages": {
-   "libro": 282,
-   "workbook": 97
+   "libro": 281,
+   "workbook": 110
   },
+  "head": [],
   "calc": null,
   "avisos": []
  }

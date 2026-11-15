@@ -70,6 +70,10 @@ export default function KitPage() {
                 después vuelve a la K.1.
               </p>
               <p>
+                Si tienes empleo, con la K.1, la K.2 y la K.3 ya puedes seguir con el capítulo 1 del libro; la K.4 y la K.5 se llenan antes del capítulo 5. Si ya saliste, termina
+                el kit y sigue con el capítulo 5.
+              </p>
+              <p>
                 Los ejemplos usan a Carmen, que tiene empleo, y a Javier, que acaba de salir. Las reglas de Perú, México, Colombia y Chile son la regla general de cada país; el
                 anexo del libro explica las excepciones y dónde verificar la norma vigente.
               </p>
@@ -106,7 +110,7 @@ export default function KitPage() {
                     <p className="text-[16px] lg:text-[17px] leading-[1.4] text-ink2 mt-1.5">{k.purpose}</p>
                   </div>
                   <div className="col-start-2 lg:col-start-auto row-start-2 lg:row-start-auto">
-                    <div className="wm text-ink2">Sabrás que terminaste cuando</div>
+                    <div className="wm text-ink2">Sabrás que terminaste cuando…</div>
                     <p className="wt mt-1.5" style={{ fontSize: 17 }}>
                       {k.done}
                     </p>

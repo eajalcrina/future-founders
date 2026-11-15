@@ -4,7 +4,7 @@ import DownloadForm from "@/components/site/DownloadForm";
 import { Jn, Lines, Mono, Nota } from "@/components/site/ui";
 import { DESCARGAS } from "@/lib/descargas";
 import { PLANTILLAS, PARTES } from "@/content/workbook";
-import { partTemplates } from "@/content/workbook-util";
+import { partTemplates, timeLabel } from "@/content/workbook-util";
 
 export const metadata: Metadata = {
   title: "Workbook de Doble Agente",
@@ -22,7 +22,7 @@ function Row({ id, code, title, time, where, calc }: { id: string; code: string;
           {calc && <span className="wm block mt-1 font-normal" style={{ color: "var(--color-magt)" }}>Calculadora en línea</span>}
         </span>
         <span className="hidden lg:block text-[15px] text-ink2">{where}</span>
-        <span className="wm text-ink2 text-right">{time}</span>
+        <span className="wm text-ink2 text-right">{timeLabel(time)}</span>
       </Link>
     </li>
   );

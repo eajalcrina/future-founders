@@ -219,11 +219,11 @@ export const LEARN = [
 
 export type KitItem = { code: string; title: string; purpose: string; time: string; icon: string; done: string; id: string };
 export const KIT: KitItem[] = [
-  { id: "k1", code: "K.1", title: "Tu runway hoy", purpose: "Saber cuántos meses aguantas sin sueldo.", time: "20 min", icon: "reloj", done: "Tengas tu runway con un decimal." },
-  { id: "k2", code: "K.2", title: "Lo que dice tu contrato", purpose: "Saber qué puedes hacer fuera de tu cargo.", time: "30 min", icon: "documento", done: "Cada fila tenga una respuesta o una pregunta para el abogado." },
-  { id: "k3", code: "K.3", title: "Tu salida en números", purpose: "Estimar tu indemnización antes de negociar o firmar.", time: "20 min", icon: "salida", done: "Sepas cuánto te correspondería y qué diferencia tienes con lo que te ofrecen." },
-  { id: "k4", code: "K.4", title: "Tus primeros 30 días", purpose: "Tener decidido qué haces cada semana si sales.", time: "30 min", icon: "calendario", done: "Cada semana tenga al menos una decisión tuya escrita." },
-  { id: "k5", code: "K.5", title: "Tus primeras 20 llamadas", purpose: "Saber a quién llamas y qué le dices.", time: "20 min", icon: "meta", done: "Tengas 20 nombres y la fecha de la primera llamada." },
+  { id: "k1", code: "K.1", title: "Tu runway hoy", purpose: "Saber cuántos meses aguantas sin sueldo.", time: "20 min", icon: "reloj", done: "Tienes tu runway con un decimal." },
+  { id: "k2", code: "K.2", title: "Lo que dice tu contrato", purpose: "Saber qué puedes hacer fuera de tu cargo.", time: "30 min", icon: "documento", done: "Cada fila tiene una respuesta o una pregunta para el abogado." },
+  { id: "k3", code: "K.3", title: "Tu salida en números", purpose: "Estimar tu indemnización antes de negociar o firmar.", time: "20 min", icon: "salida", done: "Sabes cuánto te correspondería y qué diferencia tienes con lo que te ofrecen." },
+  { id: "k4", code: "K.4", title: "Tus primeros 30 días", purpose: "Tener decidido qué haces cada semana si sales.", time: "30 min", icon: "calendario", done: "Cada semana tiene al menos una decisión tuya escrita." },
+  { id: "k5", code: "K.5", title: "Tus primeras 20 llamadas", purpose: "Saber a quién llamas y qué le dices.", time: "20 min", icon: "meta", done: "Tienes 20 nombres y la fecha de la primera llamada." },
 ];
 
 export const NAV = [

@@ -13,3 +13,8 @@ export function allWorkbookIds(): string[] {
 export function kindLabel(p: Plantilla): string {
   return { kit: "Kit «Plan de salida»", capitulo: `Parte ${p.part?.num ?? ""}`, anexo: "Anexo por país", cierre: "Cierre del libro" }[p.kind];
 }
+
+/** Tiempo en un rótulo, con la forma del libro y el workbook desde R3: «25 MIN» (el texto corrido sigue con «25 minutos»). */
+export function timeLabel(time: string): string {
+  return time.replace(/\bminutos?\b/, "min");
+}

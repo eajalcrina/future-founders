@@ -70,7 +70,8 @@ def kit_checks():
     txt = open(os.path.join(SRC, "kit.md"), encoding="utf-8").read()
     res = {}
     for m in re.finditer(r"^## (K\.\d) · .*?$(.*?)(?=^## |\Z)", txt, re.S | re.M):
-        c = re.search(r"\*Sabrás que terminaste cuando\* (.+)", m.group(2))
+        # R2: «*Sabrás que terminaste cuando* tengas…»; R3 (A-22): «*Sabrás que terminaste cuando…* Tienes…».
+        c = re.search(r"\*Sabrás que terminaste cuando(?:…|\.\.\.)?\*\s*(.+)", m.group(2))
         if c:
             t = clean_md(c.group(1)).rstrip(".")
             res["k" + m.group(1)[2]] = [t[0].upper() + t[1:] + "."]
@@ -83,7 +84,13 @@ def report_pages(name, prefix):
     except FileNotFoundError:
         notes.append(f"sin {name}: las páginas quedan vacías")
         return {}
-    return {m["anchor"][len(prefix):]: m["folio"] for m in rep["map"] if m["anchor"].startswith(prefix)}
+    # Una página puede llevar varias anclas separadas por espacios («ej-k1 kh-k1», R3 A-06); vale la primera página de cada una.
+    res = {}
+    for m in rep["map"]:
+        for a in (m.get("anchor") or "").split():
+            if a.startswith(prefix):
+                res.setdefault(a[len(prefix):], m["folio"])
+    return res
 
 
 LIBRO = report_pages("libro-report.json", "ej-")
@@ -97,6 +104,31 @@ def level_nums(s):
     if " a " in s and len(n) == 2:
         return list(range(n[0], n[1] + 1))
     return n
+
+
+# Valor de ejemplo al comienzo del texto del libro: «61.600 y 61.150» → «61.600», «25 % (solo México)» → «25 %»,
+# «Sí: 2.133 a 2.500» → «Sí», «3 h» → «3». El primero es el del arquetipo de la calculadora.
+EJ_LEAD = re.compile(r"^(Sí|No|ninguno|mes \d+|[−-]?\d[\d.]*(?:,\d+)?(?:\s?%)?)(?=$|[\s:;(])")
+
+
+def ej_num(s):
+    m = re.fullmatch(r"([−-]?)([\d.]+(?:,\d+)?)(\s?%)?", s or "")
+    if not m:
+        return None
+    return (-1 if m.group(1) else 1) * float(m.group(2).replace(".", "").replace(",", ".")), bool(m.group(3))
+
+
+def split_ej(row, wb_ej):
+    """Separa el valor de ejemplo (lo que la calculadora carga o muestra) del texto del libro con su anotación."""
+    if row.get("kind") in ("text", "select") or row.get("fmt") == "text":
+        return wb_ej, None
+    m = EJ_LEAD.match(wb_ej.strip())
+    lead = m.group(1) if m else wb_ej.strip()
+    old = row.get("ej")
+    # Misma cifra con otro formato («8» y «8,0»): se queda el formato de la calculadora.
+    if old is not None and ej_num(old) is not None and ej_num(old) == ej_num(lead):
+        lead = old
+    return lead, (wb_ej if wb_ej != lead else None)
 
 
 def calc_of(tid, wbt):
@@ -118,13 +150,23 @@ def calc_of(tid, wbt):
         wbej = {r["field"]: r["ej"] for r in rows if "ej" in r}
         for r in spec["rows"]:
             f = r.get("field")
-            if f in wbej and wbej[f] != r.get("ej"):
-                notes.append(f"{tid}.{f}: ej «{r.get('ej')}» → «{wbej[f]}» (wb.json)")
-                r["ej"] = wbej[f]
+            if f in wbej:
+                ej, libro = split_ej(r, wbej[f])
+                if ej != r.get("ej"):
+                    notes.append(f"{tid}.{f}: ej «{r.get('ej')}» → «{ej}» (wb.json)")
+                    r["ej"] = ej
+                if libro:
+                    r["ejLibro"] = libro
         if wbt.get("avisos"):
             spec["avisos"] = wbt["avisos"]
         return spec, "overlay + wb.json" if wbej else "overlay"
     if rows:
+        for r in rows:
+            if "ej" in r:
+                full = r.pop("ej")
+                r["ej"], libro = split_ej(r, full)
+                if libro:
+                    r["ejLibro"] = libro
         return {"rows": rows, "avisos": wbt.get("avisos", [])}, "wb.json"
     return None, None
 
@@ -132,9 +174,21 @@ def calc_of(tid, wbt):
 src_calc = {}
 
 
+def head_of(wbt):
+    """Campos de una línea partidos en varios («Cuenta», «Persona», «Fecha» de la 15.1, R3 B-32): "parts" en un bloque field."""
+    out = []
+    for b in wbt.get("blocks", []):
+        if b.get("type") == "field" and b.get("parts"):
+            out.append({"label": re.sub(r"<[^>]+>", "", nb(b.get("label", ""))),
+                        "parts": [{"field": x["field"], "label": nb(x["label"])} for x in b["parts"]]})
+    return out
+
+
 def entry(**kw):
     tid = kw["id"]
-    c, origin = calc_of(tid, kw.pop("_wbt"))
+    wbt = kw.pop("_wbt")
+    kw["head"] = head_of(wbt)
+    c, origin = calc_of(tid, wbt)
     if origin:
         src_calc[tid] = origin
     kw["calc"] = c["rows"] if c else None
@@ -212,7 +266,7 @@ for p in out:
 PART_LEVELS = {k: sorted(v) for k, v in sorted(part_levels.items())}
 
 ORDER = ["id", "code", "title", "time", "kind", "purpose", "intro", "trae", "where", "chapter", "part", "level", "who", "summary", "check",
-         "uses", "pages", "calc", "avisos"]
+         "uses", "pages", "head", "calc", "avisos"]
 out = [{k: p[k] for k in ORDER} for p in out]
 
 s = "// Generado por scripts/gen-workbook.py desde maqueta-v3/chapters/*/meta.json, wb.json, src-md y out/*-report.json.\n"
@@ -226,8 +280,10 @@ s += """export type CalcRow = {
   /** Fórmula para mostrar en texto («A ÷ B»). */
   show?: string;
   dec?: number;
-  /** Valor del arquetipo tal como lo imprime el libro. */
+  /** Valor del arquetipo que la calculadora carga (entradas) o debe dar (fórmulas). */
   ej?: string;
+  /** Texto del libro cuando trae más que la cifra: «7,0 y 4,9», «25 % (solo México)». */
+  ejLibro?: string;
   unit?: string;
   note?: string;
   kind?: "num" | "text" | "select";
@@ -266,6 +322,8 @@ export type Plantilla = {
   uses: { code: string; id: string }[];
   /** Primera página del ejemplo resuelto en el libro y de la plantilla en el workbook (folio = página del PDF). */
   pages: { libro: number | null; workbook: number | null };
+  /** Datos de una línea que la hoja pide arriba, partidos en campos («Cuenta», «Persona», «Fecha»). */
+  head: { label: string; parts: { field: string; label: string }[] }[];
   calc: CalcItem[] | null;
   avisos: Aviso[];
 };

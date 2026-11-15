@@ -248,7 +248,7 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
       </div>
       <div className="px-5 pt-3 pb-6">
         <p className="text-[14px] leading-[1.45] text-ink2 pb-3">
-          Hace las cuentas de la {code} con las mismas filas del workbook. Escribe en tu moneda o en dólares, la misma en toda la plantilla.
+          Hace las cuentas de la {code} con las mismas filas del workbook. Escribe en tu moneda o en dólares, la misma en todo el workbook.
         </p>
         {pending.length > 0 && (
           <div className="mb-3 px-3 py-2.5 bg-sal text-[15px] leading-[1.4]" style={{ color: "var(--color-sald)", borderLeft: "2px solid var(--color-sald)" }}>

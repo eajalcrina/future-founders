@@ -311,7 +311,7 @@ function Workbook() {
               </table>
             </div>
             <p className="text-[15px] text-ink2 mt-3.5">
-              <i>Sabrás que terminaste cuando</i> tengas tu runway con un decimal.
+              <i>Sabrás que terminaste cuando…</i> Tienes tu runway con un decimal.
             </p>
           </div>
           <Mono className="text-ink2 mt-3.5">

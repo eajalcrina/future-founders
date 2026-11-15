@@ -5,7 +5,7 @@ import PlantillaCalc from "@/components/site/PlantillaCalc";
 import RunwayCalc from "@/components/site/RunwayCalc";
 import { Arrow, Jn, Lines, Mono, Nota, Sc } from "@/components/site/ui";
 import { PLANTILLAS, PARTES, type Plantilla } from "@/content/workbook";
-import { allWorkbookIds, kindLabel, partTemplates } from "@/content/workbook-util";
+import { allWorkbookIds, kindLabel, partTemplates, timeLabel } from "@/content/workbook-util";
 
 export const dynamicParams = false;
 
@@ -72,7 +72,7 @@ function PartPage({ num }: { num: string }) {
                   <span className="lnk">{p.title}</span>
                 </span>
                 <span className="hidden lg:block text-[15px] text-ink2">{p.where}</span>
-                <span className="wm text-ink2 text-right">{p.time}</span>
+                <span className="wm text-ink2 text-right">{timeLabel(p.time)}</span>
               </Link>
             </li>
           ))}
@@ -133,6 +133,21 @@ function TemplatePage({ p }: { p: Plantilla }) {
                 <Sc text={p.trae} />
               </p>
             )}
+            {p.head.map((h) => (
+              <div key={h.label} className="mt-8">
+                <div className="wm text-ink2">Arriba de la hoja</div>
+                <p className="text-[17px] leading-[1.45] mt-2.5">
+                  <Sc text={`${h.label}, cada dato en su campo:`} />
+                </p>
+                <ul className="grid grid-cols-3 gap-3 lg:gap-5 mt-3 max-w-[560px]">
+                  {h.parts.map((x) => (
+                    <li key={x.field} className="border-b-2 border-ink pb-7">
+                      <span className="wm text-ink2">{x.label}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
             {p.summary.length > 0 && (
               <>
                 <div className="wm text-ink2 mt-9 mb-1.5">Lo que trabaja {p.chapter ? `el capítulo ${p.chapter.n}` : "esta sección"}</div>

@@ -40,5 +40,5 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 ## Cómo se mantiene el workbook en la web
 
 - `src/content/workbook.ts` se genera con `npm run workbook -- <carpeta de maqueta-v3>` (o `MAQUETA_DIR=… npm run workbook`). No se edita a mano.
-- Las calculadoras, los niveles R2 y los «trae» que la maqueta todavía no tiene están en `scripts/r2-overlay.json`. Cuando `wb.json` trae `ej`, la cifra del libro reemplaza a la del overlay y el script lo avisa.
+- Las calculadoras, los niveles R2 y los «trae» que la maqueta todavía no tiene están en `scripts/r2-overlay.json`. Cuando `wb.json` trae `ej`, la cifra del libro reemplaza a la del overlay y el script lo avisa. Si el libro anota la cifra («7,0 y 4,9», «25 % (solo México)»), el ejemplo de la calculadora es la primera cifra y el texto completo queda en `ejLibro`. Los nombres de campo del overlay tienen que ser los de `wb.json`.
 - `npm test` carga el ejemplo del libro en cada calculadora y compara cada resultado con la cifra impresa. Si el manuscrito cambia una cifra, la prueba falla antes de publicar.
