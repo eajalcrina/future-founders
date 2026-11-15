@@ -243,7 +243,7 @@ function Result({ ans, onRestart, headRef }: { ans: number[]; onRestart: () => v
                     <span className="text-cuerpo font-bold">
                       <span className="lnk">{w.name}</span>
                     </span>
-                    <span className="wm text-ink2 text-right">{w.meta}</span>
+                    <span className="wm text-ink2 text-right whitespace-nowrap">{w.meta}</span>
                   </Link>
                 </li>
               ))}

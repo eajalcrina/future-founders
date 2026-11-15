@@ -53,7 +53,7 @@ export const PROGRAMAS: Programa[] = [
     levelLabel: "Nivel 2, camino al 3",
     tag: "Acompañamiento",
     name: "Sesiones individuales de transición",
-    desc: "Planificas tu salida con las dos condiciones del punto de no retorno a la vista.",
+    desc: "Planificas tu salida midiendo las dos condiciones del punto de no retorno.",
     format: "6 a 8 sesiones",
     forWho: "Tus ingresos propios se acercan a 1,2 veces tu costo de vida y estás decidiendo si sales de tu cargo y cuándo.",
     cta: "Agenda 30 minutos",

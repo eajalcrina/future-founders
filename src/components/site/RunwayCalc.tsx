@@ -25,7 +25,7 @@ const EJ: Ej[] = [
     name: "Javier",
     a: "61.150",
     b: "12.500",
-    bio: "52 años, ex VP Comercial en Bogotá. Acaba de salir de su empresa y hace la K.1 con la indemnización incluida.",
+    bio: "52 años, exvicepresidente comercial en Bogotá. Acaba de salir de su empresa y hace la K.1 con la indemnización incluida.",
     lectura: (
       <>
         Con el recorte que acordó en casa, el costo de vida de Javier baja a <span className="sc">USD</span>&nbsp;10.000 y su runway sube a 6,1 meses.

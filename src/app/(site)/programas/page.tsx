@@ -21,7 +21,7 @@ export default function ProgramasPage() {
       <section aria-labelledby="prog-h">
         <div className="wrap pt-10 pb-12 lg:pt-20 lg:pb-[88px]">
           <HeroHead id="prog-h" label={["Programas", "Ordenados por nivel"]} title="Lo que te acompaña en cada nivel" className="max-w-[1100px]" />
-          <p className="lead mt-5 lg:mt-8 max-w-[760px]">Empiezas por lo gratuito y avanzas cuando aparece la señal de tu nivel. Todos los programas son para personas.</p>
+          <p className="lead mt-5 lg:mt-8 max-w-[760px]">Empiezas por lo gratuito y avanzas cuando aparece la señal de tu nivel.</p>
           <p className="text-cuerpo text-ink2 mt-3 max-w-[760px]">Las fechas, los cupos y las condiciones se publican con cada convocatoria.</p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-8 mt-7 lg:mt-9">
             <LinkArrow href="/diagnostico" className="text-cuerpo">
@@ -78,19 +78,23 @@ export default function ProgramasPage() {
                         {p.cta}
                       </a>
                     )}
-                    <a
-                      href={whatsappUrl(`Hola, quiero información sobre ${p.tag.toLowerCase()} «${p.name}» de Future Founders.`)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="ul self-center text-recuadro font-semibold"
-                    >
-                      Pregunta por WhatsApp
-                    </a>
                   </div>
                 </div>
               </article>
             );
           })}
+          <p className="text-cuerpo">
+            ¿Dudas sobre algún programa?{" "}
+            <a
+              href={whatsappUrl("Hola, quiero información sobre los programas de Future Founders.")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ul font-semibold"
+            >
+              Pregunta por WhatsApp
+              <span className="sr-only"> (se abre en otra pestaña)</span>
+            </a>
+          </p>
           <Nota>Ningún programa promete ingresos ni plazos. Cada uno trabaja sobre tus números y tu mercado, y la decisión de cuándo avanzar es tuya.</Nota>
         </div>
       </section>

@@ -140,11 +140,11 @@ export default function DownloadForm({
           </div>
           <fieldset className="m-0 p-0 border-0">
             <legend className="wm text-ink2 mb-2">¿En qué situación estás?</legend>
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3">
               {SIT.map((t, i) => (
                 <label
                   key={t}
-                  className={`opt relative min-h-[52px] flex items-center justify-center text-center px-1.5 border border-ink cursor-pointer text-recuadro font-semibold leading-tight ${i ? "border-l-0" : ""}`}
+                  className={`opt relative min-h-[48px] flex items-center justify-center text-center px-1 border border-ink cursor-pointer text-recuadro font-semibold leading-tight whitespace-nowrap ${i ? "border-t-0 sm:border-t sm:border-l-0" : ""}`}
                   style={sit === t ? { background: "var(--color-ink)", color: "var(--color-paper)" } : undefined}
                 >
                   <input type="radio" name={`${id}-sit`} value={t} checked={sit === t} onChange={() => setSit(t)} className="sr-only" />

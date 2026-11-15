@@ -24,13 +24,13 @@ export function Mono({
   return <As className={`wm ${color} ${className}`}>{children}</As>;
 }
 
-/** Partes unidas por un filete vertical, como en los tableros (nunca «·»). */
+/** Partes unidas por un filete vertical, como en los tableros (nunca «·»). En celular, un dato por línea, sin filete. */
 export function Jn({ parts }: { parts: string[] }) {
   return (
     <>
       {parts.map((p, i) => (
-        <span key={i}>
-          {i > 0 && <span className="vr" aria-hidden="true" />}
+        <span key={i} className="block sm:inline">
+          {i > 0 && <span className="vr hidden sm:inline-block" aria-hidden="true" />}
           {i > 0 && <span className="sr-only">, </span>}
           {p}
         </span>

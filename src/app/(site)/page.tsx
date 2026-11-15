@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { Fragment } from "react";
 import Ladder from "@/components/site/Ladder";
 import Parallax from "@/components/site/Parallax";
 import CountUp from "@/components/site/CountUp";
@@ -59,7 +60,7 @@ function Hero() {
           <div className="crop rv">
             <Parallax
               src="/img/duo-ajedrez.webp"
-              alt="Ilustración en duotono: una mano sobre una pieza de ajedrez, los dos roles a la vista"
+              alt="Ilustración en duotono: una mano sobre una pieza de ajedrez, tu cargo y tu plan propio en el mismo tablero"
               sizes="(min-width: 1440px) 640px, (min-width: 1024px) 45vw, 100vw"
               preload
               className="w-full aspect-[640/338]"
@@ -183,10 +184,7 @@ function Book() {
     <section className="bg-ink text-paper on-ink" aria-labelledby="libro-t">
       <div className="wrap py-14 lg:py-[88px] grid gap-8 lg:gap-[112px] lg:grid-cols-[360px_minmax(0,1fr)] items-start">
         <div className="hidden lg:block rv">
-          <Image src="/img/doble-agente-portada.webp" alt="Portada del libro Doble Agente" width={360} height={528} sizes="360px" className="block w-[360px] h-auto" />
-          <Mono tone="claro" className="mt-4">
-            <Jn parts={["Libro y workbook", "2.ª edición"]} />
-          </Mono>
+          <Image src="/img/doble-agente-portada.webp" alt="Portada de Doble Agente, libro y workbook, 2.ª edición" width={360} height={528} sizes="360px" className="block w-[360px] h-auto" />
         </div>
         <div>
           <SecHead
@@ -195,12 +193,14 @@ function Book() {
             label={["El libro", "Eddie Ajalcriña y Lorenzo Ortiz"]}
             title="Doble Agente te lleva de tu primer rol parcial a la independencia"
           />
-          <div className="lg:hidden flex gap-4 mt-6 items-end">
-            <Image src="/img/doble-agente-portada.webp" alt="Portada del libro Doble Agente" width={160} height={235} sizes="160px" className="block w-[160px] h-auto" />
-            <Mono tone="claro">
-              <Jn parts={["Libro y workbook", "2.ª edición"]} />
-            </Mono>
-          </div>
+          <Image
+            src="/img/doble-agente-portada.webp"
+            alt="Portada de Doble Agente, libro y workbook, 2.ª edición"
+            width={160}
+            height={235}
+            sizes="160px"
+            className="lg:hidden block w-[160px] h-auto mt-6"
+          />
           <p className="lead mt-5 lg:mt-6 max-w-[700px]">
             Son 21 capítulos en cinco partes, con un workbook para hacer cada paso. Cuatro ejecutivos de Lima, Bogotá, Ciudad de México y Santiago recorren el método con
             números que puedes revisar.
@@ -236,6 +236,26 @@ function Book() {
   );
 }
 
+/** Una tarjeta de recurso o programa. Con subgrid, rótulo, nombre, texto, dato y acción quedan a la misma altura en la fila. */
+function ProdCard({ p, place = "" }: { p: (typeof PRODUCTS)[number][number]; place?: string }) {
+  return (
+    <Link href={p.href} className={`card group grid content-start gap-y-2.5 xl:row-span-5 xl:grid-rows-subgrid bg-paper px-5 pt-5 pb-[18px] ${place}`}>
+      <Mono tone={p.tag === "Gratis" ? "ink" : "gris"}>{p.tag}</Mono>
+      <span className="ws block text-figura">{p.name}</span>
+      <span className="block text-recuadro leading-[1.45] text-ink2">{p.desc}</span>
+      <Mono tone="gris" as="span" className="block pt-1">
+        {p.meta}
+      </Mono>
+      <span className="flecha self-end pt-1 text-recuadro font-bold">
+        <span className="lnk">{p.cta}</span>
+        <Arrow />
+      </span>
+    </Link>
+  );
+}
+
+const COL = ["xl:col-start-1", "xl:col-start-2", "xl:col-start-3", "xl:col-start-4"];
+
 function Products() {
   return (
     <section id="programas" className="border-t border-ink" aria-labelledby="prod-t">
@@ -247,10 +267,12 @@ function Products() {
           title="Empiezas gratis y avanzas cuando aparece la señal de tu nivel"
           sub="Cada recurso y cada programa corresponde a un nivel de la escalera. Las fechas, los cupos y las condiciones se publican con cada convocatoria."
         />
-        <div className="rv-kids grid gap-5 md:grid-cols-2 xl:grid-cols-4 mt-8 lg:mt-14 items-start">
+        {/* En celular, cada nivel con sus tarjetas en orden. Desde xl: cabeceras en la fila 1, la primera tarjeta de cada nivel
+            en la fila 2 (subgrid) y el resto del nivel 0 repartido debajo, a todo el ancho. */}
+        <div className="grid xl:grid-cols-4 gap-x-5 gap-y-3.5 mt-8 lg:mt-14">
           {PRODUCTS.map((col, k) => (
-            <div key={k}>
-              <div className="border border-ink px-[18px] pt-3.5 pb-4" style={{ background: FILL[k], color: TXT[k] }}>
+            <Fragment key={k}>
+              <div className={`border border-ink px-[18px] pt-3.5 pb-4 ${k > 0 ? "mt-4 xl:mt-0" : ""} ${COL[k]} xl:row-start-1`} style={{ background: FILL[k], color: TXT[k] }}>
                 <div className="flex justify-between items-center">
                   <Mono tone={k === 3 ? "claro" : "gris"}>Nivel {k}</Mono>
                   <Lvl
@@ -261,25 +283,15 @@ function Products() {
                 </div>
                 <h3 className="wh2 text-figura mt-1.5 whitespace-nowrap">{LEVELS[k]}</h3>
               </div>
-              <ul className="flex flex-col gap-3.5 mt-3.5">
-                {col.map((p) => (
-                  <li key={p.name}>
-                    <Link href={p.href} className="card group flex flex-col bg-paper px-5 pt-5 pb-[18px] h-full">
-                      <Mono tone={p.tag === "Gratis" ? "ink" : "gris"}>{p.tag}</Mono>
-                      <span className="ws block text-figura mt-2.5">{p.name}</span>
-                      <span className="block text-recuadro leading-[1.45] mt-2.5 text-ink2">{p.desc}</span>
-                      <Mono tone="gris" as="span" className="block mt-3.5">
-                        {p.meta}
-                      </Mono>
-                      <span className="flecha mt-auto pt-3.5 text-recuadro font-bold">
-                        <span className="lnk">{p.cta}</span>
-                        <Arrow />
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+              {col.map((p, i) => (
+                <ProdCard key={p.name} p={p} place={i === 0 ? `${COL[k]} xl:row-start-2` : `${COL[i - 1]} xl:row-start-8`} />
+              ))}
+              {k === 0 && col.length > 1 && (
+                <Mono tone="gris" className="hidden xl:block xl:col-span-4 xl:row-start-7 pt-4 border-t border-ink20">
+                  También en el nivel 0
+                </Mono>
+              )}
+            </Fragment>
           ))}
         </div>
         <p className="text-recuadro text-ink2 mt-7">
@@ -308,13 +320,14 @@ function Founders() {
                 sizes="(min-width: 1280px) 240px, (min-width: 640px) 200px, 100vw"
                 className="w-full aspect-square sm:aspect-[240/296] bg-warm border border-ink"
                 position="center 30%"
+                zoom={f.zoom}
               />
-              <div>
+              <div className="flex flex-col">
                 <Mono tone="gris">{f.role}</Mono>
                 <h3 className="wh2 text-h2 mt-2 lg:mt-3">{f.name}</h3>
                 <div className="text-cuerpo font-semibold mt-2">{f.cred}</div>
                 <p className="wt mt-2.5 lg:mt-3">{f.bio}</p>
-                <a href={f.href} target="_blank" rel="noopener noreferrer" className="wm ul inline-block mt-3 lg:mt-4">
+                <a href={f.href} target="_blank" rel="noopener noreferrer" className="wm ul self-start mt-auto pt-3 lg:pt-4 [overflow-wrap:anywhere]">
                   {f.li}
                   <span className="sr-only"> (se abre en otra pestaña)</span>
                 </a>
@@ -324,12 +337,9 @@ function Founders() {
         </div>
 
         <div className="mt-14 lg:mt-20" aria-labelledby="cifras-t">
-          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-baseline gap-1">
-            <h3 id="cifras-t" className="ws text-figura">
-              Future Founders en cifras
-            </h3>
-            <p className="text-recuadro text-ink3">Cifras que Future Founders publica hoy en futurefounders.pe</p>
-          </div>
+          <h3 id="cifras-t" className="ws text-figura">
+            Future Founders en cifras
+          </h3>
           <dl className="rv-kids grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-6 lg:gap-8 mt-5 lg:mt-7">
             {STATS.map((s) => (
               <div key={s.label} className="border-t border-ink pt-3 lg:pt-4 flex flex-col-reverse justify-end">

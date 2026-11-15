@@ -27,10 +27,10 @@ export default function KitPage() {
               Si todavía tienes empleo, el kit te dice cuánto tiempo tendrías y qué harías si mañana tu cargo desaparece. Si ya saliste de tu empresa, ordena las decisiones de las
               primeras semanas, cuando se firman los documentos de salida.
             </p>
-            <dl className="rv-kids grid grid-cols-3 gap-4 lg:gap-6 mt-8 lg:mt-11 max-w-[700px]">
+            <dl className="rv-kids grid grid-cols-[1fr_auto_1fr] sm:grid-cols-3 gap-4 lg:gap-6 mt-8 lg:mt-11 max-w-[700px]">
               {[
                 ["5", "plantillas, K.1 a K.5"],
-                ["2", "horas en total, más o menos"],
+                ["2", "horas, aproximadamente"],
                 ["4", "países con su regla general"],
               ].map(([v, l]) => (
                 <div key={l} className="border-t border-ink pt-3 flex flex-col-reverse justify-end">
@@ -57,7 +57,7 @@ export default function KitPage() {
             />
           </div>
           <div>
-            <SecHead id="que-t" className="max-w-[640px]" label={["Cómo se usa", "Antes de la Parte 01"]} title="Se llena en orden, porque cada plantilla usa datos de la anterior" />
+            <SecHead id="que-t" className="max-w-[640px]" label={["Cómo se usa", "Antes de la Parte 01"]} title="Cada plantilla usa datos de la anterior" />
             <div className="wt mt-5 lg:mt-7 rv">
               <p>
                 El kit va antes de la Parte 01 del libro. Si ya te despidieron y todavía no firmaste tu salida, empieza hoy por la K.3 y después vuelve a la K.1.
@@ -84,7 +84,15 @@ export default function KitPage() {
             title="Cada plantilla termina en algo que puedes comprobar"
             sub="Un número, una respuesta o una lista de nombres. Toca una plantilla para ver qué pide y qué datos necesitas."
           />
-          <ol className="mt-8 lg:mt-11 border-b border-ink">
+          <div className="hidden lg:grid lg:grid-cols-[92px_48px_340px_minmax(0,1fr)_100px] gap-6 mt-11 pb-2" aria-hidden="true">
+            <span className="col-start-4">
+              <Mono tone="gris">Sabrás que terminaste cuando…</Mono>
+            </span>
+            <Mono tone="gris" as="span" className="text-right">
+              Tiempo
+            </Mono>
+          </div>
+          <ol className="mt-8 lg:mt-0 border-b border-ink">
             {KIT.map((k) => (
               <li key={k.code} className="rv">
                 <Link
@@ -102,8 +110,11 @@ export default function KitPage() {
                     <p className="text-recuadro leading-[1.4] text-ink2 mt-1.5">{k.purpose}</p>
                   </div>
                   <div className="col-start-2 lg:col-start-auto row-start-2 lg:row-start-auto">
-                    <Mono tone="gris">Sabrás que terminaste cuando…</Mono>
-                    <p className="wt mt-1.5">{k.done}</p>
+                    <p className="wt">
+                      <span className="lg:hidden">Terminas cuando </span>
+                      <span className="sr-only hidden lg:inline">Sabrás que terminaste cuando: </span>
+                      {k.done.charAt(0).toLowerCase() + k.done.slice(1)}
+                    </p>
                   </div>
                   <Mono tone="gris" as="span" className="text-right col-start-3 row-start-1 lg:col-start-auto lg:row-start-auto pt-1">
                     {k.time}

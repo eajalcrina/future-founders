@@ -38,10 +38,10 @@ const TOC: Toc[] = [
 ];
 
 const SAMPLES = [
-  { src: "/img/muestra-personajes.webp", cap: ["Páginas 8 y 9", "Los cuatro arquetipos"], alt: "Doble página del libro con los cuatro arquetipos: Carmen, Javier, Andrea y Rodrigo" },
-  { src: "/img/muestra-escalera.webp", cap: ["Páginas 12 y 13", "Marco 0.1, la escalera"], alt: "Doble página del libro con la escalera de cuatro niveles y la ruta de los 21 capítulos" },
-  { src: "/img/muestra-caso-carmen.webp", cap: ["Capítulo 1", "El caso de Carmen y el marco 1.1"], alt: "Doble página del capítulo 1 con el caso de Carmen y el marco 1.1" },
-  { src: "/img/muestra-plantilla-1-1.webp", cap: ["Capítulo 1", "Plantilla 1.1 y cierre"], alt: "Doble página con la plantilla 1.1 del workbook y el cierre del capítulo 1" },
+  { src: "/img/muestra-personajes.webp", alt: "Páginas 8 y 9 del libro: los cuatro arquetipos, Carmen, Javier, Andrea y Rodrigo, con sus números de partida" },
+  { src: "/img/muestra-escalera.webp", alt: "Páginas 12 y 13 del libro: el marco 0.1, la escalera de cuatro niveles con la ruta de los 21 capítulos" },
+  { src: "/img/muestra-caso-carmen.webp", alt: "Páginas 34 y 38 del capítulo 1: el caso de Carmen y el marco 1.1, sus tres runways frente al mínimo de 6 meses y la meta de 9" },
+  { src: "/img/muestra-plantilla-1-1.webp", alt: "Páginas 41 y 42 del capítulo 1: el ejemplo resuelto de la plantilla 1.1 y el cierre con las tres acciones" },
 ];
 
 const INCL: { icon: "plantilla" | "documento" | "accion" | "formula"; t: string; d: string }[] = [
@@ -120,7 +120,7 @@ function Back() {
               tu cargo, y para el día en que una reestructuración cambie lo que tenías previsto.
             </p>
             <p>
-              Doble Agente te acompaña paso a paso. Empiezas con un rol parcial mientras mantienes tu sueldo, lo haces a la vista de tu empleador y avanzas por cuatro niveles hasta
+              Doble Agente te acompaña paso a paso. Empiezas con un rol parcial mientras mantienes tu sueldo, se lo informas a tu empleador y avanzas por cuatro niveles hasta
               que tus ingresos propios cubren tu vida con margen.
             </p>
             <p>
@@ -169,8 +169,8 @@ function Index() {
           </div>
         </div>
         <div className="mt-8 lg:mt-11 pt-3 border-t border-ink">
-          <h3 className="ws text-figura">Las cuatro primeras partes te llevan hasta tu primer cliente y la quinta, desde ahí hasta la independencia</h3>
-          <p className="text-recuadro text-ink3 mt-1.5">Los 21 capítulos agrupados en cinco partes, con los niveles de la escalera que trabaja cada una</p>
+          <h3 className="ws text-figura">Las cinco partes siguen los niveles</h3>
+          <p className="text-recuadro text-ink3 mt-1.5">Las cuatro primeras partes llevan hasta tu primer cliente; la quinta, desde ahí hasta la independencia</p>
         </div>
         <div className="mt-7 border-b border-ink">
           {TOC.map((r) => (
@@ -218,11 +218,6 @@ function Samples() {
           {SAMPLES.map((s) => (
             <figure key={s.src} className="m-0">
               <Image src={s.src} alt={s.alt} width={1200} height={880} sizes="(min-width: 1440px) 636px, (min-width: 768px) 46vw, 100vw" className="block w-full h-auto outline outline-1 outline-ink20" />
-              <figcaption className="mt-3.5">
-                <Mono tone="gris">
-                  <Jn parts={s.cap} />
-                </Mono>
-              </figcaption>
             </figure>
           ))}
         </div>
@@ -232,11 +227,6 @@ function Samples() {
 }
 
 function Workbook() {
-  const rows: [string, string, string, boolean][] = [
-    ["A Ahorro líquido (USD)", "61.600", "61.150", false],
-    ["B Costo de vida mensual (USD)", "8.800", "12.500", false],
-    ["Runway = A ÷ B (meses)", "7,0", "4,9", true],
-  ];
   return (
     <section aria-labelledby="wb-t">
       <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24 grid grid-cols-[minmax(0,1fr)] gap-10 lg:gap-24 lg:grid-cols-[minmax(0,1fr)_minmax(0,600px)] items-start">
@@ -266,52 +256,14 @@ function Workbook() {
           </LinkArrow>
         </div>
         <div className="lg:pt-3 rv">
-          <div className="border border-ink bg-paper px-5 py-6 lg:px-[26px] lg:pt-6 lg:pb-[26px]">
-            <div className="flex justify-between items-center">
-              <div className="flex gap-2 items-center">
-                <Icon name="plantilla" size={16} />
-                <Mono as="span">Plantilla K.1</Mono>
-              </div>
-              <Mono tone="gris" as="span">
-                20 min
-              </Mono>
-            </div>
-            <h3 className="ws text-figura mt-3.5">Tu runway hoy</h3>
-            <div className="overflow-x-auto -mx-1 px-1">
-              <table className="tabla mt-4 min-w-[420px]">
-                <caption className="sr-only">Plantilla K.1 con los números de Carmen y Javier</caption>
-                <thead>
-                  <tr>
-                    {["Concepto", "Carmen", "Javier", "Tus números"].map((h, i) => (
-                      <th key={h} scope="col" className={i === 1 || i === 2 ? "n" : i === 3 ? "pl-3" : ""}>
-                        {h}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows.map(([a, b, c, bold]) => (
-                    <tr key={a} className={bold ? "res" : ""}>
-                      <th scope="row" className="text-left font-normal">
-                        <Sc text={a} />
-                      </th>
-                      <td className="n">{b}</td>
-                      <td className="n">{c}</td>
-                      <td className="pl-3 align-bottom">
-                        <div className="h-[22px] border-b border-ink3" aria-hidden="true" />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <p className="text-recuadro text-ink2 mt-3.5">
-              <i>Sabrás que terminaste cuando…</i> Tienes tu runway con un decimal.
-            </p>
-          </div>
-          <Mono tone="gris" className="mt-3.5">
-            <Jn parts={["Ejemplo del workbook", "Plantilla K.1 con los números del libro"]} />
-          </Mono>
+          <Image
+            src="/img/workbook-k1.webp"
+            alt="Página 8 del workbook: la plantilla K.1, Tu runway hoy, con el ahorro líquido y el costo de vida de Carmen y Javier y el espacio para tus números"
+            width={900}
+            height={1320}
+            sizes="(min-width: 1024px) 420px, 90vw"
+            className="block w-full max-w-[420px] h-auto mx-auto outline outline-1 outline-ink20"
+          />
         </div>
       </div>
     </section>
@@ -327,7 +279,7 @@ function Formats() {
       n: "Libro en PDF",
       w: "Compra directa",
       d: "El libro en PDF, para leer en una tableta o en la computadora. El workbook se descarga gratis.",
-      b: "Compra directa: libro en PDF",
+      b: "Comprar el PDF",
       href: ck,
       k: 2,
     },
@@ -349,7 +301,7 @@ function Formats() {
               <h3 className="wh2 text-h2 mt-3">{f.n}</h3>
               <p className="text-recuadro leading-[1.45] mt-3 text-ink2">{f.d}</p>
               <div className="mt-auto pt-7">
-                <a href={f.href} target="_blank" rel="noopener noreferrer" className={`${f.k === 1 ? "btn" : "btn2"} wrap-ok w-full`}>
+                <a href={f.href} target="_blank" rel="noopener noreferrer" className="btn2 wrap-ok w-full">
                   <span>{f.b}</span>
                   <span className="sr-only"> (se abre en otra pestaña)</span>
                 </a>
@@ -377,12 +329,17 @@ function Authors() {
         <div className="grid gap-10 lg:gap-16 lg:grid-cols-2 mt-8 lg:mt-11">
           {FOUNDERS.map((f) => (
             <div key={f.key} className="rv grid gap-5 sm:gap-7 grid-cols-[110px_minmax(0,1fr)] sm:grid-cols-[160px_minmax(0,1fr)] items-start">
-              <Parallax src={f.photo} alt={`Retrato de ${f.name} en duotono`} sizes="160px" className="w-full aspect-[160/196] bg-warm border border-ink" position="center 30%" />
+              <Parallax src={f.photo} alt={`Retrato de ${f.name} en duotono`} sizes="160px" className="w-full aspect-[160/196] bg-warm border border-ink" position="center 30%"
+                zoom={f.zoom} />
               <div>
                 <Mono tone="gris">{f.role}</Mono>
                 <h3 className="wh2 text-h2 mt-2.5">{f.name}</h3>
                 <p className="text-cuerpo font-semibold mt-2">{f.cred}</p>
                 <p className="wt mt-2.5">{f.bio}</p>
+                <a href={f.href} target="_blank" rel="noopener noreferrer" className="wm ul inline-block mt-3 [overflow-wrap:anywhere]">
+                  {f.li}
+                  <span className="sr-only"> (se abre en otra pestaña)</span>
+                </a>
               </div>
             </div>
           ))}

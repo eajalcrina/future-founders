@@ -62,13 +62,13 @@ function Panel({ k, mobile }: { k: number; mobile?: boolean }) {
               <span className="text-cuerpo font-bold">
                 <span className="lnk">{w.name}</span>
               </span>
-              <span className="wm text-ink2 text-right">{w.meta}</span>
+              <span className="wm text-ink2 text-right whitespace-nowrap">{w.meta}</span>
             </Link>
           </li>
         ))}
       </ul>
-      <p className="bg-sage text-recuadro leading-[1.45] mt-4 px-3 pb-2.5">
-        <span className="filete-sup salvia block">{HERE[k]}</span>
+      <p className="bg-sage text-recuadro leading-[1.45] mt-4 px-3 py-2.5" style={{ borderTop: "var(--filete-fino) solid var(--color-saged)" }}>
+        {HERE[k]}
       </p>
     </div>
   );

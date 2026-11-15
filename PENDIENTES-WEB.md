@@ -19,7 +19,7 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 
 - [ ] **Cuerpo de texto (filas 17 a 19 del sistema R3).** Se tomaron como supuesto: tamaño óptico automático, interlineado de 1,55 en pantalla (el libro usa 1,40) y párrafos separados por espacio, sin sangría. Confirmar o pedir los valores del libro.
 - [ ] **Botones en mayúsculas pequeñas.** La regla web los pide; el sistema R3 deja texto normal de 19 px en negrita. Quedó texto normal, sin flecha.
-- [ ] **Titular del inicio.** Pasó de «… O para la tuya.» a «Tu experiencia puede trabajar para más de una empresa, incluida la tuya». Confirmar.
+- [ ] **Propuesta de titular del inicio (no aplicada).** Se mantiene el texto del dueño, «Tu experiencia puede trabajar para más de una empresa. O para la tuya.». Propuesta para evaluar, sin fragmento suelto ni punto final: «Tu experiencia puede trabajar para más de una empresa, incluida la tuya».
 - [ ] **Logos para perfiles (fila 33).** Las versiones para WhatsApp y redes de `logos/out` siguen con el blanco `#FFFFFF`; recolorear a `#F6F6F4` si se publican.
 - [ ] **Meta en las calculadoras.** La cifra de la meta todavía no va en magenta de texto con su raya, porque los datos de `workbook.ts` no marcan qué fila es la meta. Sumar la marca al generador si se quiere.
 

@@ -62,7 +62,7 @@ Fuente del sistema: `DESIGN-SYSTEM.md` y `tokens.css` de la R3 (carpeta `sistema
   - Reseñas de ejemplo ocultas. La sección se muestra sola cuando `src/content/testimonios.ts` tenga reseñas con `ejemplo: false`, y el carrusel no rota solo.
   - Solo español. Fotos reales e ilustraciones propias. Bordes rectos, sin degradados ni sombras grandes. /toolkit queda fuera y redirige a /workbook.
 - Supuestos tomados en esta pasada, para confirmar (tabla «Cambios respecto de la web actual», filas 17 a 19): tamaño óptico del cuerpo automático (`font-optical-sizing: auto`), interlineado del cuerpo en pantalla de 1,55 (el libro usa 1,40) y párrafos separados por espacio, sin sangría.
-- 15/11/2026: el titular del inicio pasa de «… O para la tuya.» a «…, incluida la tuya» (sin fragmento suelto ni punto final). En /libro, el subtítulo es el de la cubierta: «El método para ejecutivos con salario».
+- Titular del héroe del inicio: «Tu experiencia puede trabajar para más de una empresa. O para la tuya.» Es texto del dueño y se respeta tal cual, con su punto (excepción a la regla de titulares sin punto final; la imagen para compartir lo muestra sin el punto final).
 
 ## 8. Plantillas para contenido en serie
 - `/workbook/[id]`: héroe con el código y el título de la plantilla, fila de datos (tiempo, capítulo, nivel, ejemplo resuelto, páginas), «Para qué sirve», «Antes de empezar», «Arriba de la hoja», «Lo que trabaja el capítulo», «Necesitas antes», «Sabrás que terminaste cuando…», calculadora si la tiene y navegación anterior y siguiente. Los textos salen de `src/content/workbook.ts`, que se genera con `npm run workbook`.
@@ -74,6 +74,8 @@ Fuente del sistema: `DESIGN-SYSTEM.md` y `tokens.css` de la R3 (carpeta `sistema
 - Textos: `src/content/sitio.ts`, `programas.ts`, `actualizaciones.ts`, `testimonios.ts`; las páginas llevan su texto propio.
 - Línea base al empezar (15/11/2026): 1 `!important` y 9 colores escritos a mano fuera de los tokens. Al cerrar esta pasada: 0 `!important` y 6 valores, todos en archivos donde el formato no admite variables (`layout.tsx` para el color del navegador, `og.tsx` para las imágenes generadas e `ilustraciones.ts`, que trae los SVG del libro), con los mismos valores de los tokens.
 - Contenido de origen que no se toca y se excluye de los barridos: `src/content/workbook.ts`, `scripts/` y el toolkit retirado (`src/app/toolkit`, `src/components/toolkit`).
+- En /libro, el subtítulo del héroe es el de la cubierta: «El método para ejecutivos con salario». Las muestras de páginas y la K.1 salen de los PDF finales de la R3 (`entrega/doble-agente-libro.pdf`, páginas 8 y 9, 12 y 13, 34 y 38, 41 y 42; `doble-agente-workbook.pdf`, página 8).
+- Revisión del asesor del 15/11/2026 convertida en reglas: sin pies visibles bajo imágenes (todo al texto alternativo); un solo botón magenta por vista; rótulos que se repetirían en cada fila van una vez como cabecera; en celular, los rótulos con varias partes van un dato por línea, sin filete; «a la vista» como máximo una vez por página; cargos de los arquetipos como en el libro (gerenta de finanzas, exvicepresidente comercial, directora de tecnología, socio de una pyme de reparto); botones de compra «Comprar en Amazon» y «Comprar el PDF».
 - Los atributos «Kit Plan de salida» de `DownloadForm.tsx` y `EmailCta.tsx` son valores del campo `archetype` en Brevo, no textos visibles; no se cambian sin cambiar las plantillas de correo.
 
 ## 10. Estado del rediseño

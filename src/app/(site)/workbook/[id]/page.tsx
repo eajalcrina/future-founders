@@ -64,9 +64,13 @@ function PartPage({ num }: { num: string }) {
               <Link href={`/workbook/${p.id}`} className="group grid grid-cols-[72px_minmax(0,1fr)_auto] lg:grid-cols-[96px_minmax(0,1fr)_minmax(0,1fr)_110px] gap-x-4 gap-y-1 items-baseline py-4 border-t border-ink">
                 <span className="num text-h2">{p.code}</span>
                 <span className="text-cuerpo font-bold">
-                  <span className="lnk">{p.title}</span>
+                  <span className="lnk">
+                    <Sc text={p.title} />
+                  </span>
                 </span>
-                <span className="hidden lg:block text-recuadro text-ink2">{p.where}</span>
+                <span className="hidden lg:block text-recuadro text-ink2">
+                  <Sc text={p.where} />
+                </span>
                 <Mono tone="gris" as="span" className="text-right">
                   {timeLabel(p.time)}
                 </Mono>
@@ -107,7 +111,8 @@ function TemplatePage({ p }: { p: Plantilla }) {
 
       <section className="border-t border-ink">
         <div className="wrap py-12 lg:py-[88px] grid gap-10 lg:gap-24 lg:grid-cols-[minmax(0,1fr)_minmax(0,480px)] items-start">
-          <div className="rv">
+          {/* La columna más corta queda fija al recorrer, para que no quede un vacío largo junto a la otra */}
+          <div className={`rv ${hasCalc ? "lg:sticky lg:top-6" : ""}`}>
             <Mono>Para qué sirve</Mono>
             <p className="ws text-figura mt-3">
               <Sc text={p.purpose ?? p.intro ?? ""} />
@@ -188,7 +193,7 @@ function TemplatePage({ p }: { p: Plantilla }) {
               </>
             )}
           </div>
-          <aside className="grid gap-5">
+          <aside className={`grid gap-5 ${hasCalc ? "" : "lg:sticky lg:top-6"}`}>
             {hasCalc && p.calc && (
               <PlantillaCalc
                 id={p.id}
