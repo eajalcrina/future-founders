@@ -8,8 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "test:calc": "node --no-warnings scripts/test-calc.mjs",
-    "test": "npm run test:calc",
-    "workbook": "python3 scripts/gen-workbook.py"
+    "test": "npm run test:calc && npm run test:diagnostico",
+    "workbook": "python3 scripts/gen-workbook.py",
+    "test:diagnostico": "node --no-warnings scripts/test-diagnostico.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",

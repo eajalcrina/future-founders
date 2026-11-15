@@ -2,75 +2,17 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
-import { CHAPS, DO_NOW, LEVELS, LOOK, SIGNAL, WITH, agendaUrl, whatsappUrl } from "@/content/sitio";
+import { LEVELS, SIGNAL, WITH, agendaUrl, whatsappUrl } from "@/content/sitio";
+import { colchonCorto, nivelDe, pasoDe, registroDe, visibles, type Respuestas } from "@/lib/diagnostico";
 import { enviarRegistro, leerTrampa, EMAIL_RE } from "@/lib/registro";
-import { Aviso, Jn, Lvl, Mono, Sc } from "./ui";
+import { Aviso, Icon, Lvl, Mono, PrivacidadLinea, Sc } from "./ui";
 import Trampa from "./Trampa";
 
-type Q = { id: string; text: string; help?: string; options: string[] };
-
-const QS: Q[] = [
-  { id: "situacion", text: "¿Cuál describe tu situación hoy?", options: ["Tengo empleo", "Acabo de salir de mi empresa", "Tengo un proyecto o una pyme propia"] },
-  {
-    id: "comprobante",
-    text: "¿Ya emitiste o recibiste tu primer comprobante por un rol parcial, una asesoría o un proyecto con un cliente propio?",
-    help: "Comprobante es la factura, el recibo por honorarios, el CFDI o la boleta de honorarios, según tu país.",
-    options: ["No", "Sí, a un cliente", "Sí, a más de un cliente"],
-  },
-  { id: "roles", text: "¿Cuántos roles, clientes o productos propios te pagan hoy de forma recurrente?", options: ["Ninguno", "Uno", "De 2 a 4", "Más de 4"] },
-  {
-    id: "cobertura",
-    text: "En cada uno de los últimos tres meses, ¿cuánto de tu costo de vida mensual sin empleo cubrieron tus ingresos propios netos?",
-    help: "Ingresos propios son los que no vienen de un empleador: roles parciales, clientes, productos o tu empresa. Usa tu costo de vida sin empleo: lo que gastas hoy más lo que paga tu empleador y tendrías que pagar tú (plantilla 2.1). Si ya saliste, es lo que gastas hoy.",
-    options: ["Nada o casi nada", "Menos de la mitad", "Entre la mitad y casi todo", "Todo, pero menos de 1,2 veces", "1,2 veces o más"],
-  },
-  {
-    id: "colchon",
-    text: "¿Cuántos meses de tu costo de vida cubre hoy tu ahorro líquido?",
-    help: "Es tu runway: el dinero que puedes usar en una semana sin una penalidad grande, dividido entre tu costo de vida mensual. Usa tu costo de vida sin empleo: lo que gastas hoy más lo que paga tu empleador y tendrías que pagar tú (plantilla 2.1). Si ya saliste, es lo que gastas hoy.",
-    options: ["Menos de 3", "De 3 a menos de 6", "6 o más", "No lo he calculado"],
-  },
-];
-
-function levelOf(ans: number[]): { level: number; why: string } {
-  const [, comp, roles, cob, col] = ans;
-  const hasClient = comp > 0 || roles > 0;
-  if (!hasClient)
-    return {
-      level: 0,
-      why:
-        ans[0] === 1
-          ? "Si ya saliste, tu nivel lo marcan tus ingresos propios: sin un comprobante emitido estás en el 0, aunque ya no tengas sueldo."
-          : "Todavía no emites un comprobante a un cliente propio, así que todo tu ingreso viene de un empleador.",
-    };
-  if (cob < 3) return { level: 1, why: "Ya cobraste a un cliente propio, pero tus ingresos propios todavía no cubren tu costo de vida tres meses seguidos." };
-  if (cob === 4 && col === 3)
-    return {
-      level: 2,
-      why: "Tus ingresos propios llegan a 1,2 veces tu costo de vida. Para saber si estás en el nivel 3 te falta calcular tu colchón: es la K.1, 20 minutos.",
-    };
-  if (cob < 4 || col !== 2)
-    return {
-      level: 2,
-      why:
-        cob < 4
-          ? "Tus ingresos propios cubren tu costo de vida, pero todavía no llegan a 1,2 veces durante tres meses."
-          : "Tus ingresos propios llegan a 1,2 veces tu costo de vida, pero tu colchón todavía no cubre 6 meses.",
-    };
-  return { level: 3, why: "Cumples las dos condiciones del punto de no retorno: 1,2 veces tu costo de vida tres meses seguidos y un colchón de al menos 6 meses." };
-}
-
-const NEXT: { label: string; href: string; ext?: boolean }[] = [
-  { label: "Descarga el kit «Plan de salida»", href: "/kit" },
-  { label: "Ver fechas del taller", href: "/programas#taller" },
-  { label: "Postular al mastermind", href: "/programas#mastermind" },
-  { label: "Agenda 30 minutos", href: "", ext: true },
-];
-
+/** Cuestionario de cuatro preguntas (tres si todavía no hay comprobante). Las preguntas y la regla viven en src/lib/diagnostico.ts. */
 export default function Diagnostico() {
   const id = useId();
   const [step, setStep] = useState(0);
-  const [ans, setAns] = useState<(number | null)[]>(QS.map(() => null));
+  const [ans, setAns] = useState<Respuestas>({});
   const [done, setDone] = useState(false);
   const head = useRef<HTMLHeadingElement>(null);
   const first = useRef(true);
@@ -83,39 +25,45 @@ export default function Diagnostico() {
     head.current?.focus();
   }, [step, done]);
 
-  const q = QS[step];
-  const cur = ans[step];
+  const qs = visibles(ans);
+  const q = qs[Math.min(step, qs.length - 1)];
+  const cur = ans[q.id] ?? null;
 
   function choose(i: number) {
-    setAns((a) => a.map((v, k) => (k === step ? i : v)));
+    setAns((a) => {
+      const n = { ...a, [q.id]: i };
+      if (q.id === "comprobante" && i === 0) delete n.cobertura;
+      return n;
+    });
   }
   function next() {
     if (cur === null) return;
-    if (step < QS.length - 1) setStep(step + 1);
+    if (step < qs.length - 1) setStep(step + 1);
     else setDone(true);
   }
   function restart() {
-    setAns(QS.map(() => null));
+    setAns({});
     setStep(0);
     setDone(false);
   }
 
-  if (done) return <Result ans={ans as number[]} onRestart={restart} headRef={head} />;
+  if (done) return <Result ans={ans} onRestart={restart} headRef={head} />;
 
   return (
     <div className="border border-ink bg-paper">
       <div className="flex justify-between items-center gap-4 px-5 lg:px-8 py-4 border-b border-ink">
         <span className="wm">
-          Pregunta {step + 1} de {QS.length}
+          Pregunta {step + 1} de {qs.length}
         </span>
         <span className="flex gap-1" aria-hidden="true">
-          {QS.map((_, k) => (
+          {qs.map((_, k) => (
             <span key={k} className="block h-[3px] w-6 sm:w-8" style={{ background: k <= step ? "var(--color-ink)" : "var(--color-ink20)" }} />
           ))}
         </span>
       </div>
       <form
-        className="px-5 lg:px-8 pt-6 pb-7 lg:pt-8 lg:pb-9"
+        key={q.id}
+        className="xfade px-5 lg:px-8 pt-6 pb-7 lg:pt-8 lg:pb-9"
         onSubmit={(e) => {
           e.preventDefault();
           next();
@@ -149,7 +97,9 @@ export default function Diagnostico() {
                   className="w-4 h-4 shrink-0 border"
                   style={{ borderColor: cur === i ? "var(--color-paper)" : "var(--color-ink)", background: cur === i ? "var(--color-paper)" : "transparent" }}
                 />
-                <span className="text-cuerpo font-semibold leading-[1.3]">{o}</span>
+                <span className="text-cuerpo font-semibold leading-[1.3]">
+                  <Sc text={o} />
+                </span>
               </label>
             ))}
           </div>
@@ -159,7 +109,7 @@ export default function Diagnostico() {
             Anterior
           </button>
           <button type="submit" className="btn" disabled={cur === null}>
-            {step < QS.length - 1 ? "Siguiente" : "Ver mi nivel"}
+            {step < qs.length - 1 ? "Siguiente" : "Ver mi nivel"}
           </button>
         </div>
       </form>
@@ -167,84 +117,87 @@ export default function Diagnostico() {
   );
 }
 
-function Result({ ans, onRestart, headRef }: { ans: number[]; onRestart: () => void; headRef: React.RefObject<HTMLHeadingElement | null> }) {
-  const { level: k, why } = levelOf(ans);
-  const nx = NEXT[k];
-  const noCalc = ans[4] !== 2;
-  const justOut = ans[0] === 1 && k === 0;
-  const project = ans[0] === 2;
-  const doNow = justOut
-    ? {
-        head: "Revisa tu salida antes de firmar",
-        body: "Antes de firmar tu salida, llena la K.3 y anota la fecha límite para impugnar o reclamar. Revisa tu liquidación con un abogado laboral, después recalcula tu runway con la K.1 y lee el capítulo 5.",
-      }
-    : DO_NOW[k];
-  const btn = justOut ? { label: "Abrir la K.3 Tu salida en números", href: "/workbook/k3", ext: false } : nx;
+function Result({ ans, onRestart, headRef }: { ans: Respuestas; onRestart: () => void; headRef: React.RefObject<HTMLHeadingElement | null> }) {
+  const { level: k, why } = nivelDe(ans);
+  const paso = pasoDe(k, ans);
+  const conK1 = paso.plantillas.some((p) => p.code === "K.1");
+  const avisoColchon = k < 3 && colchonCorto(ans) && !conK1;
+  const acompana = WITH.flat().filter((w) => paso.acompana.includes(w.href));
+  const dark = k === 3;
   return (
     <div className="grid gap-6">
       <div className="border border-ink bg-paper">
-        <div className="px-5 lg:px-8 py-5 lg:py-6 border-b border-ink flex justify-between items-center gap-4" style={{ background: k === 3 ? "var(--color-ink)" : ["var(--color-paper)", "var(--color-warm)", "var(--color-ink20)"][k], color: k === 3 ? "var(--color-paper)" : undefined }}>
+        <div
+          className="px-5 lg:px-8 py-5 lg:py-6 border-b border-ink flex justify-between items-center gap-4"
+          style={{ background: dark ? "var(--color-ink)" : ["var(--color-paper)", "var(--color-warm)", "var(--color-ink20)"][k], color: dark ? "var(--color-paper)" : undefined }}
+        >
           <div>
-            <Mono tone={k === 3 ? "papel" : "ink"}>Tu resultado</Mono>
+            <Mono tone={dark ? "papel" : "ink"}>Tu resultado</Mono>
             <h2 ref={headRef} tabIndex={-1} className="wh2 text-display-md mt-2 outline-none">
               Nivel {k}: {LEVELS[k]}
             </h2>
           </div>
-          <Lvl on={Array.from({ length: k + 1 }, (_, i) => i)} size={12} fg={k === 3 ? "var(--color-paper)" : "var(--color-ink)"} off={k === 3 ? "var(--color-ink20)" : "var(--color-ink3)"} label={`Nivel ${k} de 3`} />
+          <span className="llena inline-flex">
+            <Lvl
+              on={Array.from({ length: k + 1 }, (_, i) => i)}
+              size={12}
+              fg={dark ? "var(--color-paper)" : "var(--color-ink)"}
+              off={dark ? "var(--color-ink20)" : "var(--color-ink3)"}
+              label={`Nivel ${k} de 3`}
+            />
+          </span>
         </div>
         <div className="px-5 lg:px-8 pt-6 pb-8 grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
           <div>
-            <p className="text-cuerpo leading-[1.45]">
-              <b>Cómo se ve:</b> {justOut ? "" : `${LOOK[k]} `}{why}
-            </p>
-            <h3 className="ws text-figura mt-6">{doNow.head}</h3>
+            <p className="lead">{why}</p>
+            <Mono className="mt-7">Tu siguiente paso</Mono>
+            <ul className="mt-2">
+              {paso.plantillas.map((p) => (
+                <li key={p.code} className="ws text-figura">
+                  <Link href={p.href} className="group">
+                    <span className="lnk">
+                      {p.code} <Sc text={p.title} />
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="text-recuadro text-ink2 mt-1.5">{paso.capitulo} del libro</p>
             <p className="wt mt-3">
-              <Sc text={doNow.body} />
+              <Sc text={paso.body} />
             </p>
-            {project && (
-              <p className="text-recuadro leading-[1.45] mt-4">
-                Tu capítulo de referencia es el 13, la unidad económica, con el ejemplo de Rodrigo.{" "}
-                <Link href="/workbook/13-1" className="ul font-semibold">
-                  Ver la plantilla 13.1
-                </Link>
-              </p>
-            )}
-            {noCalc && k < 3 && !justOut && (
+            {avisoColchon && (
               <p className="text-recuadro leading-[1.45] mt-4 px-3 py-2.5 bg-warm">
-                Tu colchón todavía no cubre 6 meses o no lo has calculado. Antes de cualquier paso, llena la K.1 del kit: son 20 minutos.
+                Tu colchón no llega a 6 meses o no lo has calculado. Llena primero la K.1 del kit, son 20 minutos.
               </p>
             )}
-            <div className="flex flex-col sm:flex-row gap-3 mt-7">
-              {btn.ext ? (
+            <div className="mt-6">
+              {paso.boton === "agenda" ? (
                 <a href={agendaUrl()} target="_blank" rel="noopener noreferrer" className="btn">
-                  <span>{btn.label}</span>
+                  <Icon name="calendario" size={18} />
+                  <span>Agenda 30 minutos</span>
                   <span className="sr-only"> (se abre en otra pestaña)</span>
                 </a>
               ) : (
-                <Link href={btn.href} className="btn">
-                  {btn.label}
+                <Link href={paso.boton.href} className="btn">
+                  {paso.boton.label}
                 </Link>
               )}
-              <Link href="/#metodo" className="btn2">
-                Ver la escalera
-              </Link>
             </div>
             <p className="text-recuadro leading-[1.45] text-ink2 mt-5">Anota tu nivel con la fecha en «Tu nivel en la escalera», al comienzo del workbook.</p>
           </div>
           <div>
-            <div className="wm text-ink2">Señal para pasar al siguiente</div>
+            <div className="wm text-ink2">{k < 3 ? "Para pasar al nivel siguiente" : "Para sostener el nivel 3"}</div>
             <p className="text-h3 leading-[1.35] font-bold mt-2">{SIGNAL[k]}</p>
-            <div className="wm text-ink2 mt-5">En el libro</div>
-            <p className="text-cuerpo mt-1.5">{CHAPS[k]}</p>
-            <div className="wm text-ink2 mt-5 mb-1.5">Te acompaña</div>
+            <div className="wm text-ink2 mt-6 mb-1.5">Te acompaña</div>
             <ul>
-              {WITH[k].map((w) => (
+              {acompana.map((w) => (
                 <li key={w.name}>
-                  <Link href={w.href} className="group flex justify-between items-baseline gap-4 py-3 border-t border-ink">
-                    <span className="text-cuerpo font-bold">
+                  <Link href={w.href} className="group block py-3 border-t border-ink">
+                    <span className="block text-cuerpo font-bold leading-[1.3]">
                       <span className="lnk">{w.name}</span>
                     </span>
-                    <span className="wm text-ink2 text-right whitespace-nowrap">{w.meta}</span>
+                    <span className="wm block text-ink2 mt-1">{w.meta}</span>
                   </Link>
                 </li>
               ))}
@@ -253,14 +206,14 @@ function Result({ ans, onRestart, headRef }: { ans: number[]; onRestart: () => v
         </div>
       </div>
       <SendResult k={k} ans={ans} />
-      <button type="button" onClick={onRestart} className="ul self-start text-recuadro font-semibold">
+      <button type="button" onClick={onRestart} className="ul justify-self-start text-recuadro font-semibold">
         Volver a empezar el diagnóstico
       </button>
     </div>
   );
 }
 
-function SendResult({ k, ans }: { k: number; ans: number[] }) {
+function SendResult({ k, ans }: { k: number; ans: Respuestas }) {
   const id = useId();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -271,18 +224,7 @@ function SendResult({ k, ans }: { k: number; ans: number[] }) {
     if (!EMAIL_RE.test(email.trim())) return setState("invalid");
     const trampa = leerTrampa(e.currentTarget);
     setState("sending");
-    const r = await enviarRegistro(
-      "diagnostico",
-      {
-        nombre: name.trim(),
-        correo: email.trim(),
-        nivel: `${k}: ${LEVELS[k]}`,
-        situacion: QS[0].options[ans[0]],
-        cobertura: QS[3].options[ans[3]],
-        colchon: QS[4].options[ans[4]],
-      },
-      trampa
-    );
+    const r = await enviarRegistro("diagnostico", { nombre: name.trim(), correo: email.trim(), ...registroDe(k, ans) }, trampa);
     setState(r.ok ? "ok" : "error");
   }
 
@@ -317,7 +259,7 @@ function SendResult({ k, ans }: { k: number; ans: number[] }) {
               aria-invalid={state === "invalid"}
             />
           </div>
-          <button type="submit" className="btn" disabled={state === "sending"}>
+          <button type="submit" className="btn2" disabled={state === "sending"}>
             {state === "sending" ? "Enviando..." : "Enviar"}
           </button>
         </form>
@@ -334,9 +276,8 @@ function SendResult({ k, ans }: { k: number; ans: number[] }) {
           </Aviso>
         )}
       </div>
-      <p className="text-recuadro text-ink2 mt-3">
-        <Jn parts={["Sin costo", "Te das de baja respondiendo «baja»"]} />
-      </p>
+      <PrivacidadLinea className="text-ink2 mt-3" />
     </div>
   );
 }
+
