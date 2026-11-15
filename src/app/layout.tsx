@@ -1,12 +1,33 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Source_Serif_4, JetBrains_Mono, Caveat } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { SITE_URL, EMAIL } from "@/content/sitio";
 
-const archivo = Archivo({ variable: "--font-archivo", subsets: ["latin"], axes: ["wdth"], display: "swap" });
-const serif = Source_Serif_4({ variable: "--font-source-serif", subsets: ["latin"], axes: ["opsz"], style: ["normal", "italic"], display: "swap" });
-const mono = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"], weight: ["400", "500", "700"], display: "swap" });
-const hand = Caveat({ variable: "--font-caveat", subsets: ["latin"], display: "swap" });
+// Fuentes variables incluidas en el repo (src/app/fonts, licencia OFL): el build no depende de Google Fonts.
+const archivo = localFont({
+  variable: "--font-archivo",
+  src: [{ path: "./fonts/archivo-latin-wdth-normal.woff2", weight: "100 900", style: "normal" }],
+  declarations: [{ prop: "font-stretch", value: "62% 125%" }],
+  display: "swap",
+});
+const serif = localFont({
+  variable: "--font-source-serif",
+  src: [
+    { path: "./fonts/source-serif-4-latin-opsz-normal.woff2", weight: "200 900", style: "normal" },
+    { path: "./fonts/source-serif-4-latin-opsz-italic.woff2", weight: "200 900", style: "italic" },
+  ],
+  display: "swap",
+});
+const mono = localFont({
+  variable: "--font-jetbrains",
+  src: [{ path: "./fonts/jetbrains-mono-latin-wght-normal.woff2", weight: "100 800", style: "normal" }],
+  display: "swap",
+});
+const hand = localFont({
+  variable: "--font-caveat",
+  src: [{ path: "./fonts/caveat-latin-wght-normal.woff2", weight: "400 700", style: "normal" }],
+  display: "swap",
+});
 
 const DESC =
   "Future Founders acompaña a gerentes, directores y VP de Latinoamérica a fraccionar su trabajo en roles parciales, uno a uno, hasta que sus ingresos propios cubren su costo de vida.";
