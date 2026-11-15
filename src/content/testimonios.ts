@@ -1,8 +1,11 @@
-// Reseñas de clientes que muestra el carrusel de la home.
+// Reseñas de participantes para la portada.
 //
-// IMPORTANTE: estas reseñas son DE EJEMPLO. Mientras `ejemplo` sea true, cada tarjeta
-// muestra el rótulo «Testimonio de ejemplo». Cuando tengas reseñas reales (con permiso
-// escrito de cada persona), reemplaza este arreglo y pon `ejemplo: false` en cada una.
+// La sección de reseñas está APAGADA: solo aparece cuando `TESTIMONIOS` tiene al menos una
+// reseña real, con `ejemplo: false` y la fecha del permiso escrito en `permiso`.
+// Pasos para activarla: PENDIENTES-WEB.md, bloque «Cómo activar las reseñas».
+//
+// `EJEMPLOS_DE_FORMATO` no se muestra en ninguna página. Son textos inventados que sirven solo
+// como guía de largo y tono para pedir y editar las reseñas reales. No copiarlos a `TESTIMONIOS`.
 
 export type Testimonio = {
   nombre: string;
@@ -12,10 +15,17 @@ export type Testimonio = {
   cita: string;
   /** Programa o recurso que usó (opcional). */
   programa?: string;
+  /** true en los textos de muestra; una reseña con true nunca se muestra. */
   ejemplo: boolean;
+  /** Fecha del permiso escrito de la persona para publicar su reseña (por ejemplo «2026-12-03»). Sin permiso no se muestra. */
+  permiso: string;
 };
 
-export const TESTIMONIOS: Testimonio[] = [
+/** Reseñas reales con permiso. Vacío: la sección no aparece. */
+export const TESTIMONIOS: Testimonio[] = [];
+
+/** Solo guía de formato. Inventadas: no se publican. */
+export const EJEMPLOS_DE_FORMATO: Testimonio[] = [
   {
     nombre: "Patricia Salazar",
     cargo: "Gerenta de Finanzas",
@@ -23,6 +33,7 @@ export const TESTIMONIOS: Testimonio[] = [
     cita: "Llené la K.1 un domingo por la tarde. Fue la primera vez que vi en una sola cifra cuántos meses aguanta mi casa sin mi sueldo.",
     programa: "Kit «Plan de salida»",
     ejemplo: true,
+    permiso: "",
   },
   {
     nombre: "Andrés Mejía",
@@ -31,6 +42,7 @@ export const TESTIMONIOS: Testimonio[] = [
     cita: "Antes de firmar mi salida revisé la liquidación con la plantilla del kit y llevé dos preguntas concretas a mi abogado.",
     programa: "Kit «Plan de salida»",
     ejemplo: true,
+    permiso: "",
   },
   {
     nombre: "Mariana Treviño",
@@ -39,6 +51,7 @@ export const TESTIMONIOS: Testimonio[] = [
     cita: "El taller me obligó a escribir mi oferta en una página. Mi primera versión tenía cuatro; la que le mandé a un cliente, una.",
     programa: "Taller «Tu primer rol parcial»",
     ejemplo: true,
+    permiso: "",
   },
   {
     nombre: "Felipe Rojas",
@@ -47,6 +60,7 @@ export const TESTIMONIOS: Testimonio[] = [
     cita: "Lo que más me sirvió fue preparar la conversación con mi empleador. Pedí la autorización por escrito y me la dieron en dos semanas.",
     programa: "Programa «Primer Mandato»",
     ejemplo: true,
+    permiso: "",
   },
   {
     nombre: "Lucía Fernández",
@@ -55,6 +69,7 @@ export const TESTIMONIOS: Testimonio[] = [
     cita: "En el grupo escuché a otros ejecutivos ponerle precio a su trabajo. Salí con un rango para el mío y con dos nombres a quienes llamar.",
     programa: "Mastermind «Portafolio»",
     ejemplo: true,
+    permiso: "",
   },
   {
     nombre: "Gonzalo Paredes",
@@ -63,6 +78,7 @@ export const TESTIMONIOS: Testimonio[] = [
     cita: "Nadie me pidió renunciar. Sigo en mi cargo y tengo anotada la cifra que tendría que ver tres meses seguidos antes de pensar en salir.",
     programa: "Doble Agente",
     ejemplo: true,
+    permiso: "",
   },
   {
     nombre: "Carolina Vega",
@@ -71,5 +87,9 @@ export const TESTIMONIOS: Testimonio[] = [
     cita: "En las sesiones armamos mi calendario de las primeras cuatro semanas después de salir. Llegaba a cada reunión con la plantilla llena.",
     programa: "Sesiones individuales de transición",
     ejemplo: true,
+    permiso: "",
   },
 ];
+
+/** Las reseñas que se pueden publicar: reales y con permiso. */
+export const RESENAS_PUBLICABLES = (items: Testimonio[]) => items.filter((t) => !t.ejemplo && t.permiso.trim() !== "");

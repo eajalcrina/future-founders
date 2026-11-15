@@ -31,7 +31,7 @@ export default function ActualizacionesPage() {
       </section>
 
       {ACTUALIZACIONES.map((c) => (
-        <section key={c.id} id={c.id} className="border-t border-ink scroll-mt-4" aria-labelledby={`${c.id}-h`}>
+        <section key={c.id} id={c.id} className="border-t border-ink" aria-labelledby={`${c.id}-h`}>
           <div className="wrap py-12 lg:py-[72px]">
             <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
               <h2 id={`${c.id}-h`} className="wh2 text-display-md">

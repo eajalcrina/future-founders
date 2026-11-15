@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import PlantillaCalc from "@/components/site/PlantillaCalc";
 import RunwayCalc from "@/components/site/RunwayCalc";
-import { Hero as HeroHead, LinkArrow, Mono, Nota, Sc } from "@/components/site/ui";
+import { Hero as HeroHead, LinkArrow, Mono, Sc } from "@/components/site/ui";
 import { PLANTILLAS, PARTES, type Plantilla } from "@/content/workbook";
 import { allWorkbookIds, kindLabel, partTemplates, timeLabel } from "@/content/workbook-util";
 
@@ -112,7 +112,7 @@ function TemplatePage({ p }: { p: Plantilla }) {
       <section className="border-t border-ink">
         <div className="wrap py-12 lg:py-[88px] grid gap-10 lg:gap-24 lg:grid-cols-[minmax(0,1fr)_minmax(0,480px)] items-start">
           {/* La columna más corta queda fija al recorrer, para que no quede un vacío largo junto a la otra */}
-          <div className={`rv ${hasCalc ? "lg:sticky lg:top-6" : ""}`}>
+          <div className={`rv ${hasCalc ? "lg:sticky lg:top-[calc(var(--header-h)+env(safe-area-inset-top)+24px)]" : ""}`}>
             <Mono>Para qué sirve</Mono>
             <p className="ws text-figura mt-3">
               <Sc text={p.purpose ?? p.intro ?? ""} />
@@ -193,7 +193,7 @@ function TemplatePage({ p }: { p: Plantilla }) {
               </>
             )}
           </div>
-          <aside className={`grid gap-5 ${hasCalc ? "" : "lg:sticky lg:top-6"}`}>
+          <aside className={`grid gap-5 ${hasCalc ? "" : "lg:sticky lg:top-[calc(var(--header-h)+env(safe-area-inset-top)+24px)]"}`}>
             {hasCalc && p.calc && (
               <PlantillaCalc
                 id={p.id}
@@ -229,7 +229,7 @@ function TemplatePage({ p }: { p: Plantilla }) {
       </section>
 
       {p.id === "k1" && (
-        <section id="calculadora" className="border-t border-ink scroll-mt-4" aria-label="Calculadora en línea de la K.1">
+        <section id="calculadora" className="border-t border-ink" aria-label="Calculadora en línea de la K.1">
           <div className="wrap py-12 lg:py-[88px]">
             <RunwayCalc />
           </div>
@@ -267,9 +267,6 @@ function TemplatePage({ p }: { p: Plantilla }) {
               </Link>
             )}
           </div>
-        </div>
-        <div className="wrap pb-10">
-          <Nota>Las plantillas te ayudan a ordenar tus números. No son asesoría legal, tributaria ni financiera.</Nota>
         </div>
       </nav>
     </>

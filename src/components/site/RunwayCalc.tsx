@@ -185,7 +185,7 @@ export default function RunwayCalc() {
                 <div className="text-recuadro text-ink2 mt-1.5">Meses que vives sin sueldo</div>
               </div>
               <output htmlFor={`${id}-a ${id}-b`} aria-live="polite" className="num text-cifra whitespace-nowrap">
-                {runway !== null ? fmtNum(runway, 1) : "–"}
+                {runway !== null ? fmtNum(runway, 1) : <span className="text-ink3">{fmtNum(0, 1)}</span>}
                 <span className="wh2 text-h2 ml-2">meses</span>
               </output>
             </div>

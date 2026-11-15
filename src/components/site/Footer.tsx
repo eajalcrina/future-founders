@@ -1,18 +1,19 @@
 import Link from "next/link";
 import Logo from "./Logo";
-import { EMAIL, LEGAL, WHATSAPP_LABEL, whatsappUrl } from "@/content/sitio";
+import { Jn } from "./ui";
+import { COPYRIGHT, EMAIL, INSTAGRAM_URL, LEGAL, WHATSAPP_LABEL, whatsappUrl } from "@/content/sitio";
 
 type L = { label: string; href: string; ext?: boolean };
 const COLS: { title: string; links: L[] }[] = [
   { title: "El método", links: [{ label: "La escalera", href: "/#metodo" }, { label: "Para quién es", href: "/#para-quien" }, { label: "Programas", href: "/programas" }, { label: "Nosotros", href: "/#nosotros" }] },
-  { title: "El libro", links: [{ label: "Doble Agente", href: "/libro" }, { label: "El workbook", href: "/workbook" }, { label: "Dónde comprar", href: "/libro#formatos" }] },
+  { title: "El libro", links: [{ label: "Doble Agente", href: "/libro" }, { label: "El método en 21 ideas", href: "/libro#metodo" }, { label: "El workbook", href: "/workbook" }, { label: "Dónde comprar", href: "/libro#formatos" }] },
   { title: "Recursos", links: [{ label: "Kit «Plan de salida»", href: "/kit" }, { label: "Diagnóstico de nivel", href: "/diagnostico" }, { label: "Calculadora de runway", href: "/kit#calculadora" }, { label: "Valores del año", href: "/actualizaciones" }] },
   {
     title: "Contacto",
     links: [
       { label: EMAIL, href: `mailto:${EMAIL}`, ext: true },
       { label: `WhatsApp ${WHATSAPP_LABEL}`, href: whatsappUrl("Hola, escribo desde futurefounders.pe."), ext: true },
-      { label: "LinkedIn", href: "https://www.linkedin.com/in/eddieajalcrina/", ext: true },
+      { label: "Instagram", href: INSTAGRAM_URL, ext: true },
     ],
   },
 ];
@@ -52,13 +53,20 @@ export default function Footer() {
             ))}
           </div>
         </div>
-        <div className="mt-10 lg:mt-14 pt-4 border-t border-ink flex flex-col lg:flex-row lg:justify-between gap-3 lg:gap-10 text-recuadro text-ink2">
-          <p>© 2026 Future Founders. {LEGAL}</p>
-          <p className="whitespace-nowrap">
-            <a className="lnk" href={`mailto:${EMAIL}?subject=Pol%C3%ADtica%20de%20privacidad`}>Política de privacidad</a>
-            <span className="vr" aria-hidden="true" />
-            <a className="lnk" href={`mailto:${EMAIL}?subject=T%C3%A9rminos%20y%20condiciones`}>Términos y condiciones</a>
+        <div className="mt-10 lg:mt-14 pt-4 border-t border-ink grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-x-10 text-recuadro text-ink2">
+          <p className="text-ink">
+            <Jn parts={COPYRIGHT} />
           </p>
+          <p className="lg:row-span-2 lg:text-right">
+            <Link className="lnk" href="/privacidad">
+              Privacidad
+            </Link>
+            <span className="vr" aria-hidden="true" />
+            <Link className="lnk" href="/terminos">
+              Términos
+            </Link>
+          </p>
+          <p>{LEGAL}</p>
         </div>
       </div>
     </footer>

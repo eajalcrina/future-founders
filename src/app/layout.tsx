@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { SITE_URL, EMAIL } from "@/content/sitio";
+import { SITE_URL, EMAIL, FOUNDERS, INSTAGRAM_URL } from "@/content/sitio";
 
 // Fuentes variables incluidas en el repo (src/app/fonts, licencia OFL): el build no depende de Google Fonts.
 const archivo = localFont({
@@ -56,23 +56,23 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: "#F6F6F4",
   colorScheme: "light",
+  // el encabezado fijo se extiende bajo la muesca del celular y suma el área segura (env(safe-area-inset-top))
+  viewportFit: "cover",
 };
 
 const ORG = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "Future Founders",
+  legalName: "Soluciones Regenerativas LLC",
   url: SITE_URL,
   logo: `${SITE_URL}/logo/logo-l4.svg`,
   email: EMAIL,
   description: DESC,
   areaServed: "Latinoamérica",
-  founder: [
-    { "@type": "Person", name: "Eddie Ajalcriña", jobTitle: "CEO y cofundador" },
-    { "@type": "Person", name: "Lorenzo Ortiz", jobTitle: "COO y cofundador" },
-  ],
+  founder: FOUNDERS.map((f) => ({ "@type": "Person", name: f.name, jobTitle: f.role, url: f.webUrl, sameAs: [f.webUrl, f.linkedin] })),
   contactPoint: [{ "@type": "ContactPoint", telephone: "+51-989-338-401", contactType: "customer service", availableLanguage: "es" }],
-  sameAs: ["https://www.linkedin.com/in/eddieajalcrina/", "https://www.linkedin.com/in/lorenzoortiz/"],
+  sameAs: [INSTAGRAM_URL],
 };
 
 // Marca .js antes de pintar para que las entradas sutiles solo existan con JavaScript.

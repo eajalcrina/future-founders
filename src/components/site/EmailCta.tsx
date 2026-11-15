@@ -1,12 +1,13 @@
 "use client";
 
 import { useId, useState } from "react";
-import { sendLead, EMAIL_RE } from "@/lib/leads";
+import { enviarRegistro, leerTrampa, EMAIL_RE } from "@/lib/registro";
 import { whatsappUrl } from "@/content/sitio";
-import { Aviso } from "./ui";
+import { Aviso, PrivacidadLinea } from "./ui";
+import Trampa from "./Trampa";
 
 /** Formulario de correo de la llamada final (sobre tinta). Pide el kit «Plan de salida». */
-export default function EmailCta({ button = "Recibir el kit", source = "Kit Plan de salida" }: { button?: string; source?: string }) {
+export default function EmailCta({ button = "Recibir el kit" }: { button?: string }) {
   const id = useId();
   const [email, setEmail] = useState("");
   const [state, setState] = useState<"idle" | "sending" | "ok" | "error" | "invalid">("idle");
@@ -17,8 +18,9 @@ export default function EmailCta({ button = "Recibir el kit", source = "Kit Plan
       setState("invalid");
       return;
     }
+    const trampa = leerTrampa(e.currentTarget);
     setState("sending");
-    const r = await sendLead({ email: email.trim(), archetype: source });
+    const r = await enviarRegistro("kit", { origen: `Cierre de página (${window.location.pathname})`, correo: email.trim() }, trampa);
     setState(r.ok ? "ok" : "error");
   }
 
@@ -31,7 +33,8 @@ export default function EmailCta({ button = "Recibir el kit", source = "Kit Plan
     );
 
   return (
-    <form onSubmit={onSubmit} noValidate aria-describedby={`${id}-help`}>
+    <form onSubmit={onSubmit} noValidate aria-describedby={`${id}-help`} className="relative">
+      <Trampa />
       <label htmlFor={`${id}-email`} className="wm block text-ink20 mb-2">
         Tu correo
       </label>
@@ -67,9 +70,7 @@ export default function EmailCta({ button = "Recibir el kit", source = "Kit Plan
           </Aviso>
         )}
       </div>
-      <p id={`${id}-help`} className="text-recuadro leading-[1.45] text-ink20 mt-3.5">
-        Te enviamos el kit a este correo. Puedes darte de baja con un clic.
-      </p>
+      <PrivacidadLinea id={`${id}-help`} className="text-ink20 mt-3.5" />
     </form>
   );
 }

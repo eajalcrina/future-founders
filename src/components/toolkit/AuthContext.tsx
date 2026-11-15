@@ -1,6 +1,5 @@
 "use client";
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { supabase } from "@/lib/supabase";
 
 export interface ToolkitUser {
   id: string;
@@ -32,16 +31,8 @@ interface StoredUser extends ToolkitUser {
 const STORAGE_KEY = "ff_toolkit_user";
 const USERS_KEY = "ff_toolkit_users";
 
+// El toolkit está retirado (/toolkit redirige a /workbook): los usuarios quedan solo en este navegador.
 const AuthContext = createContext<AuthContextValue | null>(null);
-
-/** Sync a user profile to Supabase (upsert by email, fire-and-forget). */
-async function syncUserToSupabase(user: ToolkitUser) {
-  if (!supabase) return;
-  await supabase.from("toolkit_users").upsert(
-    { id: user.id, email: user.email, name: user.name, role: user.role, company: user.company },
-    { onConflict: "email" }
-  );
-}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<ToolkitUser | null>(null);
@@ -79,7 +70,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     void _p;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(publicUser));
     setUser(publicUser);
-    syncUserToSupabase(publicUser).catch(() => {});
     return true;
   }
 
@@ -91,7 +81,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     void _p;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(publicUser));
     setUser(publicUser);
-    syncUserToSupabase(publicUser).catch(() => {});
     return true;
   }
 

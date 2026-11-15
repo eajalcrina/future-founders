@@ -10,7 +10,7 @@ export type Programa = {
   desc: string;
   format: string;
   forWho: string;
-  cta: "Postular" | "Ver fechas" | "Agenda 30 minutos" | "Conversemos";
+  cta: "Postular" | "Ver fechas" | "Agenda 30 minutos";
 };
 
 export const PROGRAMAS: Programa[] = [
@@ -67,6 +67,6 @@ export const PROGRAMAS: Programa[] = [
     desc: "Convertimos tu portafolio en una firma o un producto, junto a ti, en un sprint de 90 días.",
     format: "Sprint de 90 días",
     forWho: "Vives de tu portafolio y quieres que deje de depender solo de tus horas.",
-    cta: "Conversemos",
+    cta: "Agenda 30 minutos",
   },
 ];

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useMedia } from "@/lib/useMedia";
-import type { Testimonio } from "@/content/testimonios";
+import { RESENAS_PUBLICABLES, type Testimonio } from "@/content/testimonios";
 
 const INTERVAL = 6500;
 
@@ -13,10 +13,13 @@ function useVisible() {
 }
 
 /**
- * Carrusel de reseñas: avanza solo, se pausa al pasar el puntero o al enfocar,
- * tiene controles con nombre y no se mueve solo con prefers-reduced-motion.
+ * Carrusel de reseñas. No rota solo: el botón de reproducir lo activa, se pausa al pasar
+ * el puntero o al enfocar y queda quieto con prefers-reduced-motion. Filtra por su cuenta
+ * y no pinta nada si no hay reseñas reales con permiso. Si todas caben en pantalla (una a tres
+ * en escritorio) se muestran como tarjetas fijas, sin botones ni puntos.
  */
-export default function Testimonials({ items }: { items: Testimonio[] }) {
+export default function Testimonials({ items: todas }: { items: Testimonio[] }) {
+  const items = RESENAS_PUBLICABLES(todas);
   const visible = useVisible();
   const max = Math.max(0, items.length - visible);
   const [raw, setI] = useState(0);
@@ -39,11 +42,14 @@ export default function Testimonials({ items }: { items: Testimonio[] }) {
   }, [running, max]);
 
   const pages = max + 1;
+  const fijas = pages === 1;
+
+  if (items.length === 0) return null;
 
   return (
     <section
       ref={root}
-      aria-roledescription="carrusel"
+      aria-roledescription={fijas ? undefined : "carrusel"}
       aria-label="Reseñas de participantes"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
@@ -52,10 +58,8 @@ export default function Testimonials({ items }: { items: Testimonio[] }) {
         if (!root.current?.contains(e.relatedTarget as Node)) setFocus(false);
       }}
     >
-      <div className="flex items-center justify-between gap-4 mb-5">
-        <h3 className="wm text-ink2" style={{ fontWeight: 400 }}>
-          Lo que dicen quienes pasaron por el método
-        </h3>
+      {!fijas && (
+      <div className="flex items-center justify-end gap-4 mb-5">
         <div className="flex items-center gap-2">
           <button type="button" className="tc" onClick={() => setPlaying(!autoplay)} aria-label={autoplay ? "Pausar el avance automático" : "Reanudar el avance automático"}>
             {autoplay ? (
@@ -72,6 +76,7 @@ export default function Testimonials({ items }: { items: Testimonio[] }) {
           </button>
         </div>
       </div>
+      )}
 
       <div className="overflow-hidden">
         <ul
@@ -88,7 +93,7 @@ export default function Testimonials({ items }: { items: Testimonio[] }) {
               <li
                 key={t.nombre}
                 role="group"
-                aria-roledescription="diapositiva"
+                aria-roledescription={fijas ? undefined : "diapositiva"}
                 aria-label={`${k + 1} de ${items.length}`}
                 aria-hidden={!shown}
                 inert={!shown}
@@ -96,11 +101,6 @@ export default function Testimonials({ items }: { items: Testimonio[] }) {
                 style={{ width: `${100 / visible}%` }}
               >
                 <figure className="border border-ink20 h-full bg-paper p-6 lg:p-7 flex flex-col m-0">
-                  {t.ejemplo && (
-                    <span className="wm self-start px-2 py-1 mb-4 text-ink border border-dashed border-ink2">
-                      Testimonio de ejemplo
-                    </span>
-                  )}
                   <blockquote className="wt m-0 mb-5">
                     <p>«{t.cita}»</p>
                   </blockquote>
@@ -118,6 +118,7 @@ export default function Testimonials({ items }: { items: Testimonio[] }) {
         </ul>
       </div>
 
+      {!fijas && (
       <div className="flex gap-2 mt-5" role="group" aria-label="Elegir reseña">
         {Array.from({ length: pages }, (_, p) => (
           <button
@@ -132,6 +133,7 @@ export default function Testimonials({ items }: { items: Testimonio[] }) {
           </button>
         ))}
       </div>
+      )}
     </section>
   );
 }

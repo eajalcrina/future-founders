@@ -1,41 +1,51 @@
 import { AMAZON_URL, CHECKOUT_URL, CHECKOUT_WHATSAPP } from "@/content/sitio";
+import { MarcaLogo } from "./ui";
 
-/** Botones de compra del libro. La compra directa usa NEXT_PUBLIC_CHECKOUT_URL o, si no existe, WhatsApp. */
+/** El PDF se paga con Mercado Pago (NEXT_PUBLIC_CHECKOUT_URL). Mientras no esté definida, la compra se coordina por WhatsApp. */
 export function checkoutHref() {
   return CHECKOUT_URL || CHECKOUT_WHATSAPP;
 }
 
-function Ext({ href, className, children }: { href: string; className: string; children: React.ReactNode }) {
+/** Botón de Amazon: «Comprar en» y el logotipo oficial a una tinta. */
+export function AmazonBtn({ className = "" }: { className?: string }) {
   return (
-    <a href={href} className={className} target="_blank" rel="noopener noreferrer">
-      <span>{children}</span>
-      <span className="sr-only"> (se abre en otra pestaña)</span>
+    <a href={AMAZON_URL} target="_blank" rel="noopener noreferrer" className={`btn-marca ${className}`} aria-label="Comprar en Amazon (se abre en otra pestaña)">
+      <span>Comprar en</span>
+      <MarcaLogo marca="amazon" />
     </a>
   );
 }
 
-/** Sobre papel, Amazon es el botón principal; sobre tinta, los dos son secundarios (el magenta queda para el kit). */
-export default function BookButtons({ variant = "paper", full = false }: { variant?: "paper" | "ink"; full?: boolean }) {
-  const w = full ? "w-full" : "w-full sm:w-auto";
-  if (variant === "ink")
+/**
+ * Botón del PDF. Con NEXT_PUBLIC_CHECKOUT_URL: «Pagar con», el isotipo oficial a una tinta y el nombre de la marca.
+ * Sin ella, el botón dice lo que hace («Pedir el PDF por WhatsApp»), sin el isotipo, para no prometer un pago que no ocurre.
+ */
+export function MercadoPagoBtn({ className = "" }: { className?: string }) {
+  if (!CHECKOUT_URL) {
     return (
-      <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
-        <Ext href={AMAZON_URL} className={`btn2 solid-paper ${w}`}>
-          Comprar en Amazon
-        </Ext>
-        <Ext href={checkoutHref()} className={`btn2 ${w}`}>
-          Comprar el PDF
-        </Ext>
-      </div>
+      <a href={CHECKOUT_WHATSAPP} target="_blank" rel="noopener noreferrer" className={`btn-marca ${className}`} aria-label="Pedir el PDF por WhatsApp (se abre en otra pestaña)">
+        <span>Pedir el PDF por WhatsApp</span>
+      </a>
     );
+  }
+  return (
+    <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" className={`btn-marca ${className}`} aria-label="Comprar el PDF con Mercado Pago (se abre en otra pestaña)">
+      <span>Pagar con</span>
+      <span className="marca-nombre">
+        <MarcaLogo marca="mercadopago" />
+        <span>Mercado Pago</span>
+      </span>
+    </a>
+  );
+}
+
+/** Los dos botones de compra pesan igual: papel con filete de tinta, Amazon primero. Sobre tinta van en papel sólido. */
+export default function BookButtons({ full = false }: { full?: boolean }) {
+  const w = full ? "w-full" : "w-full sm:w-auto";
   return (
     <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
-      <Ext href={AMAZON_URL} className={`btn ${w}`}>
-        Comprar en Amazon
-      </Ext>
-      <Ext href={checkoutHref()} className={`btn2 ${w}`}>
-        Comprar el PDF
-      </Ext>
+      <AmazonBtn className={w} />
+      <MercadoPagoBtn className={w} />
     </div>
   );
 }

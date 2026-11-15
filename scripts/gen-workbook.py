@@ -138,7 +138,7 @@ def calc_of(tid, wbt):
         for r in b.get("rows", []) if isinstance(b.get("rows"), list) and b.get("type") == "form" else []:
             if isinstance(r, dict) and ("calc" in r or "ej" in r):
                 row = {"field": r["field"], "label": re.sub(r"<[^>]+>", "", nb(r.get("label", "")))}
-                for k in ("tag", "dec", "ej", "unit", "note", "kind", "options", "from", "fmt", "opt", "show"):
+                for k in ("tag", "dec", "ej", "unit", "note", "kind", "options", "from", "fmt", "opt", "show", "meta"):
                     if k in r:
                         row[k] = r[k]
                 if "calc" in r:
@@ -295,6 +295,8 @@ s += """export type CalcRow = {
   opt?: boolean;
   /** Fila que solo se muestra dentro de una tabla. */
   hide?: boolean;
+  /** La meta que el libro marca en magenta (filete lateral y cifra en magenta de texto). Se marca en r2-overlay.json. */
+  meta?: boolean;
 };
 export type CalcBand = { band: string };
 export type CalcTable = { table: string; head: string[]; cells: string[][]; mark?: string };
@@ -334,6 +336,37 @@ s += "/** Niveles de la escalera en que se usa cada parte (regla R2: el nivel en
 s += "export const PART_LEVELS: Record<string, number[]> = " + json.dumps(PART_LEVELS) + ";\n\n"
 s += "export const PLANTILLAS: Plantilla[] = " + json.dumps(out, ensure_ascii=False, indent=1) + ";\n"
 open(OUT, "w", encoding="utf-8").write(s)
+
+# La meta en magenta: cada fila marcada en el overlay tiene que existir en su calculadora.
+for tid, spec in OV["calc"].items():
+    for r in spec.get("rows", []):
+        if r.get("meta") and not r.get("field"):
+            notes.append(f"{tid}: fila marcada como meta sin campo")
+for p in out:
+    for r in p["calc"] or []:
+        if r.get("meta") and r.get("expr"):
+            notes.append(f"{p['id']}.{r['field']}: la meta es una cuenta derivada; el libro marca la entrada")
+
+# «La idea» de cada capítulo (primer párrafo de la sección en src-md/cap-NN.md), para «El método en 21 ideas» de /libro.
+# El texto del libro no se edita aquí: si un párrafo no sirve para la web, el ajuste va en «ideasWeb» del overlay.
+ideas = {}
+for n in range(1, 22):
+    path = os.path.join(SRC, f"cap-{n:02d}.md")
+    txt = open(path, encoding="utf-8").read() if os.path.exists(path) else ""
+    m = re.search(r"^## La idea\s*\n+(.+?)(?:\n\s*\n|\Z)", txt, re.S | re.M)
+    if not m:
+        sys.exit(f"cap-{n:02d}.md: no encuentro la sección «La idea»")
+    ideas[n] = nb(clean_md(" ".join(m.group(1).split())))
+for k, v in OV.get("ideasWeb", {}).items():
+    ideas[int(k)] = v
+    notes.append(f"idea del cap. {k}: texto de la web (overlay)")
+IOUT = os.path.join(REPO, "src", "content", "ideas.ts")
+si = "// Generado por scripts/gen-workbook.py desde maqueta-v3/src-md/cap-NN.md, sección «La idea» (primer párrafo).\n"
+si += "// No lo edites a mano: corrige el libro (o «ideasWeb» en scripts/r2-overlay.json) y vuelve a correr el script.\n\n"
+si += "/** La idea de cada capítulo, por número de capítulo. */\n"
+si += "export const IDEAS: Record<number, string> = " + json.dumps(ideas, ensure_ascii=False, indent=1) + ";\n"
+open(IOUT, "w", encoding="utf-8").write(si)
+print(f"{len(ideas)} ideas → {os.path.relpath(IOUT, REPO)}")
 
 print(f"{len(out)} plantillas → {os.path.relpath(OUT, REPO)}")
 print("Calculadoras:", ", ".join(f"{k} ({v})" for k, v in src_calc.items()))

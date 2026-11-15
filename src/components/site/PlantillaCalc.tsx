@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { Aviso, CalcItem, CalcRow, CalcTable } from "@/content/workbook";
-import { computeAll, evaluate, exampleInputs, formatVal, isInput, isRow, type Val } from "@/lib/calc";
+import { VACIO, computeAll, evaluate, exampleInputs, formatVacio, formatVal, isInput, isRow, type Val } from "@/lib/calc";
 import { fmtNum, parseNum } from "@/lib/format";
 import { readSaved, writeSaved } from "@/lib/saved";
 import { Aviso as AvisoTxt, Icon, LinkArrow, Sc } from "./ui";
@@ -96,7 +96,7 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
     const lines = [["Fila", "Valor"].map(esc).join(";")];
     for (const r of calc.filter(isRow)) {
       const v = r.expr ? formatVal(r, vals[r.field]) : (raw[r.field] ?? "");
-      lines.push([esc(`${r.tag ? r.tag + " " : ""}${r.label}`), esc(v + (r.unit && v !== "–" ? ` ${r.unit}` : ""))].join(";"));
+      lines.push([esc(`${r.tag ? r.tag + " " : ""}${r.label}`), esc(v + (r.unit && v !== VACIO ? ` ${r.unit}` : ""))].join(";"));
     }
     const blob = new Blob(["﻿" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
     const a = document.createElement("a");
@@ -129,7 +129,7 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
       style: { height: 48 },
     };
     return (
-      <div key={r.field} className="py-3 border-t border-ink20 grid gap-2">
+      <div key={r.field} className={`py-3 border-t border-ink20 grid gap-2 ${r.meta ? "calc-meta" : ""}`}>
         <label htmlFor={fid} className="text-recuadro leading-[1.35] font-semibold flex gap-2">
           {r.tag && <Letra tag={r.tag} />}
           <span>
@@ -183,9 +183,9 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
           </div>
           {r.show && <div className="font-mono text-rotulo text-ink3 mt-1">= {r.show}</div>}
         </div>
-        <output className="num text-kpi whitespace-nowrap text-right">
-          {v}
-          {r.unit && v !== "–" && <span className="text-recuadro font-semibold font-stretch-normal tracking-normal ml-1.5">{r.unit}</span>}
+        <output className={`num text-kpi whitespace-nowrap text-right ${v === VACIO ? "text-ink3" : ""}`}>
+          {v === VACIO ? formatVacio(r) : v}
+          {r.unit && (v !== VACIO || formatVacio(r) !== "") && <span className="text-recuadro font-semibold font-stretch-normal tracking-normal ml-1.5">{r.unit}</span>}
         </output>
       </div>
     );
@@ -225,7 +225,7 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
                     const r = calc.find((x) => isRow(x) && x.field === c) as CalcRow | undefined;
                     return (
                       <td key={c} className="n font-semibold">
-                        {r ? formatVal(r, vals[c]) : "–"}
+                        {r ? formatVal(r, vals[c]) : VACIO}
                       </td>
                     );
                   })}
