@@ -4,7 +4,7 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 
 ## Bloquean la publicación definitiva
 
-- [ ] **Reseñas reales.** Desde el 15/11/2026 la sección de reseñas está oculta: la home solo la muestra cuando `src/content/testimonios.ts` tiene reseñas con `ejemplo: false`. Para activarla, reemplazar las 7 reseñas de ejemplo por reseñas reales con permiso escrito de cada persona y poner `ejemplo: false`; la sección aparece sola, sin rotación automática.
+- [ ] **Reseñas reales.** La sección de reseñas no se muestra (decisión del 15/11/2026, reafirmada el 16/11/2026): no se publican reseñas de ejemplo. El componente (`src/components/site/Testimonials.tsx`) y los datos (`src/content/testimonios.ts`) quedan listos para activarla. Pasos en «Cómo activar las reseñas», al final de este archivo.
 - [ ] **Enlace de Amazon.** Definir `NEXT_PUBLIC_AMAZON_URL` en el hosting. Sin ella, el botón lleva a la búsqueda del título en Amazon.
 - [ ] **Enlace de compra directa.** Elegir la pasarela y definir `NEXT_PUBLIC_CHECKOUT_URL`. Sin ella, el botón abre WhatsApp con el pedido del libro en PDF.
 - [ ] **Enlace de agenda.** Definir `NEXT_PUBLIC_AGENDA_URL` (Calendly, Cal.com u otro). Sin ella, «Agenda 30 minutos» y `/agenda` abren WhatsApp. El QR del cierre del libro apunta a `futurefounders.pe/agenda`, que redirige a esta agenda.
@@ -49,3 +49,11 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 - `src/content/workbook.ts` se genera con `npm run workbook -- <carpeta de maqueta-v3>` (o `MAQUETA_DIR=… npm run workbook`). No se edita a mano.
 - Las calculadoras, los niveles R2 y los «trae» que la maqueta todavía no tiene están en `scripts/r2-overlay.json`. Cuando `wb.json` trae `ej`, la cifra del libro reemplaza a la del overlay y el script lo avisa. Si el libro anota la cifra («7,0 y 4,9», «25 % (solo México)»), el ejemplo de la calculadora es la primera cifra y el texto completo queda en `ejLibro`. Los nombres de campo del overlay tienen que ser los de `wb.json`.
 - `npm test` carga el ejemplo del libro en cada calculadora y compara cada resultado con la cifra impresa. Si el manuscrito cambia una cifra, la prueba falla antes de publicar.
+
+## Cómo activar las reseñas
+
+1. Pedir a cada persona permiso escrito para publicar su reseña, con su nombre, cargo y ciudad. Guardar el permiso.
+2. En `src/content/testimonios.ts`, agregar cada reseña al arreglo `TESTIMONIOS` con `ejemplo: false` y la fecha del permiso en `permiso` (por ejemplo `"2026-12-03"`). Una reseña sin `permiso` o con `ejemplo: true` no se muestra.
+3. La cita va en palabras de la persona, corta, sin cifras de ingresos ni promesas. `EJEMPLOS_DE_FORMATO`, en el mismo archivo, sirve de guía de largo y tono: son textos inventados y no se copian a `TESTIMONIOS`.
+4. Con la primera reseña la sección aparece sola en la portada, entre «Nosotros» y el cierre, sobre papel cálido. El carrusel no rota solo; el botón de reproducir lo activa. Con una o dos reseñas conviene revisar si se ven mejor como tarjetas fijas.
+5. Correr `npm run lint`, `npm run build` y revisar la portada a 1440 y 390 px antes de publicar.

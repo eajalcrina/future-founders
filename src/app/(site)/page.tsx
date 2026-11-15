@@ -10,7 +10,7 @@ import FinalCta from "@/components/site/FinalCta";
 import BookButtons from "@/components/site/BookButtons";
 import { Arrow, CropMarks, Hero as HeroHead, Jn, JsonLd, Lectura, LinkArrow, Lvl, Mono, Nota, Sc, Scene, SecHead } from "@/components/site/ui";
 import { ARCH, ARCH_NOTE, FOUNDERS, HERO_TITLE, LEARN, LECTURA, LEVELS, PRODUCTS, SITE_URL, STATS } from "@/content/sitio";
-import { TESTIMONIOS } from "@/content/testimonios";
+import { RESENAS_PUBLICABLES, TESTIMONIOS } from "@/content/testimonios";
 
 export const metadata: Metadata = {
   title: { absolute: "Future Founders | Tu experiencia puede trabajar para más de una empresa" },
@@ -22,8 +22,8 @@ export const metadata: Metadata = {
 const FILL = ["var(--color-paper)", "var(--color-warm)", "var(--color-ink20)", "var(--color-ink)"];
 const TXT = ["var(--color-ink)", "var(--color-ink)", "var(--color-ink)", "var(--color-paper)"];
 
-/** Reseñas: la sección solo aparece cuando hay reseñas reales (ejemplo: false) en src/content/testimonios.ts. */
-const RESENAS = TESTIMONIOS.filter((t) => !t.ejemplo);
+/** Reseñas: la sección solo aparece cuando src/content/testimonios.ts tiene reseñas reales con permiso. */
+const RESENAS = RESENAS_PUBLICABLES(TESTIMONIOS);
 
 /** Lista de recursos y programas para los buscadores y asistentes (datos estructurados de la portada). */
 const LISTA_LD = {
@@ -356,7 +356,7 @@ function Founders() {
   );
 }
 
-/** Reseñas reales de participantes. Oculta mientras testimonios.ts solo tenga reseñas de ejemplo. */
+/** Reseñas reales de participantes. Oculta mientras TESTIMONIOS esté vacío. Al activarla va entre Nosotros y el cierre. */
 function Reviews() {
   if (RESENAS.length === 0) return null;
   return (
