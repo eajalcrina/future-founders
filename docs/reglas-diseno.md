@@ -1,6 +1,6 @@
 # Reglas de diseño de futurefounders.pe
 
-Estado: **en curso** (16/11/2026, ronda R5). Camino visual: el sistema de «Doble Agente», ronda R3. Referencia: el propio libro (PDF final de la R3).
+Estado: **publicado**. La ronda R5c (PR #5, commit 0493ca6) está en producción en futurefounders.pe; este documento se revisó contra la web en vivo. Camino visual: el sistema de «Doble Agente», ronda R3. Referencia: el propio libro (PDF final de la R3, `entregables/doble-agente-libro.pdf`).
 
 Público: ejecutivos de 38 a 55 años en Latinoamérica (gerentes, directores y VP). Tono: editorial, sobrio, con datos concretos; tuteo, solo español.
 
@@ -63,9 +63,15 @@ Fuente del sistema: `DESIGN-SYSTEM.md` y `tokens.css` de la R3 (carpeta `sistema
 - Cifras de la casa: son de Future Founders y suman la trayectoria de sus fundadores y la de los participantes de sus programas (nota `CIFRAS_NOTA` bajo las cifras, sin repetir el rótulo «Future Founders en cifras», que van justo después del héroe de la portada).
 - Bios de Eddie y Lorenzo: cargos «CEO y cofundador» y «COO y cofundador» (web anterior de Future Founders); el resto, solo con datos de eddieajalcrina.com y lorenzoortiz.co (comentario de fuente sobre `FOUNDERS`). Las bios completas viven una vez, en la portada (`/#nosotros`); /libro lleva la versión corta.
 - Nombres oficiales: Future Founders; Doble Agente; Kit «Plan de salida» (kit «Plan de salida» dentro de una oración); workbook; Diagnóstico de nivel; taller «Tu primer rol parcial», Primer Mandato, Portafolio, Sesiones individuales, Coconstrucción; niveles Salario, Primer rol parcial, Portafolio, Independencia.
-- Cifras: «USD 9.500», «25 %», punto de miles y coma decimal. Cifras de la casa que se mantienen: «155+ ejecutivos formados», «10+ empresas», «USD 20M+», «USD 1,5M+».
+- Cifras: «USD 9.500», «25 %», punto de miles y coma decimal. Cifras de la casa (R5c, `STATS` en `sitio.ts`): «155+ ejecutivos formados», «10+ empresas construidas», «USD 26M+ facturados» y «USD 2,7M+ capital levantado», siempre con `CIFRAS_NOTA`.
 - Los pares que se pueden buscar están en `docs/terminos.txt`. Los cambios solo de mayúsculas (Doble Agente, Primer Mandato, Diagnóstico de nivel) se revisan a mano, porque los scripts comparan sin distinguir mayúsculas.
 - Textos: tuteo, sin «·», sin exclamaciones, sin lenguaje de espías, sin punto final en titulares, botones ni rótulos. No se tocan cifras del libro. Las páginas legales describen lo que la web hace (texto base, pendiente de revisión legal).
+
+## 6 ter. El libro en la web
+- Mientras el libro no tenga ficha en Amazon (ASIN), la web no dice que está a la venta: el botón de Amazon se oculta o dice «Próximamente en Amazon». Hoy, sin `NEXT_PUBLIC_AMAZON_URL`, lleva a una búsqueda vacía (pendiente en `PENDIENTES-WEB.md`).
+- Ninguna versión completa del libro se sirve desde `public/`. Las muestras salen como imágenes o como PDF parcial; el libro entero solo se entrega después del pago.
+- Datos del libro decididos el 15/11/2026 para la publicación: editor Redesign Ventures S.A.C., con el sello Future Founders; primera edición (la «2.ª edición» del PDF R3 es el nombre interno de la versión del manuscrito). Hasta que la página legal del libro y la web lo reflejen, `/libro`, su JSON-LD y su imagen para compartir siguen diciendo «2.ª edición» (pendiente coordinado con la edición del libro).
+- Subtítulo: la cubierta lleva «El sutil arte de construir una empresa rentable sin abandonar el mundo corporativo» y «El método para ejecutivos con salario»; la portada interior y la página legal, solo la primera. La web usa la segunda. Falta decidir cuál es el subtítulo de catálogo (KDP, ISBN y Biblioteca Nacional); la otra queda como lema. Cuando se decida, se aplica en el héroe de /libro, `alternativeHeadline` del JSON-LD y `docs/terminos.txt`.
 
 ## 7. Decisiones del dueño
 - Congeladas el 15/11/2026:
@@ -130,9 +136,10 @@ Fuente del sistema: `DESIGN-SYSTEM.md` y `tokens.css` de la R3 (carpeta `sistema
 - Los valores de `origen` de `DownloadForm.tsx` y `EmailCta.tsx` («Página del kit», «Cierre de página») van a la columna «Origen» de la hoja de registros, no son textos visibles. Los campos de cada formulario están en `src/lib/registro.ts` y en `apps-script/Code.gs`, y se cambian en los dos.
 
 ## 10. Estado del rediseño
-- Ronda R5b, 16/11/2026: hallazgos de la revisión R5 (diff 214f3cb..4243531) que no eran decisión del dueño, sobre la misma rama y sin publicar. Capturas en `web-r5` (sobrescritas) y lámina `web-r5/antes-despues.png`.
-- Ronda R5 de la web, 16/11/2026: las 13 decisiones del dueño de la sección 7, sobre la rama `claude/clever-edison-pcwxrr`, sin publicar. Capturas antes y después en la carpeta `web-r5` del proyecto del libro.
-- Ronda R4 de la web, modo «una sola pasada», 15/11/2026. Rama `claude/clever-edison-pcwxrr`, sin publicar.
+- Ronda R5c, publicada: cifras de la casa nuevas, bios, entrega del PDF en 6 horas y ley peruana en privacidad y términos (commit 59dc08f), y formularios a Google Sheets con Apps Script (PR #5). Revisión de reglas contra la web en vivo: 15/11/2026.
+- Ronda R5b, 16/11/2026: hallazgos de la revisión R5 (diff 214f3cb..4243531) que no eran decisión del dueño; publicada con la R5c. Capturas en `web-r5` (sobrescritas) y lámina `web-r5/antes-despues.png`.
+- Ronda R5 de la web, 16/11/2026: las 13 decisiones del dueño de la sección 7, hechas en la rama `claude/clever-edison-pcwxrr` y publicadas con la R5c. Capturas antes y después en la carpeta `web-r5` del proyecto del libro.
+- Ronda R4 de la web, modo «una sola pasada», 15/11/2026. Rama `claude/clever-edison-pcwxrr`, publicada.
 - Cerrado: sistema de tokens, componentes base, todas las rutas (/, /libro, /kit, /diagnostico, /programas, /workbook, /workbook/[id], /actualizaciones, 404), logotipo y favicon en papel, imágenes para compartir.
-- Pendiente: ver `PENDIENTES-WEB.md` (enlaces de Amazon, Mercado Pago y Google Calendar; revisión legal; validación de bios y del diagnóstico).
+- Pendiente: ver `PENDIENTES-WEB.md` (enlaces de Amazon, Mercado Pago y Google Calendar; revisión legal; validación de bios y del diagnóstico; llms.txt, dominio canónico y JSON-LD completo del libro).
 - Capturas finales y lámina antes y después: carpeta `web-r4` del proyecto del libro.
