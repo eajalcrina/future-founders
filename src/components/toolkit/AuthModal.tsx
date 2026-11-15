@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "./AuthContext";
 import { TK } from "./theme";
@@ -329,7 +330,7 @@ export default function AuthModal() {
         </div>
 
         <div style={{ textAlign: "center", marginTop: 20 }}>
-          <a
+          <Link
             href="/"
             style={{
               fontSize: 12,
@@ -339,7 +340,7 @@ export default function AuthModal() {
             }}
           >
             ← Volver a futurefounders.pe
-          </a>
+          </Link>
         </div>
       </div>
     </div>

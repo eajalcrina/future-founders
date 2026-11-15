@@ -403,7 +403,7 @@ export function BookNote({ quote, reference }: { quote: string; reference?: stri
         Del libro · Doble Agente
       </div>
       <p style={{ fontSize: 13, color: TK.textSecondary, fontStyle: "italic", lineHeight: 1.6, fontFamily: TK.font, margin: 0 }}>
-        "{quote}"
+        &ldquo;{quote}&rdquo;
       </p>
       {reference && (
         <div style={{ fontSize: 12, color: TK.blue, fontWeight: 700, marginTop: 6, fontFamily: TK.fontBadge }}>

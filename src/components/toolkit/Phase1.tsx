@@ -1,5 +1,5 @@
 "use client";
-import { CalcCard, NumInput, SelectInput, ResultBox, BookNote, DiagRow } from "./CalcCard";
+import { CalcCard, NumInput, ResultBox, BookNote, DiagRow } from "./CalcCard";
 import { TK } from "./theme";
 import { usePhaseData } from "./usePhaseData";
 import { downloadPhase1Report } from "./phaseReports";
