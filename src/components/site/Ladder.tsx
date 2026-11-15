@@ -5,7 +5,8 @@ import { useState, type KeyboardEvent } from "react";
 import { LEVELS, LOOK, SIGNAL, CHAPS, DO_NOW, WITH, HERE } from "@/content/sitio";
 import { Figure, Jn, Lvl, Mono, Sc } from "./ui";
 
-const PAPER = "#F6F6F4", WARM = "#E6E4E0", INK = "#0C0C0D", INK2 = "#3D3D42", INK20 = "#C7C7C6", MAG = "#E6007E";
+// Colores de los tokens (globals.css). En el SVG van por la propiedad style, que admite variables.
+const PAPER = "var(--color-paper)", WARM = "var(--color-warm)", INK = "var(--color-ink)", INK2 = "var(--color-ink2)", INK3 = "var(--color-ink3)", INK20 = "var(--color-ink20)", MAG = "var(--color-mag)";
 const FILL = [PAPER, WARM, INK20, INK];
 const TXT = [INK, INK, INK, PAPER];
 
@@ -39,16 +40,16 @@ const CHLABELS: [number, number, string, string][] = [
 function Panel({ k, mobile }: { k: number; mobile?: boolean }) {
   const { head, body } = DO_NOW[k];
   const tag = (
-    <Mono color="var(--color-magt)">
+    <Mono>
       <Jn parts={[`Nivel ${k}`, LEVELS[k]]} />
     </Mono>
   );
   const sig = (
     <div>
       <div className="wm text-ink2">Señal para pasar al siguiente</div>
-      <p className="text-[19px] leading-[1.35] font-bold mt-2">{SIGNAL[k]}</p>
+      <p className="text-h3 leading-[1.35] font-bold mt-2">{SIGNAL[k]}</p>
       <div className="wm text-ink2 mt-[22px]">En el libro</div>
-      <p className="text-[17px] mt-1.5">{CHAPS[k]}</p>
+      <p className="text-cuerpo mt-1.5">{CHAPS[k]}</p>
     </div>
   );
   const items = (
@@ -58,7 +59,7 @@ function Panel({ k, mobile }: { k: number; mobile?: boolean }) {
         {WITH[k].map((w) => (
           <li key={w.name}>
             <Link href={w.href} className="group flex justify-between items-baseline gap-4 py-3 border-t border-ink">
-              <span className="text-[17px] font-bold">
+              <span className="text-cuerpo font-bold">
                 <span className="lnk">{w.name}</span>
               </span>
               <span className="wm text-ink2 text-right">{w.meta}</span>
@@ -66,8 +67,8 @@ function Panel({ k, mobile }: { k: number; mobile?: boolean }) {
           </li>
         ))}
       </ul>
-      <p className="text-[15px] leading-[1.45] mt-4 px-3 py-2.5" style={{ color: "var(--color-sald)", background: "var(--color-sal)", borderLeft: "2px solid var(--color-sald)" }}>
-        {HERE[k]}
+      <p className="bg-sage text-recuadro leading-[1.45] mt-4 px-3 pb-2.5">
+        <span className="filete-sup salvia block">{HERE[k]}</span>
       </p>
     </div>
   );
@@ -75,8 +76,8 @@ function Panel({ k, mobile }: { k: number; mobile?: boolean }) {
     return (
       <div className="xfade bg-warm px-5 pt-6 pb-[26px]">
         {tag}
-        <h3 className="ws text-[24px] mt-3">{head}</h3>
-        <p className="wt mt-3" style={{ fontSize: 17 }}>
+        <h3 className="ws text-figura mt-3">{head}</h3>
+        <p className="wt mt-3">
           <Sc text={body} />
         </p>
         <div className="mt-[22px]">{sig}</div>
@@ -87,8 +88,8 @@ function Panel({ k, mobile }: { k: number; mobile?: boolean }) {
     <div className="xfade bg-warm grid gap-10 xl:gap-14 grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1.2fr)] px-10 pt-9 pb-10">
       <div>
         {tag}
-        <h3 className="ws text-[30px] leading-[1.12] mt-3.5">{head}</h3>
-        <p className="wt mt-3.5" style={{ fontSize: 18 }}>
+        <h3 className="ws text-figura mt-3.5">{head}</h3>
+        <p className="wt mt-3.5">
           <Sc text={body} />
         </p>
       </div>
@@ -149,7 +150,7 @@ export default function Ladder() {
                 <span className="wm absolute" style={{ left: "6.1%", top: "18px", color: k === 3 ? INK20 : INK2, fontSize: "max(10px, 0.92cqw)" }}>
                   Nivel {k}
                 </span>
-                <span className="wh absolute whitespace-nowrap" style={{ left: "6.1%", top: "42px", fontSize: "2.6cqw" }}>
+                <span className="wh2 absolute whitespace-nowrap" style={{ left: "6.1%", top: "40px", fontSize: "2.6cqw" }}>
                   {LEVELS[k]}
                 </span>
               </button>
@@ -158,22 +159,22 @@ export default function Ladder() {
           <svg viewBox={`0 0 ${CW} ${SH}`} className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" aria-hidden="true">
             <defs>
               <mask id="route-mask" maskUnits="userSpaceOnUse" x="-20" y="-20" width={CW + 40} height={SH + 40}>
-                <path className="route-mask" d={ROUTE_ALL} fill="none" stroke="#fff" strokeWidth="8" pathLength={1} strokeDasharray="1 1" />
+                <path className="route-mask" d={ROUTE_ALL} fill="none" stroke="white" strokeWidth="8" pathLength={1} strokeDasharray="1 1" />
               </mask>
             </defs>
             <g mask="url(#route-mask)">
-              <path d={ROUTE_INK} fill="none" stroke={INK} strokeWidth="1.4" strokeDasharray="5 4" />
-              <path d={ROUTE_PAPER} fill="none" stroke={PAPER} strokeWidth="1.4" strokeDasharray="5 4" />
+              <path d={ROUTE_INK} fill="none" style={{ stroke: INK }} strokeWidth="1.3" strokeDasharray="4 3" />
+              <path d={ROUTE_PAPER} fill="none" style={{ stroke: PAPER }} strokeWidth="1.3" strokeDasharray="4 3" />
             </g>
             {STATIONS.map(([x, y], n) => {
               const dark = x >= XS[3];
-              return <circle key={n} cx={x} cy={y} r={n < 17 ? 2.6 : 4} fill={dark ? INK : PAPER} stroke={dark ? PAPER : INK} strokeWidth="1.3" />;
+              return <circle key={n} cx={x} cy={y} r={n < 17 ? 2.4 : 3.6} style={{ fill: dark ? INK : PAPER, stroke: dark ? PAPER : INK }} strokeWidth="1.2" />;
             })}
             <g className="flag" style={{ transformBox: "fill-box" }}>
-              <line x1={FX} y1={TOPS[3]} x2={FX} y2={TOPS[3] - 36} stroke={INK} strokeWidth="1.5" />
-              <path d={`M${FX} ${TOPS[3] - 36} L${FX + 28} ${TOPS[3] - 28} L${FX} ${TOPS[3] - 20}z`} fill={MAG} />
+              <line x1={FX} y1={TOPS[3]} x2={FX} y2={TOPS[3] - 36} style={{ stroke: INK }} strokeWidth="1.4" />
+              <path d={`M${FX} ${TOPS[3] - 36} L${FX + 28} ${TOPS[3] - 28} L${FX} ${TOPS[3] - 20}z`} style={{ fill: MAG }} />
             </g>
-            <line x1="-10" y1={BASE} x2={CW + 10} y2={BASE} stroke={INK} strokeWidth="1.5" />
+            <line x1="-10" y1={BASE} x2={CW + 10} y2={BASE} style={{ stroke: INK }} strokeWidth="1.5" />
           </svg>
           {CHLABELS.map(([x, y, t, c]) => (
             <span
@@ -212,7 +213,7 @@ export default function Ladder() {
           {LOOK.map((t, k) => (
             <div key={k} className="border-t border-ink pt-2.5 pr-5">
               <div className="wm text-ink2">Cómo se ve</div>
-              <p className="text-[16px] leading-[1.4] mt-1.5">{t}</p>
+              <p className="text-recuadro leading-[1.4] mt-1.5">{t}</p>
             </div>
           ))}
         </div>
@@ -226,11 +227,11 @@ export default function Ladder() {
         <svg viewBox="0 0 350 150" className="block w-full h-auto" aria-hidden="true">
           {[0, 1, 2, 3].map((k) => {
             const h = 34 + k * 30;
-            return <rect key={k} x={k * 87.5 + 0.5} y={148 - h} width={87.5 - (k === 3 ? 1 : 0)} height={h} fill={FILL[k]} stroke={INK} strokeWidth="1" />;
+            return <rect key={k} x={k * 87.5 + 0.5} y={148 - h} width={87.5 - (k === 3 ? 1 : 0)} height={h} style={{ fill: FILL[k], stroke: INK }} strokeWidth="1" />;
           })}
-          <line x1="0" y1="148.5" x2="350" y2="148.5" stroke={INK} strokeWidth="1.5" />
-          <line x1="326" y1="24" x2="326" y2="2" stroke={INK} strokeWidth="1.3" />
-          <path d="M326 2 L344 7 L326 12z" fill={MAG} />
+          <line x1="0" y1="148.5" x2="350" y2="148.5" style={{ stroke: INK }} strokeWidth="1.5" />
+          <line x1="326" y1="24" x2="326" y2="2" style={{ stroke: INK }} strokeWidth="1.4" />
+          <path d="M326 2 L344 7 L326 12z" style={{ fill: MAG }} />
         </svg>
         <div role="radiogroup" aria-label="Elige tu nivel en la escalera" className="mt-4">
           {[0, 1, 2, 3].map((k) => (
@@ -244,20 +245,20 @@ export default function Ladder() {
                 color: TXT[k],
                 border: `1px solid ${INK}`,
                 borderTop: k === 0 ? `1px solid ${INK}` : "none",
-                boxShadow: sel === k ? `inset 6px 0 0 ${MAG}` : undefined,
+                boxShadow: sel === k ? `inset 0 5px 0 ${MAG}` : undefined,
               }}
             >
-              <span className="wh text-[34px]">{k}</span>
+              <span className="num text-kpi">{k}</span>
               <span className="min-w-0">
                 <span className="wm block" style={{ color: k === 3 ? INK20 : INK2 }}>
                   Nivel {k}
                 </span>
-                <span className="block text-[19px] font-bold mt-0.5">{LEVELS[k]}</span>
-                <span className="block text-[14px] leading-[1.35] mt-1" style={{ color: k === 3 ? INK20 : INK2 }}>
+                <span className="block text-h3 font-bold mt-0.5">{LEVELS[k]}</span>
+                <span className="block text-recuadro leading-[1.35] mt-1" style={{ color: k === 3 ? INK20 : INK2 }}>
                   {LOOK[k]}
                 </span>
               </span>
-              <Lvl on={Array.from({ length: k + 1 }, (_, i) => i)} size={8} fg={k === 3 ? PAPER : INK} off={k === 3 ? INK20 : "#5E5E66"} />
+              <Lvl on={Array.from({ length: k + 1 }, (_, i) => i)} size={8} fg={k === 3 ? PAPER : INK} off={k === 3 ? INK20 : INK3} />
             </button>
           ))}
         </div>

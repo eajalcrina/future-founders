@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import PlantillaCalc from "@/components/site/PlantillaCalc";
 import RunwayCalc from "@/components/site/RunwayCalc";
-import { Arrow, Jn, Lines, Mono, Nota, Sc } from "@/components/site/ui";
+import { Hero as HeroHead, LinkArrow, Mono, Nota, Sc } from "@/components/site/ui";
 import { PLANTILLAS, PARTES, type Plantilla } from "@/content/workbook";
 import { allWorkbookIds, kindLabel, partTemplates, timeLabel } from "@/content/workbook-util";
 
@@ -40,9 +40,9 @@ function Meta({ items }: { items: [string, string][] }) {
   return (
     <dl className="grid grid-cols-2 lg:grid-cols-5 gap-x-6 gap-y-5 mt-8 lg:mt-10">
       {items.map(([k, v]) => (
-        <div key={k} className="border-t-2 border-ink pt-2.5">
+        <div key={k} className="border-t border-ink pt-2.5">
           <dt className="wm text-ink2">{k}</dt>
-          <dd className="m-0 text-[16px] lg:text-[17px] mt-1.5 leading-[1.35]">{v}</dd>
+          <dd className="m-0 text-cuerpo mt-1.5 leading-[1.35]">{v}</dd>
         </div>
       ))}
     </dl>
@@ -52,34 +52,31 @@ function Meta({ items }: { items: [string, string][] }) {
 function PartPage({ num }: { num: string }) {
   const items = partTemplates(num);
   return (
-    <section className="grain">
+    <section>
       <div className="wrap pt-10 pb-14 lg:pt-20 lg:pb-24">
-        <Mono color="var(--color-magt)">
-          <Jn parts={["Workbook", `Parte ${num}`]} />
-        </Mono>
-        <h1 className="wh lines mt-4 lg:mt-[22px] text-[56px] lg:text-[104px]">
-          <Lines text={PARTES[num]} />
-        </h1>
-        <p className="wt mt-5 max-w-[760px]">
+        <HeroHead label={["Workbook", `Parte ${num}`]} title={PARTES[num]} />
+        <p className="lead mt-5 lg:mt-7 max-w-[760px]">
           La Parte {num} tiene {items.length} capítulos y una plantilla por capítulo. Llénalas en orden, porque cada una usa datos de la anterior.
         </p>
         <ul className="mt-10 border-b border-ink">
           {items.map((p) => (
             <li key={p.id}>
               <Link href={`/workbook/${p.id}`} className="group grid grid-cols-[72px_minmax(0,1fr)_auto] lg:grid-cols-[96px_minmax(0,1fr)_minmax(0,1fr)_110px] gap-x-4 gap-y-1 items-baseline py-4 border-t border-ink">
-                <span className="wh text-[28px] lg:text-[32px]">{p.code}</span>
-                <span className="text-[17px] lg:text-[18px] font-bold">
+                <span className="num text-h2">{p.code}</span>
+                <span className="text-cuerpo font-bold">
                   <span className="lnk">{p.title}</span>
                 </span>
-                <span className="hidden lg:block text-[15px] text-ink2">{p.where}</span>
-                <span className="wm text-ink2 text-right">{timeLabel(p.time)}</span>
+                <span className="hidden lg:block text-recuadro text-ink2">{p.where}</span>
+                <Mono tone="gris" as="span" className="text-right">
+                  {timeLabel(p.time)}
+                </Mono>
               </Link>
             </li>
           ))}
         </ul>
-        <Link href="/workbook" className="ul inline-block mt-8 text-[16px] font-semibold">
+        <LinkArrow href="/workbook" className="mt-8 text-cuerpo">
           Ver todas las plantillas
-        </Link>
+        </LinkArrow>
       </div>
     </section>
   );
@@ -101,14 +98,9 @@ function TemplatePage({ p }: { p: Plantilla }) {
   const hasCalc = Boolean(p.calc) && p.id !== "k1";
   return (
     <>
-      <section className="grain">
+      <section>
         <div className="wrap pt-10 pb-12 lg:pt-20 lg:pb-[88px]">
-          <Mono color="var(--color-magt)">
-            <Jn parts={["Workbook", kindLabel(p), `Plantilla ${p.code}`]} />
-          </Mono>
-          <h1 className="wh lines mt-4 lg:mt-[22px] text-[48px] sm:text-[64px] lg:text-[96px] max-w-[1150px]">
-            <Lines text={p.title} />
-          </h1>
+          <HeroHead label={["Workbook", kindLabel(p), `Plantilla ${p.code}`]} title={p.title} className="max-w-[1150px]" />
           <Meta items={meta} />
         </div>
       </section>
@@ -116,32 +108,32 @@ function TemplatePage({ p }: { p: Plantilla }) {
       <section className="border-t border-ink">
         <div className="wrap py-12 lg:py-[88px] grid gap-10 lg:gap-24 lg:grid-cols-[minmax(0,1fr)_minmax(0,480px)] items-start">
           <div className="rv">
-            <div className="wm text-ink2">Para qué sirve</div>
-            <p className="ws text-[24px] lg:text-[30px] leading-[1.2] mt-3">
+            <Mono>Para qué sirve</Mono>
+            <p className="ws text-figura mt-3">
               <Sc text={p.purpose ?? p.intro ?? ""} />
             </p>
             {p.intro && p.purpose && (
               <>
-                <div className="wm text-ink2 mt-8">Antes de empezar</div>
+                <Mono className="mt-8">Antes de empezar</Mono>
                 <p className="wt mt-2.5">
                   <Sc text={p.intro} />
                 </p>
               </>
             )}
             {p.trae && (
-              <p className="text-[16px] mt-4 px-3 py-2.5 bg-warm inline-block">
+              <p className="text-recuadro mt-4 px-3 py-2.5 bg-warm inline-block">
                 <Sc text={p.trae} />
               </p>
             )}
             {p.head.map((h) => (
               <div key={h.label} className="mt-8">
-                <div className="wm text-ink2">Arriba de la hoja</div>
-                <p className="text-[17px] leading-[1.45] mt-2.5">
+                <Mono>Arriba de la hoja</Mono>
+                <p className="text-cuerpo leading-[1.45] mt-2.5">
                   <Sc text={`${h.label}, cada dato en su campo:`} />
                 </p>
                 <ul className="grid grid-cols-3 gap-3 lg:gap-5 mt-3 max-w-[560px]">
                   {h.parts.map((x) => (
-                    <li key={x.field} className="border-b-2 border-ink pb-7">
+                    <li key={x.field} className="border-b border-ink3 pb-7">
                       <span className="wm text-ink2">{x.label}</span>
                     </li>
                   ))}
@@ -150,12 +142,12 @@ function TemplatePage({ p }: { p: Plantilla }) {
             ))}
             {p.summary.length > 0 && (
               <>
-                <div className="wm text-ink2 mt-9 mb-1.5">Lo que trabaja {p.chapter ? `el capítulo ${p.chapter.n}` : "esta sección"}</div>
+                <Mono className="mt-9 mb-1.5">Lo que trabaja {p.chapter ? `el capítulo ${p.chapter.n}` : "esta sección"}</Mono>
                 <ul className="border-b border-ink">
                   {p.summary.map((s) => (
                     <li key={s} className="grid grid-cols-[28px_minmax(0,1fr)] py-3 border-t border-ink">
-                      <span className="block w-2 h-2 mt-2 bg-ink" aria-hidden="true" />
-                      <span className="text-[17px] leading-[1.45]">
+                      <span className="block w-[5px] h-[5px] mt-2.5 bg-ink" aria-hidden="true" />
+                      <span className="text-cuerpo leading-[1.45]">
                         <Sc text={s} />
                       </span>
                     </li>
@@ -165,13 +157,13 @@ function TemplatePage({ p }: { p: Plantilla }) {
             )}
             {p.uses.length > 0 && (
               <>
-                <div className="wm text-ink2 mt-9">Necesitas antes</div>
+                <Mono className="mt-9">Necesitas antes</Mono>
                 <ul className="flex flex-wrap gap-x-6 gap-y-2 mt-2.5">
                   {p.uses.map((u) => {
                     const t = PLANTILLAS.find((x) => x.id === u.id);
                     return (
                       <li key={u.id}>
-                        <Link href={`/workbook/${u.id}`} className="ul text-[17px] font-semibold">
+                        <Link href={`/workbook/${u.id}`} className="ul text-cuerpo font-semibold">
                           {u.code} {t?.title}
                         </Link>
                       </li>
@@ -182,12 +174,12 @@ function TemplatePage({ p }: { p: Plantilla }) {
             )}
             {p.check.length > 0 && !hasCalc && (
               <>
-                <div className="wm text-ink2 mt-9 mb-1.5">Sabrás que terminaste cuando…</div>
+                <Mono className="mt-9 mb-1.5">Sabrás que terminaste cuando…</Mono>
                 <ul className="border-b border-ink">
                   {p.check.map((c) => (
                     <li key={c} className="grid grid-cols-[28px_minmax(0,1fr)] py-3 border-t border-ink">
-                      <span className="block w-2 h-2 mt-2 border border-ink" aria-hidden="true" />
-                      <span className="text-[17px] leading-[1.45]">
+                      <span className="block w-3.5 h-3.5 mt-1 border-[1.5px] border-ink" aria-hidden="true" />
+                      <span className="text-cuerpo leading-[1.45]">
                         <Sc text={c} />
                       </span>
                     </li>
@@ -209,8 +201,8 @@ function TemplatePage({ p }: { p: Plantilla }) {
               />
             )}
             <div id="donde" className="bg-warm p-6">
-              <div className="wm text-ink2">Dónde se llena</div>
-              <p className="text-[16px] leading-[1.45] mt-2">
+              <Mono>Dónde se llena</Mono>
+              <p className="text-recuadro leading-[1.45] mt-2">
                 {p.kind === "kit"
                   ? "En el kit «Plan de salida» o en el workbook. Los dos se descargan gratis."
                   : "En el workbook, en una tableta, en la computadora o en papel. La plantilla te dice en qué página del libro está su ejemplo resuelto."}
@@ -218,13 +210,11 @@ function TemplatePage({ p }: { p: Plantilla }) {
               <div className="mt-5">
                 {p.kind === "kit" ? (
                   <Link href="/kit#formulario" className="btn w-full">
-                    <span>Descarga el kit</span>
-                    <Arrow />
+                    Descarga el kit
                   </Link>
                 ) : (
                   <Link href="/workbook#descarga" className="btn w-full">
-                    <span>Descarga el workbook</span>
-                    <Arrow />
+                    Descarga el workbook
                   </Link>
                 )}
               </div>
@@ -234,7 +224,7 @@ function TemplatePage({ p }: { p: Plantilla }) {
       </section>
 
       {p.id === "k1" && (
-        <section id="calculadora" className="bg-warm grid-paper border-t border-ink scroll-mt-4" aria-label="Calculadora en línea de la K.1">
+        <section id="calculadora" className="border-t border-ink scroll-mt-4" aria-label="Calculadora en línea de la K.1">
           <div className="wrap py-12 lg:py-[88px]">
             <RunwayCalc />
           </div>
@@ -247,7 +237,7 @@ function TemplatePage({ p }: { p: Plantilla }) {
             {prev && (
               <Link href={`/workbook/${prev.id}`} className="group block">
                 <span className="wm text-ink2 block">Anterior</span>
-                <span className="text-[16px] font-bold">
+                <span className="text-recuadro font-bold">
                   <span className="lnk">
                     {prev.code} {prev.title}
                   </span>
@@ -256,7 +246,7 @@ function TemplatePage({ p }: { p: Plantilla }) {
             )}
           </div>
           <div className="sm:text-center">
-            <Link href={p.part ? `/workbook/parte-${p.part.num}` : "/workbook"} className="ul text-[15px] font-semibold">
+            <Link href={p.part ? `/workbook/parte-${p.part.num}` : "/workbook"} className="ul text-recuadro font-semibold">
               {p.part ? `Parte ${p.part.num}, ${p.part.name}` : "Todas las plantillas"}
             </Link>
           </div>
@@ -264,7 +254,7 @@ function TemplatePage({ p }: { p: Plantilla }) {
             {next && (
               <Link href={`/workbook/${next.id}`} className="group block">
                 <span className="wm text-ink2 block">Siguiente</span>
-                <span className="text-[16px] font-bold">
+                <span className="text-recuadro font-bold">
                   <span className="lnk">
                     {next.code} {next.title}
                   </span>

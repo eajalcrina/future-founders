@@ -3,7 +3,7 @@
 import { useId, useState } from "react";
 import { sendLead, EMAIL_RE } from "@/lib/leads";
 import { whatsappUrl } from "@/content/sitio";
-import { Arrow } from "./ui";
+import { Aviso } from "./ui";
 
 const SIT = ["Tengo empleo", "Acabo de salir", "Tengo un proyecto"];
 const COUNTRIES = ["Perú", "México", "Colombia", "Chile", "Otro país"];
@@ -72,28 +72,27 @@ export default function DownloadForm({
 
   return (
     <div className="border border-ink bg-paper px-5 py-7 lg:px-9 lg:pt-9 lg:pb-[34px]">
-      <h2 className="ws text-[26px] lg:text-[30px] leading-[1.1]">{c.h}</h2>
-      <p className="text-[16px] leading-[1.45] text-ink2 mt-2.5">{c.intro}</p>
+      <h2 className="ws text-figura">{c.h}</h2>
+      <p className="text-recuadro leading-[1.45] text-ink2 mt-2.5">{c.intro}</p>
 
       {state === "done" ? (
-        <div role="status" className="mt-7 border-t-2 border-ink pt-5">
-          <p className="text-[20px] font-bold">
+        <div role="status" className="mt-7 border-t border-ink pt-5">
+          <p className="text-h3 font-bold">
             Listo, {name.trim().split(/\s+/)[0]}. Aquí está tu PDF.{sent ? ` También te lo enviamos a ${email.trim()}.` : ""}
           </p>
           <a href={fallback ? fallback.file : file} download className="btn w-full mt-5">
-            <span>{fallback ? fallback.label : "Descargar el PDF"}</span>
-            <Arrow />
+            {fallback ? fallback.label : "Descargar el PDF"}
           </a>
-          {fallback && <p className="text-[15px] leading-[1.45] mt-3">{fallback.note}</p>}
-          <p className="text-[16px] text-ink2 mt-3">{c.next}</p>
+          {fallback && <p className="text-recuadro leading-[1.45] mt-3">{fallback.note}</p>}
+          <p className="text-recuadro text-ink2 mt-3">{c.next}</p>
           {!sent && (
-            <p className="text-[15px] leading-[1.45] mt-3 border-l-2 border-magt pl-3">
+            <Aviso className="mt-4">
               No pudimos registrar tu correo en este momento. Si quieres recibir las novedades del libro, escríbenos por{" "}
               <a className="ul font-bold" href={whatsappUrl(`Hola, soy ${name.trim()}. Descargué ${c.wa} y quiero recibir las novedades en ${email.trim()}.`)} target="_blank" rel="noopener noreferrer">
                 WhatsApp
               </a>
               .
-            </p>
+            </Aviso>
           )}
         </div>
       ) : (
@@ -113,9 +112,9 @@ export default function DownloadForm({
               aria-describedby={errors.name ? `${id}-name-e` : undefined}
             />
             {errors.name && (
-              <p id={`${id}-name-e`} className="text-[14px] text-magt mt-1.5">
+              <Aviso id={`${id}-name-e`} className="mt-1.5">
                 {errors.name}
-              </p>
+              </Aviso>
             )}
           </div>
           <div>
@@ -134,9 +133,9 @@ export default function DownloadForm({
               aria-describedby={errors.email ? `${id}-email-e` : undefined}
             />
             {errors.email && (
-              <p id={`${id}-email-e`} className="text-[14px] text-magt mt-1.5">
+              <Aviso id={`${id}-email-e`} className="mt-1.5">
                 {errors.email}
-              </p>
+              </Aviso>
             )}
           </div>
           <fieldset className="m-0 p-0 border-0">
@@ -145,7 +144,7 @@ export default function DownloadForm({
               {SIT.map((t, i) => (
                 <label
                   key={t}
-                  className={`relative min-h-[52px] flex items-center justify-center text-center px-1.5 border border-ink cursor-pointer text-[14px] sm:text-[15px] font-semibold leading-tight ${i ? "border-l-0" : ""} has-[:focus-visible]:outline has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-mag has-[:focus-visible]:z-10`}
+                  className={`opt relative min-h-[52px] flex items-center justify-center text-center px-1.5 border border-ink cursor-pointer text-recuadro font-semibold leading-tight ${i ? "border-l-0" : ""}`}
                   style={sit === t ? { background: "var(--color-ink)", color: "var(--color-paper)" } : undefined}
                 >
                   <input type="radio" name={`${id}-sit`} value={t} checked={sit === t} onChange={() => setSit(t)} className="sr-only" />
@@ -165,10 +164,9 @@ export default function DownloadForm({
             </select>
           </div>
           <button type="submit" className="btn w-full mt-2" disabled={state === "sending"}>
-            <span>{state === "sending" ? "Enviando..." : c.button}</span>
-            <Arrow />
+            {state === "sending" ? "Enviando..." : c.button}
           </button>
-          <p className="text-[14px] leading-[1.45] text-ink2">Al enviar, descargas el PDF aquí mismo y te lo enviamos a este correo. Puedes darte de baja con un clic.</p>
+          <p className="text-recuadro leading-[1.45] text-ink2">Al enviar, descargas el PDF aquí mismo y te lo enviamos a este correo. Puedes darte de baja con un clic.</p>
         </form>
       )}
     </div>

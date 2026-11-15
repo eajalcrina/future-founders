@@ -3,7 +3,7 @@
 import { useId, useState } from "react";
 import { sendLead, EMAIL_RE } from "@/lib/leads";
 import { whatsappUrl } from "@/content/sitio";
-import { Arrow } from "./ui";
+import { Aviso } from "./ui";
 
 /** Formulario de correo de la llamada final (sobre tinta). Pide el kit «Plan de salida». */
 export default function EmailCta({ button = "Recibir el kit", source = "Kit Plan de salida" }: { button?: string; source?: string }) {
@@ -25,8 +25,8 @@ export default function EmailCta({ button = "Recibir el kit", source = "Kit Plan
   if (state === "ok")
     return (
       <div role="status" className="border border-paper p-5">
-        <p className="text-[19px] font-bold">Listo. Te enviamos el kit a {email}.</p>
-        <p className="text-[15px] text-ink20 mt-2">Si no lo ves en unos minutos, revisa la carpeta de promociones.</p>
+        <p className="text-h3 font-bold">Listo. Te enviamos el kit a {email}.</p>
+        <p className="text-recuadro text-ink20 mt-2">Si no lo ves en unos minutos, revisa la carpeta de promociones.</p>
       </div>
     );
 
@@ -50,26 +50,24 @@ export default function EmailCta({ button = "Recibir el kit", source = "Kit Plan
           }}
           aria-invalid={state === "invalid"}
           className="field sm:flex-1 min-w-0"
-          style={{ borderColor: "var(--color-paper)" }}
         />
-        <button type="submit" className="btn" disabled={state === "sending"} style={{ minHeight: 56 }}>
-          <span>{state === "sending" ? "Enviando..." : button}</span>
-          <Arrow />
+        <button type="submit" className="btn" disabled={state === "sending"}>
+          {state === "sending" ? "Enviando..." : button}
         </button>
       </div>
       <div aria-live="polite">
-        {state === "invalid" && <p className="text-[15px] mt-3 text-magl">Revisa el correo: falta algo para que sea válido.</p>}
+        {state === "invalid" && <Aviso className="mt-3">Revisa el correo: falta algo para que sea válido.</Aviso>}
         {state === "error" && (
-          <p className="text-[15px] mt-3 text-paper">
+          <Aviso className="mt-3">
             No pudimos registrar tu correo en este momento. Pídenos el kit por{" "}
-            <a className="ul text-magl" href={whatsappUrl("Hola, quiero recibir el kit «Plan de salida».")} target="_blank" rel="noopener noreferrer">
+            <a className="ul font-bold" href={whatsappUrl("Hola, quiero recibir el kit «Plan de salida».")} target="_blank" rel="noopener noreferrer">
               WhatsApp
             </a>{" "}
             y te lo enviamos.
-          </p>
+          </Aviso>
         )}
       </div>
-      <p id={`${id}-help`} className="text-[14px] lg:text-[15px] leading-[1.45] text-ink20 mt-3.5">
+      <p id={`${id}-help`} className="text-recuadro leading-[1.45] text-ink20 mt-3.5">
         Te enviamos el kit a este correo. Puedes darte de baja con un clic.
       </p>
     </form>

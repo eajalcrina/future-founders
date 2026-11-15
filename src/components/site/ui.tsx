@@ -4,16 +4,27 @@ import { SVG, ICON_PATHS } from "@/content/ilustraciones";
 
 /* ---------------------------------------------------------------- texto */
 
-/** Rótulo en JetBrains Mono, en mayúsculas. */
-export function Mono({ children, className = "", color, as: As = "div" }: { children: ReactNode; className?: string; color?: string; as?: "div" | "span" | "p" }) {
-  return (
-    <As className={`wm ${className}`} style={color ? { color } : undefined}>
-      {children}
-    </As>
-  );
+/**
+ * Rótulo en JetBrains Mono, en mayúsculas.
+ * tone «ink»: rótulo de sección en tinta (.lab del libro). «gris»: rótulo secundario en tinta media.
+ * «claro»: sobre superficies de tinta, en tinta 20 %. «salvia»: sobre salvia, en salvia profundo.
+ */
+export function Mono({
+  children,
+  className = "",
+  tone = "ink",
+  as: As = "div",
+}: {
+  children: ReactNode;
+  className?: string;
+  tone?: "ink" | "gris" | "claro" | "salvia" | "papel";
+  as?: "div" | "span" | "p";
+}) {
+  const color = { ink: "text-ink lab", gris: "text-ink2", claro: "text-ink20", salvia: "text-saged", papel: "text-paper lab" }[tone];
+  return <As className={`wm ${color} ${className}`}>{children}</As>;
 }
 
-/** Partes unidas por un filete vertical, como en los tableros. */
+/** Partes unidas por un filete vertical, como en los tableros (nunca «·»). */
 export function Jn({ parts }: { parts: string[] }) {
   return (
     <>
@@ -36,23 +47,23 @@ function scPart(text: string, k: string) {
         {p}
       </span>
     ) : (
-      <span key={`${k}-${i}`}>{p.replace(/(USD|S\/|MXN) (?=\d)/g, "$1\u00a0")}</span>
+      <span key={`${k}-${i}`}>{p.replace(/(USD|S\/|MXN) (?=\d)/g, "$1 ")}</span>
     )
   );
 }
 
-/** Siglas en versalitas dentro de texto corrido (USD, CVM, EPS...) y cursivas marcadas con <em>. */
+/** Siglas en versalitas (USD, CVM, EPS...), espacio duro tras la moneda y cursivas marcadas con <em>. */
 export function Sc({ text }: { text: string }) {
   const chunks = text.split(/<em>(.*?)<\/em>/g);
   return <>{chunks.map((c, i) => (i % 2 ? <i key={i}>{scPart(c, `e${i}`)}</i> : scPart(c, `t${i}`)))}</>;
 }
 
-/** Titular con revelado por línea (las palabras suben detrás de una máscara). */
+/** Titular del héroe con revelado por línea (las palabras suben detrás de una máscara). */
 export function Lines({ text }: { text: string }) {
   const words = text.split(" ");
   return (
     <>
-      <span className="sr-only">{text.replace(/ /g, " ")}</span>
+      <span className="sr-only">{text}</span>
       <span aria-hidden="true">
         {words.map((w, i) => (
           <span key={i}>
@@ -67,50 +78,60 @@ export function Lines({ text }: { text: string }) {
   );
 }
 
+/** Héroe de página: rótulo en tinta y titular en mayúsculas condensadas (portada y aperturas del libro). */
+export function Hero({ label, title, id, size = "xl", className = "" }: { label: string[]; title: string; id?: string; size?: "xl" | "portada"; className?: string }) {
+  return (
+    <>
+      <Mono>
+        <Jn parts={label} />
+      </Mono>
+      <h1 id={id} className={`wh lines mt-4 lg:mt-[22px] ${size === "portada" ? "text-portada" : "text-display-xl"} ${className}`}>
+        <Lines text={title} />
+      </h1>
+    </>
+  );
+}
+
+/**
+ * Cabecera de sección: rótulo en tinta y titular en minúsculas, Archivo semi-negrita condensada,
+ * como las aperturas de sección del libro. El titular dice la conclusión.
+ */
 export function SecHead({
   label,
   title,
   sub,
-  size = "lg",
   dark = false,
   className = "",
   id,
-  as: As = "h2",
 }: {
   label: string[];
   title: string;
   sub?: ReactNode;
-  size?: "xl" | "lg" | "md";
   dark?: boolean;
   className?: string;
   id?: string;
-  as?: "h1" | "h2";
 }) {
-  const sz = size === "xl" ? "text-[48px] lg:text-[96px]" : size === "lg" ? "text-[44px] lg:text-[72px]" : "text-[40px] lg:text-[64px]";
   return (
     <div className={className}>
-      <Mono color={dark ? "var(--color-magl)" : "var(--color-magt)"}>
+      <Mono tone={dark ? "papel" : "ink"}>
         <Jn parts={label} />
       </Mono>
-      <As id={id} className={`wh lines rv-line mt-3 lg:mt-[18px] ${sz}`} style={dark ? { color: "var(--color-paper)" } : undefined}>
-        <Lines text={title} />
-      </As>
-      {sub && (
-        <p className="wt mt-3.5 lg:mt-[22px] max-w-[880px]" style={{ color: dark ? "var(--color-paper)" : "var(--color-ink2)" }}>
-          {sub}
-        </p>
-      )}
+      <h2 id={id} className={`wh2 text-display-md mt-3 lg:mt-4 ${dark ? "text-paper" : ""}`}>
+        {title}
+      </h2>
+      {sub && <p className={`lead mt-4 lg:mt-5 max-w-[880px] ${dark ? "text-paper" : "text-ink2"}`}>{sub}</p>}
     </div>
   );
 }
 
 /* ---------------------------------------------------------------- iconos */
 
-export function Arrow({ size = 20 }: { size?: number }) {
+/** Icono «remisión» del sistema: trazo de 1,5, extremos cuadrados. Solo en enlaces de texto, nunca en botones. */
+export function Arrow({ size = 18 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" style={{ display: "block", flex: "none" }}>
-      <g fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="square">
-        <path d="M4 12h15" />
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" className="flecha-i">
+      <g fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
+        <path d="M3.5 12h15.5" />
         <path d="M13.5 6.5 19 12l-5.5 5.5" />
       </g>
     </svg>
@@ -129,6 +150,16 @@ export function Icon({ name, size = 18, color = "currentColor" }: { name: keyof 
         dangerouslySetInnerHTML={{ __html: ICON_PATHS[name] }}
       />
     </svg>
+  );
+}
+
+/** Aviso o error: texto en tinta con el icono «error». El magenta nunca señala un problema. */
+export function Aviso({ children, id, className = "" }: { children: ReactNode; id?: string; className?: string }) {
+  return (
+    <p id={id} className={`aviso ${className}`}>
+      <Icon name="error" size={16} />
+      <span>{children}</span>
+    </p>
   );
 }
 
@@ -179,54 +210,67 @@ type BtnProps = {
   href: string;
   children: ReactNode;
   kind?: 1 | 2;
-  arrow?: boolean;
   className?: string;
   external?: boolean;
   solidPaper?: boolean;
 };
 
-export function Btn({ href, children, kind = 1, arrow = true, className = "", external, solidPaper }: BtnProps) {
+/** Botón sin flecha. El principal (kind 1, magenta) va una vez por vista. */
+export function Btn({ href, children, kind = 1, className = "", external, solidPaper }: BtnProps) {
   const cls = `${kind === 1 ? "btn" : "btn2"} ${solidPaper ? "solid-paper" : ""} ${className}`;
-  const inner = (
-    <>
-      <span>{children}</span>
-      {arrow && <Arrow />}
-    </>
-  );
   const isExt = external ?? /^https?:/.test(href);
   if (isExt)
     return (
       <a className={cls} href={href} target="_blank" rel="noopener noreferrer">
-        {inner}
+        <span>{children}</span>
         <span className="sr-only"> (se abre en otra pestaña)</span>
+      </a>
+    );
+  if (href.startsWith("#"))
+    return (
+      <a className={cls} href={href}>
+        {children}
       </a>
     );
   return (
     <Link className={cls} href={href}>
-      {inner}
+      {children}
     </Link>
   );
 }
 
-export function Lectura({ text, bg = "var(--color-warm)", className = "" }: { text: ReactNode; bg?: string; className?: string }) {
+/** Enlace de texto con la flecha de remisión, que avanza al pasar el cursor. */
+export function LinkArrow({ href, children, className = "" }: { href: string; children: ReactNode; className?: string }) {
   return (
-    <aside className={`px-[22px] pt-5 pb-[22px] ${className}`} style={{ background: bg }}>
-      <div className="flex gap-[9px] items-center">
-        <Icon name="lectura" size={20} />
+    <Link href={href} className={`group flecha font-bold ${className}`}>
+      <span className="lnk">{children}</span>
+      <Arrow />
+    </Link>
+  );
+}
+
+/** Recuadro Lectura del libro: siempre en papel cálido, icono de 16 px y texto de recuadro. */
+export function Lectura({ text, className = "" }: { text: ReactNode; className?: string }) {
+  return (
+    <aside className={`bg-warm px-4 pt-3.5 pb-4 lg:px-5 lg:pt-4 lg:pb-5 ${className}`}>
+      <div className="flex gap-2 items-center">
+        <Icon name="lectura" size={16} />
         <span className="wm">Lectura</span>
       </div>
-      <p className="text-[16px] leading-[1.5] mt-2.5">{text}</p>
+      <p className="text-recuadro leading-[1.375] mt-2">{text}</p>
     </aside>
   );
 }
 
-export function Nota({ children, className = "" }: { children: ReactNode; className?: string }) {
+/** Nota o Fuente al pie: filete superior fino en tinta, icono «nota», rótulo y texto en tinta suave. */
+export function Nota({ children, className = "", label = "Nota" }: { children: ReactNode; className?: string; label?: "Nota" | "Fuente" }) {
   return (
-    <div className={`flex gap-2.5 items-start ${className}`}>
-      <span className="mt-[2px]">
-        <Icon name="nota" size={18} color="var(--color-ink2)" />
+    <div className={`filete-sup grid grid-cols-[16px_minmax(0,1fr)] gap-x-2.5 gap-y-1 ${className}`}>
+      <span className="mt-[1px]">
+        <Icon name="nota" size={16} />
       </span>
-      <p className="text-[15px] leading-[1.45] text-ink2">{children}</p>
+      <span className="wm lab font-bold">{label}</span>
+      <p className="col-start-2 text-recuadro leading-[1.4] text-ink3">{children}</p>
     </div>
   );
 }

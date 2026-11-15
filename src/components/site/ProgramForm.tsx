@@ -4,7 +4,7 @@ import { useEffect, useId, useState, useSyncExternalStore } from "react";
 import { PROGRAMAS } from "@/content/programas";
 import { sendLead, EMAIL_RE } from "@/lib/leads";
 import { whatsappUrl } from "@/content/sitio";
-import { Arrow } from "./ui";
+import { Aviso } from "./ui";
 
 const COUNTRIES = ["Perú", "México", "Colombia", "Chile", "Otro país"];
 
@@ -59,8 +59,8 @@ export default function ProgramForm() {
   if (state === "ok")
     return (
       <div role="status" className="border border-ink bg-paper p-6 lg:p-8">
-        <p className="ws text-[24px]">Recibimos tu postulación a {p.name}.</p>
-        <p className="text-[17px] text-ink2 mt-3">Te escribimos a {email.trim()} con las fechas, los cupos y las condiciones de la próxima convocatoria.</p>
+        <p className="ws text-figura">Recibimos tu postulación a {p.name}.</p>
+        <p className="text-cuerpo text-ink2 mt-3">Te escribimos a {email.trim()} con las fechas, los cupos y las condiciones de la próxima convocatoria.</p>
       </div>
     );
 
@@ -118,22 +118,21 @@ export default function ProgramForm() {
         <textarea id={`${id}-m`} className="field" rows={3} value={msg} onChange={(e) => setMsg(e.target.value)} placeholder="Cargo, años de carrera y en qué nivel de la escalera crees que estás" />
       </div>
       <button type="submit" className="btn w-full" disabled={state === "sending"}>
-        <span>{state === "sending" ? "Enviando..." : p.cta === "Ver fechas" ? "Quiero ver las fechas" : "Enviar postulación"}</span>
-        <Arrow />
+        {state === "sending" ? "Enviando..." : p.cta === "Ver fechas" ? "Quiero ver las fechas" : "Enviar postulación"}
       </button>
       <div aria-live="polite">
-        {state === "invalid" && <p className="text-[15px] text-magt">Escribe tu nombre y un correo válido.</p>}
+        {state === "invalid" && <Aviso>Escribe tu nombre y un correo válido.</Aviso>}
         {state === "error" && (
-          <p className="text-[15px] leading-[1.45] border-l-2 border-magt pl-3">
+          <Aviso>
             No pudimos registrar tu postulación en este momento. Escríbenos por{" "}
             <a className="ul font-bold" href={whatsappUrl(`Hola, soy ${name.trim()}. Quiero postular a ${p.name}.`)} target="_blank" rel="noopener noreferrer">
               WhatsApp
             </a>{" "}
             y te respondemos con las fechas.
-          </p>
+          </Aviso>
         )}
       </div>
-      <p className="text-[14px] text-ink2">Usamos tu correo solo para responderte sobre este programa.</p>
+      <p className="text-recuadro text-ink2">Usamos tu correo solo para responderte sobre este programa.</p>
     </form>
   );
 }

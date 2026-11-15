@@ -19,6 +19,9 @@ export function agendaUrl() {
   );
 }
 
+/** Titular de la portada y de la imagen para compartir general. */
+export const HERO_TITLE = "Tu experiencia puede trabajar para más de una empresa, incluida la tuya";
+
 export const LEVELS = ["Salario", "Primer rol parcial", "Portafolio", "Independencia"] as const;
 
 export const LOOK = [
@@ -39,19 +42,19 @@ export const CHAPS = ["Partes 01 a 04", "Capítulo 18", "Capítulos 19 y 20", "C
 
 export const DO_NOW: { head: string; body: string }[] = [
   {
-    head: "Mide lo que ya tienes antes de ofrecer nada.",
+    head: "Mide lo que ya tienes antes de ofrecer nada",
     body: "Calcula tu runway y lo que te permite tu contrato. Son las plantillas K.1 y K.2 del kit, unos 50 minutos en total.",
   },
   {
-    head: "Suma un segundo rol sin que un cliente pese demasiado.",
+    head: "Suma un segundo rol sin que un cliente pese demasiado",
     body: "Suma un segundo rol o un producto sin que un cliente pase de la mitad de tus ingresos. Mides tus roles juntos cada mes en el tablero de la 18.1.",
   },
   {
-    head: "Suma roles hasta que tus ingresos propios paguen los gastos de tu casa.",
+    head: "Suma roles hasta que tus ingresos propios paguen los gastos de tu casa",
     body: "Pasas de un cliente a un portafolio de 2 a 4 roles recurrentes. Rodrigo combina su pyme de reparto con un rol de operaciones y suma USD 7.600 netos al mes frente a un costo de vida de 7.000.",
   },
   {
-    head: "Vive de tu portafolio o conviértelo en una firma o un producto propio.",
+    head: "Vive de tu portafolio o conviértelo en una firma o un producto propio",
     body: "Das el paso cuando tus ingresos propios llegan a 1,2 veces tu costo de vida durante tres meses seguidos y tu colchón cubre 6 meses. A Rodrigo le faltan USD 800 al mes y 4.000 de ahorro.",
   },
 ];
@@ -81,6 +84,8 @@ export const LECTURA =
 
 export type Arch = {
   who: "carmen" | "javier" | "andrea" | "rodrigo";
+  /** Nivel de la escalera en que empieza el arquetipo (HERE: Carmen, Andrea y Javier en el 0; Rodrigo en el 2). */
+  level: number;
   tag: string;
   name: string;
   role: string;
@@ -93,6 +98,7 @@ export type Arch = {
 export const ARCH: Arch[] = [
   {
     who: "carmen",
+    level: 0,
     tag: "Con empleo",
     name: "Carmen",
     role: "Gerenta de Finanzas en una minera mediana de Lima, 47 años",
@@ -101,6 +107,7 @@ export const ARCH: Arch[] = [
       ["Ahorro líquido", "USD 61.600"],
       ["Costo de vida", "USD 8.800 al mes"],
       ["Runway", "7,0 meses"],
+      ["Nivel de partida", "0, Salario"],
     ],
     voice:
       "El código de ética de su minera pide declarar por escrito cualquier actividad remunerada fuera de la empresa, así que esa declaración entra en su plan antes del primer rol.",
@@ -109,6 +116,7 @@ export const ARCH: Arch[] = [
   },
   {
     who: "javier",
+    level: 0,
     tag: "Recién despedido",
     name: "Javier",
     role: "Ex VP Comercial de una multinacional de consumo masivo en Bogotá, 52 años",
@@ -117,6 +125,7 @@ export const ARCH: Arch[] = [
       ["Ahorro líquido", "USD 61.150, con la indemnización"],
       ["Costo de vida", "USD 12.500, que baja a 10.000"],
       ["Runway", "4,9 meses, 6,1 con el recorte"],
+      ["Nivel de partida", "0, Salario"],
     ],
     voice:
       "Su primera liquidación no incluía el bono proporcional del año. Lo notó al llenar la K.3, lo revisó con un abogado laboral y lo pidió por escrito antes de firmar.",
@@ -125,14 +134,16 @@ export const ARCH: Arch[] = [
   },
   {
     who: "andrea",
+    level: 0,
     tag: "En sector regulado",
     name: "Andrea",
-    role: "Directora de Tecnología en un banco grande de Ciudad de México, 44 años",
+    role: "Directora de tecnología en un banco grande de Ciudad de México, 44 años",
     rows: [
       ["Años de carrera", "18, 9 en el banco"],
       ["Ahorro líquido", "USD 51.300"],
       ["Costo de vida", "USD 9.500 al mes"],
       ["Runway", "5,4 meses"],
+      ["Nivel de partida", "0, Salario"],
     ],
     voice:
       "Su primer rol es un asiento en el consejo asesor de una fintech que no compite con su banco. Lo acepta con autorización escrita del banco, por USD 2.000 al mes.",
@@ -141,6 +152,7 @@ export const ARCH: Arch[] = [
   },
   {
     who: "rodrigo",
+    level: 2,
     tag: "Con proyecto propio",
     name: "Rodrigo",
     role: "Exgerente de Operaciones de una cadena de tiendas en Santiago, hoy socio de una pyme de reparto, 49 años",
@@ -149,6 +161,7 @@ export const ARCH: Arch[] = [
       ["Ahorro líquido", "USD 38.000"],
       ["Costo de vida", "USD 7.000 al mes"],
       ["Runway", "5,4 meses"],
+      ["Nivel de partida", "2, Portafolio"],
     ],
     voice:
       "Su pyme le deja USD 3.600 netos y un rol de operaciones en una cadena de farmacias, unos 4.000. Suma 7.600 frente a un costo de vida de 7.000, así que empieza en el nivel 2.",

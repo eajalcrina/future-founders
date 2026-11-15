@@ -21,7 +21,8 @@ export default function Testimonials({ items }: { items: Testimonio[] }) {
   const max = Math.max(0, items.length - visible);
   const [raw, setI] = useState(0);
   const i = Math.min(raw, max);
-  const [playing, setPlaying] = useState(true);
+  // Sin rotación automática por defecto (reglas web, sección 5); el botón de reproducir la activa.
+  const [playing, setPlaying] = useState(false);
   const [hover, setHover] = useState(false);
   const [focus, setFocus] = useState(false);
   const reduce = useMedia("(prefers-reduced-motion: reduce)");
@@ -64,10 +65,10 @@ export default function Testimonials({ items }: { items: Testimonio[] }) {
             )}
           </button>
           <button type="button" className="tc" onClick={() => go(i - 1)} aria-label="Reseña anterior">
-            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H5M10.5 6.5 5 12l5.5 5.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="square" /></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H5M10.5 6.5 5 12l5.5 5.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" /></svg>
           </button>
           <button type="button" className="tc" onClick={() => go(i + 1)} aria-label="Reseña siguiente">
-            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5 19 12l-5.5 5.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="square" /></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5 19 12l-5.5 5.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" /></svg>
           </button>
         </div>
       </div>
@@ -94,18 +95,18 @@ export default function Testimonials({ items }: { items: Testimonio[] }) {
                 className="shrink-0 px-0 md:pr-5"
                 style={{ width: `${100 / visible}%` }}
               >
-                <figure className="card-soft h-full bg-paper p-6 lg:p-7 flex flex-col m-0">
+                <figure className="border border-ink20 h-full bg-paper p-6 lg:p-7 flex flex-col m-0">
                   {t.ejemplo && (
-                    <span className="wm self-start px-2 py-1 mb-4 text-ink" style={{ background: "var(--color-ink10)", border: "1px dashed var(--color-ink2)" }}>
+                    <span className="wm self-start px-2 py-1 mb-4 text-ink border border-dashed border-ink2">
                       Testimonio de ejemplo
                     </span>
                   )}
-                  <blockquote className="wt m-0 mb-5" style={{ fontSize: 18 }}>
+                  <blockquote className="wt m-0 mb-5">
                     <p>«{t.cita}»</p>
                   </blockquote>
                   <figcaption className="mt-auto pt-5 border-t border-ink">
-                    <span className="block text-[17px] font-bold">{t.nombre}</span>
-                    <span className="block text-[15px] text-ink2 mt-1">
+                    <span className="block text-cuerpo font-bold">{t.nombre}</span>
+                    <span className="block text-recuadro text-ink2 mt-1">
                       {t.cargo}, {t.ciudad}
                     </span>
                     {t.programa && <span className="wm block text-ink2 mt-2">{t.programa}</span>}
@@ -127,7 +128,7 @@ export default function Testimonials({ items }: { items: Testimonio[] }) {
             aria-current={p === i ? "true" : undefined}
             className="h-11 flex items-center"
           >
-            <span className="block h-[3px] w-6 transition-colors" style={{ background: p === i ? "var(--color-mag)" : "var(--color-ink20)" }} />
+            <span className="block h-[3px] w-6 transition-colors" style={{ background: p === i ? "var(--color-ink)" : "var(--color-ink20)" }} />
           </button>
         ))}
       </div>

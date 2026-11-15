@@ -1,508 +1,699 @@
 @import "tailwindcss";
 
-/* Sistema visual de Doble Agente / Future Founders: papel, tinta y un solo acento magenta. */
-@theme {
-  --color-paper: #f6f6f4;
-  --color-warm: #e6e4e0;
-  --color-ink: #0c0c0d;
-  --color-ink2: #3d3d42;
-  --color-ink3: #5e5e66;
-  --color-mag: #e6007e;
-  --color-magt: #c8006d;
-  --color-magl: #ff5fb0;
-  --color-ink10: #dfdfdd;
-  --color-ink20: #c7c7c6;
-  --color-sal: #e3eae8;
-  --color-sald: #2f5653;
+/* =====================================================================================================
+   Sistema visual de Future Founders, versión R3 de «Doble Agente» (15/11/2026).
+   Fuente: DESIGN-SYSTEM.md y tokens.css de la ronda R3. Papel, tinta y un solo acento magenta.
+   Cada color, tamaño, interlineado y filete vive aquí como token; los componentes no escriben valores sueltos.
+   Orden de capas: theme (tokens) > base > components. Sin reglas forzadas con «important» (línea base: 1, hoy 0).
+   ===================================================================================================== */
 
+@theme {
+  /* ---------------------------------------------------------------- color: once tokens, un valor cada uno */
+  --color-paper: #f6f6f4; /* papel. Fondo general, texto sobre tinta, el único blanco de la paleta */
+  --color-warm: #e6e4e0; /* papel cálido. Recuadros Lectura, bandas, pie */
+  --color-ink: #0c0c0d; /* tinta. Texto, filetes, superficies oscuras, rótulos de sección */
+  --color-ink2: #3d3d42; /* tinta media. Texto secundario */
+  --color-ink3: #5e5e66; /* tinta suave. Rótulos grises, cabeceras de tabla, filete entre filas */
+  --color-ink10: #dfdfdd; /* tinta 10 %. Solo rellenos de barras y rejilla de figuras */
+  --color-ink20: #c7c7c6; /* tinta 20 %. Filetes, casillas y texto secundario sobre tinta */
+  --color-mag: #e6007e; /* magenta. Solo botón principal, cuadrado de marca, meta y nivel elegido */
+  --color-magt: #c8006d; /* magenta de texto. Solo la cifra y el rótulo de la meta, y el paso del cursor del botón */
+  --color-sage: #e3eae8; /* salvia. Solo la voz de los arquetipos */
+  --color-saged: #2f5653; /* salvia profundo. Filetes, rótulos e iconos sobre salvia */
+
+  /* alias de nombres anteriores, para no romper nada mientras se migra */
+  --color-sal: var(--color-sage);
+  --color-sald: var(--color-saged);
+  --color-magl: var(--color-ink20); /* el magenta claro #FF5FB0 salió de la paleta en R3 */
+
+  /* ---------------------------------------------------------------- familias */
   --font-display: var(--font-archivo), "Archivo", system-ui, sans-serif;
   --font-serif: var(--font-source-serif), "Source Serif 4", Georgia, serif;
   --font-mono: var(--font-jetbrains), "JetBrains Mono", ui-monospace, monospace;
   --font-hand: var(--font-caveat), "Caveat", cursive;
 
+  /* ---------------------------------------------------------------- escala con nombre (utilidades text-*) */
+  --text-rotulo: var(--fs-rotulo);
+  --text-rotulo--line-height: 1.3;
+  --text-recuadro: var(--fs-recuadro);
+  --text-recuadro--line-height: 1.4;
+  --text-cuerpo: var(--fs-cuerpo);
+  --text-cuerpo--line-height: 1.45;
+  --text-entrada: var(--fs-entrada);
+  --text-entrada--line-height: 1.4;
+  --text-h3: var(--fs-h3);
+  --text-h3--line-height: 1.2;
+  --text-entradilla: var(--fs-entradilla);
+  --text-entradilla--line-height: 1.44;
+  --text-idea: var(--fs-idea);
+  --text-idea--line-height: 1.3;
+  --text-figura: var(--fs-figura);
+  --text-figura--line-height: 1.16;
+  --text-h2: var(--fs-h2);
+  --text-h2--line-height: 1.08;
+  --text-kpi: var(--fs-kpi);
+  --text-kpi--line-height: 0.9;
+  --text-display-md: var(--fs-display-md);
+  --text-display-md--line-height: 1;
+  --text-display-lg: var(--fs-display-lg);
+  --text-display-lg--line-height: 0.9;
+  --text-display-xl: var(--fs-display-xl);
+  --text-display-xl--line-height: 0.9;
+  --text-cifra: var(--fs-cifra);
+  --text-cifra--line-height: 0.85;
+  --text-portada: var(--fs-portada);
+  --text-portada--line-height: 0.86;
+
   --breakpoint-lg: 64rem;
 }
 
+:root {
+  /* tamaños en celular (cuerpo de 17 px); cada escalón conserva su proporción con el cuerpo del libro */
+  --fs-rotulo: 0.6875rem; /* 11 px: rótulo mono, el mínimo del sistema */
+  --fs-recuadro: 0.875rem; /* 14 px: recuadros, tablas, notas, texto secundario */
+  --fs-cuerpo: 1.0625rem; /* 17 px: texto corrido */
+  --fs-entrada: 1.125rem; /* 18 px */
+  --fs-h3: 1.1875rem; /* 19 px: subtítulo y nombre en listas */
+  --fs-entradilla: 1.1875rem; /* 19 px: entradilla en serif */
+  --fs-idea: 1.25rem; /* 20 px */
+  --fs-figura: 1.5rem; /* 24 px: titular de figura y de tarjeta */
+  --fs-h2: 1.75rem; /* 28 px: nombre de ficha, titular de bloque */
+  --fs-kpi: 2.125rem; /* 34 px: cifra de tarjeta y de calculadora */
+  --fs-display-md: 2.5rem; /* 40 px: titular de sección */
+  --fs-display-lg: 2.75rem; /* 44 px */
+  --fs-display-xl: 3rem; /* 48 px: titular del héroe */
+  --fs-cifra: 4rem; /* 64 px: la cifra grande de la calculadora de runway */
+  --fs-portada: 4rem; /* 64 px: el título del libro, como en la portada */
+  --fs-boton: 1.1875rem; /* 19 px en negrita: mínimo para papel sobre magenta */
+  --fs-boton2: 1.125rem; /* 18 px */
+  --fs-sc-min: 0.6875rem; /* piso de la mayúscula reducida en Archivo y mono */
+
+  --lh-cuerpo-pantalla: 1.55; /* el libro usa 1,40; en pantalla se mantiene 1,55 (decisión en docs/reglas-diseno.md) */
+
+  --filete-fila: 0.5px;
+  --filete-fino: 0.75px;
+  --filete: 1px;
+  --filete-marco: 1.5px;
+  --filete-meta: 2px;
+  --filete-titular: 3px;
+
+  --icon-sm: 14px;
+  --icon: 16px;
+  --icon-lg: 18px;
+
+  --btn-h: 56px;
+  --field-h: 56px;
+  --focus-w: 3px;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --fs-rotulo: 0.75rem; /* 12 px */
+    --fs-recuadro: 1rem; /* 16 px */
+    --fs-cuerpo: 1.1875rem; /* 19 px */
+    --fs-entrada: 1.25rem; /* 20 px */
+    --fs-h3: 1.3125rem; /* 21 px */
+    --fs-entradilla: 1.375rem; /* 22 px */
+    --fs-idea: 1.4375rem; /* 23 px */
+    --fs-figura: 1.6875rem; /* 27 px */
+    --fs-h2: 1.9375rem; /* 31 px */
+    --fs-kpi: 2.375rem; /* 38 px */
+    --fs-display-md: 4rem; /* 64 px */
+    --fs-display-lg: 4.5rem; /* 72 px */
+    --fs-display-xl: 6rem; /* 96 px */
+    --fs-cifra: 7.5rem; /* 120 px */
+    --fs-portada: 8.5rem; /* 136 px */
+    --fs-sc-min: 0.75rem;
+    --btn-h: 60px;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    /* fuera del texto corrido, cifras alineadas y tabulares (libro, 3.6) */
+    font-variant-numeric: lining-nums tabular-nums;
+    hyphens: none;
+  }
+}
+
 @layer components {
-html {
-  -webkit-text-size-adjust: 100%;
-}
+  /* ---------------------------------------------------------------- sitio */
+  .site {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    overflow-x: clip;
+  }
+  .site h1,
+  .site h2,
+  .site h3 {
+    text-wrap: balance;
+  }
+  .site p {
+    text-wrap: pretty;
+  }
+  .site a {
+    color: inherit;
+    text-decoration: none;
+  }
 
-body {
-  margin: 0;
-  background: var(--color-paper);
-  color: var(--color-ink);
-  font-family: var(--font-display);
-  font-optical-sizing: auto;
-  font-variant-numeric: lining-nums;
-}
-
-/* ------------------------------------------------------------------ sitio */
-.site {
-  background: var(--color-paper);
-  color: var(--color-ink);
-  overflow-x: clip;
-}
-.site h1,
-.site h2,
-.site h3 {
-  text-wrap: balance;
-}
-.site p {
-  text-wrap: pretty;
-}
-.site a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.wrap {
-  width: 100%;
-  max-width: 1440px;
-  margin-inline: auto;
-  padding-inline: 20px;
-}
-@media (min-width: 64rem) {
   .wrap {
-    padding-inline: 64px;
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: 20px;
   }
-}
+  @media (min-width: 64rem) {
+    .wrap {
+      padding-inline: 64px;
+    }
+  }
 
-/* rótulo en mono */
-.wm {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  line-height: 1.45;
-}
-@media (min-width: 64rem) {
+  /* ---------------------------------------------------------------- tipografía */
+  /* rótulo mono en mayúsculas; .lab es el rótulo de sección, siempre en tinta (o papel sobre tinta) */
   .wm {
-    font-size: 12px;
+    font-family: var(--font-mono);
+    font-size: var(--fs-rotulo);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1.3;
   }
-}
-/* titular condensado */
-.wh {
-  font-weight: 800;
-  font-stretch: 72%;
-  text-transform: uppercase;
-  letter-spacing: -0.012em;
-  line-height: 0.9;
-}
-/* subtítulo de recuadro */
-.ws {
-  font-weight: 700;
-  font-stretch: 84%;
-  line-height: 1.15;
-}
-/* cuerpo en serif */
-.wt {
-  font-family: var(--font-serif);
-  font-size: 17px;
-  line-height: 1.55;
-  font-variation-settings: "opsz" 18;
-  font-variant-numeric: oldstyle-nums proportional-nums;
-}
-@media (min-width: 64rem) {
+  .lab {
+    letter-spacing: 0.12em;
+  }
+  /* titular del héroe: mayúsculas condensadas, como la portada y las aperturas del libro */
+  .wh {
+    font-weight: 800;
+    font-stretch: 72%;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+  }
+  /* titular de sección: Archivo semi-negrita condensada, sin mayúsculas (apertura de sección del libro) */
+  .wh2 {
+    font-weight: 750;
+    font-stretch: 80%;
+    letter-spacing: -0.015em;
+    line-height: 1;
+  }
+  /* titular de figura y de tarjeta (.at del libro) */
+  .ws {
+    font-weight: 650;
+    font-stretch: 84%;
+    letter-spacing: -0.012em;
+    line-height: 1.16;
+  }
+  /* subtítulo h3 */
+  .wh3 {
+    font-weight: 700;
+    font-stretch: 86%;
+    letter-spacing: -0.005em;
+    line-height: 1.2;
+  }
+  /* cifra grande y códigos (K.1, AP, 01): Archivo 800 al 70 % */
+  .num {
+    font-weight: 800;
+    font-stretch: 70%;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  /* cuerpo en serif: cifras de estilo antiguo y proporcionales */
   .wt {
-    font-size: 19px;
+    font-family: var(--font-serif);
+    font-size: var(--fs-cuerpo);
+    line-height: var(--lh-cuerpo-pantalla);
+    font-optical-sizing: auto;
+    font-variant-numeric: oldstyle-nums proportional-nums;
   }
-}
-.wt p + p {
-  margin-top: 0.75em;
-}
-.tab {
-  font-variant-numeric: lining-nums tabular-nums;
-}
-.sc {
-  font-variant-caps: all-small-caps;
-  letter-spacing: 0.04em;
-}
+  .wt p + p {
+    margin-top: 0.75em;
+  }
+  .wt strong,
+  .wt b {
+    font-weight: 650;
+  }
+  /* entradilla en serif bajo un titular */
+  .lead {
+    font-family: var(--font-serif);
+    font-size: var(--fs-entradilla);
+    line-height: 1.44;
+    font-optical-sizing: auto;
+    font-variant-numeric: oldstyle-nums proportional-nums;
+  }
+  .tab {
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  /* siglas: mayúscula reducida en Archivo y mono; versalita verdadera dentro del texto en serif */
+  .sc {
+    font-variant-caps: normal;
+    font-size: max(0.74em, var(--fs-sc-min));
+    letter-spacing: 0.03em;
+  }
+  .wt .sc,
+  .lead .sc {
+    font-variant-caps: all-small-caps;
+    font-size: inherit;
+    letter-spacing: 0.04em;
+  }
 
-/* botones: el magenta lleva texto blanco a 19 px en negrita (contraste AA para texto grande) */
-.btn,
-.btn2 {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  min-height: 56px;
-  padding: 0 26px;
-  white-space: nowrap;
-  cursor: pointer;
-  border-radius: 0;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-}
-.btn {
-  background: var(--color-mag);
-  color: var(--color-paper) !important;
-  font-weight: 700;
-  font-size: 19px;
-  letter-spacing: 0.005em;
-  border: 0;
-}
-.btn:hover {
-  background: var(--color-magt);
-}
-.btn2 {
-  border: 1.5px solid currentColor;
-  font-weight: 600;
-  font-size: 18px;
-  background: transparent;
-}
-.btn2:hover {
-  background: var(--color-ink);
-  color: var(--color-paper);
-  border-color: var(--color-ink);
-}
-.on-ink .btn2:hover {
-  background: var(--color-paper);
-  color: var(--color-ink);
-  border-color: var(--color-paper);
-}
-.btn2.solid-paper {
-  background: var(--color-paper);
-  color: var(--color-ink);
-  border-color: var(--color-paper);
-}
-.btn2.solid-paper:hover {
-  background: var(--color-warm);
-  border-color: var(--color-warm);
-}
-@media (min-width: 64rem) {
+  /* ---------------------------------------------------------------- botones: sin flecha, rectos */
   .btn,
   .btn2 {
-    min-height: 60px;
-    padding: 0 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: var(--btn-h);
+    padding: 0 26px;
+    white-space: nowrap;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   }
-}
-.btn svg,
-.btn2 svg {
-  transition: transform 0.2s ease-out;
-}
-.btn:hover svg,
-.btn2:hover svg {
-  transform: translateX(3px);
-}
-
-/* campos */
-.field {
-  display: block;
-  width: 100%;
-  height: 56px;
-  padding: 0 16px;
-  border: 1px solid var(--color-ink);
-  background: var(--color-paper);
-  color: var(--color-ink);
-  font: inherit;
-  font-size: 17px;
-  border-radius: 0;
-  appearance: none;
-}
-.field::placeholder {
-  color: var(--color-ink3);
-}
-select.field {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'%3E%3Cpath d='M5 9l7 7 7-7' fill='none' stroke='%230C0C0D' stroke-width='2'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 16px center;
-  padding-right: 40px;
-}
-textarea.field {
-  height: auto;
-  min-height: 110px;
-  padding: 14px 16px;
-}
-
-/* foco visible en todo el sitio */
-.site :focus-visible {
-  outline: 3px solid var(--color-mag);
-  outline-offset: 3px;
-}
-.site .on-ink :focus-visible {
-  outline-color: var(--color-magl);
-}
-.field:focus-visible {
-  outline-offset: 0;
-}
-
-.skip {
-  position: absolute;
-  left: 16px;
-  top: -80px;
-  z-index: 100;
-  background: var(--color-ink);
-  color: var(--color-paper);
-  padding: 12px 16px;
-  font-weight: 700;
-}
-.skip:focus {
-  top: 12px;
-}
-
-.vr {
-  display: inline-block;
-  width: 1px;
-  height: 10px;
-  background: currentColor;
-  margin: 0 10px;
-  vertical-align: -1px;
-}
-
-/* enlaces: subrayado que crece desde la izquierda */
-.lnk {
-  position: relative;
-  display: inline;
-  background: none;
-}
-.lnk::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -2px;
-  height: 1.5px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.25s ease-out;
-}
-.lnk:hover::after,
-.lnk:focus-visible::after,
-.group:hover .lnk::after {
-  transform: scaleX(1);
-}
-/* enlace con subrayado fijo (como en los tableros) que se engrosa al pasar */
-.ul {
-  border-bottom: 1.5px solid currentColor;
-  padding-bottom: 2px;
-  transition: border-bottom-width 0.15s ease, padding-bottom 0.15s ease;
-}
-.ul:hover {
-  border-bottom-width: 3px;
-  padding-bottom: 0.5px;
-}
-/* tarjetas: el borde pasa de tinta 20 % a tinta */
-.card {
-  border: 1px solid var(--color-ink);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-.card:hover {
-  box-shadow: inset 0 0 0 1px var(--color-ink);
-}
-.card-soft {
-  border: 1px solid var(--color-ink20);
-  transition: border-color 0.2s ease;
-}
-.card-soft:hover,
-.card-soft:focus-within {
-  border-color: var(--color-ink);
-}
-
-/* ------------------------------------------------------------------ fondos */
-/* grano de papel (feTurbulence en mosaico, 3,5 %) */
-.grain {
-  position: relative;
-  isolation: isolate;
-}
-.grain::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 220px 220px;
-}
-/* retícula de cuaderno técnico: líneas de tinta 10 % cada 24 px, desvanecida con máscara */
-.grid-paper {
-  position: relative;
-  isolation: isolate;
-}
-.grid-paper::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M24 0V24M0 24H24' fill='none' stroke='%23DFDFDD' stroke-width='1'/%3E%3C/svg%3E");
-  background-size: 24px 24px;
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 30%, transparent 100%);
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 30%, transparent 100%);
-}
-/* franjas de tinta: semitono muy tenue y folio de marca de agua */
-.halftone {
-  position: relative;
-  isolation: isolate;
-}
-.halftone::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.06;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Ccircle cx='2' cy='2' r='1.1' fill='%23F6F6F4'/%3E%3C/svg%3E");
-  background-size: 8px 8px;
-}
-.folio {
-  position: absolute;
-  z-index: -1;
-  pointer-events: none;
-  user-select: none;
-  font-family: var(--font-mono);
-  font-weight: 700;
-  line-height: 0.8;
-  letter-spacing: -0.04em;
-  color: rgb(246 246 244 / 0.04);
-  white-space: nowrap;
-}
-/* marcas de corte de imprenta */
-.crop {
-  position: relative;
-}
-.crop > .cm {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  pointer-events: none;
-}
-.crop > .cm::before,
-.crop > .cm::after {
-  content: "";
-  position: absolute;
-  background: var(--color-ink20);
-}
-.crop > .cm::before {
-  left: 3.5px;
-  top: 0;
-  width: 1px;
-  height: 8px;
-}
-.crop > .cm::after {
-  top: 3.5px;
-  left: 0;
-  height: 1px;
-  width: 8px;
-}
-.crop > .cm.tl {
-  left: -14px;
-  top: -14px;
-}
-.crop > .cm.tr {
-  right: -14px;
-  top: -14px;
-}
-.crop > .cm.bl {
-  left: -14px;
-  bottom: -14px;
-}
-.crop > .cm.br {
-  right: -14px;
-  bottom: -14px;
-}
-
-/* figuras SVG en línea */
-.svgfit > svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* ------------------------------------------------------------------ movimiento (solo sin reduced-motion) */
-@media (prefers-reduced-motion: no-preference) {
-  .js .rv {
-    opacity: 0;
-    transform: translateY(12px);
-    transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+  /* principal: magenta con papel a 19 px en negrita (4,16:1, válido como texto grande). Uno por vista */
+  .btn {
+    background: var(--color-mag);
+    color: var(--color-paper);
+    font-weight: 700;
+    font-size: var(--fs-boton);
+    letter-spacing: 0.005em;
+    border: 0;
   }
-  .js .rv.in {
-    opacity: 1;
-    transform: none;
+  .site a.btn {
+    color: var(--color-paper);
   }
-  .js .rv-kids > * {
-    opacity: 0;
-    transform: translateY(12px);
-    transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+  .btn:hover {
+    background: var(--color-magt);
   }
-  .js .rv-kids.in > * {
-    opacity: 1;
-    transform: none;
+  .btn:disabled {
+    cursor: not-allowed;
   }
-  .js .rv-kids.in > :nth-child(2) { transition-delay: 70ms; }
-  .js .rv-kids.in > :nth-child(3) { transition-delay: 140ms; }
-  .js .rv-kids.in > :nth-child(4) { transition-delay: 210ms; }
-  .js .rv-kids.in > :nth-child(5) { transition-delay: 280ms; }
-  .js .rv-kids.in > :nth-child(6) { transition-delay: 350ms; }
-  .js .rv-kids.in > :nth-child(n + 7) { transition-delay: 420ms; }
-
-  /* titulares: cada línea sube detrás de una máscara (el retardo por línea lo pone RevealObserver) */
-  .js .lines .w > span {
-    transform: translateY(105%);
-    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  .btn2 {
+    border: var(--filete-marco) solid currentColor;
+    font-weight: 600;
+    font-size: var(--fs-boton2);
+    background: transparent;
   }
-  .js .lines.in .w > span {
-    transform: none;
+  .btn2:hover {
+    background: var(--color-ink);
+    color: var(--color-paper);
+    border-color: var(--color-ink);
+  }
+  .on-ink .btn2:hover {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    border-color: var(--color-paper);
+  }
+  .btn2.solid-paper {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    border-color: var(--color-paper);
+  }
+  .btn2.solid-paper:hover {
+    background: var(--color-warm);
+    border-color: var(--color-warm);
+  }
+  /* variante compacta del encabezado */
+  .btn.compact {
+    min-height: 40px;
+    padding: 0 14px;
+  }
+  .btn.wrap-ok,
+  .btn2.wrap-ok {
+    white-space: normal;
+    text-align: center;
+    padding-inline: 16px;
+  }
+  @media (min-width: 64rem) {
+    .btn,
+    .btn2 {
+      padding: 0 30px;
+    }
+    .btn.compact {
+      min-height: 50px;
+      padding: 0 22px;
+    }
   }
 
-  /* escalera: la ruta se dibuja y la bandera aparece al final */
-  .js .draw .route-mask {
-    stroke-dashoffset: 1;
-    transition: stroke-dashoffset 1.6s ease-in-out 0.2s;
+  /* ---------------------------------------------------------------- campos */
+  .field {
+    display: block;
+    width: 100%;
+    height: var(--field-h);
+    padding: 0 16px;
+    border: var(--filete) solid var(--color-ink);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font: inherit;
+    font-size: var(--fs-cuerpo);
+    border-radius: 0;
+    appearance: none;
   }
-  .js .draw.in .route-mask {
-    stroke-dashoffset: 0;
+  /* campos numéricos a la derecha, como en el workbook (B-27) */
+  .field.der {
+    text-align: right;
+    font-variant-numeric: lining-nums tabular-nums;
   }
-  .js .draw .flag {
-    opacity: 0;
-    transform: translateY(6px);
-    transition: opacity 0.4s ease-out 1.7s, transform 0.4s ease-out 1.7s;
+  .field::placeholder {
+    color: var(--color-ink3);
   }
-  .js .draw.in .flag {
-    opacity: 1;
-    transform: none;
+  select.field {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'%3E%3Cpath d='M5 9l7 7 7-7' fill='none' stroke='%230C0C0D' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+  textarea.field {
+    height: auto;
+    min-height: 110px;
+    padding: 14px 16px;
+  }
+  .on-ink .field {
+    border-color: var(--color-paper);
   }
 
-  .xfade {
-    animation: xfade 0.2s ease-out;
+  /* ---------------------------------------------------------------- foco: tinta sobre papel, papel sobre tinta */
+  .site :focus-visible {
+    outline: var(--focus-w) solid var(--color-ink);
+    outline-offset: 3px;
   }
-  @keyframes xfade {
-    from {
+  .site .on-ink :focus-visible {
+    outline-color: var(--color-paper);
+  }
+  .field:focus-visible {
+    outline-offset: 0;
+  }
+  /* opciones con un radio oculto: el foco se dibuja en la etiqueta */
+  .opt:has(:focus-visible) {
+    outline: var(--focus-w) solid var(--color-ink);
+    outline-offset: 2px;
+    z-index: 1;
+  }
+
+  .skip,
+  .site a.skip {
+    position: absolute;
+    left: 16px;
+    top: -80px;
+    z-index: 100;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    padding: 12px 16px;
+    font-weight: 700;
+  }
+  .skip:focus {
+    top: 12px;
+  }
+
+  /* separador: filete vertical de 1 px (en lugar de «·») */
+  .vr {
+    display: inline-block;
+    width: 1px;
+    height: 10px;
+    background: currentColor;
+    margin: 0 10px;
+    vertical-align: -1px;
+  }
+
+  /* ---------------------------------------------------------------- enlaces */
+  .lnk {
+    position: relative;
+    display: inline;
+  }
+  .lnk::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 1.5px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease-out;
+  }
+  .lnk:hover::after,
+  .lnk:focus-visible::after,
+  .group:hover .lnk::after {
+    transform: scaleX(1);
+  }
+  /* enlace de texto con subrayado fijo que se engrosa al pasar */
+  .ul {
+    border-bottom: var(--filete-marco) solid currentColor;
+    padding-bottom: 2px;
+    transition: border-bottom-width 0.15s ease, padding-bottom 0.15s ease;
+  }
+  .ul:hover {
+    border-bottom-width: 3px;
+    padding-bottom: 0.5px;
+  }
+  /* la flecha de remisión avanza al pasar el cursor */
+  .flecha {
+    display: inline-block;
+    max-width: 100%;
+  }
+  .flecha-i {
+    display: inline-block;
+    vertical-align: -0.2em;
+    margin-left: 6px;
+    transition: transform 0.2s ease-out;
+  }
+  .flecha:hover svg,
+  .group:hover .flecha svg {
+    transform: translateX(3px);
+  }
+
+  /* tarjetas */
+  .card {
+    border: var(--filete) solid var(--color-ink);
+    transition: box-shadow 0.2s ease;
+  }
+  .card:hover {
+    box-shadow: inset 0 0 0 1px var(--color-ink);
+  }
+
+  /* ---------------------------------------------------------------- recuadros del libro */
+  /* filete superior en lugar de raya lateral; en salvia, en salvia profundo */
+  .filete-sup {
+    border-top: var(--filete-fino) solid var(--color-ink);
+    padding-top: 10px;
+  }
+  .bg-sage .filete-sup,
+  .filete-sup.salvia {
+    border-top-color: var(--color-saged);
+  }
+  /* aviso o error: texto en tinta con el icono «error»; nunca en magenta */
+  .aviso {
+    display: grid;
+    grid-template-columns: 16px minmax(0, 1fr);
+    gap: 8px;
+    align-items: start;
+    color: inherit;
+    font-size: var(--fs-recuadro);
+    line-height: 1.45;
+  }
+  .aviso > svg {
+    margin-top: 2px;
+  }
+
+  /* tablas como en el libro */
+  .tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-recuadro);
+    line-height: 1.36;
+  }
+  .tabla thead th {
+    font-family: var(--font-mono);
+    font-size: var(--fs-rotulo);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink3);
+    text-align: left;
+    vertical-align: bottom;
+    padding: 6px 10px 6px 0;
+    border-top: var(--filete) solid var(--color-ink);
+    border-bottom: var(--filete) solid var(--color-ink);
+  }
+  .tabla tbody th,
+  .tabla tbody td {
+    padding: 8px 10px 8px 0;
+    vertical-align: top;
+    border-bottom: var(--filete-fila) solid var(--color-ink3);
+  }
+  .tabla tbody tr:last-child > * {
+    border-bottom: var(--filete) solid var(--color-ink);
+  }
+  .tabla .n {
+    text-align: right;
+    padding-right: 2px;
+  }
+  .tabla tr.res > * {
+    font-weight: 700;
+    border-top: var(--filete) solid var(--color-ink);
+  }
+
+  /* marcas de corte de imprenta */
+  .crop {
+    position: relative;
+  }
+  .crop > .cm {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    pointer-events: none;
+  }
+  .crop > .cm::before,
+  .crop > .cm::after {
+    content: "";
+    position: absolute;
+    background: var(--color-ink20);
+  }
+  .crop > .cm::before {
+    left: 3.5px;
+    top: 0;
+    width: 1px;
+    height: 8px;
+  }
+  .crop > .cm::after {
+    top: 3.5px;
+    left: 0;
+    height: 1px;
+    width: 8px;
+  }
+  .crop > .cm.tl {
+    left: -14px;
+    top: -14px;
+  }
+  .crop > .cm.tr {
+    right: -14px;
+    top: -14px;
+  }
+  .crop > .cm.bl {
+    left: -14px;
+    bottom: -14px;
+  }
+  .crop > .cm.br {
+    right: -14px;
+    bottom: -14px;
+  }
+
+  /* figuras SVG en línea */
+  .svgfit > svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* ---------------------------------------------------------------- movimiento editorial (solo sin reduced-motion) */
+  @media (prefers-reduced-motion: no-preference) {
+    /* entradas cortas, una sola vez: un leve fundido con 8 px de recorrido */
+    .js .rv {
       opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
     }
-    to {
+    .js .rv.in {
       opacity: 1;
+      transform: none;
+    }
+    .js .rv-kids > * {
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+    .js .rv-kids.in > * {
+      opacity: 1;
+      transform: none;
+    }
+    .js .rv-kids.in > :nth-child(2) {
+      transition-delay: 60ms;
+    }
+    .js .rv-kids.in > :nth-child(3) {
+      transition-delay: 120ms;
+    }
+    .js .rv-kids.in > :nth-child(4) {
+      transition-delay: 180ms;
+    }
+    .js .rv-kids.in > :nth-child(n + 5) {
+      transition-delay: 240ms;
+    }
+
+    /* titular del héroe: cada línea sube detrás de una máscara (el retardo por línea lo pone RevealObserver) */
+    .js .lines .w > span {
+      transform: translateY(105%);
+      transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+    .js .lines.in .w > span {
+      transform: none;
+    }
+
+    /* escalera: la ruta se dibuja y la bandera aparece al final */
+    .js .draw .route-mask {
+      stroke-dashoffset: 1;
+      transition: stroke-dashoffset 1.6s ease-in-out 0.2s;
+    }
+    .js .draw.in .route-mask {
+      stroke-dashoffset: 0;
+    }
+    .js .draw .flag {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.4s ease-out 1.7s, transform 0.4s ease-out 1.7s;
+    }
+    .js .draw.in .flag {
+      opacity: 1;
+      transform: none;
+    }
+
+    .xfade {
+      animation: xfade 0.2s ease-out;
+    }
+    @keyframes xfade {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
     }
   }
-}
-.lines .w {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: top;
-  padding: 0.2em 0.04em 0.1em;
-  margin: -0.2em -0.04em -0.1em;
-}
-.lines .w > span {
-  display: inline-block;
-}
+  .lines .w {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    padding: 0.2em 0.04em 0.1em;
+    margin: -0.2em -0.04em -0.1em;
+  }
+  .lines .w > span {
+    display: inline-block;
+  }
 
-/* botón de control del carrusel */
-.tc {
-  width: 44px;
-  height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--color-ink);
-  background: var(--color-paper);
-  color: var(--color-ink);
-  cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
-}
-.tc:hover {
-  background: var(--color-ink);
-  color: var(--color-paper);
-}
-
+  /* botón de control del carrusel de reseñas */
+  .tc {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: var(--filete) solid var(--color-ink);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .tc:hover {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
 }

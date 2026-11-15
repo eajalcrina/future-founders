@@ -1,0 +1,30 @@
+# Nombres oficiales de Future Founders. Formato: malo => bueno (uno por línea).
+# Congelados el 15/11/2026 (decisiones del dueño, ronda R4 de la web). Los revisa rastros.py y textos.mjs.
+# Los cambios solo de mayúsculas (Doble Agente, Primer Mandato, Diagnóstico de nivel) están en docs/reglas-diseno.md, sección 6: los scripts comparan sin distinguir mayúsculas.
+
+# Marca, libro y recursos
+kit Plan de salida => kit «Plan de salida»
+Kit Plan de salida => Kit «Plan de salida»
+kit "Plan de salida" => kit «Plan de salida»
+work book => workbook
+diagnóstico de nivel gratis => Diagnóstico de nivel
+
+# Programas
+Co-construcción => Coconstrucción
+
+# Niveles de la escalera
+rol fraccional => rol parcial
+roles fraccionales => roles parciales
+
+# Términos del libro (maqueta-v3/terminos.txt)
+advisory board => consejo asesor
+exempresa => exempleador
+CVM sin sueldo => CVM sin empleo
+workbook pág. => workbook p.
+libro pág. => libro p.
+online => en línea
+Eddie Ajalcriña & Lorenzo Ortiz => Eddie Ajalcriña y Lorenzo Ortiz
+
+# Cifras
+USD 9500 => USD 9.500
+25% => 25 %
