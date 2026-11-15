@@ -9,7 +9,7 @@ Qué hace el script con cada envío:
 3. Escribe una fila en la pestaña del formulario, con la fecha y hora de Lima en la primera columna. Usa un candado para que dos envíos al mismo tiempo no se pisen.
 4. Manda un aviso en texto plano a los correos de la propiedad `AVISOS`, con los campos y el enlace a la pestaña. Si el correo falla, la fila igual queda guardada.
 5. Manda a la persona que llenó el formulario un correo con el enlace a su PDF (kit, workbook, diagnóstico) o la confirmación de su postulación (programas). Las respuestas llegan al primer correo de `AVISOS`.
-5. Responde `{"ok": true}` o `{"ok": false, "error": "..."}`.
+6. Responde `{"ok": true}` o `{"ok": false, "error": "..."}`.
 
 | Formulario (`form`) | Pestaña | Dónde está en la web |
 | --- | --- | --- |
