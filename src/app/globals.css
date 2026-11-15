@@ -294,8 +294,11 @@
   .btn:hover {
     background: var(--color-magt);
   }
+  /* desactivado: tinta 20 % con texto en tinta media (nunca un magenta aclarado) */
   .btn:disabled {
     cursor: not-allowed;
+    background: var(--color-ink20);
+    color: var(--color-ink2);
   }
   .btn2 {
     border: var(--filete-marco) solid currentColor;

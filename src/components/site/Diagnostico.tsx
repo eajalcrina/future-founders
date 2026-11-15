@@ -157,7 +157,7 @@ export default function Diagnostico() {
           <button type="button" className={`btn2 ${step === 0 ? "max-sm:hidden sm:invisible" : ""}`} onClick={() => setStep(Math.max(0, step - 1))} disabled={step === 0}>
             Anterior
           </button>
-          <button type="submit" className="btn" disabled={cur === null} style={cur === null ? { opacity: 0.45 } : undefined}>
+          <button type="submit" className="btn" disabled={cur === null}>
             {step < QS.length - 1 ? "Siguiente" : "Ver mi nivel"}
           </button>
         </div>
