@@ -4,7 +4,7 @@ import { useEffect, useId, useState, useSyncExternalStore } from "react";
 import { PROGRAMAS } from "@/content/programas";
 import { enviarRegistro, leerTrampa, EMAIL_RE } from "@/lib/registro";
 import { whatsappUrl } from "@/content/sitio";
-import { Aviso } from "./ui";
+import { Aviso, PrivacidadLinea } from "./ui";
 import Trampa from "./Trampa";
 
 const COUNTRIES = ["Perú", "México", "Colombia", "Chile", "Otro país"];
@@ -130,7 +130,7 @@ export default function ProgramForm() {
           </Aviso>
         )}
       </div>
-      <p className="text-recuadro text-ink2">Usamos tu correo solo para responderte sobre este programa.</p>
+      <PrivacidadLinea className="text-ink2" />
     </form>
   );
 }

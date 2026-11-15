@@ -3,7 +3,7 @@
 import { useId, useState } from "react";
 import { enviarRegistro, leerTrampa, EMAIL_RE } from "@/lib/registro";
 import { whatsappUrl } from "@/content/sitio";
-import { Aviso } from "./ui";
+import { Aviso, PrivacidadLinea } from "./ui";
 import Trampa from "./Trampa";
 
 /** Formulario de correo de la llamada final (sobre tinta). Pide el kit «Plan de salida». */
@@ -70,9 +70,7 @@ export default function EmailCta({ button = "Recibir el kit" }: { button?: strin
           </Aviso>
         )}
       </div>
-      <p id={`${id}-help`} className="text-recuadro leading-[1.45] text-ink20 mt-3.5">
-        Te enviamos el kit a este correo. Para dejar de recibir correos, responde «baja».
-      </p>
+      <PrivacidadLinea id={`${id}-help`} className="text-ink20 mt-3.5" />
     </form>
   );
 }

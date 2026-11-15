@@ -2,11 +2,11 @@
 
 import { useId, useState } from "react";
 import { enviarRegistro, leerTrampa, EMAIL_RE } from "@/lib/registro";
-import { whatsappUrl } from "@/content/sitio";
-import { Aviso } from "./ui";
+import { SITUACIONES, whatsappUrl } from "@/content/sitio";
+import { Aviso, PrivacidadLinea } from "./ui";
 import Trampa from "./Trampa";
 
-const SIT = ["Tengo empleo", "Acabo de salir", "Tengo un proyecto"];
+const SIT = SITUACIONES.map((s) => s.corto);
 const COUNTRIES = ["Perú", "México", "Colombia", "Chile", "Otro país"];
 
 export type Producto = "kit" | "workbook";
@@ -14,7 +14,7 @@ export type Producto = "kit" | "workbook";
 const COPY: Record<Producto, { h: string; intro: string; lead: string; button: string; next: string; wa: string }> = {
   kit: {
     h: "Descarga el kit",
-    intro: "Las cinco plantillas del kit, con los ejemplos de Carmen y Javier y la regla de cada país, en un PDF que puedes llenar.",
+    intro: "Un PDF que puedes llenar, con los ejemplos de Carmen y Javier y la regla de cada país. Lo descargas aquí y te llega una copia al correo.",
     lead: "Página del kit",
     button: "Descargar el kit",
     next: "Empieza por la K.1: son 20 minutos y te deja el dato del que parte todo el método.",
@@ -22,7 +22,7 @@ const COPY: Record<Producto, { h: string; intro: string; lead: string; button: s
   },
   workbook: {
     h: "Descarga el workbook",
-    intro: "Las 31 plantillas del libro en un PDF que puedes llenar en una tableta o una computadora, o imprimir.",
+    intro: "Las 31 plantillas del libro en un PDF. Se llena en una tableta, en la computadora o en papel. Lo descargas aquí y te llega una copia al correo.",
     lead: "Página del workbook",
     button: "Descargar el workbook",
     next: "Abre primero «Tu nivel en la escalera», al comienzo del workbook, y anota tu nivel con la fecha.",
@@ -168,7 +168,7 @@ export default function DownloadForm({
           <button type="submit" className="btn w-full mt-2" disabled={state === "sending"}>
             {state === "sending" ? "Enviando..." : c.button}
           </button>
-          <p className="text-recuadro leading-[1.45] text-ink2">Al enviar, descargas el PDF aquí mismo y te lo enviamos a este correo. Para dejar de recibir correos, responde «baja».</p>
+          <PrivacidadLinea className="text-ink2" />
         </form>
       )}
     </div>
