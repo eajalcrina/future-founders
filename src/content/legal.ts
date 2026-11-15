@@ -28,13 +28,19 @@ export const PRIVACIDAD: Legal = {
     {
       h: "Dónde se guardan",
       p: [
-        "El sitio se aloja en Vercel, que procesa cada envío de formulario y lo pasa a una hoja de cálculo de Google a la que solo acceden los fundadores de Future Founders. Google presta el servicio de la hoja y del correo.",
+        "El sitio se aloja en Vercel, que procesa cada envío de formulario y lo pasa a una hoja de cálculo de Google a la que solo acceden los fundadores de Future Founders. Google presta el servicio de la hoja y del correo. Vercel y Google guardan los datos en servidores fuera del Perú, principalmente en Estados Unidos.",
       ],
     },
     {
       h: "Para qué los usamos",
       p: [
         "Para enviarte un correo de confirmación con el PDF que pediste o con la respuesta a tu postulación, para avisar al equipo de que llegó tu registro y para escribirte sobre el libro y los programas. No vendemos ni cedemos tus datos.",
+      ],
+    },
+    {
+      h: "Cuánto tiempo los guardamos",
+      p: [
+        "Mientras sigas recibiendo nuestros correos y hasta 24 meses después de tu último registro o de tu última respuesta. Si pides la baja o que borremos tus datos, dejamos de escribirte de inmediato y los borramos de la hoja en un plazo máximo de 30 días. Los datos de una compra se guardan el tiempo que exige la ley tributaria.",
       ],
     },
     {
@@ -48,6 +54,12 @@ export const PRIVACIDAD: Legal = {
       ],
     },
     { h: "El diagnóstico de nivel", p: ["Tus respuestas se quedan en tu navegador. Solo se envían si pides el resultado por correo."] },
+    {
+      h: "Ley aplicable y tus derechos",
+      p: [
+        `Esta política se rige por la Ley N.º 29733, Ley de Protección de Datos Personales del Perú, y su reglamento. Puedes pedir acceso, rectificación, cancelación u oposición sobre tus datos escribiendo a ${EMAIL}, y te respondemos dentro de los plazos de esa ley. Si no quedas conforme con la respuesta, puedes acudir a la Autoridad Nacional de Protección de Datos Personales del Ministerio de Justicia y Derechos Humanos.`,
+      ],
+    },
     { h: "Cookies", p: ["El sitio no usa cookies de publicidad ni de seguimiento."] },
     {
       h: "Enlaces a otros servicios",
@@ -83,6 +95,7 @@ export const TERMINOS: Legal = {
       h: "Compras",
       p: [
         "El ebook y el impreso se compran en Amazon, con las condiciones de Amazon. El libro en PDF se paga con Mercado Pago, con las condiciones de Mercado Pago.",
+        `Después del pago con Mercado Pago te enviamos el PDF al correo que registraste en el pago, en un plazo máximo de 6 horas. Si no te llega en ese plazo o el archivo no abre, escríbenos a ${EMAIL} y te lo reenviamos. Si no podemos entregártelo, te devolvemos el pago completo. Como es un producto digital, una vez entregado el PDF solo hay devolución si el archivo tiene una falla que no podamos corregir.`,
       ],
     },
     { h: "Programas", p: ["Las fechas, los cupos, el precio y las condiciones de cada programa se informan en cada convocatoria."] },
@@ -93,6 +106,12 @@ export const TERMINOS: Legal = {
       ],
     },
     { h: "Personajes", p: ["Carmen, Javier, Andrea y Rodrigo son arquetipos del libro, armados a partir de conversaciones reales."] },
+    {
+      h: "Ley aplicable",
+      p: [
+        `Estos términos se rigen por las leyes del Perú, incluido el Código de Protección y Defensa del Consumidor (Ley N.º 29571). Para un reclamo, escríbenos a ${EMAIL}.`,
+      ],
+    },
     { h: "Cambios", p: ["Estos términos pueden cambiar. La versión vigente es la publicada aquí, con su fecha."] },
   ],
 };

@@ -30,6 +30,18 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 
 - [ ] **Encabezado fijo en un iPhone con muesca.** El área segura (`env(safe-area-inset-top)`) está en el código, pero el emulador no la simula: probarlo en un teléfono real al publicar la vista previa.
 
+## Ronda R5c (16/11/2026): decisiones del dueño aplicadas
+
+- [x] Cifras de la casa: USD 26M+ facturados y USD 2,7M+ capital levantado.
+- [x] Bio de Eddie: «En 2021, todavía en Alicorp-Vitapro, cofundó Redesign Lab».
+- [x] Bio de Lorenzo: sin la credencial del Bio Business Playbook ni el cargo en Swisscontact.
+- [x] PDF con Mercado Pago: se envía al correo registrado en Mercado Pago en un plazo máximo de 6 horas; reenvío si no llega o no abre, devolución completa si no se puede entregar.
+- [x] Privacidad: Ley N.º 29733 del Perú y su reglamento, derechos de acceso, rectificación, cancelación y oposición, conservación por 24 meses desde el último registro y borrado en 30 días tras la baja, datos alojados fuera del Perú. Términos: leyes del Perú y Ley N.º 29571.
+- [ ] **Entrega del PDF en 6 horas.** Definir quién revisa los pagos de Mercado Pago y envía el PDF, también de noche y en fin de semana.
+- [ ] **Libro de Reclamaciones virtual.** Vender a consumidores en el Perú obliga a tener uno (Ley N.º 29571 y su reglamento). Crear la página con su formulario antes de activar `NEXT_PUBLIC_CHECKOUT_URL`.
+- [ ] **Banco de datos ante la ANPD.** Revisar con el abogado si la hoja de registros debe inscribirse en el Registro Nacional de Protección de Datos Personales.
+- [ ] **Revisión legal** de /privacidad y /terminos.
+
 ## Validación de contenido (Eddie y Lorenzo)
 
 - [x] Bio de Eddie: la frase «La escalera de cuatro niveles del método es su idea» salió (no está en eddieajalcrina.com).

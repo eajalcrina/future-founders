@@ -292,8 +292,7 @@ function Founders() {
               <div className="flex flex-col">
                 <Mono tone="gris">{f.role}</Mono>
                 <h3 className="wh2 text-h2 mt-2 lg:mt-3">{f.name}</h3>
-                {/* dos líneas reservadas en escritorio: las bios de las dos columnas arrancan a la misma altura */}
-                <div className="text-cuerpo font-semibold mt-2 lg:min-h-[2lh]">{f.cred}</div>
+                {f.cred ? <div className="text-cuerpo font-semibold mt-2">{f.cred}</div> : null}
                 <p className="wt mt-2.5 lg:mt-3">
                   <Sc text={f.bio} />
                 </p>

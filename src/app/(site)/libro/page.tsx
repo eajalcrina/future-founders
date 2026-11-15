@@ -285,7 +285,7 @@ function Workbook() {
 function Formats() {
   const fmts = [
     { n: "Ebook e impreso", w: "Amazon", d: "El ebook se lee en Kindle, en una tableta o en la computadora. El impreso es una edición de bolsillo ejecutivo de 150 × 220 mm, impresa por Amazon.", btn: <AmazonBtn className="w-full" /> },
-    { n: "Libro en PDF", w: CHECKOUT_URL ? "Mercado Pago" : "WhatsApp", d: "Para leer en una tableta o en la computadora, sin pasar por Amazon.", btn: <MercadoPagoBtn className="w-full" /> },
+    { n: "Libro en PDF", w: CHECKOUT_URL ? "Mercado Pago" : "WhatsApp", d: CHECKOUT_URL ? "Para leer en una tableta o en la computadora. Te llega a tu correo en un plazo máximo de 6 horas después del pago." : "Para leer en una tableta o en la computadora, sin pasar por Amazon.", btn: <MercadoPagoBtn className="w-full" /> },
   ];
   return (
     <section id="formatos" className="bg-warm" aria-labelledby="formatos-t">
@@ -297,7 +297,7 @@ function Formats() {
           title="Ebook e impreso en Amazon, PDF con Mercado Pago"
           sub={
             CHECKOUT_URL
-              ? "El libro en PDF se paga con Mercado Pago: tarjeta de crédito, débito o saldo en cuenta."
+              ? "El libro en PDF se paga con Mercado Pago: tarjeta de crédito, débito o saldo en cuenta. Después del pago te enviamos el PDF al correo que registraste en Mercado Pago, en un plazo máximo de 6 horas."
               : "El libro en PDF se pagará con Mercado Pago: tarjeta de crédito, débito o saldo en cuenta. Mientras activamos el pago en línea, el PDF se pide por WhatsApp."
           }
         />
@@ -332,7 +332,7 @@ function Authors() {
               <div>
                 <Mono tone="gris">{f.role}</Mono>
                 <h3 className="wh2 text-h2 mt-2.5">{f.name}</h3>
-                <p className="text-cuerpo mt-2">{f.cred}</p>
+                {f.cred ? <p className="text-cuerpo mt-2">{f.cred}</p> : null}
               </div>
             </div>
           ))}

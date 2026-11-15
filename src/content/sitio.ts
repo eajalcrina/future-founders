@@ -224,8 +224,8 @@ export const PRODUCTS: Product[][] = [
 export const STATS: { prefix?: string; value: number; decimals?: number; suffix: string; label: string }[] = [
   { value: 155, suffix: "+", label: "ejecutivos formados" },
   { value: 10, suffix: "+", label: "empresas construidas" },
-  { prefix: "USD ", value: 20, suffix: "M+", label: "facturados" },
-  { prefix: "USD ", value: 1.5, decimals: 1, suffix: "M+", label: "capital levantado" },
+  { prefix: "USD ", value: 26, suffix: "M+", label: "facturados" },
+  { prefix: "USD ", value: 2.7, decimals: 1, suffix: "M+", label: "capital levantado" },
 ];
 
 export const CIFRAS_NOTA = "Suman la trayectoria de los fundadores y la de los participantes de los programas.";
@@ -241,7 +241,7 @@ export const FOUNDERS = [
     name: "Eddie Ajalcriña",
     role: "CEO y cofundador",
     cred: "Docente en MIT Professional Education desde 2022",
-    bio: "Lleva más de 15 años entre la industria, la cooperación internacional y el emprendimiento. Lideró la estrategia de sostenibilidad de TASA, del grupo Breca, y dirigió la sostenibilidad y los asuntos regulatorios de Alicorp-Vitapro en cuatro países entre 2019 y 2023. En 2021 cofundó Redesign Lab, que dirige como CEO y cuyo portafolio facturó USD 26 millones en 2025.",
+    bio: "Lleva más de 15 años entre la industria, la cooperación internacional y el emprendimiento. Lideró la estrategia de sostenibilidad de TASA, del grupo Breca, y dirigió la sostenibilidad y los asuntos regulatorios de Alicorp-Vitapro en cuatro países entre 2019 y 2023. En 2021, todavía en Alicorp-Vitapro, cofundó Redesign Lab, que dirige como CEO y cuyo portafolio facturó USD 26 millones en 2025.",
     web: "eddieajalcrina.com",
     webUrl: "https://eddieajalcrina.com",
     linkedin: "https://www.linkedin.com/in/eddieajalcrina/",
@@ -252,8 +252,8 @@ export const FOUNDERS = [
     key: "lorenzo",
     name: "Lorenzo Ortiz",
     role: "COO y cofundador",
-    cred: "Coautor del Bio Business Playbook",
-    bio: "Empezó en el Grupo Gloria y a fines de 2013 pasó a TASA, del Grupo Breca, donde dirigió a la vez dos plantas industriales. En 2021 dejó la vida corporativa y cofundó Redesign Lab con Eddie. Desde entonces evalúa proyectos de inversión industrial en paralelo a sus otros roles, con más de 20 empresas industriales en 7 países, y hoy es Technical Lead de Impact Investing de Swisscontact en Colombia.",
+    cred: "",
+    bio: "Empezó en el Grupo Gloria y a fines de 2013 pasó a TASA, del Grupo Breca, donde dirigió a la vez dos plantas industriales. En 2021 dejó la vida corporativa y cofundó Redesign Lab con Eddie. Desde entonces evalúa proyectos de inversión industrial en paralelo a sus otros roles, con más de 20 empresas industriales en 7 países.",
     web: "lorenzoortiz.co",
     webUrl: "https://lorenzoortiz.co",
     linkedin: "https://www.linkedin.com/in/lorenzoortiz/",
