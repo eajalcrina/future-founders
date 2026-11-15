@@ -71,7 +71,7 @@ export default function EmailCta({ button = "Recibir el kit" }: { button?: strin
         )}
       </div>
       <p id={`${id}-help`} className="text-recuadro leading-[1.45] text-ink20 mt-3.5">
-        Te enviamos el kit a este correo. Puedes darte de baja con un clic.
+        Te enviamos el kit a este correo. Para dejar de recibir correos, responde «baja».
       </p>
     </form>
   );

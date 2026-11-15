@@ -335,7 +335,7 @@ function SendResult({ k, ans }: { k: number; ans: number[] }) {
         )}
       </div>
       <p className="text-recuadro text-ink2 mt-3">
-        <Jn parts={["Sin costo", "Puedes darte de baja con un clic"]} />
+        <Jn parts={["Sin costo", "Te das de baja respondiendo «baja»"]} />
       </p>
     </div>
   );

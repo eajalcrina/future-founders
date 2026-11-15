@@ -84,6 +84,7 @@ function doPost(e) {
     var fecha = Utilities.formatDate(new Date(), ZONA, 'yyyy-MM-dd HH:mm:ss');
     var hoja = escribir_(def, fecha, datos.valores);
     avisar_(def, hoja, fecha, datos.valores);
+    confirmar_(cuerpo.form, datos.valores);
     return responder_({ ok: true });
   } catch (err) {
     console.error('doPost: ' + (err && err.stack ? err.stack : err));
@@ -104,7 +105,7 @@ function probar() {
         data: {
           origen: 'Prueba desde el editor',
           nombre: 'Registro de prueba',
-          correo: 'prueba@example.com',
+          correo: ((PropertiesService.getScriptProperties().getProperty('AVISOS') || '').split(',')[0] || '').trim(),
           situacion: 'Tengo empleo',
           pais: 'Perú'
         }
@@ -261,6 +262,93 @@ function avisar_(def, hoja, fecha, valores) {
   } catch (err) {
     // La fila ya quedó guardada: un fallo de correo (por ejemplo, cuota diaria) no anula el registro.
     console.error('No se pudo enviar el aviso: ' + err);
+  }
+}
+
+/**
+ * Correo a la persona que llenó el formulario, con el enlace a su PDF o la confirmación de su postulación.
+ * Las respuestas llegan al primer correo de AVISOS.
+ */
+var SITIO = 'https://www.futurefounders.pe';
+var PIE = [
+  '',
+  'Si tienes una duda, responde este correo y te contestamos Eddie o Lorenzo.',
+  'Para dejar de recibir correos de Future Founders, responde con la palabra «baja».',
+  '',
+  'Future Founders',
+  SITIO
+];
+
+function mensajeConfirmacion_(form, v) {
+  var hola = 'Hola' + (v.nombre ? ' ' + v.nombre.split(/\s+/)[0] : '') + ':';
+  if (form === 'kit') {
+    return {
+      asunto: 'Tu kit «Plan de salida»',
+      lineas: [
+        hola, '',
+        'Aquí está el kit «Plan de salida» en PDF, con las cinco plantillas para llenar:',
+        SITIO + '/descargas/doble-agente-kit.pdf', '',
+        'Empieza por la K.1, que te da tu runway en unos 20 minutos. Las cinco plantillas toman unas 2 horas en total.',
+        'Si prefieres hacer la K.1 en línea: ' + SITIO + '/workbook/k1'
+      ]
+    };
+  }
+  if (form === 'workbook') {
+    return {
+      asunto: 'Tu workbook de Doble Agente',
+      lineas: [
+        hola, '',
+        'Aquí está el workbook de Doble Agente en PDF, con una plantilla por capítulo:',
+        SITIO + '/descargas/doble-agente-workbook.pdf', '',
+        'Se llena mejor en Acrobat Reader o en Vista Previa. Las plantillas con calculadora en línea están en ' + SITIO + '/workbook'
+      ]
+    };
+  }
+  if (form === 'diagnostico') {
+    // La web envía el nivel como «0: Salario».
+    var n = /^(\d)\s*:\s*(.+)$/.exec(v.nivel);
+    var nivel = n ? 'nivel ' + n[1] + ', ' + n[2] : v.nivel;
+    return {
+      asunto: 'Tu diagnóstico: ' + nivel,
+      lineas: [
+        hola, '',
+        'Según tus respuestas, hoy estás en el ' + nivel + '.', '',
+        'Para dar el siguiente paso con tus números, descarga el kit «Plan de salida»:',
+        SITIO + '/descargas/doble-agente-kit.pdf', '',
+        'Puedes volver a hacer el diagnóstico cuando cambie tu situación: ' + SITIO + '/diagnostico'
+      ]
+    };
+  }
+  if (form === 'programa') {
+    return {
+      asunto: 'Recibimos tu postulación a ' + v.programa,
+      lineas: [
+        hola, '',
+        'Recibimos tu postulación a ' + v.programa + '. Te escribimos en los próximos días con las fechas, los cupos y las condiciones de la próxima convocatoria.', '',
+        'Mientras tanto, si todavía no lo hiciste, el kit «Plan de salida» te da tu punto de partida:',
+        SITIO + '/descargas/doble-agente-kit.pdf'
+      ]
+    };
+  }
+  return null;
+}
+
+function confirmar_(form, valores) {
+  var m = mensajeConfirmacion_(form, valores);
+  if (!m || !CORREO_RE.test(valores.correo || '')) return;
+  var avisos = (PropertiesService.getScriptProperties().getProperty('AVISOS') || '').split(',')[0].trim();
+  try {
+    var opciones = {
+      to: valores.correo,
+      subject: m.asunto,
+      body: m.lineas.concat(PIE).join('\n'),
+      name: 'Future Founders'
+    };
+    if (CORREO_RE.test(avisos)) opciones.replyTo = avisos;
+    MailApp.sendEmail(opciones);
+  } catch (err) {
+    // El registro ya quedó guardado y el PDF se entregó en pantalla: un fallo de correo no anula nada.
+    console.error('No se pudo enviar la confirmación: ' + err);
   }
 }
 

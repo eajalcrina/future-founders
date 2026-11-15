@@ -168,7 +168,7 @@ export default function DownloadForm({
           <button type="submit" className="btn w-full mt-2" disabled={state === "sending"}>
             {state === "sending" ? "Enviando..." : c.button}
           </button>
-          <p className="text-recuadro leading-[1.45] text-ink2">Al enviar, descargas el PDF aquí mismo y te lo enviamos a este correo. Puedes darte de baja con un clic.</p>
+          <p className="text-recuadro leading-[1.45] text-ink2">Al enviar, descargas el PDF aquí mismo y te lo enviamos a este correo. Para dejar de recibir correos, responde «baja».</p>
         </form>
       )}
     </div>
