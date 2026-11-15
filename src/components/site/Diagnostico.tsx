@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { CHAPS, DO_NOW, LEVELS, LOOK, SIGNAL, WITH, agendaUrl, whatsappUrl } from "@/content/sitio";
-import { sendLead, EMAIL_RE } from "@/lib/leads";
+import { enviarRegistro, leerTrampa, EMAIL_RE } from "@/lib/registro";
 import { Aviso, Jn, Lvl, Mono, Sc } from "./ui";
+import Trampa from "./Trampa";
 
 type Q = { id: string; text: string; help?: string; options: string[] };
 
@@ -268,20 +269,20 @@ function SendResult({ k, ans }: { k: number; ans: number[] }) {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!EMAIL_RE.test(email.trim())) return setState("invalid");
+    const trampa = leerTrampa(e.currentTarget);
     setState("sending");
-    const [firstName, ...rest] = name.trim().split(/\s+/);
-    const r = await sendLead({
-      firstName,
-      lastName: rest.join(" "),
-      email: email.trim(),
-      archetype: `Nivel ${k}: ${LEVELS[k]}`,
-      archetypeNumber: k,
-      score: k,
-      maxScore: 3,
-      situacion: QS[0].options[ans[0]],
-      disposicionInversion: `Colchón: ${QS[4].options[ans[4]]}`,
-      urgencia: `Cobertura: ${QS[3].options[ans[3]]}`,
-    });
+    const r = await enviarRegistro(
+      "diagnostico",
+      {
+        nombre: name.trim(),
+        correo: email.trim(),
+        nivel: `${k}: ${LEVELS[k]}`,
+        situacion: QS[0].options[ans[0]],
+        cobertura: QS[3].options[ans[3]],
+        colchon: QS[4].options[ans[4]],
+      },
+      trampa
+    );
     setState(r.ok ? "ok" : "error");
   }
 
@@ -293,7 +294,8 @@ function SendResult({ k, ans }: { k: number; ans: number[] }) {
           Listo. Te enviamos tu nivel y el kit «Plan de salida» a {email.trim()}.
         </p>
       ) : (
-        <form onSubmit={onSubmit} noValidate className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-end mt-4">
+        <form onSubmit={onSubmit} noValidate className="relative grid gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-end mt-4">
+          <Trampa />
           <div>
             <label htmlFor={`${id}-n`} className="wm block text-ink2 mb-2">
               Nombre

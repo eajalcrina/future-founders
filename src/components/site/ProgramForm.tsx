@@ -2,9 +2,10 @@
 
 import { useEffect, useId, useState, useSyncExternalStore } from "react";
 import { PROGRAMAS } from "@/content/programas";
-import { sendLead, EMAIL_RE } from "@/lib/leads";
+import { enviarRegistro, leerTrampa, EMAIL_RE } from "@/lib/registro";
 import { whatsappUrl } from "@/content/sitio";
 import { Aviso } from "./ui";
+import Trampa from "./Trampa";
 
 const COUNTRIES = ["Perú", "México", "Colombia", "Chile", "Otro país"];
 
@@ -42,17 +43,13 @@ export default function ProgramForm() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!name.trim() || !EMAIL_RE.test(email.trim())) return setState("invalid");
+    const trampa = leerTrampa(e.currentTarget);
     setState("sending");
-    const [firstName, ...rest] = name.trim().split(/\s+/);
-    const r = await sendLead({
-      firstName,
-      lastName: rest.join(" "),
-      email: email.trim(),
-      country,
-      archetype: `Programa: ${p.name}`,
-      archetypeNumber: p.level,
-      situacion: msg.trim().slice(0, 500),
-    });
+    const r = await enviarRegistro(
+      "programa",
+      { programa: p.name, nivel: String(p.level), nombre: name.trim(), correo: email.trim(), pais: country, mensaje: msg.trim().slice(0, 500) },
+      trampa
+    );
     setState(r.ok ? "ok" : "error");
   }
 
@@ -65,7 +62,8 @@ export default function ProgramForm() {
     );
 
   return (
-    <form onSubmit={onSubmit} noValidate className="border border-ink bg-paper px-5 py-7 lg:p-9 grid gap-[18px]">
+    <form onSubmit={onSubmit} noValidate className="relative border border-ink bg-paper px-5 py-7 lg:p-9 grid gap-[18px]">
+      <Trampa />
       <div>
         <label htmlFor={`${id}-p`} className="wm block text-ink2 mb-2">
           Programa

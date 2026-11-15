@@ -8,8 +8,7 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 - [ ] **Enlace de Amazon.** Definir `NEXT_PUBLIC_AMAZON_URL` en el hosting. Sin ella, el botón lleva a la búsqueda del título en Amazon.
 - [ ] **Enlace de compra directa.** Elegir la pasarela y definir `NEXT_PUBLIC_CHECKOUT_URL`. Sin ella, el botón abre WhatsApp con el pedido del libro en PDF.
 - [ ] **Enlace de agenda.** Definir `NEXT_PUBLIC_AGENDA_URL` (Calendly, Cal.com u otro). Sin ella, «Agenda 30 minutos» y `/agenda` abren WhatsApp. El QR del cierre del libro apunta a `futurefounders.pe/agenda`, que redirige a esta agenda.
-- [ ] **Credenciales.** Confirmar `BREVO_API_KEY` y las variables de Supabase en el hosting (ver `.env.example`).
-- [ ] **Correo del kit y del workbook en Brevo.** El formulario ya entrega el PDF en pantalla; el correo es un respaldo. Crear las dos plantillas de correo con el enlace a `/descargas/doble-agente-kit.pdf` y `/descargas/doble-agente-workbook.pdf` (atributo `archetype`: «Kit Plan de salida» o «Workbook»).
+- [ ] **Publicar el Apps Script y poner las dos variables en Vercel.** Los formularios (kit, workbook, diagnóstico, programas y el cierre de cada página) van a `/api/registro`, que reenvía al Apps Script de `apps-script/`. Pasos en `apps-script/README.md`: pegar el script en la hoja, ejecutar `configurar()`, publicarlo como aplicación web y poner `APPS_SCRIPT_URL` y `APPS_SCRIPT_SECRET` en Vercel. Sin ellas, los formularios ofrecen WhatsApp y los de descarga entregan el PDF en pantalla igual.
 - [x] **PDF del kit.** Copiar `entrega/doble-agente-kit.pdf` (paso N-05 del plan del libro) a `public/descargas/`. Mientras no esté, el formulario del kit entrega el workbook y avisa que el kit está en sus páginas 5 a 13.
 - [x] **PDF del workbook R2.** `public/descargas/doble-agente-workbook.pdf` es el de `entrega/` del 31 de octubre. Reemplazarlo por el workbook de la segunda edición cuando salga del build del libro, con el mismo nombre.
 - [ ] **Puerta de impresión.** Antes de mandar el libro a imprenta: cada plantilla con «Calculadora en línea» en el workbook tiene su calculadora en `/workbook/<id>` en producción (hoy: K.1, 1.1, 2.1, 5.1, 6.1, 9.1, 10.1, 11.1, 13.1, 14.1, 17.1, 18.1 y 19.1), y `futurefounders.pe/workbook`, `/kit`, `/actualizaciones` y `/agenda` responden.
@@ -38,11 +37,11 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 
 - [ ] Dominio `futurefounders.pe` apuntando a esta web: los 30 QR del libro y los 31 del workbook van a `/workbook/<id>`; el QR del cierre va a `/agenda`.
 - [ ] **Revisión anual de `/actualizaciones` cada enero.** Llenar `vigente` en `src/content/actualizaciones.ts` con el valor del año (UIT, UMA, salario mínimo, UVT, UF y tasa de retención de Chile) y la fecha de `REVISION`.
-- [ ] **Datos del toolkit en Supabase (WP-03).** Revisar en el panel que la tabla `toolkit_phases` tenga seguridad por fila y ninguna lectura pública. Si guarda datos de personas, decidir con el abogado cómo avisarles y borrarlos. `quiz-lead` usa las mismas variables, así que no se tocan.
+- [ ] **Datos que quedaron en Supabase (WP-03).** La web ya no usa Supabase. Revisar en el panel las tablas `quiz_leads`, `toolkit_users` y `toolkit_phases`: si guardan datos de personas, decidir con el abogado cómo avisarles y borrarlos, y después cerrar el proyecto y la lista de Brevo.
 - [ ] **Borrar el toolkit (WP-04).** `/toolkit` redirige a `/workbook` desde la ronda R2. Borrar `src/app/toolkit` y `src/components/toolkit` cuando el redirect lleve un mes sin quejas.
 - [ ] **Segunda tanda de calculadoras (WP-05).** 3.1, 7.1, 12.1, 16.1 por país, K.3 por país y A.1 a D.1. Necesitan la revisión de un contador por país y el compromiso de actualizar cada año UF, UMA, salario mínimo y UVT.
 - [ ] **Registro mensual en línea (WP-06).** Con historial y hoja de cálculo descargable. Hoy cada calculadora descarga un CSV.
-- [ ] **Correo por país con la regla de la K.3 (WP-07).** Plantillas en Brevo con el atributo `country`.
+- [ ] **Correo por país con la regla de la K.3 (WP-07).** La hoja de registros ya guarda el país; falta elegir con qué herramienta se envían los correos.
 - [ ] **«El método en 21 ideas» en `/libro#metodo` (WP-08).** El texto sale de «La idea» de cada capítulo.
 
 ## Cómo se mantiene el workbook en la web

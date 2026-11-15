@@ -1,9 +1,10 @@
 "use client";
 
 import { useId, useState } from "react";
-import { sendLead, EMAIL_RE } from "@/lib/leads";
+import { enviarRegistro, leerTrampa, EMAIL_RE } from "@/lib/registro";
 import { whatsappUrl } from "@/content/sitio";
 import { Aviso } from "./ui";
+import Trampa from "./Trampa";
 
 const SIT = ["Tengo empleo", "Acabo de salir", "Tengo un proyecto"];
 const COUNTRIES = ["Perú", "México", "Colombia", "Chile", "Otro país"];
@@ -14,7 +15,7 @@ const COPY: Record<Producto, { h: string; intro: string; lead: string; button: s
   kit: {
     h: "Descarga el kit",
     intro: "Las cinco plantillas del kit, con los ejemplos de Carmen y Javier y la regla de cada país, en un PDF que puedes llenar.",
-    lead: "Kit Plan de salida",
+    lead: "Página del kit",
     button: "Descargar el kit",
     next: "Empieza por la K.1: son 20 minutos y te deja el dato del que parte todo el método.",
     wa: "el kit «Plan de salida»",
@@ -22,7 +23,7 @@ const COPY: Record<Producto, { h: string; intro: string; lead: string; button: s
   workbook: {
     h: "Descarga el workbook",
     intro: "Las 31 plantillas del libro en un PDF que puedes llenar en una tableta o una computadora, o imprimir.",
-    lead: "Workbook",
+    lead: "Página del workbook",
     button: "Descargar el workbook",
     next: "Abre primero «Tu nivel en la escalera», al comienzo del workbook, y anota tu nivel con la fecha.",
     wa: "el workbook de Doble Agente",
@@ -31,7 +32,7 @@ const COPY: Record<Producto, { h: string; intro: string; lead: string; button: s
 
 /**
  * Formulario de descarga del kit o del workbook: nombre, correo, situación y país.
- * Con o sin respuesta de Brevo, al enviar muestra el enlace al PDF.
+ * Con o sin registro en la hoja, al enviar muestra el enlace al PDF.
  * `file` es la ruta pública del PDF; `fallback` se usa si ese PDF todavía no está publicado.
  */
 export default function DownloadForm({
@@ -63,9 +64,9 @@ export default function DownloadForm({
       document.getElementById(`${id}-${er.name ? "name" : "email"}`)?.focus();
       return;
     }
+    const trampa = leerTrampa(e.currentTarget);
     setState("sending");
-    const [firstName, ...rest] = name.trim().split(/\s+/);
-    const r = await sendLead({ firstName, lastName: rest.join(" "), email: email.trim(), country, situacion: sit, archetype: c.lead });
+    const r = await enviarRegistro(producto, { origen: c.lead, nombre: name.trim(), correo: email.trim(), situacion: sit, pais: country }, trampa);
     setSent(r.ok);
     setState("done");
   }
@@ -96,7 +97,8 @@ export default function DownloadForm({
           )}
         </div>
       ) : (
-        <form onSubmit={onSubmit} noValidate className="grid gap-[18px] mt-6 lg:mt-[26px]">
+        <form onSubmit={onSubmit} noValidate className="relative grid gap-[18px] mt-6 lg:mt-[26px]">
+          <Trampa />
           <div>
             <label htmlFor={`${id}-name`} className="wm block text-ink2 mb-2">
               Nombre

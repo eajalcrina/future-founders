@@ -76,7 +76,7 @@ Fuente del sistema: `DESIGN-SYSTEM.md` y `tokens.css` de la R3 (carpeta `sistema
 - Contenido de origen que no se toca y se excluye de los barridos: `src/content/workbook.ts`, `scripts/` y el toolkit retirado (`src/app/toolkit`, `src/components/toolkit`).
 - En /libro, el subtítulo del héroe es el de la cubierta: «El método para ejecutivos con salario». Las muestras de páginas y la K.1 salen de los PDF finales de la R3 (`entrega/doble-agente-libro.pdf`, páginas 8 y 9, 12 y 13, 34 y 38, 41 y 42; `doble-agente-workbook.pdf`, página 8).
 - Revisión del asesor del 15/11/2026 convertida en reglas: sin pies visibles bajo imágenes (todo al texto alternativo); un solo botón magenta por vista; rótulos que se repetirían en cada fila van una vez como cabecera; en celular, los rótulos con varias partes van un dato por línea, sin filete; «a la vista» como máximo una vez por página; cargos de los arquetipos como en el libro (gerenta de finanzas, exvicepresidente comercial, directora de tecnología, socio de una pyme de reparto); botones de compra «Comprar en Amazon» y «Comprar el PDF».
-- Los atributos «Kit Plan de salida» de `DownloadForm.tsx` y `EmailCta.tsx` son valores del campo `archetype` en Brevo, no textos visibles; no se cambian sin cambiar las plantillas de correo.
+- Los valores de `origen` de `DownloadForm.tsx` y `EmailCta.tsx` («Página del kit», «Cierre de página») van a la columna «Origen» de la hoja de registros, no son textos visibles. Los campos de cada formulario están en `src/lib/registro.ts` y en `apps-script/Code.gs`, y se cambian en los dos.
 
 ## 10. Estado del rediseño
 - Ronda R4 de la web, modo «una sola pasada», 15/11/2026. Rama `claude/clever-edison-pcwxrr`, sin publicar.
