@@ -12,6 +12,7 @@ export default function Parallax({
   preload = false,
   className = "",
   position = "center",
+  zoom = 1,
   children,
 }: {
   src: string;
@@ -20,6 +21,8 @@ export default function Parallax({
   preload?: boolean;
   className?: string;
   position?: string;
+  /** Acercamiento del recorte, para igualar el tamaño de los rostros entre retratos. */
+  zoom?: number;
   children?: React.ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -29,7 +32,7 @@ export default function Parallax({
   return (
     <div ref={ref} className={`relative overflow-hidden ${className}`}>
       <motion.div className="absolute inset-[-6%_0]" style={reduce ? undefined : { y }}>
-        <Image src={src} alt={alt} fill sizes={sizes} preload={preload} className="object-cover" style={{ objectPosition: position }} />
+        <Image src={src} alt={alt} fill sizes={sizes} preload={preload} className="object-cover" style={{ objectPosition: position, ...(zoom !== 1 ? { transform: `scale(${zoom})`, transformOrigin: position } : {}) }} />
         {children}
       </motion.div>
     </div>

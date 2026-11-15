@@ -4,7 +4,7 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 
 ## Bloquean la publicación definitiva
 
-- [ ] **Reseñas reales.** Las 7 reseñas de `src/content/testimonios.ts` son de ejemplo y muestran el rótulo «Testimonio de ejemplo». Reemplazarlas por reseñas con permiso de cada persona y poner `ejemplo: false`.
+- [ ] **Reseñas reales.** Desde el 15/11/2026 la sección de reseñas está oculta: la home solo la muestra cuando `src/content/testimonios.ts` tiene reseñas con `ejemplo: false`. Para activarla, reemplazar las 7 reseñas de ejemplo por reseñas reales con permiso escrito de cada persona y poner `ejemplo: false`; la sección aparece sola, sin rotación automática.
 - [ ] **Enlace de Amazon.** Definir `NEXT_PUBLIC_AMAZON_URL` en el hosting. Sin ella, el botón lleva a la búsqueda del título en Amazon.
 - [ ] **Enlace de compra directa.** Elegir la pasarela y definir `NEXT_PUBLIC_CHECKOUT_URL`. Sin ella, el botón abre WhatsApp con el pedido del libro en PDF.
 - [ ] **Enlace de agenda.** Definir `NEXT_PUBLIC_AGENDA_URL` (Calendly, Cal.com u otro). Sin ella, «Agenda 30 minutos» y `/agenda` abren WhatsApp. El QR del cierre del libro apunta a `futurefounders.pe/agenda`, que redirige a esta agenda.
@@ -14,6 +14,14 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 - [x] **PDF del workbook R2.** `public/descargas/doble-agente-workbook.pdf` es el de `entrega/` del 31 de octubre. Reemplazarlo por el workbook de la segunda edición cuando salga del build del libro, con el mismo nombre.
 - [ ] **Puerta de impresión.** Antes de mandar el libro a imprenta: cada plantilla con «Calculadora en línea» en el workbook tiene su calculadora en `/workbook/<id>` en producción (hoy: K.1, 1.1, 2.1, 5.1, 6.1, 9.1, 10.1, 11.1, 13.1, 14.1, 17.1, 18.1 y 19.1), y `futurefounders.pe/workbook`, `/kit`, `/actualizaciones` y `/agenda` responden.
 - [ ] **Privacidad y términos.** Redactar las dos páginas. Hoy los enlaces del pie abren un correo.
+
+## Rediseño R4 (15/11/2026): decisiones abiertas
+
+- [ ] **Cuerpo de texto (filas 17 a 19 del sistema R3).** Se tomaron como supuesto: tamaño óptico automático, interlineado de 1,55 en pantalla (el libro usa 1,40) y párrafos separados por espacio, sin sangría. Confirmar o pedir los valores del libro.
+- [ ] **Botones en mayúsculas pequeñas.** La regla web los pide; el sistema R3 deja texto normal de 19 px en negrita. Quedó texto normal, sin flecha.
+- [ ] **Propuesta de titular del inicio (no aplicada).** Se mantiene el texto del dueño, «Tu experiencia puede trabajar para más de una empresa. O para la tuya.». Propuesta para evaluar, sin fragmento suelto ni punto final: «Tu experiencia puede trabajar para más de una empresa, incluida la tuya».
+- [ ] **Logos para perfiles (fila 33).** Las versiones para WhatsApp y redes de `logos/out` siguen con el blanco `#FFFFFF`; recolorear a `#F6F6F4` si se publican.
+- [ ] **Meta en las calculadoras.** La cifra de la meta todavía no va en magenta de texto con su raya, porque los datos de `workbook.ts` no marcan qué fila es la meta. Sumar la marca al generador si se quiere.
 
 ## Validación de contenido (Eddie y Lorenzo)
 
@@ -40,5 +48,5 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 ## Cómo se mantiene el workbook en la web
 
 - `src/content/workbook.ts` se genera con `npm run workbook -- <carpeta de maqueta-v3>` (o `MAQUETA_DIR=… npm run workbook`). No se edita a mano.
-- Las calculadoras, los niveles R2 y los «trae» que la maqueta todavía no tiene están en `scripts/r2-overlay.json`. Cuando `wb.json` trae `ej`, la cifra del libro reemplaza a la del overlay y el script lo avisa.
+- Las calculadoras, los niveles R2 y los «trae» que la maqueta todavía no tiene están en `scripts/r2-overlay.json`. Cuando `wb.json` trae `ej`, la cifra del libro reemplaza a la del overlay y el script lo avisa. Si el libro anota la cifra («7,0 y 4,9», «25 % (solo México)»), el ejemplo de la calculadora es la primera cifra y el texto completo queda en `ejLibro`. Los nombres de campo del overlay tienen que ser los de `wb.json`.
 - `npm test` carga el ejemplo del libro en cada calculadora y compara cada resultado con la cifra impresa. Si el manuscrito cambia una cifra, la prueba falla antes de publicar.

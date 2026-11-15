@@ -4,32 +4,36 @@ import { ImageResponse } from "next/og";
 
 export const OG_SIZE = { width: 1200, height: 630 };
 
-const PAPER = "#F6F6F4", INK = "#0C0C0D", INK2 = "#3D3D42", MAG = "#E6007E", MAGT = "#C8006D";
+// Mismos valores que los tokens de globals.css: el formato de ImageResponse no admite variables CSS.
+const PAPER = "#F6F6F4", INK = "#0C0C0D", INK2 = "#3D3D42";
 
-/** Imagen Open Graph del sistema: papel, tinta, un cuadrado magenta y el titular condensado. */
+/**
+ * Imagen para compartir con el sistema del libro: papel, tinta, el logotipo con su cuadrado magenta
+ * y el titular en mayúsculas condensadas, como una portada. Sin punto final y sin «·».
+ */
 export async function ogImage({ kicker, title, withCover = false }: { kicker: string; title: string; withCover?: boolean }) {
-  const [display, mono, cover] = await Promise.all([
+  const [display, mono, logo, cover] = await Promise.all([
     readFile(join(process.cwd(), "src/assets/archivo-condensed-800.ttf")),
     readFile(join(process.cwd(), "src/assets/jetbrains-mono-500.ttf")),
+    readFile(join(process.cwd(), "public/logo/logo-l4.svg")),
     withCover ? readFile(join(process.cwd(), "src/assets/portada-og.png")) : Promise.resolve(null),
   ]);
+  const logoSrc = `data:image/svg+xml;base64,${logo.toString("base64")}`;
   const coverSrc = cover ? `data:image/png;base64,${cover.toString("base64")}` : null;
+  const clean = title.replace(/[.]\s*$/, "");
   return new ImageResponse(
     (
-      <div style={{ width: "100%", height: "100%", display: "flex", background: PAPER, color: INK, padding: "64px 72px", position: "relative" }}>
+      <div style={{ width: "100%", height: "100%", display: "flex", background: PAPER, color: INK, padding: "60px 72px", position: "relative" }}>
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", flex: 1, paddingRight: coverSrc ? 48 : 0 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <div style={{ display: "flex", flexDirection: "column", fontFamily: "Archivo", fontSize: 34, lineHeight: 0.9, textTransform: "lowercase", letterSpacing: "-0.01em" }}>
-              <span>future</span>
-              <span>founders</span>
-            </div>
-            <div style={{ width: 16, height: 16, background: MAG, marginTop: -18 }} />
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={logoSrc} width={136} height={56} alt="" />
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <div style={{ fontFamily: "Mono", fontSize: 22, letterSpacing: "0.1em", textTransform: "uppercase", color: MAGT }}>{kicker}</div>
-            <div style={{ fontFamily: "Archivo", fontSize: coverSrc ? 84 : 96, lineHeight: 0.9, textTransform: "uppercase", marginTop: 22, letterSpacing: "-0.012em" }}>{title}</div>
+            <div style={{ fontFamily: "Mono", fontSize: 22, letterSpacing: "0.12em", textTransform: "uppercase", color: INK }}>{kicker}</div>
+            <div style={{ fontFamily: "Archivo", fontSize: coverSrc ? 88 : clean.length > 50 ? 80 : 96, lineHeight: 0.9, textTransform: "uppercase", marginTop: 22, letterSpacing: "-0.02em" }}>
+              {clean}
+            </div>
           </div>
-          <div style={{ display: "flex", fontFamily: "Mono", fontSize: 20, letterSpacing: "0.1em", textTransform: "uppercase", color: INK2, borderTop: `2px solid ${INK}`, paddingTop: 14 }}>
+          <div style={{ display: "flex", fontFamily: "Mono", fontSize: 20, letterSpacing: "0.1em", textTransform: "uppercase", color: INK2, borderTop: `1px solid ${INK}`, paddingTop: 14 }}>
             futurefounders.pe
           </div>
         </div>

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import ReadingProgress from "@/components/site/ReadingProgress";
 import BookButtons from "@/components/site/BookButtons";
 import FinalCta from "@/components/site/FinalCta";
@@ -8,7 +7,7 @@ import Parallax from "@/components/site/Parallax";
 import { AMAZON_URL, FOUNDERS, LEARN, SITE_URL } from "@/content/sitio";
 import { checkoutHref } from "@/components/site/BookButtons";
 import { PART_LEVELS, PARTES } from "@/content/workbook";
-import { Arrow, CropMarks, Icon, Jn, JsonLd, Lectura, Lines, Lvl, Mono, Nota, Sc, SecHead } from "@/components/site/ui";
+import { CropMarks, Hero as HeroHead, Icon, Jn, JsonLd, Lectura, LinkArrow, Lvl, Mono, Nota, Sc, SecHead } from "@/components/site/ui";
 
 export const metadata: Metadata = {
   title: "Doble Agente, el libro",
@@ -39,10 +38,10 @@ const TOC: Toc[] = [
 ];
 
 const SAMPLES = [
-  { src: "/img/muestra-personajes.webp", cap: ["Páginas 8 y 9", "Los cuatro arquetipos"], alt: "Doble página del libro con los cuatro arquetipos: Carmen, Javier, Andrea y Rodrigo" },
-  { src: "/img/muestra-escalera.webp", cap: ["Páginas 12 y 13", "Marco 0.1, la escalera"], alt: "Doble página del libro con la escalera de cuatro niveles y la ruta de los 21 capítulos" },
-  { src: "/img/muestra-caso-carmen.webp", cap: ["Capítulo 1", "El caso de Carmen y el marco 1.1"], alt: "Doble página del capítulo 1 con el caso de Carmen y el marco 1.1" },
-  { src: "/img/muestra-plantilla-1-1.webp", cap: ["Capítulo 1", "Plantilla 1.1 y cierre"], alt: "Doble página con la plantilla 1.1 del workbook y el cierre del capítulo 1" },
+  { src: "/img/muestra-personajes.webp", alt: "Páginas 8 y 9 del libro: los cuatro arquetipos, Carmen, Javier, Andrea y Rodrigo, con sus números de partida" },
+  { src: "/img/muestra-escalera.webp", alt: "Páginas 12 y 13 del libro: el marco 0.1, la escalera de cuatro niveles con la ruta de los 21 capítulos" },
+  { src: "/img/muestra-caso-carmen.webp", alt: "Páginas 34 y 38 del capítulo 1: el caso de Carmen y el marco 1.1, sus tres runways frente al mínimo de 6 meses y la meta de 9" },
+  { src: "/img/muestra-plantilla-1-1.webp", alt: "Páginas 41 y 42 del capítulo 1: el ejemplo resuelto de la plantilla 1.1 y el cierre con las tres acciones" },
 ];
 
 const INCL: { icon: "plantilla" | "documento" | "accion" | "formula"; t: string; d: string }[] = [
@@ -73,7 +72,7 @@ const BOOK_LD = {
 
 function Hero() {
   return (
-    <section className="grain" aria-labelledby="libro-h">
+    <section aria-labelledby="libro-h">
       <div className="wrap pt-9 pb-12 lg:pt-[72px] lg:pb-24 grid gap-8 lg:gap-24 lg:grid-cols-[minmax(0,520px)_minmax(0,1fr)] items-center">
         <div className="crop bg-warm flex items-center justify-center py-10 lg:py-0 lg:h-[660px]">
           <Image
@@ -88,25 +87,20 @@ function Hero() {
           <CropMarks />
         </div>
         <div>
-          <Mono color="var(--color-magt)">
-            <Jn parts={["Libro y workbook", "2.ª edición"]} />
+          <HeroHead id="libro-h" size="portada" label={["Libro y workbook", "2.ª edición"]} title="Doble Agente" />
+          <p className="wh2 text-figura mt-4 lg:mt-6 max-w-[640px]">El método para ejecutivos con salario</p>
+          <Mono tone="gris" className="mt-3 lg:mt-4">
+            Eddie Ajalcriña y Lorenzo Ortiz
           </Mono>
-          <h1 id="libro-h" className="wh lines mt-3 lg:mt-[18px] text-[64px] sm:text-[96px] xl:text-[148px]">
-            <Lines text="Doble Agente" />
-          </h1>
-          <p className="mt-4 lg:mt-[22px] max-w-[640px] font-semibold" style={{ fontSize: "clamp(22px, 2.1vw, 30px)", lineHeight: 1.2, fontStretch: "90%" }}>
-            Tu experiencia puede trabajar para más de una empresa. O para la tuya.
-          </p>
-          <p className="wm text-ink2 mt-4 lg:mt-[18px]">Eddie Ajalcriña y Lorenzo Ortiz</p>
-          <p className="wt mt-5 lg:mt-[26px] max-w-[680px]" style={{ fontSize: "clamp(17px, 1.4vw, 20px)" }}>
+          <p className="lead mt-5 lg:mt-7 max-w-[680px]">
             Durante dos décadas construiste tu carrera en empresas grandes. Este libro te ayuda a convertir esa experiencia en ingresos propios, paso a paso y a la vista de tu
             empleador.
           </p>
           <div className="mt-7 lg:mt-9">
             <BookButtons />
           </div>
-          <Mono className="text-ink2 mt-4 lg:mt-[18px]">
-            <Jn parts={["Ebook", "Impreso", "PDF", "Workbook gratis", "21 capítulos en 5 partes"]} />
+          <Mono tone="gris" className="mt-4 lg:mt-5">
+            <Jn parts={["Ebook", "Impreso", "PDF", "Workbook gratis"]} />
           </Mono>
         </div>
       </div>
@@ -116,17 +110,17 @@ function Hero() {
 
 function Back() {
   return (
-    <section className="bg-warm" aria-labelledby="contratapa-t">
+    <section className="border-t border-ink" aria-labelledby="contratapa-t">
       <div className="wrap py-12 lg:py-[88px] grid gap-10 lg:gap-24 lg:grid-cols-[minmax(0,1fr)_minmax(0,560px)]">
         <div>
-          <SecHead id="contratapa-t" size="md" className="max-w-[760px]" label={["Contratapa", "De qué trata"]} title="Un plan para cobrar por lo que ya sabes hacer" />
-          <div className="wt mt-6 lg:mt-[30px] max-w-[720px] rv">
+          <SecHead id="contratapa-t" className="max-w-[760px]" label={["De qué trata"]} title="Un plan para cobrar por lo que ya sabes hacer" />
+          <div className="wt mt-6 lg:mt-8 max-w-[720px] rv">
             <p>
               Si diriges un área, sabes resolver problemas que a otras empresas les cuestan cientos de miles de dólares. Lo que suele faltar es un plan para cobrar por eso fuera de
               tu cargo, y para el día en que una reestructuración cambie lo que tenías previsto.
             </p>
             <p>
-              Doble Agente te acompaña paso a paso. Empiezas con un rol parcial mientras mantienes tu sueldo, lo haces a la vista de tu empleador y avanzas por cuatro niveles hasta
+              Doble Agente te acompaña paso a paso. Empiezas con un rol parcial mientras mantienes tu sueldo, se lo informas a tu empleador y avanzas por cuatro niveles hasta
               que tus ingresos propios cubren tu vida con margen.
             </p>
             <p>
@@ -136,12 +130,12 @@ function Back() {
           </div>
         </div>
         <div className="lg:pt-2">
-          <div className="wm text-ink2 mb-1.5">En estas páginas vas a aprender a</div>
+          <Mono className="mb-2">En estas páginas vas a aprender a</Mono>
           <ol className="rv-kids border-b border-ink">
             {LEARN.map((t, i) => (
-              <li key={i} className="grid grid-cols-[52px_minmax(0,1fr)] py-4 border-t border-ink">
-                <span className="wh text-[30px] text-magt">0{i + 1}</span>
-                <span className="text-[17px] lg:text-[18px] leading-[1.4]">
+              <li key={i} className="grid grid-cols-[44px_minmax(0,1fr)] py-4 border-t border-ink">
+                <span className="num text-figura">0{i + 1}</span>
+                <span className="text-cuerpo leading-[1.4]">
                   <Sc text={t} />
                 </span>
               </li>
@@ -149,7 +143,6 @@ function Back() {
           </ol>
           <Lectura
             className="mt-7"
-            bg="var(--color-paper)"
             text="Los cuatro arquetipos están armados a partir de conversaciones con más de 30 ejecutivos. Sus sueldos y gastos están en el rango de las guías salariales de cada país, y puedes revisar cada cálculo en el libro."
           />
         </div>
@@ -161,41 +154,41 @@ function Back() {
 function Index() {
   return (
     <section id="indice" className="scroll-mt-4" aria-labelledby="indice-t">
-      <div className="wrap pt-12 pb-[52px] lg:pt-[88px] lg:pb-24">
+      <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24">
         <div className="lg:flex lg:justify-between lg:items-end gap-10">
-          <SecHead id="indice-t" className="max-w-[760px]" label={["Índice", "Por partes y niveles"]} title="Qué hay dentro" />
+          <SecHead id="indice-t" className="max-w-[760px]" label={["Índice"]} title="21 capítulos en cinco partes, ordenados por nivel" />
           <div className="flex flex-wrap gap-x-5 gap-y-2 mt-5 lg:mt-0" aria-label="Leyenda de niveles">
             {[0, 1, 2, 3].map((k) => (
               <span key={k} className="inline-flex items-center gap-2">
-                <span className="inline-block w-3 h-3" style={k === 0 ? { background: "var(--color-ink)" } : { border: "1px solid var(--color-ink3)" }} aria-hidden="true" />
-                <span className="wm text-ink2">Nivel {k}</span>
+                <span className="inline-block w-[9px] h-[9px]" style={k === 0 ? { background: "var(--color-ink)" } : { border: "1px solid var(--color-ink3)" }} aria-hidden="true" />
+                <Mono tone="gris" as="span">
+                  Nivel {k}
+                </Mono>
               </span>
             ))}
           </div>
         </div>
-        <div className="mt-8 lg:mt-11 pt-3.5 border-t-2 border-ink">
-          <h3 className="ws text-[20px] lg:text-[24px] leading-[1.2]">
-            Las cuatro primeras partes te llevan hasta tu primer cliente y la quinta, desde ahí hasta la independencia
-          </h3>
-          <p className="text-[15px] lg:text-[16px] text-ink2 mt-1.5">Los 21 capítulos agrupados en cinco partes, con los niveles de la escalera que trabaja cada una</p>
+        <div className="mt-8 lg:mt-11 pt-3 border-t border-ink">
+          <h3 className="ws text-figura">Las cinco partes siguen los niveles</h3>
+          <p className="text-recuadro text-ink3 mt-1.5">Las cuatro primeras partes llevan hasta tu primer cliente; la quinta, desde ahí hasta la independencia</p>
         </div>
         <div className="mt-7 border-b border-ink">
           {TOC.map((r) => (
             <div key={r.code} className="rv grid gap-3 lg:gap-6 grid-cols-[72px_minmax(0,1fr)] lg:grid-cols-[120px_300px_minmax(0,1fr)] pt-5 pb-[18px] border-t border-ink">
-              <span className="wh text-[44px] lg:text-[56px]">{r.code}</span>
+              <span className="num text-display-md">{r.code}</span>
               <div>
-                <div className="ws text-[22px]">{r.n1}</div>
-                <div className="text-[16px] text-ink2 mt-1">{r.n2}</div>
+                <div className="wh2 text-figura">{r.n1}</div>
+                <div className="text-recuadro text-ink2 mt-1">{r.n2}</div>
                 {r.lv && (
                   <div className="mt-3">
-                    <Lvl on={r.lv} size={12} label={`Trabaja los niveles ${r.lv.join(", ")}`} />
+                    <Lvl on={r.lv} label={`Trabaja los niveles ${r.lv.join(", ")}`} />
                   </div>
                 )}
               </div>
               <ol className="col-span-2 lg:col-span-1 sm:columns-2 gap-10">
                 {r.items.map(([c, t]) => (
-                  <li key={t} className="grid grid-cols-[44px_minmax(0,1fr)] py-[7px] text-[16px] lg:text-[17px] leading-[1.3] break-inside-avoid">
-                    <span className="wm text-ink2">{c}</span>
+                  <li key={t} className="grid grid-cols-[44px_minmax(0,1fr)] py-[7px] text-cuerpo leading-[1.3] break-inside-avoid">
+                    <span className="font-mono font-bold text-rotulo text-ink2 pt-[4px]">{c}</span>
                     <span>
                       <Sc text={t} />
                     </span>
@@ -212,23 +205,19 @@ function Index() {
 
 function Samples() {
   return (
-    <section className="bg-warm grain" aria-labelledby="muestra-t">
-      <div className="wrap pt-12 pb-[52px] lg:pt-[88px] lg:pb-24">
+    <section className="bg-warm" aria-labelledby="muestra-t">
+      <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24">
         <SecHead
           id="muestra-t"
-          size="md"
           className="max-w-[860px]"
           label={["Muestra", "Páginas del interior"]}
-          title="Así se ven las páginas"
-          sub="Papel, tinta y un solo acento magenta. Cada capítulo abre con el caso de un arquetipo, sigue con un marco con nombre y cierra con su plantilla."
+          title="Cada capítulo abre con un caso y cierra con su plantilla"
+          sub="El caso es de uno de los cuatro arquetipos. En el medio va un marco con nombre que explica la idea con números."
         />
         <div className="rv-kids grid gap-8 lg:gap-x-10 lg:gap-y-12 md:grid-cols-2 mt-8 lg:mt-12">
           {SAMPLES.map((s) => (
             <figure key={s.src} className="m-0">
               <Image src={s.src} alt={s.alt} width={1200} height={880} sizes="(min-width: 1440px) 636px, (min-width: 768px) 46vw, 100vw" className="block w-full h-auto outline outline-1 outline-ink20" />
-              <figcaption className="wm text-ink2 mt-3.5">
-                <Jn parts={s.cap} />
-              </figcaption>
             </figure>
           ))}
         </div>
@@ -238,85 +227,43 @@ function Samples() {
 }
 
 function Workbook() {
-  const rows: [string, string, string, boolean][] = [
-    ["A Ahorro líquido (USD)", "61.600", "61.150", false],
-    ["B Costo de vida mensual (USD)", "8.800", "12.500", false],
-    ["Runway = A ÷ B (meses)", "7,0", "4,9", true],
-  ];
   return (
     <section aria-labelledby="wb-t">
-      <div className="wrap pt-12 pb-[52px] lg:pt-[88px] lg:pb-24 grid gap-10 lg:gap-24 lg:grid-cols-[minmax(0,1fr)_minmax(0,600px)] items-start">
+      <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24 grid grid-cols-[minmax(0,1fr)] gap-10 lg:gap-24 lg:grid-cols-[minmax(0,1fr)_minmax(0,600px)] items-start">
         <div>
           <SecHead
             id="wb-t"
-            size="md"
             className="max-w-[640px]"
-            label={["Workbook", "Se usa junto al libro"]}
-            title="El libro explica, el workbook es donde lo haces"
-            sub="Llenas las plantillas en una tableta, en la computadora o en papel. Cada una te dice en qué página del libro está su ejemplo resuelto, y las que hacen cuentas tienen su calculadora en línea."
+            label={["Workbook", "Gratis"]}
+            title="El libro explica y el workbook es donde lo haces"
+            sub="Llenas las plantillas en una tableta, en la computadora o en papel. Las que hacen cuentas tienen su calculadora en línea."
           />
           <ul className="rv-kids mt-8 lg:mt-9 border-b border-ink">
             {INCL.map((x) => (
-              <li key={x.t} className="grid grid-cols-[40px_minmax(0,1fr)] gap-3 py-[18px] border-t border-ink">
-                <Icon name={x.icon} size={26} />
+              <li key={x.t} className="grid grid-cols-[32px_minmax(0,1fr)] gap-3 py-4 border-t border-ink">
+                <span className="pt-1">
+                  <Icon name={x.icon} size={18} />
+                </span>
                 <div>
-                  <div className="text-[19px] lg:text-[20px] font-bold" style={{ fontStretch: "90%" }}>
-                    {x.t}
-                  </div>
-                  <p className="text-[16px] leading-[1.45] text-ink2 mt-1.5">{x.d}</p>
+                  <div className="wh3 text-h3">{x.t}</div>
+                  <p className="text-recuadro leading-[1.45] text-ink2 mt-1.5">{x.d}</p>
                 </div>
               </li>
             ))}
           </ul>
-          <Link href="/workbook" className="ul inline-block mt-6 text-[17px] font-bold">
-            Ver las plantillas y descargar el workbook gratis
-          </Link>
+          <LinkArrow href="/workbook" className="mt-6 text-cuerpo">
+            Ver las plantillas y descargar el workbook
+          </LinkArrow>
         </div>
         <div className="lg:pt-3 rv">
-          <div className="border border-ink bg-paper px-5 py-6 lg:px-[26px] lg:pt-6 lg:pb-[26px]">
-            <div className="flex justify-between items-center">
-              <div className="flex gap-2.5 items-center">
-                <Icon name="plantilla" size={20} />
-                <span className="wm">Plantilla K.1</span>
-              </div>
-              <span className="wm text-ink2">20 min</span>
-            </div>
-            <h3 className="ws text-[26px] lg:text-[28px] mt-3.5">Tu runway hoy</h3>
-            <div className="overflow-x-auto -mx-1 px-1">
-              <table className="w-full mt-4 text-[15px] lg:text-[16px] border-collapse min-w-[420px]">
-                <caption className="sr-only">Plantilla K.1 con los números de Carmen y Javier</caption>
-                <thead>
-                  <tr>
-                    {["Concepto", "Carmen", "Javier", "Tus números"].map((h, i) => (
-                      <th key={h} scope="col" className={`wm font-medium text-ink2 py-2 border-b border-ink ${i === 0 ? "text-left" : "text-right"} ${i === 3 ? "pl-3" : ""}`}>
-                        {h}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="tab">
-                  {rows.map(([a, b, c, bold]) => (
-                    <tr key={a}>
-                      <th scope="row" className="text-left font-normal py-2.5 border-b border-ink20">
-                        <Sc text={a} />
-                      </th>
-                      <td className={`text-right border-b border-ink20 ${bold ? "font-bold" : ""}`}>{b}</td>
-                      <td className={`text-right border-b border-ink20 ${bold ? "font-bold" : ""}`}>{c}</td>
-                      <td className="border-b border-ink20 pl-3">
-                        <div className="h-[26px] border border-ink3 bg-paper" aria-hidden="true" />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <p className="text-[15px] text-ink2 mt-3.5">
-              <i>Sabrás que terminaste cuando</i> tengas tu runway con un decimal.
-            </p>
-          </div>
-          <Mono className="text-ink2 mt-3.5">
-            <Jn parts={["Ejemplo del workbook", "Plantilla K.1 con los números del libro"]} />
-          </Mono>
+          <Image
+            src="/img/workbook-k1.webp"
+            alt="Página 8 del workbook: la plantilla K.1, Tu runway hoy, con el ahorro líquido y el costo de vida de Carmen y Javier y el espacio para tus números"
+            width={900}
+            height={1320}
+            sizes="(min-width: 1024px) 420px, 90vw"
+            className="block w-full max-w-[420px] h-auto mx-auto outline outline-1 outline-ink20"
+          />
         </div>
       </div>
     </section>
@@ -332,32 +279,30 @@ function Formats() {
       n: "Libro en PDF",
       w: "Compra directa",
       d: "El libro en PDF, para leer en una tableta o en la computadora. El workbook se descarga gratis.",
-      b: "Compra directa: libro en PDF",
+      b: "Comprar el PDF",
       href: ck,
       k: 2,
     },
   ];
   return (
-    <section id="formatos" className="bg-warm grain scroll-mt-4" aria-labelledby="formatos-t">
-      <div className="wrap pt-12 pb-[52px] lg:pt-[88px] lg:pb-24">
+    <section id="formatos" className="bg-warm scroll-mt-4" aria-labelledby="formatos-t">
+      <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24">
         <SecHead
           id="formatos-t"
-          size="md"
           className="max-w-[860px]"
           label={["Formatos", "Dónde comprar"]}
-          title="Elige tu formato"
-          sub="El ebook y el impreso se venden en Amazon. El libro en PDF se compra directo a Future Founders, desde esta página. El workbook es gratis para todos."
+          title="Ebook e impreso en Amazon, PDF en compra directa"
+          sub="El libro en PDF se compra directo a Future Founders, desde esta página. El workbook es gratis para todos."
         />
         <div className="rv-kids grid gap-5 lg:gap-6 md:grid-cols-3 mt-8 lg:mt-12">
           {fmts.map((f) => (
             <div key={f.n} className="card flex flex-col bg-paper p-6 lg:px-7 lg:pt-7 lg:pb-[30px]">
-              <Mono className="text-ink2">{f.w}</Mono>
-              <h3 className="wh text-[36px] lg:text-[44px] mt-3">{f.n}</h3>
-              <p className="text-[16px] lg:text-[17px] leading-[1.45] mt-3.5 text-ink2">{f.d}</p>
+              <Mono tone="gris">{f.w}</Mono>
+              <h3 className="wh2 text-h2 mt-3">{f.n}</h3>
+              <p className="text-recuadro leading-[1.45] mt-3 text-ink2">{f.d}</p>
               <div className="mt-auto pt-7">
-                <a href={f.href} target="_blank" rel="noopener noreferrer" className={`${f.k === 1 ? "btn" : "btn2"} w-full`} style={{ whiteSpace: "normal", textAlign: "center", paddingInline: 16, gap: 10 }}>
+                <a href={f.href} target="_blank" rel="noopener noreferrer" className="btn2 wrap-ok w-full">
                   <span>{f.b}</span>
-                  <Arrow />
                   <span className="sr-only"> (se abre en otra pestaña)</span>
                 </a>
               </div>
@@ -365,7 +310,7 @@ function Formats() {
           ))}
         </div>
         {!process.env.NEXT_PUBLIC_CHECKOUT_URL && (
-          <p className="text-[15px] text-ink2 mt-4">La compra directa se coordina por WhatsApp: te enviamos el enlace de pago y, al confirmarlo, el libro en PDF.</p>
+          <p className="text-recuadro text-ink2 mt-4">La compra directa se coordina por WhatsApp: te enviamos el enlace de pago y, al confirmarlo, el libro en PDF.</p>
         )}
         <Nota className="mt-6 lg:mt-8 max-w-[980px]">
           El libro no promete ingresos ni plazos. Cada persona parte de un sueldo, un ahorro y un mercado distintos, y el libro te ayuda a medir los tuyos. Nada de lo que contiene
@@ -379,19 +324,22 @@ function Formats() {
 function Authors() {
   return (
     <section className="border-t border-ink" aria-labelledby="autores-t">
-      <div className="wrap pt-12 pb-[52px] lg:pt-[88px] lg:pb-24">
-        <SecHead id="autores-t" size="md" label={["Autores", "Future Founders"]} title="Quién lo escribió" />
+      <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24">
+        <SecHead id="autores-t" label={["Autores"]} title="Lo escribieron los fundadores de Future Founders" />
         <div className="grid gap-10 lg:gap-16 lg:grid-cols-2 mt-8 lg:mt-11">
           {FOUNDERS.map((f) => (
             <div key={f.key} className="rv grid gap-5 sm:gap-7 grid-cols-[110px_minmax(0,1fr)] sm:grid-cols-[160px_minmax(0,1fr)] items-start">
-              <Parallax src={f.photo} alt={`Retrato de ${f.name} en duotono`} sizes="160px" className="w-full aspect-[160/196] bg-warm border border-ink" position="center 30%" />
+              <Parallax src={f.photo} alt={`Retrato de ${f.name} en duotono`} sizes="160px" className="w-full aspect-[160/196] bg-warm border border-ink" position="center 30%"
+                zoom={f.zoom} />
               <div>
-                <Mono color="var(--color-magt)">{f.role}</Mono>
-                <h3 className="wh text-[32px] lg:text-[40px] mt-2.5">{f.name}</h3>
-                <p className="text-[16px] font-semibold mt-2">{f.cred}</p>
-                <p className="wt mt-2.5" style={{ fontSize: 17 }}>
-                  {f.bio}
-                </p>
+                <Mono tone="gris">{f.role}</Mono>
+                <h3 className="wh2 text-h2 mt-2.5">{f.name}</h3>
+                <p className="text-cuerpo font-semibold mt-2">{f.cred}</p>
+                <p className="wt mt-2.5">{f.bio}</p>
+                <a href={f.href} target="_blank" rel="noopener noreferrer" className="wm ul inline-block mt-3 [overflow-wrap:anywhere]">
+                  {f.li}
+                  <span className="sr-only"> (se abre en otra pestaña)</span>
+                </a>
               </div>
             </div>
           ))}
@@ -411,12 +359,11 @@ export default function LibroPage() {
       <Index />
       <Samples />
       <Workbook />
-      <Formats />
       <Authors />
+      <Formats />
       <FinalCta
         title="Empieza antes de comprar"
         text="El kit «Plan de salida» es la primera sección práctica del libro y lo descargas gratis. Si te sirve, el libro sigue desde ahí con la Parte 01."
-        folio="AP"
       />
     </>
   );

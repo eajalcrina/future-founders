@@ -1,44 +1,36 @@
-import { Mono, Jn, Lines, Sc } from "./ui";
+import { Mono, Jn, Sc } from "./ui";
 import EmailCta from "./EmailCta";
 import { agendaUrl } from "@/content/sitio";
 
+/** Cierre de página sobre tinta: el kit «Plan de salida» por correo y la agenda como alternativa. */
 export default function FinalCta({
   title = "Empieza por tu runway",
   text = "El kit «Plan de salida» trae cinco plantillas que llenas en unas 2 horas. La primera te dice en 20 minutos cuántos meses aguantas sin sueldo.",
   button = "Recibir el kit",
-  folio = "K.1",
 }: {
   title?: string;
   text?: string;
   button?: string;
-  folio?: string;
 }) {
   return (
-    <section className="bg-ink text-paper on-ink halftone overflow-hidden" aria-labelledby="cta-final">
-      <span className="folio" aria-hidden="true" style={{ right: "-0.04em", bottom: "-0.12em", fontSize: "clamp(160px, 26vw, 380px)" }}>
-        {folio}
-      </span>
-      <div className="wrap py-[52px] lg:py-[88px] grid gap-8 lg:gap-24 lg:grid-cols-[minmax(0,1fr)_560px] lg:items-end">
+    <section className="bg-ink text-paper on-ink" aria-labelledby="cta-final">
+      <div className="wrap py-14 lg:py-[88px] grid gap-8 lg:gap-24 lg:grid-cols-[minmax(0,1fr)_560px] lg:items-end">
         <div>
-          <Mono color="var(--color-magl)">
+          <Mono tone="papel">
             <Jn parts={["Kit gratuito", "Plan de salida"]} />
           </Mono>
-          <h2 id="cta-final" className="wh lines text-[48px] lg:text-[96px] mt-3 lg:mt-[18px]">
-            <Lines text={title} />
+          <h2 id="cta-final" className="wh2 text-display-md mt-3 lg:mt-4">
+            {title}
           </h2>
-          <p className="wt mt-4 lg:mt-[22px] max-w-[640px]" style={{ fontSize: "clamp(17px, 1.5vw, 21px)" }}>
+          <p className="lead mt-4 lg:mt-5 max-w-[640px]">
             <Sc text={text} />
           </p>
         </div>
         <div className="rv">
           <EmailCta button={button} />
-          <a
-            href={agendaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ul inline-block mt-5 lg:mt-[22px] text-[16px] lg:text-[17px] font-bold text-magl"
-          >
+          <a href={agendaUrl()} target="_blank" rel="noopener noreferrer" className="ul inline-block mt-5 lg:mt-6 text-cuerpo font-bold">
             ¿Prefieres conversar? Agenda 30 minutos
+            <span className="sr-only"> (se abre en otra pestaña)</span>
           </a>
         </div>
       </div>

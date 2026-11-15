@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { CHAPS, DO_NOW, LEVELS, LOOK, SIGNAL, WITH, agendaUrl, whatsappUrl } from "@/content/sitio";
 import { sendLead, EMAIL_RE } from "@/lib/leads";
-import { Arrow, Jn, Lvl, Mono, Sc } from "./ui";
+import { Aviso, Jn, Lvl, Mono, Sc } from "./ui";
 
 type Q = { id: string; text: string; help?: string; options: string[] };
 
@@ -122,12 +122,12 @@ export default function Diagnostico() {
       >
         <fieldset className="m-0 p-0 border-0" aria-describedby={q.help ? `${id}-help` : undefined}>
           <legend className="w-full">
-            <h2 ref={head} tabIndex={-1} className="ws text-[24px] lg:text-[30px] leading-[1.15] outline-none">
+            <h2 ref={head} tabIndex={-1} className="ws text-figura outline-none">
               {q.text}
             </h2>
           </legend>
           {q.help && (
-            <p id={`${id}-help`} className="text-[15px] lg:text-[16px] leading-[1.45] text-ink2 mt-3">
+            <p id={`${id}-help`} className="text-recuadro leading-[1.45] text-ink2 mt-3">
               {q.help}
             </p>
           )}
@@ -135,7 +135,7 @@ export default function Diagnostico() {
             {q.options.map((o, i) => (
               <label
                 key={o}
-                className="flex items-center gap-4 min-h-[56px] px-4 py-3 border cursor-pointer transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-mag"
+                className="opt flex items-center gap-4 min-h-[56px] px-4 py-3 border cursor-pointer transition-colors"
                 style={
                   cur === i
                     ? { background: "var(--color-ink)", color: "var(--color-paper)", borderColor: "var(--color-ink)" }
@@ -146,9 +146,9 @@ export default function Diagnostico() {
                 <span
                   aria-hidden="true"
                   className="w-4 h-4 shrink-0 border"
-                  style={{ borderColor: cur === i ? "var(--color-paper)" : "var(--color-ink)", background: cur === i ? "var(--color-mag)" : "transparent" }}
+                  style={{ borderColor: cur === i ? "var(--color-paper)" : "var(--color-ink)", background: cur === i ? "var(--color-paper)" : "transparent" }}
                 />
-                <span className="text-[17px] font-semibold leading-[1.3]">{o}</span>
+                <span className="text-cuerpo font-semibold leading-[1.3]">{o}</span>
               </label>
             ))}
           </div>
@@ -157,9 +157,8 @@ export default function Diagnostico() {
           <button type="button" className={`btn2 ${step === 0 ? "max-sm:hidden sm:invisible" : ""}`} onClick={() => setStep(Math.max(0, step - 1))} disabled={step === 0}>
             Anterior
           </button>
-          <button type="submit" className="btn" disabled={cur === null} style={cur === null ? { opacity: 0.45, cursor: "not-allowed" } : undefined}>
-            <span>{step < QS.length - 1 ? "Siguiente" : "Ver mi nivel"}</span>
-            <Arrow />
+          <button type="submit" className="btn" disabled={cur === null}>
+            {step < QS.length - 1 ? "Siguiente" : "Ver mi nivel"}
           </button>
         </div>
       </form>
@@ -175,7 +174,7 @@ function Result({ ans, onRestart, headRef }: { ans: number[]; onRestart: () => v
   const project = ans[0] === 2;
   const doNow = justOut
     ? {
-        head: "Revisa tu salida antes de firmar.",
+        head: "Revisa tu salida antes de firmar",
         body: "Antes de firmar tu salida, llena la K.3 y anota la fecha límite para impugnar o reclamar. Revisa tu liquidación con un abogado laboral, después recalcula tu runway con la K.1 y lee el capítulo 5.",
       }
     : DO_NOW[k];
@@ -185,24 +184,24 @@ function Result({ ans, onRestart, headRef }: { ans: number[]; onRestart: () => v
       <div className="border border-ink bg-paper">
         <div className="px-5 lg:px-8 py-5 lg:py-6 border-b border-ink flex justify-between items-center gap-4" style={{ background: k === 3 ? "var(--color-ink)" : ["var(--color-paper)", "var(--color-warm)", "var(--color-ink20)"][k], color: k === 3 ? "var(--color-paper)" : undefined }}>
           <div>
-            <Mono color={k === 3 ? "var(--color-magl)" : "var(--color-magt)"}>Tu resultado</Mono>
-            <h2 ref={headRef} tabIndex={-1} className="wh text-[44px] lg:text-[64px] mt-2 outline-none">
+            <Mono tone={k === 3 ? "papel" : "ink"}>Tu resultado</Mono>
+            <h2 ref={headRef} tabIndex={-1} className="wh2 text-display-md mt-2 outline-none">
               Nivel {k}: {LEVELS[k]}
             </h2>
           </div>
-          <Lvl on={Array.from({ length: k + 1 }, (_, i) => i)} size={14} fg={k === 3 ? "var(--color-paper)" : "var(--color-ink)"} off={k === 3 ? "var(--color-ink20)" : "var(--color-ink3)"} label={`Nivel ${k} de 3`} />
+          <Lvl on={Array.from({ length: k + 1 }, (_, i) => i)} size={12} fg={k === 3 ? "var(--color-paper)" : "var(--color-ink)"} off={k === 3 ? "var(--color-ink20)" : "var(--color-ink3)"} label={`Nivel ${k} de 3`} />
         </div>
         <div className="px-5 lg:px-8 pt-6 pb-8 grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
           <div>
-            <p className="text-[17px] leading-[1.45]">
+            <p className="text-cuerpo leading-[1.45]">
               <b>Cómo se ve:</b> {justOut ? "" : `${LOOK[k]} `}{why}
             </p>
-            <h3 className="ws text-[24px] lg:text-[28px] mt-6">{doNow.head}</h3>
+            <h3 className="ws text-figura mt-6">{doNow.head}</h3>
             <p className="wt mt-3">
               <Sc text={doNow.body} />
             </p>
             {project && (
-              <p className="text-[16px] leading-[1.45] mt-4">
+              <p className="text-recuadro leading-[1.45] mt-4">
                 Tu capítulo de referencia es el 13, la unidad económica, con el ejemplo de Rodrigo.{" "}
                 <Link href="/workbook/13-1" className="ul font-semibold">
                   Ver la plantilla 13.1
@@ -210,7 +209,7 @@ function Result({ ans, onRestart, headRef }: { ans: number[]; onRestart: () => v
               </p>
             )}
             {noCalc && k < 3 && !justOut && (
-              <p className="text-[15px] leading-[1.45] mt-4 px-3 py-2.5 bg-warm">
+              <p className="text-recuadro leading-[1.45] mt-4 px-3 py-2.5 bg-warm">
                 Tu colchón todavía no cubre 6 meses o no lo has calculado. Antes de cualquier paso, llena la K.1 del kit: son 20 minutos.
               </p>
             )}
@@ -218,34 +217,33 @@ function Result({ ans, onRestart, headRef }: { ans: number[]; onRestart: () => v
               {btn.ext ? (
                 <a href={agendaUrl()} target="_blank" rel="noopener noreferrer" className="btn">
                   <span>{btn.label}</span>
-                  <Arrow />
+                  <span className="sr-only"> (se abre en otra pestaña)</span>
                 </a>
               ) : (
                 <Link href={btn.href} className="btn">
-                  <span>{btn.label}</span>
-                  <Arrow />
+                  {btn.label}
                 </Link>
               )}
               <Link href="/#metodo" className="btn2">
                 Ver la escalera
               </Link>
             </div>
-            <p className="text-[15px] leading-[1.45] text-ink2 mt-5">Anota tu nivel con la fecha en «Tu nivel en la escalera», al comienzo del workbook.</p>
+            <p className="text-recuadro leading-[1.45] text-ink2 mt-5">Anota tu nivel con la fecha en «Tu nivel en la escalera», al comienzo del workbook.</p>
           </div>
           <div>
             <div className="wm text-ink2">Señal para pasar al siguiente</div>
-            <p className="text-[19px] leading-[1.35] font-bold mt-2">{SIGNAL[k]}</p>
+            <p className="text-h3 leading-[1.35] font-bold mt-2">{SIGNAL[k]}</p>
             <div className="wm text-ink2 mt-5">En el libro</div>
-            <p className="text-[17px] mt-1.5">{CHAPS[k]}</p>
+            <p className="text-cuerpo mt-1.5">{CHAPS[k]}</p>
             <div className="wm text-ink2 mt-5 mb-1.5">Te acompaña</div>
             <ul>
               {WITH[k].map((w) => (
                 <li key={w.name}>
                   <Link href={w.href} className="group flex justify-between items-baseline gap-4 py-3 border-t border-ink">
-                    <span className="text-[17px] font-bold">
+                    <span className="text-cuerpo font-bold">
                       <span className="lnk">{w.name}</span>
                     </span>
-                    <span className="wm text-ink2 text-right">{w.meta}</span>
+                    <span className="wm text-ink2 text-right whitespace-nowrap">{w.meta}</span>
                   </Link>
                 </li>
               ))}
@@ -254,7 +252,7 @@ function Result({ ans, onRestart, headRef }: { ans: number[]; onRestart: () => v
         </div>
       </div>
       <SendResult k={k} ans={ans} />
-      <button type="button" onClick={onRestart} className="ul self-start text-[16px] font-semibold">
+      <button type="button" onClick={onRestart} className="ul self-start text-recuadro font-semibold">
         Volver a empezar el diagnóstico
       </button>
     </div>
@@ -289,9 +287,9 @@ function SendResult({ k, ans }: { k: number; ans: number[] }) {
 
   return (
     <div className="bg-warm px-5 lg:px-8 py-6 lg:py-7">
-      <h3 className="ws text-[22px] lg:text-[24px]">Recibe tu resultado y el kit en tu correo</h3>
+      <h3 className="ws text-figura">Recibe tu resultado y el kit en tu correo</h3>
       {state === "ok" ? (
-        <p role="status" className="text-[17px] mt-3">
+        <p role="status" className="text-cuerpo mt-3">
           Listo. Te enviamos tu nivel y el kit «Plan de salida» a {email.trim()}.
         </p>
       ) : (
@@ -317,25 +315,24 @@ function SendResult({ k, ans }: { k: number; ans: number[] }) {
               aria-invalid={state === "invalid"}
             />
           </div>
-          <button type="submit" className="btn" disabled={state === "sending"} style={{ minHeight: 56 }}>
-            <span>{state === "sending" ? "Enviando..." : "Enviar"}</span>
-            <Arrow />
+          <button type="submit" className="btn" disabled={state === "sending"}>
+            {state === "sending" ? "Enviando..." : "Enviar"}
           </button>
         </form>
       )}
       <div aria-live="polite">
-        {state === "invalid" && <p className="text-[15px] text-magt mt-3">Revisa el correo: falta algo para que sea válido.</p>}
+        {state === "invalid" && <Aviso className="mt-3">Revisa el correo: falta algo para que sea válido.</Aviso>}
         {state === "error" && (
-          <p className="text-[15px] mt-3">
+          <Aviso className="mt-3">
             No pudimos registrar tus datos en este momento. Escríbenos por{" "}
             <a className="ul font-bold" href={whatsappUrl(`Hola, hice el diagnóstico y salí en el nivel ${k}, ${LEVELS[k]}.`)} target="_blank" rel="noopener noreferrer">
               WhatsApp
             </a>{" "}
             y te respondemos con tu siguiente paso.
-          </p>
+          </Aviso>
         )}
       </div>
-      <p className="text-[14px] text-ink2 mt-3">
+      <p className="text-recuadro text-ink2 mt-3">
         <Jn parts={["Sin costo", "Puedes darte de baja con un clic"]} />
       </p>
     </div>

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import ProgramForm from "@/components/site/ProgramForm";
-import { Arrow, Jn, Lines, Lvl, Mono, Nota, SecHead } from "@/components/site/ui";
+import { Hero as HeroHead, LinkArrow, Lvl, Mono, Nota, SecHead } from "@/components/site/ui";
 import { PROGRAMAS } from "@/content/programas";
 import { LEVELS, agendaUrl, whatsappUrl } from "@/content/sitio";
 
@@ -19,25 +18,18 @@ export default function ProgramasPage() {
   const agenda = agendaUrl();
   return (
     <>
-      <section className="grain" aria-labelledby="prog-h">
+      <section aria-labelledby="prog-h">
         <div className="wrap pt-10 pb-12 lg:pt-20 lg:pb-[88px]">
-          <Mono color="var(--color-magt)">
-            <Jn parts={["Programas", "Ordenados por nivel"]} />
-          </Mono>
-          <h1 id="prog-h" className="wh lines mt-4 lg:mt-[22px] text-[50px] sm:text-[72px] lg:text-[104px] max-w-[1100px]">
-            <Lines text="Lo que te acompaña en cada nivel" />
-          </h1>
-          <p className="wt mt-5 lg:mt-8 max-w-[760px]">
-            Empiezas por lo gratuito y avanzas cuando aparece la señal de tu nivel. Todos los programas son para personas. Las fechas, los cupos y las
-            condiciones se publican con cada convocatoria.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 mt-7 lg:mt-9">
-            <Link href="/diagnostico" className="ul self-start text-[17px] font-bold">
+          <HeroHead id="prog-h" label={["Programas", "Ordenados por nivel"]} title="Lo que te acompaña en cada nivel" className="max-w-[1100px]" />
+          <p className="lead mt-5 lg:mt-8 max-w-[760px]">Empiezas por lo gratuito y avanzas cuando aparece la señal de tu nivel.</p>
+          <p className="text-cuerpo text-ink2 mt-3 max-w-[760px]">Las fechas, los cupos y las condiciones se publican con cada convocatoria.</p>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-8 mt-7 lg:mt-9">
+            <LinkArrow href="/diagnostico" className="text-cuerpo">
               ¿No sabes tu nivel? Haz el diagnóstico
-            </Link>
-            <Link href="/kit" className="ul self-start text-[17px] font-bold">
+            </LinkArrow>
+            <LinkArrow href="/kit" className="text-cuerpo">
               Nivel 0: empieza por el kit gratuito
-            </Link>
+            </LinkArrow>
           </div>
         </div>
       </section>
@@ -50,61 +42,64 @@ export default function ProgramasPage() {
               <article key={p.id} id={p.id} className="rv card scroll-mt-6 bg-paper grid lg:grid-cols-[260px_minmax(0,1fr)_minmax(0,360px)]" aria-labelledby={`${p.id}-t`}>
                 <div className="px-5 py-4 lg:p-6 border-b lg:border-b-0 lg:border-r border-ink flex lg:flex-col justify-between gap-3" style={{ background: FILL[p.level], color: p.level === 3 ? "var(--color-paper)" : undefined }}>
                   <div>
-                    <span className="wm" style={{ color: p.level === 3 ? "var(--color-ink20)" : "var(--color-ink2)" }}>
+                    <Mono tone={p.level === 3 ? "claro" : "gris"} as="span">
                       {p.levelLabel}
-                    </span>
-                    <div className="wh text-[26px] lg:text-[30px] mt-1.5">{LEVELS[p.level]}</div>
+                    </Mono>
+                    <div className="wh2 text-figura mt-1.5">{LEVELS[p.level]}</div>
                   </div>
                   <Lvl
                     on={Array.from({ length: p.level + 1 }, (_, i) => i)}
-                    size={10}
                     fg={p.level === 3 ? "var(--color-paper)" : "var(--color-ink)"}
                     off={p.level === 3 ? "var(--color-ink20)" : "var(--color-ink3)"}
                   />
                 </div>
                 <div className="px-5 py-6 lg:p-8">
-                  <Mono className="text-ink2">{p.tag}</Mono>
-                  <h2 id={`${p.id}-t`} className="wh text-[36px] lg:text-[48px] mt-2.5">
+                  <Mono tone="gris">{p.tag}</Mono>
+                  <h2 id={`${p.id}-t`} className="wh2 text-h2 mt-2.5">
                     {p.name}
                   </h2>
                   <p className="wt mt-3.5">{p.desc}</p>
-                  <div className="wm text-ink2 mt-5">Formato</div>
-                  <p className="text-[17px] mt-1.5">{p.format}</p>
+                  <Mono tone="gris" className="mt-5">
+                    Formato
+                  </Mono>
+                  <p className="text-cuerpo mt-1.5">{p.format}</p>
                 </div>
                 <div className="px-5 pb-6 lg:p-8 lg:border-l border-ink lg:bg-warm flex flex-col">
-                  <div className="wm text-ink2">Es para ti si</div>
-                  <p className="text-[17px] leading-[1.45] mt-2">{p.forWho}</p>
+                  <Mono tone="gris">Es para ti si</Mono>
+                  <p className="text-cuerpo leading-[1.45] mt-2">{p.forWho}</p>
                   <div className="mt-auto pt-6 flex flex-col gap-3">
                     {primary.ext ? (
-                      <a href={primary.href} target="_blank" rel="noopener noreferrer" className="btn w-full">
+                      <a href={primary.href} target="_blank" rel="noopener noreferrer" className="btn2 w-full">
                         <span>{p.cta}</span>
-                        <Arrow />
                         <span className="sr-only"> (se abre en otra pestaña)</span>
                       </a>
                     ) : (
-                      <a href={primary.href} className="btn w-full">
-                        <span>{p.cta}</span>
-                        <Arrow />
+                      <a href={primary.href} className="btn2 w-full">
+                        {p.cta}
                       </a>
                     )}
-                    <a
-                      href={whatsappUrl(`Hola, quiero información sobre ${p.tag.toLowerCase()} «${p.name}» de Future Founders.`)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="ul self-center text-[15px] font-semibold"
-                    >
-                      Pregunta por WhatsApp
-                    </a>
                   </div>
                 </div>
               </article>
             );
           })}
+          <p className="text-cuerpo">
+            ¿Dudas sobre algún programa?{" "}
+            <a
+              href={whatsappUrl("Hola, quiero información sobre los programas de Future Founders.")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ul font-semibold"
+            >
+              Pregunta por WhatsApp
+              <span className="sr-only"> (se abre en otra pestaña)</span>
+            </a>
+          </p>
           <Nota>Ningún programa promete ingresos ni plazos. Cada uno trabaja sobre tus números y tu mercado, y la decisión de cuándo avanzar es tuya.</Nota>
         </div>
       </section>
 
-      <section id="postular" className="bg-warm grid-paper scroll-mt-4" aria-labelledby="postular-t">
+      <section id="postular" className="bg-warm scroll-mt-4" aria-labelledby="postular-t">
         {PROGRAMAS.map((p) => (
           <span key={p.id} id={`postular-${p.id}`} className="block relative -top-6" aria-hidden="true" />
         ))}
@@ -112,13 +107,13 @@ export default function ProgramasPage() {
           <div>
             <SecHead
               id="postular-t"
-              size="md"
               label={["Postulación", "Fechas y cupos"]}
-              title="Postula o pide las fechas"
-              sub="Te escribimos con la próxima convocatoria del programa que elijas: fechas, cupos y condiciones. Si prefieres conversar antes, agenda 30 minutos con el equipo."
+              title="Te escribimos con las fechas de la próxima convocatoria"
+              sub="Elige el programa y te enviamos sus fechas, cupos y condiciones. Si prefieres conversar antes, agenda 30 minutos con el equipo."
             />
-            <a href={agenda} target="_blank" rel="noopener noreferrer" className="ul inline-block mt-6 text-[17px] font-bold">
+            <a href={agenda} target="_blank" rel="noopener noreferrer" className="ul inline-block mt-6 text-cuerpo font-bold">
               Agenda 30 minutos
+              <span className="sr-only"> (se abre en otra pestaña)</span>
             </a>
           </div>
           <ProgramForm />

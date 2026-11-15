@@ -1,10 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { fmtNum, parseNum } from "@/lib/format";
 import { readSaved, writeSaved } from "@/lib/saved";
-import { Arrow, Icon, Lectura, Nota, Scene } from "./ui";
+import { Aviso, Icon, Jn, Lectura, LinkArrow, Mono, Nota, Scene } from "./ui";
 
 type Ej = { key: "carmen" | "javier"; name: string; a: string; b: string; bio: string; lectura: React.ReactNode };
 const EJ: Ej[] = [
@@ -26,7 +25,7 @@ const EJ: Ej[] = [
     name: "Javier",
     a: "61.150",
     b: "12.500",
-    bio: "52 años, ex VP Comercial en Bogotá. Acaba de salir de su empresa y hace la K.1 con la indemnización incluida.",
+    bio: "52 años, exvicepresidente comercial en Bogotá. Acaba de salir de su empresa y hace la K.1 con la indemnización incluida.",
     lectura: (
       <>
         Con el recorte que acordó en casa, el costo de vida de Javier baja a <span className="sc">USD</span>&nbsp;10.000 y su runway sube a 6,1 meses.
@@ -105,7 +104,7 @@ export default function RunwayCalc() {
       <input
         id={`${id}-${key}`}
         ref={ref}
-        className="field tab"
+        className="field der"
         inputMode="decimal"
         autoComplete="off"
         placeholder="0"
@@ -125,8 +124,8 @@ export default function RunwayCalc() {
         <div className="border border-ink bg-paper">
           <div className="flex justify-between items-center px-5 lg:px-6 py-4 border-b border-ink">
             <div className="flex gap-2.5 items-center">
-              <Icon name="formula" size={20} />
-              <span className="wm">Calculadora K.1</span>
+              <Icon name="formula" size={16} />
+              <span className="wm lab">Calculadora K.1</span>
             </div>
             <span className="wm text-ink2" aria-live="polite">{isEj ? `Ejemplo con ${ej.name}` : "Tus números"}</span>
           </div>
@@ -137,7 +136,7 @@ export default function RunwayCalc() {
                 {EJ.map((e, i) => (
                   <label
                     key={e.key}
-                    className={`relative min-h-[44px] flex items-center justify-center border border-ink cursor-pointer text-[15px] font-semibold ${i ? "border-l-0" : ""} has-[:focus-visible]:outline has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-mag has-[:focus-visible]:z-10`}
+                    className={`opt relative min-h-[44px] flex items-center justify-center border border-ink cursor-pointer text-recuadro font-semibold ${i ? "border-l-0" : ""}`}
                     style={ej.key === e.key && isEj ? { background: "var(--color-ink)", color: "var(--color-paper)" } : undefined}
                   >
                     <input type="radio" name={`${id}-ej`} value={e.key} checked={ej.key === e.key && isEj} onChange={() => pick(e)} className="sr-only" />
@@ -148,18 +147,18 @@ export default function RunwayCalc() {
             </fieldset>
             {field("A  Ahorro líquido", a, setA, "a", aRef)}
             {field("B  Costo de vida mensual", b, setB, "b")}
-            <p className="text-[14px] text-ink2 -mt-2">En dólares o en tu moneda, la misma en las dos.</p>
+            <p className="text-recuadro text-ink2 -mt-2">En dólares o en tu moneda, la misma en las dos.</p>
             <details className="border-t border-ink20 pt-3 group/est">
-              <summary className="cursor-pointer text-[15px] font-semibold ul inline">Estimar B con tres meses</summary>
+              <summary className="cursor-pointer text-recuadro font-semibold ul inline">Estimar B con tres meses</summary>
               <div className="grid grid-cols-2 gap-3 mt-3">
                 {["Mes 1", "Mes 2", "Mes 3", "Gastos anuales del último año"].map((l, i) => (
                   <div key={l} className={i === 3 ? "col-span-2" : ""}>
-                    <label htmlFor={`${id}-m${i}`} className="text-[14px] block text-ink2 mb-1.5">
+                    <label htmlFor={`${id}-m${i}`} className="text-recuadro block text-ink2 mb-1.5">
                       {l}
                     </label>
                     <input
                       id={`${id}-m${i}`}
-                      className="field tab"
+                      className="field der"
                       style={{ height: 44 }}
                       inputMode="decimal"
                       autoComplete="off"
@@ -169,7 +168,7 @@ export default function RunwayCalc() {
                   </div>
                 ))}
               </div>
-              <p className="text-[14px] text-ink2 mt-2">B = (mes 1 + mes 2 + mes 3) ÷ 3 + gastos anuales ÷ 12</p>
+              <p className="font-mono text-rotulo text-ink3 mt-2">B = (mes 1 + mes 2 + mes 3) ÷ 3 + gastos anuales ÷ 12</p>
               <button
                 type="button"
                 className="btn2 w-full mt-3"
@@ -180,24 +179,23 @@ export default function RunwayCalc() {
                 {estB === null ? "Escribe los tres meses" : `Usar ${fmtNum(estB, 0)} como B`}
               </button>
             </details>
-            <div className="border-t-2 border-ink pt-4 flex justify-between items-end gap-4">
+            <div className="border-t border-ink pt-4 flex flex-wrap justify-between items-end gap-x-4 gap-y-2">
               <div>
                 <div className="wm text-ink2">Runway = A ÷ B</div>
-                <div className="text-[15px] text-ink2 mt-1.5">Meses que vives sin sueldo</div>
+                <div className="text-recuadro text-ink2 mt-1.5">Meses que vives sin sueldo</div>
               </div>
-              <output htmlFor={`${id}-a ${id}-b`} aria-live="polite" className="wh tab whitespace-nowrap" style={{ fontSize: "clamp(64px, 7vw, 96px)", lineHeight: 0.8 }}>
+              <output htmlFor={`${id}-a ${id}-b`} aria-live="polite" className="num text-cifra whitespace-nowrap">
                 {runway !== null ? fmtNum(runway, 1) : "–"}
-                <span className="text-[26px] lg:text-[32px] ml-2">meses</span>
+                <span className="wh2 text-h2 ml-2">meses</span>
               </output>
             </div>
-            {!valid && (a || b) && <p className="text-[14px] text-magt">El costo de vida tiene que ser mayor que cero.</p>}
+            {!valid && (a || b) && <Aviso>El costo de vida tiene que ser mayor que cero.</Aviso>}
             <div className="flex flex-col gap-3">
               <button type="button" onClick={mine} className="btn2 w-full">
-                <span>Calcular con mis números</span>
-                <Arrow />
+                Calcular con mis números
               </button>
               {!isEj && (
-                <button type="button" onClick={() => pick(ej)} className="ul self-center text-[15px] font-semibold">
+                <button type="button" onClick={() => pick(ej)} className="ul self-center text-recuadro font-semibold">
                   Volver al ejemplo de {ej.name}
                 </button>
               )}
@@ -209,23 +207,30 @@ export default function RunwayCalc() {
       </div>
 
       <div>
-        <div className="pt-3.5 border-t-2 border-ink">
-          <h3 className="ws text-[22px] lg:text-[26px] leading-[1.18]" aria-live="polite">
+        <div className="pt-3 border-t border-ink">
+          <Mono>
+            <Jn parts={["Marco 1.1", "Tu runway"]} />
+          </Mono>
+          <h3 className="ws text-figura mt-2" aria-live="polite">
             {title}
           </h3>
-          <p className="text-[15px] lg:text-[16px] text-ink2 mt-1.5">
+          <p className="text-recuadro text-ink3 mt-1.5">
             {isEj ? `Runway de ${ej.name} en meses, con su costo de vida actual, frente al colchón mínimo de 6 meses` : "Tu runway en meses frente al colchón mínimo de 6 meses"}
           </p>
         </div>
 
         <div className="relative mt-7 h-[124px] max-w-[620px]" role="img" aria-label={runway !== null ? `Barra: ${fmtNum(runway, 1)} meses de runway; el mínimo recomendado es 6.` : "Barra sin datos"}>
-          <span className="wm absolute top-0 text-magt text-right" style={{ right: `calc(${100 - pct(MIN)}% + 8px)` }}>
+          <span className="wm absolute top-0 text-ink text-right" style={{ right: `calc(${100 - pct(MIN)}% + 8px)` }}>
             Mínimo 6
           </span>
           <div className="absolute left-0 right-0 top-[34px] h-10 border border-ink bg-paper">
             <div className="h-full bg-ink transition-[width] duration-300 ease-out" style={{ width: `${runway !== null ? pct(runway) : 0}%` }} />
           </div>
-          <span className="absolute top-[20px] w-[2px] h-[68px] bg-mag" style={{ left: `calc(${pct(MIN)}% - 1px)` }} />
+          {/* mínimo de 6 meses: línea discontinua de 1 px en tinta (en papel donde cruza la barra llena), como el «MÍNIMO 6» del marco 1.1 */}
+          <span className="absolute top-[20px] h-[68px] border-l border-dashed border-ink" style={{ left: `calc(${pct(MIN)}% - 0.5px)` }} />
+          {runway !== null && pct(runway) > pct(MIN) && (
+            <span className="absolute top-[35px] h-[38px] border-l border-dashed border-paper" style={{ left: `calc(${pct(MIN)}% - 0.5px)` }} />
+          )}
           {runway !== null && (
             <span
               className="wm absolute top-[45px] whitespace-nowrap"
@@ -249,15 +254,13 @@ export default function RunwayCalc() {
         </div>
 
         <div className="grid gap-5 lg:gap-7 xl:grid-cols-[minmax(0,1fr)_300px] mt-7">
-          <Lectura bg="var(--color-paper)" text={ej.lectura} />
-          <div className="bg-sal px-[18px] pt-[18px] pb-5" style={{ borderLeft: "2px solid var(--color-sald)" }}>
+          <Lectura text={ej.lectura} />
+          <div className="bg-sage px-4 pt-4 pb-5">
             <div className="flex gap-3.5 items-start">
               <Scene who={ej.key} className="w-[96px] shrink-0" />
               <div>
-                <div className="wm" style={{ color: "var(--color-sald)" }}>
-                  {ej.name}
-                </div>
-                <p className="text-[15px] leading-[1.4] mt-1.5" style={{ color: "var(--color-sald)" }}>
+                <div className="wm text-saged">{ej.name}</div>
+                <p className="text-recuadro leading-[1.4] mt-1.5 text-ink2">
                   {ej.bio}
                 </p>
               </div>
@@ -267,10 +270,9 @@ export default function RunwayCalc() {
         <Nota className="mt-5 lg:mt-[22px]">
           Ahorro líquido es el dinero que puedes usar en una semana sin una penalidad grande. Tu fondo de pensiones, tu casa y tu auto quedan fuera.
         </Nota>
-        <Link href="/workbook/1-1" className="group inline-flex gap-2 items-center mt-6 text-[17px] font-bold">
-          <span className="lnk">Siguiente: tus tres runways (plantilla 1.1)</span>
-          <Arrow />
-        </Link>
+        <LinkArrow href="/workbook/1-1" className="mt-6 text-cuerpo">
+          Siguiente: tus tres runways (plantilla 1.1)
+        </LinkArrow>
       </div>
     </div>
   );

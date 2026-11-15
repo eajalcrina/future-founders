@@ -1,12 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { Aviso, CalcItem, CalcRow, CalcTable } from "@/content/workbook";
 import { computeAll, evaluate, exampleInputs, formatVal, isInput, isRow, type Val } from "@/lib/calc";
 import { fmtNum, parseNum } from "@/lib/format";
 import { readSaved, writeSaved } from "@/lib/saved";
-import { Icon, Sc } from "./ui";
+import { Aviso as AvisoTxt, Icon, LinkArrow, Sc } from "./ui";
 
 type Props = {
   id: string;
@@ -23,6 +22,15 @@ function sameInputs(a: Record<string, string>, b: Record<string, string>) {
   const ks = new Set([...Object.keys(a), ...Object.keys(b)]);
   for (const k of ks) if ((a[k] ?? "").trim() !== (b[k] ?? "").trim()) return false;
   return true;
+}
+
+/** Letra de fila del workbook: cuadrado de tinta con la letra en papel, como en el ejemplo resuelto. */
+function Letra({ tag }: { tag: string }) {
+  return (
+    <span className="shrink-0 inline-flex items-center justify-center min-w-4 h-4 px-0.5 mt-[2px] bg-ink text-paper font-mono text-rotulo leading-none">
+      {tag}
+    </span>
+  );
 }
 
 /** Calculadora en línea de una plantilla del workbook, con el ejemplo del libro cargado. */
@@ -117,17 +125,13 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
     const common = {
       id: fid,
       "aria-describedby": help,
-      className: "field tab",
-      style: { height: 48, fontSize: 17 },
+      className: `field ${r.kind === "text" || r.kind === "select" ? "" : "der"}`,
+      style: { height: 48 },
     };
     return (
       <div key={r.field} className="py-3 border-t border-ink20 grid gap-2">
-        <label htmlFor={fid} className="text-[15px] leading-[1.35] font-semibold flex gap-2">
-          {r.tag && (
-            <span className="wm shrink-0 w-5" style={{ color: "var(--color-magt)" }}>
-              {r.tag}
-            </span>
-          )}
+        <label htmlFor={fid} className="text-recuadro leading-[1.35] font-semibold flex gap-2">
+          {r.tag && <Letra tag={r.tag} />}
           <span>
             <Sc text={r.label} />
           </span>
@@ -158,7 +162,7 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
           />
         )}
         {r.note && (
-          <p id={help} className="text-[14px] leading-[1.4] text-ink2">
+          <p id={help} className="text-recuadro leading-[1.4] text-ink2">
             <Sc text={r.note} />
           </p>
         )}
@@ -171,21 +175,17 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
     return (
       <div key={r.field} className="py-3 border-t border-ink20 flex justify-between items-baseline gap-4">
         <div className="min-w-0">
-          <div className="text-[15px] leading-[1.35] font-semibold flex gap-2">
-            {r.tag && (
-              <span className="wm shrink-0 w-5" style={{ color: "var(--color-magt)" }}>
-                {r.tag}
-              </span>
-            )}
+          <div className="text-recuadro leading-[1.35] font-semibold flex gap-2">
+            {r.tag && <Letra tag={r.tag} />}
             <span>
               <Sc text={r.label} />
             </span>
           </div>
-          {r.show && <div className="wm text-ink2 mt-1 normal-case" style={{ letterSpacing: 0 }}>= {r.show}</div>}
+          {r.show && <div className="font-mono text-rotulo text-ink3 mt-1">= {r.show}</div>}
         </div>
-        <output className="wh tab text-[26px] whitespace-nowrap text-right" style={{ lineHeight: 1 }}>
+        <output className="num text-kpi whitespace-nowrap text-right">
           {v}
-          {r.unit && v !== "–" && <span className="text-[15px] ml-1.5">{r.unit}</span>}
+          {r.unit && v !== "–" && <span className="text-recuadro font-semibold font-stretch-normal tracking-normal ml-1.5">{r.unit}</span>}
         </output>
       </div>
     );
@@ -195,12 +195,12 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
     const lim = t.mark ? vals[t.mark] : undefined;
     return (
       <div key={t.table} className="py-3 border-t border-ink20">
-        <div className="text-[15px] font-semibold">{t.table}</div>
-        <table className="w-full mt-2 text-[15px] tab">
+        <div className="text-recuadro font-semibold">{t.table}</div>
+        <table className="tabla mt-2">
           <thead>
             <tr>
               {t.head.map((h, i) => (
-                <th key={h} scope="col" className={`wm text-ink2 font-normal pb-1.5 ${i ? "text-right" : "text-left"}`}>
+                <th key={h} scope="col" className={i ? "n" : ""}>
                   {h}
                 </th>
               ))}
@@ -211,15 +211,20 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
               const first = cs[0];
               const below = typeof lim === "number" && typeof vals[first] === "number" && (vals[first] as number) < lim;
               return (
-                <tr key={label} className="border-t border-ink10" style={below ? { background: "var(--color-warm)" } : undefined}>
-                  <th scope="row" className="text-left font-normal py-1.5">
+                <tr key={label} style={below ? { background: "var(--color-warm)" } : undefined}>
+                  <th scope="row" className="text-left font-normal">
                     {label}
-                    {below && <span className="block text-[13px] text-magt font-semibold">bajo el saldo mínimo</span>}
+                    {below && (
+                      <span className="flex gap-1.5 items-center text-recuadro font-semibold mt-0.5">
+                        <Icon name="error" size={14} />
+                        bajo el saldo mínimo
+                      </span>
+                    )}
                   </th>
                   {cs.map((c) => {
                     const r = calc.find((x) => isRow(x) && x.field === c) as CalcRow | undefined;
                     return (
-                      <td key={c} className="text-right py-1.5 font-semibold">
+                      <td key={c} className="n font-semibold">
                         {r ? formatVal(r, vals[c]) : "–"}
                       </td>
                     );
@@ -237,8 +242,8 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
     <div className="border border-ink bg-paper" role="group" aria-labelledby={`${uid}-h`}>
       <div className="flex justify-between items-center gap-3 px-5 py-4 border-b border-ink">
         <div className="flex gap-2.5 items-center">
-          <Icon name="formula" size={20} />
-          <h2 id={`${uid}-h`} className="wm">
+          <Icon name="formula" size={16} />
+          <h2 id={`${uid}-h`} className="text-recuadro font-bold">
             Calculadora en línea
           </h2>
         </div>
@@ -247,11 +252,11 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
         </span>
       </div>
       <div className="px-5 pt-3 pb-6">
-        <p className="text-[14px] leading-[1.45] text-ink2 pb-3">
-          Hace las cuentas de la {code} con las mismas filas del workbook. Escribe en tu moneda o en dólares, la misma en toda la plantilla.
+        <p className="text-recuadro leading-[1.45] text-ink2 pb-3">
+          Hace las cuentas de la {code} con las mismas filas del workbook. Escribe en tu moneda o en dólares, la misma en todo el workbook.
         </p>
         {pending.length > 0 && (
-          <div className="mb-3 px-3 py-2.5 bg-sal text-[15px] leading-[1.4]" style={{ color: "var(--color-sald)", borderLeft: "2px solid var(--color-sald)" }}>
+          <div className="mb-3 px-3 py-2.5 bg-warm text-recuadro leading-[1.4] filete-sup">
             Tienes datos guardados de otra plantilla: {pending.map((im) => `${im.label.split(" (")[0]} ${im.value}`).join("; ")}.{" "}
             <button type="button" onClick={bring} className="ul font-bold">
               Traerlos aquí
@@ -274,9 +279,9 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
 
         <div aria-live="polite" className="mt-4 grid gap-2">
           {shown.map((a) => (
-            <p key={a.text} className="text-[15px] leading-[1.45] pl-3 border-l-2 border-magt">
+            <AvisoTxt key={a.text}>
               <Sc text={a.text} />
-            </p>
+            </AvisoTxt>
           ))}
         </div>
 
@@ -290,18 +295,18 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
               Volver al ejemplo de {arch}
             </button>
           )}
-          <button type="button" onClick={csv} className="ul self-center text-[15px] font-semibold">
+          <button type="button" onClick={csv} className="ul self-center text-recuadro font-semibold">
             Descargar mis números (CSV)
           </button>
         </div>
-        <p className="text-[13px] leading-[1.45] text-ink2 mt-4">Tus números se guardan solo en este navegador. No necesitas cuenta.</p>
+        <p className="text-recuadro leading-[1.45] text-ink2 mt-4">Tus números se guardan solo en este navegador. No necesitas cuenta.</p>
 
         {check.length > 0 && (
-          <div className="mt-6 pt-4 border-t-2 border-ink">
+          <div className="mt-6 pt-4 border-t border-ink">
             <div className="wm text-ink2">Sabrás que terminaste cuando…</div>
             <ul className="mt-2 grid gap-1.5">
               {check.map((c) => (
-                <li key={c} className="grid grid-cols-[20px_minmax(0,1fr)] text-[15px] leading-[1.45]">
+                <li key={c} className="grid grid-cols-[20px_minmax(0,1fr)] text-recuadro leading-[1.45]">
                   <span className="block w-1.5 h-1.5 mt-2 bg-ink" aria-hidden="true" />
                   <span>
                     <Sc text={c} />
@@ -312,12 +317,12 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
           </div>
         )}
         {next && (
-          <Link href={`/workbook/${next.id}`} className="group block mt-5 text-[16px] font-bold">
-            <span className="wm text-ink2 block font-normal">Siguiente plantilla</span>
-            <span className="lnk">
+          <div className="mt-5">
+            <span className="wm text-ink2 block">Siguiente plantilla</span>
+            <LinkArrow href={`/workbook/${next.id}`} className="text-recuadro mt-1">
               {next.code} {next.title}
-            </span>
-          </Link>
+            </LinkArrow>
+          </div>
         )}
       </div>
     </div>

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-/** Regla de lectura: línea magenta de 2 px arriba que avanza con el scroll. */
+/** Regla de lectura: línea de tinta de 2 px arriba que avanza con el scroll (no es meta: va en tinta). */
 export default function ReadingProgress() {
   const bar = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function ReadingProgress() {
   }, []);
   return (
     <div aria-hidden="true" className="fixed left-0 right-0 top-0 h-[2px] z-50 pointer-events-none">
-      <div ref={bar} className="h-full bg-mag origin-left" style={{ transform: "scaleX(0)" }} />
+      <div ref={bar} className="h-full bg-ink origin-left" style={{ transform: "scaleX(0)" }} />
     </div>
   );
 }

@@ -37,7 +37,7 @@ export default function Navbar() {
               key={l.href}
               href={l.href}
               aria-current={isActive(l.href) ? "page" : undefined}
-              className={`text-[16px] py-1.5 ${isActive(l.href) ? "font-bold border-b-2 border-ink" : "font-medium lnk"}`}
+              className={`text-recuadro py-1.5 ${isActive(l.href) ? "font-bold border-b-2 border-ink" : "font-medium lnk"}`}
             >
               {l.label}
             </Link>
@@ -45,16 +45,16 @@ export default function Navbar() {
         </nav>
 
         <div className="hidden lg:flex gap-7 items-center">
-          <Link href="/diagnostico" className="text-[16px] font-semibold ul" aria-current={pathname === "/diagnostico" ? "page" : undefined}>
+          <Link href="/diagnostico" className="text-recuadro font-semibold ul" aria-current={pathname === "/diagnostico" ? "page" : undefined}>
             Diagnóstico de nivel
           </Link>
-          <Link href="/kit" className="btn" style={{ minHeight: 50, padding: "0 22px" }}>
+          <Link href="/kit" className="btn compact">
             Descarga el kit
           </Link>
         </div>
 
         <div className="flex lg:hidden gap-4 items-center">
-          <Link href="/kit" className="btn" style={{ minHeight: 40, padding: "0 14px" }}>
+          <Link href="/kit" className="btn compact">
             Kit gratis
           </Link>
           <button
@@ -66,7 +66,7 @@ export default function Navbar() {
           >
             <span className="sr-only">{open ? "Cerrar menú" : "Abrir menú"}</span>
             <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
-              <g fill="none" stroke="currentColor" strokeWidth="1.6">
+              <g fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square">
                 {open ? <path d="M5 5l14 14M19 5 5 19" /> : <path d="M3 6.5h18M3 12h18M3 17.5h18" />}
               </g>
             </svg>
@@ -79,7 +79,7 @@ export default function Navbar() {
           <ul className="wrap py-3">
             {[...NAV, { label: "Diagnóstico de nivel", href: "/diagnostico" }, { label: "Kit «Plan de salida»", href: "/kit" }].map((l) => (
               <li key={l.href}>
-                <Link href={l.href} onClick={() => setOpen(false)} className="block py-3 text-[18px] font-semibold border-t border-ink20 first:border-t-0">
+                <Link href={l.href} onClick={() => setOpen(false)} className="block py-3 text-h3 font-semibold border-t border-ink20 first:border-t-0">
                   {l.label}
                 </Link>
               </li>

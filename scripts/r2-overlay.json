@@ -1163,8 +1163,8 @@
      "ej": "2.400"
     },
     {
-     "field": "tasa",
-     "label": "Tasa de impuesto, en %",
+     "field": "tasa_pct",
+     "label": "Tasa de impuesto (%)",
      "note": "La que confirmaste con quien lleva tus impuestos.",
      "ej": "25"
     },
@@ -1172,7 +1172,7 @@
      "field": "J",
      "tag": "J",
      "label": "Impuesto",
-     "expr": "max(I, 0) * tasa / 100",
+     "expr": "max(I, 0) * tasa_pct / 100",
      "show": "I × tasa",
      "ej": "600"
     },
@@ -1185,15 +1185,15 @@
      "ej": "1.800"
     },
     {
-     "field": "pct",
-     "label": "Tu porcentaje de la empresa",
-     "note": "100 si la empresa es solo tuya.",
+     "field": "parte_pct",
+     "label": "Tu porcentaje de la empresa (%)",
+     "note": "Si no compartes la empresa, 100.",
      "ej": "50"
     },
     {
      "field": "parte",
      "label": "Tu parte",
-     "expr": "K * pct / 100",
+     "expr": "K * parte_pct / 100",
      "show": "K × tu porcentaje",
      "ej": "900"
     },
@@ -1201,14 +1201,14 @@
      "band": "Tu brecha"
     },
     {
-     "field": "hoy",
+     "field": "total",
      "label": "Tu ingreso neto total hoy",
      "ej": "7.600"
     },
     {
-     "field": "total",
+     "field": "total_nuevo",
      "label": "Tu ingreso neto con los clientes nuevos",
-     "expr": "hoy + parte",
+     "expr": "total + parte",
      "show": "hoy + tu parte",
      "ej": "8.500"
     },
@@ -1221,7 +1221,7 @@
     {
      "field": "cierran",
      "label": "Clientes que la cierran",
-     "expr": "if(c2 > 0 && tasa < 100 && pct > 0, max(ceil((brecha / ((1 - tasa / 100) * pct / 100) + H) / c2), 0), 0)",
+     "expr": "if(c2 > 0 && tasa_pct < 100 && parte_pct > 0, max(ceil((brecha / ((1 - tasa_pct / 100) * parte_pct / 100) + H) / c2), 0), 0)",
      "show": "el menor número de clientes cuya parte cubre la brecha",
      "ej": "4"
     }
