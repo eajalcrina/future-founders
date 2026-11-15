@@ -404,6 +404,12 @@
   .btn-marca .marca.mercadopago {
     height: calc(var(--logo-mark) * 1.35);
   }
+  /* isotipo y nombre de Mercado Pago van juntos, a 7 px, con el mismo peso que «Pagar con» */
+  .btn-marca .marca-nombre {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
   /* la palabra de Amazon se apoya en la línea base del texto; la sonrisa queda debajo */
   .btn-marca .marca.amazon {
     height: calc(var(--logo-mark) * 1.3);

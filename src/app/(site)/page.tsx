@@ -83,7 +83,7 @@ function Method() {
           <SecHead
             id="metodo-t"
             className="max-w-[820px]"
-            label={["El método", "La escalera"]}
+            label={["El método"]}
             title="Subes de nivel cuando aparece una señal en tu estado de cuenta"
             sub="Son cuatro niveles, de un sueldo a varios ingresos propios. Elige el peldaño que describe tu situación y mira qué te toca hacer ahora."
           />
@@ -265,7 +265,7 @@ function Products() {
           </LinkArrow>
           <p className="text-cuerpo text-ink2 flex flex-wrap items-baseline gap-x-2">
             <span>Si dudas por dónde empezar,</span>
-            <AgendaLink />
+            <AgendaLink className="text-ink" />
           </p>
         </div>
       </div>
@@ -292,7 +292,8 @@ function Founders() {
               <div className="flex flex-col">
                 <Mono tone="gris">{f.role}</Mono>
                 <h3 className="wh2 text-h2 mt-2 lg:mt-3">{f.name}</h3>
-                <div className="text-cuerpo font-semibold mt-2">{f.cred}</div>
+                {/* dos líneas reservadas en escritorio: las bios de las dos columnas arrancan a la misma altura */}
+                <div className="text-cuerpo font-semibold mt-2 lg:min-h-[2lh]">{f.cred}</div>
                 <p className="wt mt-2.5 lg:mt-3">
                   <Sc text={f.bio} />
                 </p>

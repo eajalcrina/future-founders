@@ -120,7 +120,8 @@ export default function Diagnostico() {
 function Result({ ans, onRestart, headRef }: { ans: Respuestas; onRestart: () => void; headRef: React.RefObject<HTMLHeadingElement | null> }) {
   const { level: k, why } = nivelDe(ans);
   const paso = pasoDe(k, ans);
-  const conK1 = paso.plantillas.some((p) => p.code === "K.1");
+  // Si el paso ya trae la K.1 (como plantilla o dentro del texto, como en la K.3), no se repite el aviso.
+  const conK1 = paso.plantillas.some((p) => p.code === "K.1") || paso.body.includes("K.1");
   const avisoColchon = k < 3 && colchonCorto(ans) && !conK1;
   const acompana = WITH.flat().filter((w) => paso.acompana.includes(w.href));
   const dark = k === 3;
@@ -168,11 +169,15 @@ function Result({ ans, onRestart, headRef }: { ans: Respuestas; onRestart: () =>
             </p>
             {avisoColchon && (
               <p className="text-recuadro leading-[1.45] mt-4 px-3 py-2.5 bg-warm">
-                Tu colchón no llega a 6 meses o no lo has calculado. Llena primero la K.1 del kit, son 20 minutos.
+                Tu colchón no llega a 6 meses o no lo has calculado. Empieza por la K.1 del kit, que toma 20 minutos, y después sigue con {paso.plantillas.map((p) => `la ${p.code}`).join(" y ")}.
               </p>
             )}
             <div className="mt-6">
-              {paso.boton === "agenda" ? (
+              {avisoColchon ? (
+                <Link href="/workbook/k1" className="btn">
+                  Abrir la K.1
+                </Link>
+              ) : paso.boton === "agenda" ? (
                 <a href={agendaUrl()} target="_blank" rel="noopener noreferrer" className="btn">
                   <Icon name="calendario" size={18} />
                   <span>Agenda 30 minutos</span>

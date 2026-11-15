@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import ProgramForm from "@/components/site/ProgramForm";
 import { AgendaLink, Hero as HeroHead, Icon, LinkArrow, Lvl, Mono, Nota, SecHead } from "@/components/site/ui";
 import { PROGRAMAS } from "@/content/programas";
-import { LEVELS, agendaUrl, whatsappUrl } from "@/content/sitio";
+import { HAY_AGENDA, LEVELS, agendaUrl, whatsappUrl } from "@/content/sitio";
 
 export const metadata: Metadata = {
   title: "Programas por nivel",
@@ -11,6 +11,14 @@ export const metadata: Metadata = {
   alternates: { canonical: "/programas" },
   openGraph: { title: "Programas por nivel", url: "/programas" },
 };
+
+/** Programas seguidos del mismo nivel van en un grupo con una sola casilla de nivel. */
+const GRUPOS = PROGRAMAS.reduce<(typeof PROGRAMAS)[number][][]>((acc, p) => {
+  const last = acc[acc.length - 1];
+  if (last && last[0].level === p.level) last.push(p);
+  else acc.push([p]);
+  return acc;
+}, []);
 
 const FILL = ["var(--color-paper)", "var(--color-warm)", "var(--color-ink20)", "var(--color-ink)"];
 
@@ -37,52 +45,62 @@ export default function ProgramasPage() {
 
       <section className="border-t border-ink" aria-label="Programas">
         <div className="wrap py-12 lg:py-[88px] grid gap-6 lg:gap-8">
-          {PROGRAMAS.map((p) => {
-            const primary = p.cta === "Agenda 30 minutos" ? { href: agenda, ext: true } : { href: `#postular-${p.id}`, ext: false };
+          {GRUPOS.map((g) => {
+            const lv = g[0].level;
             return (
-              <article key={p.id} id={p.id} className="rv card bg-paper grid lg:grid-cols-[260px_minmax(0,1fr)_minmax(0,360px)]" aria-labelledby={`${p.id}-t`}>
-                <div className="px-5 py-4 lg:p-6 border-b lg:border-b-0 lg:border-r border-ink flex lg:flex-col justify-between gap-3" style={{ background: FILL[p.level], color: p.level === 3 ? "var(--color-paper)" : undefined }}>
+              /* Una casilla de nivel por grupo: el taller y Primer Mandato comparten el nivel 0 y no lo repiten */
+              <div key={g[0].id} className="rv card bg-paper grid lg:grid-cols-[260px_minmax(0,1fr)]">
+                <div className="px-5 py-4 lg:p-6 border-b lg:border-b-0 lg:border-r border-ink flex lg:flex-col justify-between gap-3" style={{ background: FILL[lv], color: lv === 3 ? "var(--color-paper)" : undefined }}>
                   <div>
-                    <Mono tone={p.level === 3 ? "claro" : "gris"} as="span">
-                      {p.levelLabel}
+                    <Mono tone={lv === 3 ? "claro" : "gris"} as="span">
+                      {g[0].levelLabel}
                     </Mono>
-                    <div className="wh2 text-figura mt-1.5">{LEVELS[p.level]}</div>
+                    <div className="wh2 text-figura mt-1.5">{LEVELS[lv]}</div>
                   </div>
                   <Lvl
-                    on={Array.from({ length: p.level + 1 }, (_, i) => i)}
-                    fg={p.level === 3 ? "var(--color-paper)" : "var(--color-ink)"}
-                    off={p.level === 3 ? "var(--color-ink20)" : "var(--color-ink3)"}
+                    on={Array.from({ length: lv + 1 }, (_, i) => i)}
+                    fg={lv === 3 ? "var(--color-paper)" : "var(--color-ink)"}
+                    off={lv === 3 ? "var(--color-ink20)" : "var(--color-ink3)"}
                   />
                 </div>
-                <div className="px-5 py-6 lg:p-8">
-                  <Mono tone="gris">{p.tag}</Mono>
-                  <h2 id={`${p.id}-t`} className="wh2 text-h2 mt-2.5">
-                    {p.name}
-                  </h2>
-                  <p className="wt mt-3.5">{p.desc}</p>
-                  <Mono tone="gris" className="mt-5">
-                    Formato
-                  </Mono>
-                  <p className="text-cuerpo mt-1.5">{p.format}</p>
+                <div>
+                  {g.map((p, i) => {
+                    const primary = p.cta === "Agenda 30 minutos" ? { href: agenda, ext: true } : { href: `#postular-${p.id}`, ext: false };
+                    return (
+                      <article key={p.id} id={p.id} className={`grid lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)] ${i > 0 ? "border-t border-ink" : ""}`} aria-labelledby={`${p.id}-t`}>
+                        <div className="px-5 py-6 lg:p-8">
+                          <Mono tone="gris">{p.tag}</Mono>
+                          <h2 id={`${p.id}-t`} className="wh2 text-h2 mt-2.5">
+                            {p.name}
+                          </h2>
+                          <p className="wt mt-3.5">{p.desc}</p>
+                          <Mono tone="gris" className="mt-5">
+                            Formato
+                          </Mono>
+                          <p className="text-cuerpo mt-1.5">{p.format}</p>
+                        </div>
+                        <div className="px-5 pb-6 lg:p-8 lg:border-l border-ink lg:bg-warm flex flex-col">
+                          <Mono tone="gris">Es para ti si</Mono>
+                          <p className="text-cuerpo leading-[1.45] mt-2">{p.forWho}</p>
+                          <div className="mt-auto pt-6 flex flex-col gap-3">
+                            {primary.ext ? (
+                              <a href={primary.href} target="_blank" rel="noopener noreferrer" className="btn2 w-full">
+                                <Icon name="calendario" size={18} />
+                                <span>{p.cta}</span>
+                                <span className="sr-only"> (se abre en otra pestaña)</span>
+                              </a>
+                            ) : (
+                              <a href={primary.href} className="btn2 w-full">
+                                {p.cta}
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      </article>
+                    );
+                  })}
                 </div>
-                <div className="px-5 pb-6 lg:p-8 lg:border-l border-ink lg:bg-warm flex flex-col">
-                  <Mono tone="gris">Es para ti si</Mono>
-                  <p className="text-cuerpo leading-[1.45] mt-2">{p.forWho}</p>
-                  <div className="mt-auto pt-6 flex flex-col gap-3">
-                    {primary.ext ? (
-                      <a href={primary.href} target="_blank" rel="noopener noreferrer" className="btn2 w-full">
-                        <Icon name="calendario" size={18} />
-                        <span>{p.cta}</span>
-                        <span className="sr-only"> (se abre en otra pestaña)</span>
-                      </a>
-                    ) : (
-                      <a href={primary.href} className="btn2 w-full">
-                        {p.cta}
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </article>
+              </div>
             );
           })}
           <Nota>Ningún programa promete ingresos ni plazos. Cada uno trabaja sobre tus números y tu mercado, y la decisión de cuándo avanzar es tuya.</Nota>
@@ -104,15 +122,17 @@ export default function ProgramasPage() {
             <p className="text-cuerpo mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-2">
               <span>Si prefieres conversar antes,</span>
               <AgendaLink />
-              <a
-                href={whatsappUrl("Hola, quiero información sobre los programas de Future Founders.")}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ul font-semibold"
-              >
-                o escríbenos por WhatsApp
-                <span className="sr-only"> (se abre en otra pestaña)</span>
-              </a>
+              {HAY_AGENDA && (
+                <a
+                  href={whatsappUrl("Hola, quiero información sobre los programas de Future Founders.")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ul font-semibold"
+                >
+                  o escríbenos por WhatsApp
+                  <span className="sr-only"> (se abre en otra pestaña)</span>
+                </a>
+              )}
             </p>
           </div>
           <ProgramForm />

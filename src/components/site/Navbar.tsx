@@ -33,6 +33,8 @@ export default function Navbar() {
     return () => io.disconnect();
   }, []);
 
+  // En /kit el botón del encabezado baja al formulario en lugar de recargar la misma página.
+  const kitHref = pathname === "/kit" ? "#formulario" : "/kit";
   const isActive = (href: string) => !href.includes("#") && pathname.startsWith(href);
 
   return (
@@ -66,13 +68,13 @@ export default function Navbar() {
             <Link href="/diagnostico" className="text-recuadro font-semibold ul" aria-current={pathname === "/diagnostico" ? "page" : undefined}>
               Diagnóstico de nivel
             </Link>
-            <Link href="/kit" className="btn compact">
+            <Link href={kitHref} className="btn compact">
               Descarga el kit
             </Link>
           </div>
 
           <div className="flex lg:hidden gap-4 items-center">
-            <Link href="/kit" className="btn compact">
+            <Link href={kitHref} className="btn compact">
               Kit gratis
             </Link>
             <button

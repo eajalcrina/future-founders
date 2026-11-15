@@ -41,6 +41,9 @@ export function agendaUrl() {
   );
 }
 
+/** Hay página de citas propia. Sin ella, «Agenda 30 minutos» ya abre WhatsApp y no se ofrece WhatsApp aparte. */
+export const HAY_AGENDA = Boolean(process.env.NEXT_PUBLIC_AGENDA_URL);
+
 /** Titular de la portada y de la imagen para compartir general. Texto del dueño: se respeta tal cual. */
 export const HERO_TITLE = "Tu experiencia puede trabajar para más de una empresa. O para la tuya.";
 
@@ -193,7 +196,7 @@ export const ARCH: Arch[] = [
 ];
 
 export const ARCH_NOTE =
-  "Carmen, Javier, Andrea y Rodrigo son arquetipos del libro, armados a partir de conversaciones reales. No son personas reales.";
+  "Carmen, Javier, Andrea y Rodrigo son arquetipos del libro, armados a partir de conversaciones con ejecutivos. No son personas reales.";
 
 export type Product = { tag: string; name: string; desc: string; meta: string; cta: string; href: string };
 export const PRODUCTS: Product[][] = [
@@ -225,7 +228,7 @@ export const STATS: { prefix?: string; value: number; decimals?: number; suffix:
   { prefix: "USD ", value: 1.5, decimals: 1, suffix: "M+", label: "capital levantado" },
 ];
 
-export const CIFRAS_NOTA = "Cifras de Future Founders: suman la trayectoria de sus fundadores y la de los participantes de sus programas.";
+export const CIFRAS_NOTA = "Suman la trayectoria de los fundadores y la de los participantes de los programas.";
 
 // Bios de los fundadores.
 // Fuente: https://eddieajalcrina.com (inicio, /trayectoria, /cv) y https://lorenzoortiz.co (inicio, /trayectoria),
@@ -249,7 +252,7 @@ export const FOUNDERS = [
     key: "lorenzo",
     name: "Lorenzo Ortiz",
     role: "COO y cofundador",
-    cred: "Cofundador y COO del Fondo de Impacto",
+    cred: "Coautor del Bio Business Playbook",
     bio: "Empezó en el Grupo Gloria y a fines de 2013 pasó a TASA, del Grupo Breca, donde dirigió a la vez dos plantas industriales. En 2021 dejó la vida corporativa y cofundó Redesign Lab con Eddie. Desde entonces evalúa proyectos de inversión industrial en paralelo a sus otros roles, con más de 20 empresas industriales en 7 países, y hoy es Technical Lead de Impact Investing de Swisscontact en Colombia.",
     web: "lorenzoortiz.co",
     webUrl: "https://lorenzoortiz.co",

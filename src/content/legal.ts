@@ -1,5 +1,5 @@
 // Textos de /privacidad y /terminos. Describen lo que la web hace hoy (formularios a la hoja de Google
-// de los fundadores por apps-script/Code.gs, correo de confirmación, calculadoras en el navegador, sin analítica).
+// de los fundadores por /api/registro (Vercel) y apps-script/Code.gs, correo de confirmación, calculadoras en el navegador, sin analítica).
 // Texto base, pendiente de revisión legal: ver PENDIENTES-WEB.md. Si cambia un formulario o se suma una
 // herramienta de medición, este texto cambia con él.
 
@@ -27,7 +27,9 @@ export const PRIVACIDAD: Legal = {
     },
     {
       h: "Dónde se guardan",
-      p: ["En una hoja de cálculo de Google a la que solo acceden los fundadores de Future Founders. Google presta el servicio de la hoja y del correo."],
+      p: [
+        "El sitio se aloja en Vercel, que procesa cada envío de formulario y lo pasa a una hoja de cálculo de Google a la que solo acceden los fundadores de Future Founders. Google presta el servicio de la hoja y del correo.",
+      ],
     },
     {
       h: "Para qué los usamos",
@@ -42,7 +44,7 @@ export const PRIVACIDAD: Legal = {
     {
       h: "Las calculadoras",
       p: [
-        "Los números que escribes en las calculadoras del workbook se guardan solo en tu navegador, en su almacenamiento local, para que los encuentres al volver. No llegan a nuestros servidores y se borran al limpiar los datos del navegador.",
+        "Los números que escribes en las calculadoras del sitio se guardan solo en tu navegador, en su almacenamiento local, para que los encuentres al volver. No llegan a nuestros servidores y se borran al limpiar los datos del navegador.",
       ],
     },
     { h: "El diagnóstico de nivel", p: ["Tus respuestas se quedan en tu navegador. Solo se envían si pides el resultado por correo."] },
@@ -80,7 +82,7 @@ export const TERMINOS: Legal = {
     {
       h: "Compras",
       p: [
-        "El ebook y el impreso se compran en Amazon, con las condiciones de Amazon. El libro en PDF se paga con Mercado Pago, con las condiciones de Mercado Pago, y la entrega es por correo.",
+        "El ebook y el impreso se compran en Amazon, con las condiciones de Amazon. El libro en PDF se paga con Mercado Pago, con las condiciones de Mercado Pago.",
       ],
     },
     { h: "Programas", p: ["Las fechas, los cupos, el precio y las condiciones de cada programa se informan en cada convocatoria."] },

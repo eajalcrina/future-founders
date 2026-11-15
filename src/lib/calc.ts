@@ -215,15 +215,26 @@ export function computeAll(items: CalcItem[], raw: Record<string, string>): Reco
 }
 
 /** Valor listo para mostrar, con el formato del libro (61.600; 7,0; 6,25 %; Sí). */
+/** Valor sin calcular todavía: la celda queda vacía (sin raya) y la vista pinta `formatVacio` atenuado. */
+export const VACIO = "";
+
 export function formatVal(r: CalcRow, v: Val | undefined): string {
   const f = r.fmt ?? "num";
-  if (f === "text") return v === undefined || (typeof v === "number" && !Number.isFinite(v)) ? "–" : String(v);
-  if (typeof v !== "number" || !Number.isFinite(v)) return "–";
+  if (f === "text") return v === undefined || (typeof v === "number" && !Number.isFinite(v)) ? VACIO : String(v);
+  if (typeof v !== "number" || !Number.isFinite(v)) return VACIO;
   if (f === "sino") return v ? "Sí" : "No";
   if (f === "mes") return v > 0 ? `mes ${fmtNum(v, 0)}` : "ninguno";
   const dec = r.dec ?? 0;
   const x = Math.abs(v) < 0.5 * 10 ** -dec ? 0 : v;
   return fmtNum(x, dec) + (f === "pct" ? " %" : "");
+}
+
+/** Lo que se ve, atenuado, mientras una salida no tiene valor: cero en cifras y porcentajes; nada en los demás formatos. */
+export function formatVacio(r: CalcRow): string {
+  const f = r.fmt ?? "num";
+  if (f === "num") return fmtNum(0, r.dec ?? 0);
+  if (f === "pct") return `${fmtNum(0, r.dec ?? 0)} %`;
+  return "";
 }
 
 /** Valores del ejemplo del libro para las entradas. */

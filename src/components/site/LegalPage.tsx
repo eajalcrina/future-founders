@@ -10,15 +10,18 @@ export default function LegalPage({ doc, id }: { doc: Legal; id: string }) {
         <Mono tone="gris" as="p" className="mt-5 lg:mt-7">
           {doc.vigente}
         </Mono>
-        <div className="wt mt-8 lg:mt-12 max-w-[720px] border-b border-ink">
+        {/* El subtítulo queda fuera de `.wt` para que tome Archivo, como en el resto del sitio; solo los párrafos van en serif */}
+        <div className="mt-8 lg:mt-12 max-w-[720px] border-b border-ink">
           {doc.bloques.map((b) => (
             <div key={b.h} className="border-t border-ink pt-4 pb-6 lg:pt-5 lg:pb-7">
               <h2 className="wh3 text-h3">{b.h}</h2>
-              {b.p.map((t) => (
-                <p key={t} className="mt-2.5">
-                  {t}
-                </p>
-              ))}
+              <div className="wt">
+                {b.p.map((t) => (
+                  <p key={t} className="mt-2.5">
+                    {t}
+                  </p>
+                ))}
+              </div>
             </div>
           ))}
         </div>

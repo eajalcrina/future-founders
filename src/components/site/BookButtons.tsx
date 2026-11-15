@@ -16,13 +16,25 @@ export function AmazonBtn({ className = "" }: { className?: string }) {
   );
 }
 
-/** Botón de Mercado Pago: «Pagar con», el isotipo oficial a una tinta y el nombre de la marca. */
+/**
+ * Botón del PDF. Con NEXT_PUBLIC_CHECKOUT_URL: «Pagar con», el isotipo oficial a una tinta y el nombre de la marca.
+ * Sin ella, el botón dice lo que hace («Pedir el PDF por WhatsApp»), sin el isotipo, para no prometer un pago que no ocurre.
+ */
 export function MercadoPagoBtn({ className = "" }: { className?: string }) {
+  if (!CHECKOUT_URL) {
+    return (
+      <a href={CHECKOUT_WHATSAPP} target="_blank" rel="noopener noreferrer" className={`btn-marca ${className}`} aria-label="Pedir el PDF por WhatsApp (se abre en otra pestaña)">
+        <span>Pedir el PDF por WhatsApp</span>
+      </a>
+    );
+  }
   return (
-    <a href={checkoutHref()} target="_blank" rel="noopener noreferrer" className={`btn-marca ${className}`} aria-label="Comprar el PDF con Mercado Pago (se abre en otra pestaña)">
+    <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" className={`btn-marca ${className}`} aria-label="Comprar el PDF con Mercado Pago (se abre en otra pestaña)">
       <span>Pagar con</span>
-      <MarcaLogo marca="mercadopago" />
-      <span className="font-bold">Mercado Pago</span>
+      <span className="marca-nombre">
+        <MarcaLogo marca="mercadopago" />
+        <span>Mercado Pago</span>
+      </span>
     </a>
   );
 }

@@ -256,10 +256,13 @@ export function LinkArrow({ href, children, className = "" }: { href: string; ch
  * (NEXT_PUBLIC_AGENDA_URL) o, sin ella, WhatsApp. Siempre el mismo nombre. kind «link»: enlace subrayado; «btn2»: botón de línea.
  */
 export function AgendaLink({ kind = "link", className = "" }: { kind?: "link" | "btn2"; className?: string }) {
-  const cls = kind === "btn2" ? `btn2 ${className}` : `ul inline-flex items-center gap-2 font-bold ${className}`;
+  // Como enlace, la fila se alinea por la línea base del texto (no por el icono), para apoyarse en la frase que lo rodea.
+  const cls = kind === "btn2" ? `btn2 ${className}` : `ul inline-flex items-baseline gap-2 font-bold ${className}`;
   return (
     <a href={agendaUrl()} target="_blank" rel="noopener noreferrer" className={cls}>
-      <Icon name="calendario" size={18} />
+      <span className="self-center">
+        <Icon name="calendario" size={18} />
+      </span>
       <span>Agenda 30 minutos</span>
       <span className="sr-only"> (se abre en otra pestaña)</span>
     </a>

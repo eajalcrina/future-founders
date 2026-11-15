@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import BookButtons, { AmazonBtn, MercadoPagoBtn } from "@/components/site/BookButtons";
 import FinalCta from "@/components/site/FinalCta";
+import ParteMetodo from "@/components/site/ParteMetodo";
 import Parallax from "@/components/site/Parallax";
-import { FOUNDERS, LEARN, LECTURA, SITE_URL } from "@/content/sitio";
+import { CHECKOUT_URL, FOUNDERS, LEARN, LECTURA, SITE_URL } from "@/content/sitio";
 import { IDEAS } from "@/content/ideas";
 import { PART_LEVELS, PARTES } from "@/content/workbook";
 import { CropMarks, Hero as HeroHead, Icon, Jn, JsonLd, Lectura, LinkArrow, Lvl, Mono, Nota, Sc, SecHead } from "@/components/site/ui";
@@ -89,8 +90,8 @@ function Hero() {
             Eddie Ajalcriña y Lorenzo Ortiz
           </Mono>
           <p className="lead mt-5 lg:mt-7 max-w-[680px]">
-            Durante dos décadas construiste tu carrera en empresas grandes. Este libro te ayuda a convertir esa experiencia en ingresos propios, paso a paso y a la vista de tu
-            empleador.
+            Durante dos décadas construiste tu carrera en empresas grandes. Este libro te ayuda a convertir esa experiencia en ingresos propios, paso a paso y sin ocultárselo a
+            tu empleador.
           </p>
           <div className="mt-7 lg:mt-9">
             <BookButtons />
@@ -149,34 +150,28 @@ function Method() {
     <section id="metodo" className="border-t border-ink" aria-labelledby="metodo-t">
       <span id="indice" aria-hidden="true" />
       <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24">
-        <div className="lg:flex lg:justify-between lg:items-end gap-10">
-          <SecHead id="metodo-t" className="max-w-[760px]" label={["El método"]} title="El método en 21 ideas" sub="Una idea por capítulo, en el orden del libro." />
-          <div className="flex flex-wrap gap-x-5 gap-y-2 mt-5 lg:mt-0 shrink-0" aria-label="Leyenda de niveles">
-            {[0, 1, 2, 3].map((k) => (
-              <span key={k} className="inline-flex items-center gap-2">
-                <span className="inline-block w-[9px] h-[9px]" style={k === 0 ? { background: "var(--color-ink)" } : { border: "1px solid var(--color-ink3)" }} aria-hidden="true" />
-                <Mono tone="gris" as="span">
-                  Nivel {k}
-                </Mono>
-              </span>
-            ))}
-          </div>
-        </div>
+        <SecHead id="metodo-t" className="max-w-[760px]" label={["El método"]} title="El método en 21 ideas" sub="Una idea por capítulo, en el orden del libro." />
         <div className="mt-8 lg:mt-12 border-b border-ink">
-          {TOC.map((r) => (
-            <div key={r.code} className="rv grid gap-x-3 gap-y-4 lg:gap-x-6 grid-cols-[72px_minmax(0,1fr)] lg:grid-cols-[120px_300px_minmax(0,1fr)] pt-5 pb-[18px] border-t border-ink">
-              <span className="num text-display-md">{r.code}</span>
-              <div>
-                <div className="wh2 text-figura">{r.n1}</div>
-                <div className="text-recuadro text-ink2 mt-1">{r.n2}</div>
-                {r.lv && (
-                  <div className="mt-3">
-                    <Lvl on={r.lv} label={`Trabaja los niveles ${r.lv.join(", ")}`} />
-                  </div>
-                )}
-              </div>
+          {TOC.map((r, i) => (
+            <ParteMetodo
+              key={r.code}
+              code={r.code}
+              defaultOpen={i === 1}
+              verLabel={r.lv ? `Ver las ${r.items.length} ideas` : "Ver el contenido"}
+              head={
+                <>
+                  <div className="wh2 text-figura">{r.n1}</div>
+                  <div className="text-recuadro text-ink2 mt-1">{r.n2}</div>
+                  {r.lv && (
+                    <div className="mt-3">
+                      <Lvl on={r.lv} label={`Trabaja los niveles ${r.lv.join(", ")}`} />
+                    </div>
+                  )}
+                </>
+              }
+            >
               {r.lv ? (
-                <ol className="col-span-2 lg:col-span-1">
+                <ol>
                   {r.items.map(([c, t]) => (
                     <li key={t} className="grid grid-cols-[44px_minmax(0,1fr)] lg:grid-cols-[44px_280px_minmax(0,1fr)] gap-x-0 lg:gap-x-6 gap-y-1.5 py-3.5 border-t border-ink20 first:border-t-0 first:pt-1">
                       <span className="num text-h2">{c}</span>
@@ -190,18 +185,28 @@ function Method() {
                   ))}
                 </ol>
               ) : (
-                <ol className="col-span-2 lg:col-span-1 sm:columns-2 gap-10">
-                  {r.items.map(([c, t]) => (
-                    <li key={t} className="grid grid-cols-[44px_minmax(0,1fr)] py-[7px] text-cuerpo leading-[1.3] break-inside-avoid">
-                      <span className="font-mono font-bold text-rotulo text-ink2 pt-[4px]">{c}</span>
-                      <span>
-                        <Sc text={t} />
-                      </span>
-                    </li>
-                  ))}
+                /* Apertura y cierre usan las columnas de los capítulos: código, título (280 px) y segunda columna donde va la idea */
+                <ol className="lg:grid lg:grid-cols-[44px_280px_minmax(0,1fr)] lg:gap-x-6">
+                  {r.items.map(([c, t], k) =>
+                    k % 2 === 0 ? (
+                      <li key={t} className="grid grid-cols-[44px_minmax(0,1fr)] lg:grid-cols-subgrid lg:col-start-1 lg:col-span-2 py-[7px] text-cuerpo leading-[1.3]">
+                        <span className="font-mono font-bold text-rotulo text-ink2 pt-[4px]">{c}</span>
+                        <span>
+                          <Sc text={t} />
+                        </span>
+                      </li>
+                    ) : (
+                      <li key={t} className="grid grid-cols-[44px_minmax(0,1fr)] lg:block lg:col-start-3 py-[7px] text-cuerpo leading-[1.3]">
+                        <span className="font-mono font-bold text-rotulo text-ink2 pt-[4px] lg:hidden">{c}</span>
+                        <span>
+                          <Sc text={t} />
+                        </span>
+                      </li>
+                    ),
+                  )}
                 </ol>
               )}
-            </div>
+            </ParteMetodo>
           ))}
         </div>
         <Lectura className="mt-8 lg:mt-10 max-w-[880px]" text={<Sc text={LECTURA} />} />
@@ -279,9 +284,8 @@ function Workbook() {
 
 function Formats() {
   const fmts = [
-    { n: "Ebook", w: "Amazon", d: "Para leer en Kindle, en una tableta o en la computadora.", btn: <AmazonBtn className="w-full" /> },
-    { n: "Impreso", w: "Amazon", d: "Edición de bolsillo ejecutivo de 150 × 220 mm, impresa por Amazon.", btn: <AmazonBtn className="w-full" /> },
-    { n: "Libro en PDF", w: "Mercado Pago", d: "Para leer en una tableta o en la computadora. Te llega por correo al confirmar el pago.", btn: <MercadoPagoBtn className="w-full" /> },
+    { n: "Ebook e impreso", w: "Amazon", d: "El ebook se lee en Kindle, en una tableta o en la computadora. El impreso es una edición de bolsillo ejecutivo de 150 × 220 mm, impresa por Amazon.", btn: <AmazonBtn className="w-full" /> },
+    { n: "Libro en PDF", w: CHECKOUT_URL ? "Mercado Pago" : "WhatsApp", d: "Para leer en una tableta o en la computadora, sin pasar por Amazon.", btn: <MercadoPagoBtn className="w-full" /> },
   ];
   return (
     <section id="formatos" className="bg-warm" aria-labelledby="formatos-t">
@@ -292,12 +296,12 @@ function Formats() {
           label={["Formatos", "Dónde comprar"]}
           title="Ebook e impreso en Amazon, PDF con Mercado Pago"
           sub={
-            process.env.NEXT_PUBLIC_CHECKOUT_URL
+            CHECKOUT_URL
               ? "El libro en PDF se paga con Mercado Pago: tarjeta de crédito, débito o saldo en cuenta."
-              : "El libro en PDF se paga con Mercado Pago: tarjeta de crédito, débito o saldo en cuenta. Mientras activamos el pago en línea, la compra del PDF se coordina por WhatsApp."
+              : "El libro en PDF se pagará con Mercado Pago: tarjeta de crédito, débito o saldo en cuenta. Mientras activamos el pago en línea, el PDF se pide por WhatsApp."
           }
         />
-        <div className="rv-kids grid grid-cols-[minmax(0,1fr)] gap-5 lg:gap-6 lg:grid-cols-3 mt-8 lg:mt-12">
+        <div className="rv-kids grid grid-cols-[minmax(0,1fr)] gap-5 lg:gap-6 md:grid-cols-2 mt-8 lg:mt-12">
           {fmts.map((f) => (
             <div key={f.n} className="card flex flex-col bg-paper p-5 sm:p-6 lg:px-7 lg:pt-7 lg:pb-[30px]">
               <Mono tone="gris">{f.w}</Mono>
