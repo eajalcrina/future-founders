@@ -4,7 +4,7 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 
 ## Bloquean la publicación definitiva
 
-- [ ] **Reseñas reales.** La sección de reseñas no se muestra (decisión del 15/11/2026, reafirmada el 16/11/2026): no se publican reseñas de ejemplo. El componente (`src/components/site/Testimonials.tsx`) y los datos (`src/content/testimonios.ts`) quedan listos para activarla. Pasos en «Cómo activar las reseñas», al final de este archivo.
+- [ ] **Reseñas reales.** La sección de reseñas no se muestra (decisión del 15/11/2026): no se publican reseñas de ejemplo. El componente (`src/components/site/Testimonials.tsx`) y los datos (`src/content/testimonios.ts`) quedan listos para activarla. Pasos en «Cómo activar las reseñas», al final de este archivo.
 - [ ] **Enlace de Amazon.** Definir `NEXT_PUBLIC_AMAZON_URL` en el hosting. Sin ella, el botón lleva a la búsqueda del título en Amazon.
 - [ ] **Enlace de compra directa.** Elegir la pasarela y definir `NEXT_PUBLIC_CHECKOUT_URL`. Sin ella, el botón abre WhatsApp con el pedido del libro en PDF.
 - [ ] **Enlace de agenda.** Definir `NEXT_PUBLIC_AGENDA_URL` (Calendly, Cal.com u otro). Sin ella, «Agenda 30 minutos» y `/agenda` abren WhatsApp. El QR del cierre del libro apunta a `futurefounders.pe/agenda`, que redirige a esta agenda.
@@ -55,5 +55,5 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 1. Pedir a cada persona permiso escrito para publicar su reseña, con su nombre, cargo y ciudad. Guardar el permiso.
 2. En `src/content/testimonios.ts`, agregar cada reseña al arreglo `TESTIMONIOS` con `ejemplo: false` y la fecha del permiso en `permiso` (por ejemplo `"2026-12-03"`). Una reseña sin `permiso` o con `ejemplo: true` no se muestra.
 3. La cita va en palabras de la persona, corta, sin cifras de ingresos ni promesas. `EJEMPLOS_DE_FORMATO`, en el mismo archivo, sirve de guía de largo y tono: son textos inventados y no se copian a `TESTIMONIOS`.
-4. Con la primera reseña la sección aparece sola en la portada, entre «Nosotros» y el cierre, sobre papel cálido. El carrusel no rota solo; el botón de reproducir lo activa. Con una o dos reseñas conviene revisar si se ven mejor como tarjetas fijas.
+4. Con la primera reseña la sección aparece sola en la portada, entre «Nosotros» y el cierre, sobre papel cálido. Mientras todas quepan en pantalla (una a tres en escritorio, una en celular) se ven como tarjetas fijas, sin botones; con más aparece el carrusel, que no rota solo: el botón de reproducir lo activa. El código del carrusel se descarga solo cuando hay reseñas (`ResenasDiferidas.tsx`).
 5. Correr `npm run lint`, `npm run build` y revisar la portada a 1440 y 390 px antes de publicar.

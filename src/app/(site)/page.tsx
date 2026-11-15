@@ -5,7 +5,7 @@ import { Fragment } from "react";
 import Ladder from "@/components/site/Ladder";
 import Parallax from "@/components/site/Parallax";
 import CountUp from "@/components/site/CountUp";
-import Testimonials from "@/components/site/Testimonials";
+import ResenasDiferidas from "@/components/site/ResenasDiferidas";
 import FinalCta from "@/components/site/FinalCta";
 import BookButtons from "@/components/site/BookButtons";
 import { Arrow, CropMarks, Hero as HeroHead, Jn, JsonLd, Lectura, LinkArrow, Lvl, Mono, Nota, Sc, Scene, SecHead } from "@/components/site/ui";
@@ -356,7 +356,7 @@ function Founders() {
   );
 }
 
-/** Reseñas reales de participantes. Oculta mientras TESTIMONIOS esté vacío. Al activarla va entre Nosotros y el cierre. */
+/** Reseñas reales de participantes. Oculta mientras TESTIMONIOS esté vacío. Al activarla va entre Nosotros y el cierre; el carrusel se carga diferido. */
 function Reviews() {
   if (RESENAS.length === 0) return null;
   return (
@@ -364,7 +364,7 @@ function Reviews() {
       <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24">
         <SecHead id="resenas-t" label={["Reseñas"]} title="Lo que cuentan quienes ya pasaron por los programas" />
         <div className="mt-8 lg:mt-12">
-          <Testimonials items={RESENAS} />
+          <ResenasDiferidas items={RESENAS} />
         </div>
       </div>
     </section>

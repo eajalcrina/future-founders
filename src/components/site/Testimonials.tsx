@@ -15,7 +15,8 @@ function useVisible() {
 /**
  * Carrusel de reseñas. No rota solo: el botón de reproducir lo activa, se pausa al pasar
  * el puntero o al enfocar y queda quieto con prefers-reduced-motion. Filtra por su cuenta
- * y no pinta nada si no hay reseñas reales con permiso.
+ * y no pinta nada si no hay reseñas reales con permiso. Si todas caben en pantalla (una a tres
+ * en escritorio) se muestran como tarjetas fijas, sin botones ni puntos.
  */
 export default function Testimonials({ items: todas }: { items: Testimonio[] }) {
   const items = RESENAS_PUBLICABLES(todas);
@@ -41,13 +42,14 @@ export default function Testimonials({ items: todas }: { items: Testimonio[] }) 
   }, [running, max]);
 
   const pages = max + 1;
+  const fijas = pages === 1;
 
   if (items.length === 0) return null;
 
   return (
     <section
       ref={root}
-      aria-roledescription="carrusel"
+      aria-roledescription={fijas ? undefined : "carrusel"}
       aria-label="Reseñas de participantes"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
@@ -56,6 +58,7 @@ export default function Testimonials({ items: todas }: { items: Testimonio[] }) 
         if (!root.current?.contains(e.relatedTarget as Node)) setFocus(false);
       }}
     >
+      {!fijas && (
       <div className="flex items-center justify-end gap-4 mb-5">
         <div className="flex items-center gap-2">
           <button type="button" className="tc" onClick={() => setPlaying(!autoplay)} aria-label={autoplay ? "Pausar el avance automático" : "Reanudar el avance automático"}>
@@ -73,6 +76,7 @@ export default function Testimonials({ items: todas }: { items: Testimonio[] }) 
           </button>
         </div>
       </div>
+      )}
 
       <div className="overflow-hidden">
         <ul
@@ -89,7 +93,7 @@ export default function Testimonials({ items: todas }: { items: Testimonio[] }) 
               <li
                 key={t.nombre}
                 role="group"
-                aria-roledescription="diapositiva"
+                aria-roledescription={fijas ? undefined : "diapositiva"}
                 aria-label={`${k + 1} de ${items.length}`}
                 aria-hidden={!shown}
                 inert={!shown}
@@ -114,6 +118,7 @@ export default function Testimonials({ items: todas }: { items: Testimonio[] }) 
         </ul>
       </div>
 
+      {!fijas && (
       <div className="flex gap-2 mt-5" role="group" aria-label="Elegir reseña">
         {Array.from({ length: pages }, (_, p) => (
           <button
@@ -128,6 +133,7 @@ export default function Testimonials({ items: todas }: { items: Testimonio[] }) 
           </button>
         ))}
       </div>
+      )}
     </section>
   );
 }
