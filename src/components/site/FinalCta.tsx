@@ -1,6 +1,5 @@
-import { Mono, Jn, Sc } from "./ui";
+import { AgendaLink, Mono, Jn, Sc } from "./ui";
 import EmailCta from "./EmailCta";
-import { agendaUrl } from "@/content/sitio";
 
 /** Cierre de página sobre tinta: el kit «Plan de salida» por correo y la agenda como alternativa. */
 export default function FinalCta({
@@ -28,10 +27,9 @@ export default function FinalCta({
         </div>
         <div className="rv">
           <EmailCta button={button} />
-          <a href={agendaUrl()} target="_blank" rel="noopener noreferrer" className="ul inline-block mt-5 lg:mt-6 text-cuerpo font-bold">
-            ¿Prefieres conversar? Agenda 30 minutos
-            <span className="sr-only"> (se abre en otra pestaña)</span>
-          </a>
+          <p className="mt-5 lg:mt-6 text-cuerpo">
+            <AgendaLink />
+          </p>
         </div>
       </div>
     </section>

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { ReactNode, CSSProperties } from "react";
 import { SVG, ICON_PATHS } from "@/content/ilustraciones";
+import { AMAZON, MERCADO_PAGO } from "@/content/logos-terceros";
+import { PRIVACIDAD_LINEA, agendaUrl } from "@/content/sitio";
 
 /* ---------------------------------------------------------------- texto */
 
@@ -246,6 +248,48 @@ export function LinkArrow({ href, children, className = "" }: { href: string; ch
       <span className="lnk">{children}</span>
       <Arrow />
     </Link>
+  );
+}
+
+/**
+ * «Agenda 30 minutos» con el icono de calendario: abre la página de citas de Google Calendar
+ * (NEXT_PUBLIC_AGENDA_URL) o, sin ella, WhatsApp. Siempre el mismo nombre. kind «link»: enlace subrayado; «btn2»: botón de línea.
+ */
+export function AgendaLink({ kind = "link", className = "" }: { kind?: "link" | "btn2"; className?: string }) {
+  const cls = kind === "btn2" ? `btn2 ${className}` : `ul inline-flex items-center gap-2 font-bold ${className}`;
+  return (
+    <a href={agendaUrl()} target="_blank" rel="noopener noreferrer" className={cls}>
+      <Icon name="calendario" size={18} />
+      <span>Agenda 30 minutos</span>
+      <span className="sr-only"> (se abre en otra pestaña)</span>
+    </a>
+  );
+}
+
+/** Línea de privacidad bajo cada formulario, con el enlace a /privacidad. */
+export function PrivacidadLinea({ className = "", id }: { className?: string; id?: string }) {
+  return (
+    <p id={id} className={`text-recuadro leading-[1.45] ${className}`}>
+      {PRIVACIDAD_LINEA.antes}
+      <Link href="/privacidad" className="ul">
+        {PRIVACIDAD_LINEA.enlace}
+      </Link>
+      {PRIVACIDAD_LINEA.despues}
+    </p>
+  );
+}
+
+/** Logotipo de una tienda a una tinta (toma el color del botón). Decorativo: el nombre va en el aria-label del enlace. */
+export function MarcaLogo({ marca }: { marca: "amazon" | "mercadopago" }) {
+  const l = marca === "amazon" ? AMAZON : MERCADO_PAGO;
+  return (
+    <svg viewBox={l.viewBox} className={`marca ${marca}`} aria-hidden="true" focusable="false">
+      <g fill="currentColor">
+        {l.trazos.map((t, i) => (
+          <path key={i} d={t.d} transform={t.t} />
+        ))}
+      </g>
+    </svg>
   );
 }
 

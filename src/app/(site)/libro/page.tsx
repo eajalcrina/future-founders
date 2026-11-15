@@ -1,18 +1,17 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import ReadingProgress from "@/components/site/ReadingProgress";
-import BookButtons from "@/components/site/BookButtons";
+import BookButtons, { AmazonBtn, MercadoPagoBtn } from "@/components/site/BookButtons";
 import FinalCta from "@/components/site/FinalCta";
 import Parallax from "@/components/site/Parallax";
-import { AMAZON_URL, FOUNDERS, LEARN, SITE_URL } from "@/content/sitio";
-import { checkoutHref } from "@/components/site/BookButtons";
+import { FOUNDERS, LEARN, LECTURA, SITE_URL } from "@/content/sitio";
+import { IDEAS } from "@/content/ideas";
 import { PART_LEVELS, PARTES } from "@/content/workbook";
 import { CropMarks, Hero as HeroHead, Icon, Jn, JsonLd, Lectura, LinkArrow, Lvl, Mono, Nota, Sc, SecHead } from "@/components/site/ui";
 
 export const metadata: Metadata = {
   title: "Doble Agente, el libro",
   description:
-    "Doble Agente, de Eddie Ajalcriña y Lorenzo Ortiz: 21 capítulos en cinco partes, con un workbook para pasar de tu primer rol parcial a la independencia sin dejar tu cargo de golpe.",
+    "Doble Agente, de Eddie Ajalcriña y Lorenzo Ortiz: el método en 21 ideas, con un workbook para pasar de tu primer rol parcial a la independencia sin dejar tu cargo de golpe.",
   alternates: { canonical: "/libro" },
   openGraph: { title: "Doble Agente, el libro", url: "/libro", type: "book" },
 };
@@ -30,7 +29,7 @@ const part = (code: string, items: [string, string][]): Toc => ({ code, n1: PART
 const TOC: Toc[] = [
   { code: "AP", n1: "Apertura", n2: "y kit", lv: null, items: [["", "Manifiesto: dos roles a la vista"], ["", "Los cuatro arquetipos"], ["", "La escalera: de un sueldo a varios ingresos"], ["", "Cómo usar este libro"], ["K", "Kit «Plan de salida», plantillas K.1 a K.5"]] },
   part("01", [["1", "El riesgo que no se ve"], ["2", "Tu costo de vida real"], ["3", "Tu criterio ejecutivo es vendible"], ["4", "Juego limpio: contrato, conflicto de interés y transparencia"], ["5", "Si te despiden mañana"]]),
-  part("02", [["6", "El problema de los USD 100.000"], ["7", "Tu puerto de entrada"], ["8", "Quién decide y por qué compra"], ["9", "¿Alcanza el mercado?"]]),
+  part("02", [["6", "El problema de los\u00a0USD 100.000"], ["7", "Tu puerto de entrada"], ["8", "Quién decide y por qué compra"], ["9", "¿Alcanza el mercado?"]]),
   part("03", [["10", "Tu propuesta de valor, en números"], ["11", "Tu primer rol parcial: formato, precio y contrato"], ["12", "De servicio a producto"], ["13", "La unidad económica"]]),
   part("04", [["14", "Tu red como canal"], ["15", "La conversación de diagnóstico"], ["16", "El primer contrato y el primer comprobante"], ["17", "Tu agenda, tu energía y tu familia"]]),
   part("05", [["18", "Del primer rol al portafolio"], ["19", "El punto de no retorno"], ["20", "La conversación con tu empleador"], ["21", "Independencia: saltar o quedarte"]]),
@@ -58,10 +57,7 @@ const BOOK_LD = {
   alternateName: "Doble Agente: el método para ejecutivos con salario",
   bookEdition: "2.ª edición",
   inLanguage: "es",
-  author: [
-    { "@type": "Person", name: "Eddie Ajalcriña" },
-    { "@type": "Person", name: "Lorenzo Ortiz" },
-  ],
+  author: FOUNDERS.map((f) => ({ "@type": "Person", name: f.name, url: f.webUrl, jobTitle: f.role, sameAs: [f.webUrl, f.linkedin] })),
   publisher: { "@type": "Organization", name: "Future Founders", url: SITE_URL },
   image: `${SITE_URL}/img/doble-agente-portada.webp`,
   url: `${SITE_URL}/libro`,
@@ -120,10 +116,6 @@ function Back() {
               tu cargo, y para el día en que una reestructuración cambie lo que tenías previsto.
             </p>
             <p>
-              Doble Agente te acompaña paso a paso. Empiezas con un rol parcial mientras mantienes tu sueldo, se lo informas a tu empleador y avanzas por cuatro niveles hasta
-              que tus ingresos propios cubren tu vida con margen.
-            </p>
-            <p>
               Cuatro ejecutivos de Lima, Bogotá, Ciudad de México y Santiago recorren el método con números que puedes revisar. Cada capítulo cierra con una plantilla del workbook y
               tres acciones para la semana.
             </p>
@@ -151,13 +143,15 @@ function Back() {
   );
 }
 
-function Index() {
+/** El método en 21 ideas: una fila por parte y, dentro, cada capítulo con «La idea» del libro (src/content/ideas.ts, generado). */
+function Method() {
   return (
-    <section id="indice" className="scroll-mt-4" aria-labelledby="indice-t">
+    <section id="metodo" className="border-t border-ink" aria-labelledby="metodo-t">
+      <span id="indice" aria-hidden="true" />
       <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24">
         <div className="lg:flex lg:justify-between lg:items-end gap-10">
-          <SecHead id="indice-t" className="max-w-[760px]" label={["Índice"]} title="21 capítulos en cinco partes, ordenados por nivel" />
-          <div className="flex flex-wrap gap-x-5 gap-y-2 mt-5 lg:mt-0" aria-label="Leyenda de niveles">
+          <SecHead id="metodo-t" className="max-w-[760px]" label={["El método"]} title="El método en 21 ideas" sub="Una idea por capítulo, en el orden del libro." />
+          <div className="flex flex-wrap gap-x-5 gap-y-2 mt-5 lg:mt-0 shrink-0" aria-label="Leyenda de niveles">
             {[0, 1, 2, 3].map((k) => (
               <span key={k} className="inline-flex items-center gap-2">
                 <span className="inline-block w-[9px] h-[9px]" style={k === 0 ? { background: "var(--color-ink)" } : { border: "1px solid var(--color-ink3)" }} aria-hidden="true" />
@@ -168,13 +162,9 @@ function Index() {
             ))}
           </div>
         </div>
-        <div className="mt-8 lg:mt-11 pt-3 border-t border-ink">
-          <h3 className="ws text-figura">Las cinco partes siguen los niveles</h3>
-          <p className="text-recuadro text-ink3 mt-1.5">Las cuatro primeras partes llevan hasta tu primer cliente; la quinta, desde ahí hasta la independencia</p>
-        </div>
-        <div className="mt-7 border-b border-ink">
+        <div className="mt-8 lg:mt-12 border-b border-ink">
           {TOC.map((r) => (
-            <div key={r.code} className="rv grid gap-3 lg:gap-6 grid-cols-[72px_minmax(0,1fr)] lg:grid-cols-[120px_300px_minmax(0,1fr)] pt-5 pb-[18px] border-t border-ink">
+            <div key={r.code} className="rv grid gap-x-3 gap-y-4 lg:gap-x-6 grid-cols-[72px_minmax(0,1fr)] lg:grid-cols-[120px_300px_minmax(0,1fr)] pt-5 pb-[18px] border-t border-ink">
               <span className="num text-display-md">{r.code}</span>
               <div>
                 <div className="wh2 text-figura">{r.n1}</div>
@@ -185,19 +175,36 @@ function Index() {
                   </div>
                 )}
               </div>
-              <ol className="col-span-2 lg:col-span-1 sm:columns-2 gap-10">
-                {r.items.map(([c, t]) => (
-                  <li key={t} className="grid grid-cols-[44px_minmax(0,1fr)] py-[7px] text-cuerpo leading-[1.3] break-inside-avoid">
-                    <span className="font-mono font-bold text-rotulo text-ink2 pt-[4px]">{c}</span>
-                    <span>
-                      <Sc text={t} />
-                    </span>
-                  </li>
-                ))}
-              </ol>
+              {r.lv ? (
+                <ol className="col-span-2 lg:col-span-1">
+                  {r.items.map(([c, t]) => (
+                    <li key={t} className="grid grid-cols-[44px_minmax(0,1fr)] lg:grid-cols-[44px_280px_minmax(0,1fr)] gap-x-0 lg:gap-x-6 gap-y-1.5 py-3.5 border-t border-ink20 first:border-t-0 first:pt-1">
+                      <span className="num text-h2">{c}</span>
+                      <h3 className="ws text-h3">
+                        <Sc text={t} />
+                      </h3>
+                      <p className="col-start-2 lg:col-start-3 lg:row-start-1 text-recuadro leading-[1.45] text-ink2 max-w-[640px]">
+                        <Sc text={IDEAS[Number(c)]} />
+                      </p>
+                    </li>
+                  ))}
+                </ol>
+              ) : (
+                <ol className="col-span-2 lg:col-span-1 sm:columns-2 gap-10">
+                  {r.items.map(([c, t]) => (
+                    <li key={t} className="grid grid-cols-[44px_minmax(0,1fr)] py-[7px] text-cuerpo leading-[1.3] break-inside-avoid">
+                      <span className="font-mono font-bold text-rotulo text-ink2 pt-[4px]">{c}</span>
+                      <span>
+                        <Sc text={t} />
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              )}
             </div>
           ))}
         </div>
+        <Lectura className="mt-8 lg:mt-10 max-w-[880px]" text={<Sc text={LECTURA} />} />
       </div>
     </section>
   );
@@ -236,7 +243,7 @@ function Workbook() {
             className="max-w-[640px]"
             label={["Workbook", "Gratis"]}
             title="El libro explica y el workbook es donde lo haces"
-            sub="Llenas las plantillas en una tableta, en la computadora o en papel. Las que hacen cuentas tienen su calculadora en línea."
+            sub="Las plantillas que hacen cuentas tienen su calculadora en línea."
           />
           <ul className="rv-kids mt-8 lg:mt-9 border-b border-ink">
             {INCL.map((x) => (
@@ -271,79 +278,64 @@ function Workbook() {
 }
 
 function Formats() {
-  const ck = checkoutHref();
   const fmts = [
-    { n: "Ebook", w: "Amazon", d: "Para leer en Kindle, en una tableta o en la computadora.", b: "Comprar en Amazon", href: AMAZON_URL, k: 1 },
-    { n: "Impreso", w: "Amazon", d: "Edición de bolsillo ejecutivo de 150 × 220 mm, impresa por Amazon.", b: "Comprar en Amazon", href: AMAZON_URL, k: 2 },
-    {
-      n: "Libro en PDF",
-      w: "Compra directa",
-      d: "El libro en PDF, para leer en una tableta o en la computadora. El workbook se descarga gratis.",
-      b: "Comprar el PDF",
-      href: ck,
-      k: 2,
-    },
+    { n: "Ebook", w: "Amazon", d: "Para leer en Kindle, en una tableta o en la computadora.", btn: <AmazonBtn className="w-full" /> },
+    { n: "Impreso", w: "Amazon", d: "Edición de bolsillo ejecutivo de 150 × 220 mm, impresa por Amazon.", btn: <AmazonBtn className="w-full" /> },
+    { n: "Libro en PDF", w: "Mercado Pago", d: "Para leer en una tableta o en la computadora. Te llega por correo al confirmar el pago.", btn: <MercadoPagoBtn className="w-full" /> },
   ];
   return (
-    <section id="formatos" className="bg-warm scroll-mt-4" aria-labelledby="formatos-t">
+    <section id="formatos" className="bg-warm" aria-labelledby="formatos-t">
       <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24">
         <SecHead
           id="formatos-t"
           className="max-w-[860px]"
           label={["Formatos", "Dónde comprar"]}
-          title="Ebook e impreso en Amazon, PDF en compra directa"
-          sub="El libro en PDF se compra directo a Future Founders, desde esta página. El workbook es gratis para todos."
+          title="Ebook e impreso en Amazon, PDF con Mercado Pago"
+          sub={
+            process.env.NEXT_PUBLIC_CHECKOUT_URL
+              ? "El libro en PDF se paga con Mercado Pago: tarjeta de crédito, débito o saldo en cuenta."
+              : "El libro en PDF se paga con Mercado Pago: tarjeta de crédito, débito o saldo en cuenta. Mientras activamos el pago en línea, la compra del PDF se coordina por WhatsApp."
+          }
         />
-        <div className="rv-kids grid gap-5 lg:gap-6 md:grid-cols-3 mt-8 lg:mt-12">
+        <div className="rv-kids grid grid-cols-[minmax(0,1fr)] gap-5 lg:gap-6 lg:grid-cols-3 mt-8 lg:mt-12">
           {fmts.map((f) => (
-            <div key={f.n} className="card flex flex-col bg-paper p-6 lg:px-7 lg:pt-7 lg:pb-[30px]">
+            <div key={f.n} className="card flex flex-col bg-paper p-5 sm:p-6 lg:px-7 lg:pt-7 lg:pb-[30px]">
               <Mono tone="gris">{f.w}</Mono>
               <h3 className="wh2 text-h2 mt-3">{f.n}</h3>
               <p className="text-recuadro leading-[1.45] mt-3 text-ink2">{f.d}</p>
-              <div className="mt-auto pt-7">
-                <a href={f.href} target="_blank" rel="noopener noreferrer" className="btn2 wrap-ok w-full">
-                  <span>{f.b}</span>
-                  <span className="sr-only"> (se abre en otra pestaña)</span>
-                </a>
-              </div>
+              <div className="mt-auto pt-7">{f.btn}</div>
             </div>
           ))}
         </div>
-        {!process.env.NEXT_PUBLIC_CHECKOUT_URL && (
-          <p className="text-recuadro text-ink2 mt-4">La compra directa se coordina por WhatsApp: te enviamos el enlace de pago y, al confirmarlo, el libro en PDF.</p>
-        )}
         <Nota className="mt-6 lg:mt-8 max-w-[980px]">
-          El libro no promete ingresos ni plazos. Cada persona parte de un sueldo, un ahorro y un mercado distintos, y el libro te ayuda a medir los tuyos. Nada de lo que contiene
-          es asesoría legal, tributaria ni financiera.
+          El libro no promete ingresos ni plazos. Cada persona parte de un sueldo, un ahorro y un mercado distintos, y el libro te ayuda a medir los tuyos.
         </Nota>
       </div>
     </section>
   );
 }
 
+/** Autores, versión corta: las bios completas viven una sola vez, en la portada (/#nosotros). */
 function Authors() {
   return (
     <section className="border-t border-ink" aria-labelledby="autores-t">
       <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24">
         <SecHead id="autores-t" label={["Autores"]} title="Lo escribieron los fundadores de Future Founders" />
-        <div className="grid gap-10 lg:gap-16 lg:grid-cols-2 mt-8 lg:mt-11">
+        <div className="grid gap-8 lg:gap-16 sm:grid-cols-2 mt-8 lg:mt-11">
           {FOUNDERS.map((f) => (
-            <div key={f.key} className="rv grid gap-5 sm:gap-7 grid-cols-[110px_minmax(0,1fr)] sm:grid-cols-[160px_minmax(0,1fr)] items-start">
-              <Parallax src={f.photo} alt={`Retrato de ${f.name} en duotono`} sizes="160px" className="w-full aspect-[160/196] bg-warm border border-ink" position="center 30%"
-                zoom={f.zoom} />
+            <div key={f.key} className="rv grid gap-5 grid-cols-[96px_minmax(0,1fr)] lg:grid-cols-[120px_minmax(0,1fr)] items-start">
+              <Parallax src={f.photo} alt={`Retrato de ${f.name} en duotono`} sizes="120px" className="w-full aspect-[160/196] bg-warm border border-ink" position="center 30%" zoom={f.zoom} />
               <div>
                 <Mono tone="gris">{f.role}</Mono>
                 <h3 className="wh2 text-h2 mt-2.5">{f.name}</h3>
-                <p className="text-cuerpo font-semibold mt-2">{f.cred}</p>
-                <p className="wt mt-2.5">{f.bio}</p>
-                <a href={f.href} target="_blank" rel="noopener noreferrer" className="wm ul inline-block mt-3 [overflow-wrap:anywhere]">
-                  {f.li}
-                  <span className="sr-only"> (se abre en otra pestaña)</span>
-                </a>
+                <p className="text-cuerpo mt-2">{f.cred}</p>
               </div>
             </div>
           ))}
         </div>
+        <LinkArrow href="/#nosotros" className="text-cuerpo mt-8 lg:mt-10">
+          Quiénes son Eddie y Lorenzo
+        </LinkArrow>
       </div>
     </section>
   );
@@ -352,11 +344,10 @@ function Authors() {
 export default function LibroPage() {
   return (
     <>
-      <ReadingProgress />
       <JsonLd data={BOOK_LD} />
       <Hero />
       <Back />
-      <Index />
+      <Method />
       <Samples />
       <Workbook />
       <Authors />

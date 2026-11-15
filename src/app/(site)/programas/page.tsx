@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import ProgramForm from "@/components/site/ProgramForm";
-import { Hero as HeroHead, LinkArrow, Lvl, Mono, Nota, SecHead } from "@/components/site/ui";
+import { AgendaLink, Hero as HeroHead, Icon, LinkArrow, Lvl, Mono, Nota, SecHead } from "@/components/site/ui";
 import { PROGRAMAS } from "@/content/programas";
 import { LEVELS, agendaUrl, whatsappUrl } from "@/content/sitio";
 
@@ -21,8 +21,9 @@ export default function ProgramasPage() {
       <section aria-labelledby="prog-h">
         <div className="wrap pt-10 pb-12 lg:pt-20 lg:pb-[88px]">
           <HeroHead id="prog-h" label={["Programas", "Ordenados por nivel"]} title="Lo que te acompaña en cada nivel" className="max-w-[1100px]" />
-          <p className="lead mt-5 lg:mt-8 max-w-[760px]">Empiezas por lo gratuito y avanzas cuando aparece la señal de tu nivel.</p>
-          <p className="text-cuerpo text-ink2 mt-3 max-w-[760px]">Las fechas, los cupos y las condiciones se publican con cada convocatoria.</p>
+          <p className="lead mt-5 lg:mt-8 max-w-[760px]">
+            Cinco programas, del taller de dos sesiones al sprint de 90 días. Cada uno dice para qué nivel es y qué necesitas tener antes.
+          </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-8 mt-7 lg:mt-9">
             <LinkArrow href="/diagnostico" className="text-cuerpo">
               ¿No sabes tu nivel? Haz el diagnóstico
@@ -37,9 +38,9 @@ export default function ProgramasPage() {
       <section className="border-t border-ink" aria-label="Programas">
         <div className="wrap py-12 lg:py-[88px] grid gap-6 lg:gap-8">
           {PROGRAMAS.map((p) => {
-            const primary = p.cta === "Agenda 30 minutos" || p.cta === "Conversemos" ? { href: agenda, ext: true } : { href: `#postular-${p.id}`, ext: false };
+            const primary = p.cta === "Agenda 30 minutos" ? { href: agenda, ext: true } : { href: `#postular-${p.id}`, ext: false };
             return (
-              <article key={p.id} id={p.id} className="rv card scroll-mt-6 bg-paper grid lg:grid-cols-[260px_minmax(0,1fr)_minmax(0,360px)]" aria-labelledby={`${p.id}-t`}>
+              <article key={p.id} id={p.id} className="rv card bg-paper grid lg:grid-cols-[260px_minmax(0,1fr)_minmax(0,360px)]" aria-labelledby={`${p.id}-t`}>
                 <div className="px-5 py-4 lg:p-6 border-b lg:border-b-0 lg:border-r border-ink flex lg:flex-col justify-between gap-3" style={{ background: FILL[p.level], color: p.level === 3 ? "var(--color-paper)" : undefined }}>
                   <div>
                     <Mono tone={p.level === 3 ? "claro" : "gris"} as="span">
@@ -70,6 +71,7 @@ export default function ProgramasPage() {
                   <div className="mt-auto pt-6 flex flex-col gap-3">
                     {primary.ext ? (
                       <a href={primary.href} target="_blank" rel="noopener noreferrer" className="btn2 w-full">
+                        <Icon name="calendario" size={18} />
                         <span>{p.cta}</span>
                         <span className="sr-only"> (se abre en otra pestaña)</span>
                       </a>
@@ -83,25 +85,13 @@ export default function ProgramasPage() {
               </article>
             );
           })}
-          <p className="text-cuerpo">
-            ¿Dudas sobre algún programa?{" "}
-            <a
-              href={whatsappUrl("Hola, quiero información sobre los programas de Future Founders.")}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ul font-semibold"
-            >
-              Pregunta por WhatsApp
-              <span className="sr-only"> (se abre en otra pestaña)</span>
-            </a>
-          </p>
           <Nota>Ningún programa promete ingresos ni plazos. Cada uno trabaja sobre tus números y tu mercado, y la decisión de cuándo avanzar es tuya.</Nota>
         </div>
       </section>
 
-      <section id="postular" className="bg-warm scroll-mt-4" aria-labelledby="postular-t">
+      <section id="postular" className="bg-warm" aria-labelledby="postular-t">
         {PROGRAMAS.map((p) => (
-          <span key={p.id} id={`postular-${p.id}`} className="block relative -top-6" aria-hidden="true" />
+          <span key={p.id} id={`postular-${p.id}`} className="block" aria-hidden="true" />
         ))}
         <div className="wrap pt-12 pb-[52px] lg:pt-[88px] lg:pb-24 grid gap-10 lg:gap-24 lg:grid-cols-[minmax(0,1fr)_minmax(0,600px)] items-start">
           <div>
@@ -109,12 +99,21 @@ export default function ProgramasPage() {
               id="postular-t"
               label={["Postulación", "Fechas y cupos"]}
               title="Te escribimos con las fechas de la próxima convocatoria"
-              sub="Elige el programa y te enviamos sus fechas, cupos y condiciones. Si prefieres conversar antes, agenda 30 minutos con el equipo."
+              sub="Elige el programa. Las fechas, los cupos y las condiciones se publican con cada convocatoria y te las enviamos por correo."
             />
-            <a href={agenda} target="_blank" rel="noopener noreferrer" className="ul inline-block mt-6 text-cuerpo font-bold">
-              Agenda 30 minutos
-              <span className="sr-only"> (se abre en otra pestaña)</span>
-            </a>
+            <p className="text-cuerpo mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-2">
+              <span>Si prefieres conversar antes,</span>
+              <AgendaLink />
+              <a
+                href={whatsappUrl("Hola, quiero información sobre los programas de Future Founders.")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ul font-semibold"
+              >
+                o escríbenos por WhatsApp
+                <span className="sr-only"> (se abre en otra pestaña)</span>
+              </a>
+            </p>
           </div>
           <ProgramForm />
         </div>

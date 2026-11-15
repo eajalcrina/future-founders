@@ -6,12 +6,34 @@ export const WHATSAPP_NUMBER = "51989338401";
 export const WHATSAPP_LABEL = "+51 989 338 401";
 export const LEGAL =
   "Nada en este sitio es asesoría legal, tributaria ni financiera, ni una promesa de ingresos.";
+/** Titular del pie (decisión del dueño, 16/11/2026). */
+export const COPYRIGHT = ["© 2026 Future Founders", "Soluciones Regenerativas LLC"];
+/** Responsable de los datos y operador del sitio, en /privacidad y /terminos. */
+export const RESPONSABLE = "Future Founders, una marca de Soluciones Regenerativas LLC (Estados Unidos)";
+export const INSTAGRAM_URL = "https://www.instagram.com/futurefounders.pe/";
+
+/**
+ * Línea única bajo los cuatro formularios (descarga, cierre, diagnóstico y postulación).
+ * El componente PrivacidadLinea (ui.tsx) enlaza «política de privacidad» a /privacidad.
+ */
+export const PRIVACIDAD_LINEA = {
+  antes: "Usamos tus datos como explica la ",
+  enlace: "política de privacidad",
+  despues: ". Para dejar de recibir correos, responde «baja».",
+};
+
+/** Situación de quien llena un formulario: etiqueta larga (diagnóstico) y corta (formularios de descarga). */
+export const SITUACIONES = [
+  { largo: "Tengo empleo", corto: "Tengo empleo" },
+  { largo: "Acabo de salir de mi empresa", corto: "Acabo de salir" },
+  { largo: "Tengo un proyecto o una pyme propia", corto: "Tengo un proyecto" },
+] as const;
 
 export function whatsappUrl(text: string) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
 
-/** URL de agenda (Calendly u otra). Si no está definida, abre WhatsApp. */
+/** URL de la página de citas de Google Calendar («Agenda 30 minutos»). Si no está definida, abre WhatsApp. */
 export function agendaUrl() {
   return (
     process.env.NEXT_PUBLIC_AGENDA_URL ||
@@ -35,7 +57,7 @@ export const SIGNAL = [
   "Emitiste o recibiste tu primer comprobante por un rol parcial.",
   "Tus ingresos propios netos cubren tu costo de vida tres meses seguidos.",
   "Cumples las dos condiciones del punto de no retorno.",
-  "Es el último nivel.",
+  "Revisas tus números cada mes y tu plan de 90 días baja tu mayor riesgo.",
 ];
 
 export const CHAPS = ["Partes 01 a 04", "Capítulo 18", "Capítulos 19 y 20", "Capítulo 21"];
@@ -188,11 +210,14 @@ export const PRODUCTS: Product[][] = [
     { tag: "Acompañamiento", name: "Sesiones individuales de transición", desc: "Planificas tu salida midiendo las dos condiciones del punto de no retorno.", meta: "6 a 8 sesiones", cta: "Agenda 30 minutos", href: "/programas#sesiones" },
   ],
   [
-    { tag: "Coconstrucción", name: "Firma o producto propio", desc: "Convertimos tu portafolio en una firma o un producto, junto a ti, en un sprint de 90 días.", meta: "Sprint de 90 días", cta: "Conversemos", href: "/programas#coconstruccion" },
+    { tag: "Coconstrucción", name: "Firma o producto propio", desc: "Convertimos tu portafolio en una firma o un producto, junto a ti, en un sprint de 90 días.", meta: "Sprint de 90 días", cta: "Agenda 30 minutos", href: "/programas#coconstruccion" },
   ],
 ];
 
-/** Cifras publicadas en la web anterior (sección Nosotros). */
+/**
+ * Cifras de Future Founders (decisión del dueño, 16/11/2026): suman la trayectoria de sus fundadores
+ * y la de los participantes de sus programas. Se muestran con la nota CIFRAS_NOTA.
+ */
 export const STATS: { prefix?: string; value: number; decimals?: number; suffix: string; label: string }[] = [
   { value: 155, suffix: "+", label: "ejecutivos formados" },
   { value: 10, suffix: "+", label: "empresas construidas" },
@@ -200,15 +225,23 @@ export const STATS: { prefix?: string; value: number; decimals?: number; suffix:
   { prefix: "USD ", value: 1.5, decimals: 1, suffix: "M+", label: "capital levantado" },
 ];
 
+export const CIFRAS_NOTA = "Cifras de Future Founders: suman la trayectoria de sus fundadores y la de los participantes de sus programas.";
+
+// Bios de los fundadores.
+// Fuente: https://eddieajalcrina.com (inicio, /trayectoria, /cv) y https://lorenzoortiz.co (inicio, /trayectoria),
+// leídas el 15/11/2026. Cada dato de `cred` y `bio` está ahí; no agregar ninguno que no esté.
+// Los cargos de `role` («CEO y cofundador», «COO y cofundador») vienen de la web anterior de Future Founders,
+// escrita por ellos (decisión del dueño, 16/11/2026).
 export const FOUNDERS = [
   {
     key: "eddie",
     name: "Eddie Ajalcriña",
     role: "CEO y cofundador",
-    cred: "Mentor de MIT Professional Education",
-    bio: "Construyó y vendió su primer activo mientras seguía en nómina. Es mentor del programa de educación ejecutiva del MIT. La escalera de cuatro niveles del método es su idea.",
-    li: "linkedin.com/in/eddieajalcrina",
-    href: "https://www.linkedin.com/in/eddieajalcrina/",
+    cred: "Docente en MIT Professional Education desde 2022",
+    bio: "Lleva más de 15 años entre la industria, la cooperación internacional y el emprendimiento. Lideró la estrategia de sostenibilidad de TASA, del grupo Breca, y dirigió la sostenibilidad y los asuntos regulatorios de Alicorp-Vitapro en cuatro países entre 2019 y 2023. En 2021 cofundó Redesign Lab, que dirige como CEO y cuyo portafolio facturó USD 26 millones en 2025.",
+    web: "eddieajalcrina.com",
+    webUrl: "https://eddieajalcrina.com",
+    linkedin: "https://www.linkedin.com/in/eddieajalcrina/",
     photo: "/img/eddie-ajalcrina.webp",
     zoom: 1.22,
   },
@@ -216,10 +249,11 @@ export const FOUNDERS = [
     key: "lorenzo",
     name: "Lorenzo Ortiz",
     role: "COO y cofundador",
-    cred: "Singularity University Fellow",
-    bio: "Es arquitecto de sistemas empresariales y ha diseñado modelos de negocio para varios proyectos. Como COO, dirige la operación de Future Founders.",
-    li: "linkedin.com/in/lorenzoortiz",
-    href: "https://www.linkedin.com/in/lorenzoortiz/",
+    cred: "Cofundador y COO del Fondo de Impacto",
+    bio: "Empezó en el Grupo Gloria y a fines de 2013 pasó a TASA, del Grupo Breca, donde dirigió a la vez dos plantas industriales. En 2021 dejó la vida corporativa y cofundó Redesign Lab con Eddie. Desde entonces evalúa proyectos de inversión industrial en paralelo a sus otros roles, con más de 20 empresas industriales en 7 países, y hoy es Technical Lead de Impact Investing de Swisscontact en Colombia.",
+    web: "lorenzoortiz.co",
+    webUrl: "https://lorenzoortiz.co",
+    linkedin: "https://www.linkedin.com/in/lorenzoortiz/",
     photo: "/img/lorenzo-ortiz.webp",
     zoom: 1,
   },

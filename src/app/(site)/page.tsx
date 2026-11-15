@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment } from "react";
 import Ladder from "@/components/site/Ladder";
 import Parallax from "@/components/site/Parallax";
 import CountUp from "@/components/site/CountUp";
 import ResenasDiferidas from "@/components/site/ResenasDiferidas";
 import FinalCta from "@/components/site/FinalCta";
 import BookButtons from "@/components/site/BookButtons";
-import { Arrow, CropMarks, Hero as HeroHead, Jn, JsonLd, Lectura, LinkArrow, Lvl, Mono, Nota, Sc, Scene, SecHead } from "@/components/site/ui";
-import { ARCH, ARCH_NOTE, FOUNDERS, HERO_TITLE, LEARN, LECTURA, LEVELS, PRODUCTS, SITE_URL, STATS } from "@/content/sitio";
+import { AgendaLink, Arrow, CropMarks, Hero as HeroHead, Jn, JsonLd, LinkArrow, Lvl, Mono, Nota, Sc, Scene, SecHead } from "@/components/site/ui";
+import { ARCH, ARCH_NOTE, CIFRAS_NOTA, FOUNDERS, HERO_TITLE, LEVELS, PRODUCTS, SITE_URL, STATS, WITH } from "@/content/sitio";
+import { QS } from "@/lib/diagnostico";
 import { RESENAS_PUBLICABLES, TESTIMONIOS } from "@/content/testimonios";
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 const FILL = ["var(--color-paper)", "var(--color-warm)", "var(--color-ink20)", "var(--color-ink)"];
-const TXT = ["var(--color-ink)", "var(--color-ink)", "var(--color-ink)", "var(--color-paper)"];
+const CUANTAS = ["una", "dos", "tres", "cuatro", "cinco"][QS.length - 1];
 
 /** Reseñas: la sección solo aparece cuando src/content/testimonios.ts tiene reseñas reales con permiso. */
 const RESENAS = RESENAS_PUBLICABLES(TESTIMONIOS);
@@ -77,7 +77,7 @@ function Hero() {
 
 function Method() {
   return (
-    <section id="metodo" className="border-t border-ink scroll-mt-4" aria-labelledby="metodo-t">
+    <section id="metodo" className="border-t border-ink" aria-labelledby="metodo-t">
       <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24">
         <div className="lg:flex lg:justify-between lg:items-end lg:gap-16">
           <SecHead
@@ -87,21 +87,18 @@ function Method() {
             title="Subes de nivel cuando aparece una señal en tu estado de cuenta"
             sub="Son cuatro niveles, de un sueldo a varios ingresos propios. Elige el peldaño que describe tu situación y mira qué te toca hacer ahora."
           />
-          <Lectura text={LECTURA} className="hidden lg:block w-[400px] shrink-0 rv" />
         </div>
         <div className="mt-10 lg:mt-14 border-t border-ink pt-3">
           <Mono>
             <Jn parts={["Marco 0.1", "La escalera"]} />
           </Mono>
           <h3 className="ws text-figura mt-2">Diecisiete de los 21 capítulos preparan tu primer cliente</h3>
-          <p className="text-recuadro text-ink3 mt-1">Los cuatro niveles, la ruta de los capítulos del libro y dónde empieza cada arquetipo</p>
         </div>
         <div className="mt-6 lg:mt-14">
           <Ladder />
         </div>
-        <Lectura text={LECTURA} className="lg:hidden mt-5" />
         <div className="flex flex-col lg:flex-row lg:justify-between lg:items-baseline gap-2 mt-6 lg:mt-8">
-          <p className="text-cuerpo text-ink2">El diagnóstico de nivel te ubica con tus números en cinco preguntas.</p>
+          <p className="text-cuerpo text-ink2">El diagnóstico de nivel te ubica con tus números en {CUANTAS} preguntas.</p>
           <LinkArrow href="/diagnostico" className="text-cuerpo">
             Hacer el diagnóstico de nivel
           </LinkArrow>
@@ -159,14 +156,19 @@ function ArchCard({ a }: { a: (typeof ARCH)[number] }) {
 
 function Who() {
   return (
-    <section id="para-quien" className="border-t border-ink scroll-mt-4" aria-labelledby="quien-t">
+    <section id="para-quien" className="border-t border-ink" aria-labelledby="quien-t">
       <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24">
         <SecHead
           id="quien-t"
           className="max-w-[980px]"
           label={["Para quién es"]}
           title="Tu punto de partida decide tu primera plantilla"
-          sub="Para gerentes, directores y VP de 38 a 55 años, con 12 a 25 años de carrera en empresas grandes de Latinoamérica. El libro sigue a cuatro arquetipos: busca el que se parece a tu situación."
+          sub={
+            <>
+              <span className="block">Para gerentes, directores y VP de 38 a 55 años, con 12 a 25 años de carrera en empresas grandes de Latinoamérica.</span>
+              <span className="block mt-2">El libro sigue a cuatro arquetipos. Busca el que se parece a tu situación.</span>
+            </>
+          }
         />
         <div className="rv-kids grid gap-4 lg:gap-6 md:grid-cols-2 2xl:grid-cols-4 mt-8 lg:mt-14">
           {ARCH.map((a) => (
@@ -182,9 +184,9 @@ function Who() {
 function Book() {
   return (
     <section className="bg-ink text-paper on-ink" aria-labelledby="libro-t">
-      <div className="wrap py-14 lg:py-[88px] grid gap-8 lg:gap-[112px] lg:grid-cols-[360px_minmax(0,1fr)] items-start">
+      <div className="wrap py-14 lg:py-[88px] grid gap-8 lg:gap-[112px] lg:grid-cols-[260px_minmax(0,1fr)] items-start lg:items-center">
         <div className="hidden lg:block rv">
-          <Image src="/img/doble-agente-portada.webp" alt="Portada de Doble Agente, libro y workbook, 2.ª edición" width={360} height={528} sizes="360px" className="block w-[360px] h-auto" />
+          <Image src="/img/doble-agente-portada.webp" alt="Portada de Doble Agente, libro y workbook, 2.ª edición" width={260} height={381} sizes="260px" className="block w-[260px] h-auto" />
         </div>
         <div>
           <SecHead
@@ -201,106 +203,71 @@ function Book() {
             sizes="160px"
             className="lg:hidden block w-[160px] h-auto mt-6"
           />
-          <p className="lead mt-5 lg:mt-6 max-w-[700px]">
-            Son 21 capítulos en cinco partes, con un workbook para hacer cada paso. Cuatro ejecutivos de Lima, Bogotá, Ciudad de México y Santiago recorren el método con
-            números que puedes revisar.
-          </p>
-          <Mono tone="claro" className="mt-8 lg:mt-10 mb-1">
-            Qué aprendes
-          </Mono>
-          <ol className="border-b border-ink3">
-            {LEARN.map((t, i) => (
-              <li key={i} className="grid grid-cols-[36px_minmax(0,1fr)] lg:grid-cols-[48px_minmax(0,1fr)] py-3 lg:py-3.5 border-t border-ink3">
-                <span className="font-mono font-bold text-rotulo text-paper pt-[3px]">0{i + 1}</span>
-                <span className="text-cuerpo leading-[1.4]">
-                  <Sc text={t} />
-                </span>
-              </li>
-            ))}
-          </ol>
+          <p className="lead mt-5 lg:mt-6 max-w-[700px]">Son 21 capítulos en cinco partes, con una plantilla del workbook por capítulo.</p>
           <div className="mt-8 lg:mt-10">
-            <BookButtons variant="ink" />
+            <BookButtons />
           </div>
-          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-baseline gap-3 mt-4 lg:mt-5">
-            <Mono tone="claro">
-              <Jn parts={["Ebook e impreso en Amazon", "PDF en compra directa"]} />
-            </Mono>
-            <Link href="/libro#indice" className="group flecha font-bold text-cuerpo self-start">
-              <span className="lnk">Ver el índice y páginas de muestra</span>
-              <Arrow />
-            </Link>
-          </div>
+          <Link href="/libro#metodo" className="group flecha font-bold text-cuerpo inline-block mt-6 lg:mt-7">
+            <span className="lnk">Ver el método en 21 ideas</span>
+            <Arrow />
+          </Link>
         </div>
       </div>
     </section>
   );
 }
 
-/** Una tarjeta de recurso o programa. Con subgrid, rótulo, nombre, texto, dato y acción quedan a la misma altura en la fila. */
-function ProdCard({ p, place = "" }: { p: (typeof PRODUCTS)[number][number]; place?: string }) {
-  return (
-    <Link href={p.href} className={`card group grid content-start gap-y-2.5 xl:row-span-5 xl:grid-rows-subgrid bg-paper px-5 pt-5 pb-[18px] ${place}`}>
-      <Mono tone={p.tag === "Gratis" ? "ink" : "gris"}>{p.tag}</Mono>
-      <span className="ws block text-figura">{p.name}</span>
-      <span className="block text-recuadro leading-[1.45] text-ink2">{p.desc}</span>
-      <Mono tone="gris" as="span" className="block pt-1">
-        {p.meta}
-      </Mono>
-      <span className="flecha self-end pt-1 text-recuadro font-bold">
-        <span className="lnk">{p.cta}</span>
-        <Arrow />
-      </span>
-    </Link>
-  );
-}
-
-const COL = ["xl:col-start-1", "xl:col-start-2", "xl:col-start-3", "xl:col-start-4"];
-
+/** Programas por nivel: una fila por nivel, con su casilla a la izquierda (como /programas) y sus recursos a la derecha. El detalle vive en /programas. */
 function Products() {
   return (
     <section id="programas" className="border-t border-ink" aria-labelledby="prod-t">
       <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24">
-        <SecHead
-          id="prod-t"
-          className="max-w-[900px]"
-          label={["Programas", "Ordenados por nivel"]}
-          title="Empiezas gratis y avanzas cuando aparece la señal de tu nivel"
-          sub="Cada recurso y cada programa corresponde a un nivel de la escalera. Las fechas, los cupos y las condiciones se publican con cada convocatoria."
-        />
-        {/* En celular, cada nivel con sus tarjetas en orden. Desde xl: cabeceras en la fila 1, la primera tarjeta de cada nivel
-            en la fila 2 (subgrid) y el resto del nivel 0 repartido debajo, a todo el ancho. */}
-        <div className="grid xl:grid-cols-4 gap-x-5 gap-y-3.5 mt-8 lg:mt-14">
-          {PRODUCTS.map((col, k) => (
-            <Fragment key={k}>
-              <div className={`border border-ink px-[18px] pt-3.5 pb-4 ${k > 0 ? "mt-4 xl:mt-0" : ""} ${COL[k]} xl:row-start-1`} style={{ background: FILL[k], color: TXT[k] }}>
-                <div className="flex justify-between items-center">
-                  <Mono tone={k === 3 ? "claro" : "gris"}>Nivel {k}</Mono>
-                  <Lvl
-                    on={Array.from({ length: k + 1 }, (_, i) => i)}
-                    fg={k === 3 ? "var(--color-paper)" : "var(--color-ink)"}
-                    off={k === 3 ? "var(--color-ink20)" : "var(--color-ink3)"}
-                  />
+        <SecHead id="prod-t" className="max-w-[900px]" label={["Programas", "Ordenados por nivel"]} title="Cada nivel tiene su programa y empiezas gratis" />
+        <ol className="mt-8 lg:mt-12 border-b border-ink">
+          {WITH.map((items, k) => (
+            <li key={k} className="rv grid lg:grid-cols-[280px_minmax(0,1fr)] border-t border-ink">
+              <div
+                className="px-5 py-4 lg:px-6 lg:py-5 flex lg:flex-col justify-between gap-3"
+                style={{ background: FILL[k], color: k === 3 ? "var(--color-paper)" : undefined }}
+              >
+                <div>
+                  <Mono tone={k === 3 ? "claro" : "gris"} as="span">
+                    Nivel {k}
+                  </Mono>
+                  <div className="wh2 text-figura mt-1">{LEVELS[k]}</div>
                 </div>
-                <h3 className="wh2 text-figura mt-1.5 whitespace-nowrap">{LEVELS[k]}</h3>
+                <Lvl
+                  on={Array.from({ length: k + 1 }, (_, i) => i)}
+                  fg={k === 3 ? "var(--color-paper)" : "var(--color-ink)"}
+                  off={k === 3 ? "var(--color-ink20)" : "var(--color-ink3)"}
+                />
               </div>
-              {col.map((p, i) => (
-                <ProdCard key={p.name} p={p} place={i === 0 ? `${COL[k]} xl:row-start-2` : `${COL[i - 1]} xl:row-start-8`} />
-              ))}
-              {k === 0 && col.length > 1 && (
-                <Mono tone="gris" className="hidden xl:block xl:col-span-4 xl:row-start-7 pt-4 border-t border-ink20">
-                  También en el nivel 0
-                </Mono>
-              )}
-            </Fragment>
+              <ul className="grid sm:grid-cols-2 gap-x-8 px-5 lg:px-8 py-2 lg:py-3 content-center">
+                {items.map((w) => (
+                  <li key={w.name}>
+                    <Link href={w.href} className="group flex justify-between items-baseline gap-4 py-3">
+                      <span className="text-cuerpo font-bold leading-[1.3]">
+                        <span className="lnk">{w.name}</span>
+                      </span>
+                      <Mono tone="gris" as="span" className="text-right shrink-0">
+                        {w.meta}
+                      </Mono>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </li>
           ))}
+        </ol>
+        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-baseline gap-3 mt-6 lg:mt-8">
+          <LinkArrow href="/programas" className="text-cuerpo">
+            Ver los programas y postular
+          </LinkArrow>
+          <p className="text-cuerpo text-ink2 flex flex-wrap items-baseline gap-x-2">
+            <span>Si dudas por dónde empezar,</span>
+            <AgendaLink />
+          </p>
         </div>
-        <p className="text-recuadro text-ink2 mt-7">
-          Si dudas por dónde empezar, agenda 30 minutos con el equipo desde la página de{" "}
-          <Link href="/programas#postular" className="ul font-semibold">
-            programas
-          </Link>
-          .
-        </p>
       </div>
     </section>
   );
@@ -308,7 +275,7 @@ function Products() {
 
 function Founders() {
   return (
-    <section id="nosotros" className="border-t border-ink scroll-mt-4" aria-labelledby="nos-t">
+    <section id="nosotros" className="border-t border-ink" aria-labelledby="nos-t">
       <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24">
         <SecHead id="nos-t" className="max-w-[900px]" label={["Nosotros", "Autores del libro"]} title="Eddie y Lorenzo escribieron el libro y dirigen los programas" />
         <div className="grid gap-10 lg:gap-16 lg:grid-cols-2 mt-8 lg:mt-14">
@@ -326,31 +293,48 @@ function Founders() {
                 <Mono tone="gris">{f.role}</Mono>
                 <h3 className="wh2 text-h2 mt-2 lg:mt-3">{f.name}</h3>
                 <div className="text-cuerpo font-semibold mt-2">{f.cred}</div>
-                <p className="wt mt-2.5 lg:mt-3">{f.bio}</p>
-                <a href={f.href} target="_blank" rel="noopener noreferrer" className="wm ul self-start mt-auto pt-3 lg:pt-4 [overflow-wrap:anywhere]">
-                  {f.li}
-                  <span className="sr-only"> (se abre en otra pestaña)</span>
-                </a>
+                <p className="wt mt-2.5 lg:mt-3">
+                  <Sc text={f.bio} />
+                </p>
+                <p className="mt-auto pt-3 lg:pt-4 flex flex-wrap gap-x-6 gap-y-2">
+                  <a href={f.webUrl} target="_blank" rel="noopener noreferrer" className="wm ul">
+                    {f.web}
+                    <span className="sr-only"> (se abre en otra pestaña)</span>
+                  </a>
+                  <a href={f.linkedin} target="_blank" rel="noopener noreferrer" className="wm ul">
+                    LinkedIn
+                    <span className="sr-only"> de {f.name} (se abre en otra pestaña)</span>
+                  </a>
+                </p>
               </div>
             </article>
           ))}
         </div>
 
-        <div className="mt-14 lg:mt-20" aria-labelledby="cifras-t">
-          <h3 id="cifras-t" className="ws text-figura">
-            Future Founders en cifras
-          </h3>
-          <dl className="rv-kids grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-6 lg:gap-8 mt-5 lg:mt-7">
-            {STATS.map((s) => (
-              <div key={s.label} className="border-t border-ink pt-3 lg:pt-4 flex flex-col-reverse justify-end">
-                <dt className="text-cuerpo mt-2 lg:mt-3 text-ink2">{s.label}</dt>
-                <dd className="num text-kpi lg:text-display-lg m-0 whitespace-nowrap">
-                  <CountUp value={s.value} decimals={s.decimals} prefix={s.prefix} suffix={s.suffix} />
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Cifras de la casa, a un scroll del titular: franja con filete arriba y abajo, sin titular grande. */
+function Stats() {
+  return (
+    <section className="border-t border-ink" aria-labelledby="cifras-t">
+      <div className="wrap pt-8 pb-10 lg:pt-12 lg:pb-14">
+        <Mono as="p">
+          <span id="cifras-t">Future Founders en cifras</span>
+        </Mono>
+        <dl className="rv-kids grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-6 lg:gap-8 mt-5 lg:mt-6">
+          {STATS.map((s) => (
+            <div key={s.label} className="border-t border-ink pt-3 lg:pt-4 flex flex-col-reverse justify-end">
+              <dt className="text-cuerpo mt-2 lg:mt-3 text-ink2">{s.label}</dt>
+              <dd className="num text-kpi lg:text-display-lg m-0 whitespace-nowrap">
+                <CountUp value={s.value} decimals={s.decimals} prefix={s.prefix} suffix={s.suffix} />
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <Nota className="mt-6 lg:mt-8 max-w-[880px]">{CIFRAS_NOTA}</Nota>
       </div>
     </section>
   );
@@ -376,6 +360,7 @@ export default function Home() {
     <>
       <JsonLd data={LISTA_LD} />
       <Hero />
+      <Stats />
       <Method />
       <Who />
       <Book />
