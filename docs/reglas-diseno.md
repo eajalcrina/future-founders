@@ -1,6 +1,6 @@
 # Reglas de diseño de futurefounders.pe
 
-Estado: **en curso** (15/11/2026). Camino visual: el sistema de «Doble Agente», ronda R3. Referencia: el propio libro (PDF final de la R3).
+Estado: **en curso** (16/11/2026, ronda R5). Camino visual: el sistema de «Doble Agente», ronda R3. Referencia: el propio libro (PDF final de la R3).
 
 Público: ejecutivos de 38 a 55 años en Latinoamérica (gerentes, directores y VP). Tono: editorial, sobrio, con datos concretos; tuteo, solo español.
 
@@ -39,6 +39,11 @@ Fuente del sistema: `DESIGN-SYSTEM.md` y `tokens.css` de la R3 (carpeta `sistema
 - Recuadro Lectura siempre en papel cálido; Nota y Fuente con filete superior fino, icono de 16 px y texto en tinta suave.
 - Calculadoras: campos numéricos a la derecha; letra de fila en cuadrado de tinta; mínimo de 6 meses con línea discontinua de 1 px en tinta (en papel donde cruza la barra llena); la cifra de runway en `text-cifra` y las salidas en `text-kpi`.
 - Foco visible de 3 px en tinta sobre papel y en papel sobre tinta. Iconos de 14 a 18 px.
+- Encabezado fijo (`.cab` en `Navbar.tsx`): `position: sticky`, fondo papel opaco, alto fijo `--header-h` (56 px en celular, 72 en escritorio) más `env(safe-area-inset-top)` (`viewportFit: "cover"` en `layout.tsx`). Arriba de la página el filete inferior es transparente; al desplazarse aparece en tinta de 1 px en 150 ms (un centinela con `IntersectionObserver` pone `data-scrolled`). Sin sombra y sin animar el alto. Las anclas no quedan tapadas: `scroll-padding-top` en `html` (encabezado + área segura + 16 px); no se usan clases `scroll-mt-*`. Los bloques fijos de `/workbook/[id]` van a `--header-h` + 24 px. La regla de lectura de /libro corre por el borde inferior del encabezado. El menú de celular se desplaza solo si no cabe.
+- Botones de compra con logotipo (`.btn-marca`, `BookButtons.tsx`): papel, filete de 1,5 px en tinta, texto corto y el logotipo de la tienda a una tinta (`currentColor`); al pasar el cursor se invierten. Sobre tinta, papel sólido. Nunca en magenta. «Comprar en» + logotipo de Amazon; «Pagar con» + isotipo de Mercado Pago + «Mercado Pago». Pesan igual y Amazon va primero. Los trazados viven en `src/content/logos-terceros.ts`, con su fuente.
+- «Agenda 30 minutos» siempre con el icono de calendario y el mismo nombre (`AgendaLink` en `ui.tsx`), como enlace subrayado o botón de línea. Abre la página de citas de Google Calendar o, sin ella, WhatsApp.
+- Meta de las calculadoras: la fila marcada con `"meta": true` en `scripts/r2-overlay.json` lleva filete lateral de 2 px en magenta y rótulo y cifra en magenta de texto, solo sobre papel (clase `.calc-meta`). Hoy es la meta de runway de la 1.1. Los mínimos y las cuentas derivadas no se marcan.
+- Línea de privacidad única bajo los cuatro formularios (`PrivacidadLinea`, texto en `PRIVACIDAD_LINEA` de `sitio.ts`), con el enlace a /privacidad.
 
 ## 5. Imágenes y diagramas
 - Fotos reales de Eddie y Lorenzo en duotono, ilustraciones propias del libro (ajedrez, puerta) y páginas reales del libro. Sin fotos de stock y sin pies de foto visibles (la descripción va en el texto alternativo).
@@ -47,10 +52,13 @@ Fuente del sistema: `DESIGN-SYSTEM.md` y `tokens.css` de la R3 (carpeta `sistema
 - Imágenes para compartir (`src/lib/og.tsx`): papel, logotipo real, rótulo en tinta, titular en mayúsculas condensadas sin punto final. Hay imagen para inicio, libro, kit, diagnóstico, programas, workbook y valores del año.
 
 ## 6. Nombres y estilo
+- Compra: «Ebook e impreso en Amazon, PDF con Mercado Pago». El texto de medios de pago («tarjeta de crédito, débito o saldo en cuenta») va una sola vez, en /libro#formatos. No se dice «compra directa».
+- Cifras de la casa: son de Future Founders y suman la trayectoria de sus fundadores y la de los participantes de sus programas (nota `CIFRAS_NOTA` bajo las cifras, que van justo después del héroe de la portada).
+- Bios de Eddie y Lorenzo: cargos «CEO y cofundador» y «COO y cofundador» (web anterior de Future Founders); el resto, solo con datos de eddieajalcrina.com y lorenzoortiz.co (comentario de fuente sobre `FOUNDERS`). Las bios completas viven una vez, en la portada (`/#nosotros`); /libro lleva la versión corta.
 - Nombres oficiales: Future Founders; Doble Agente; Kit «Plan de salida» (kit «Plan de salida» dentro de una oración); workbook; Diagnóstico de nivel; taller «Tu primer rol parcial», Primer Mandato, Portafolio, Sesiones individuales, Coconstrucción; niveles Salario, Primer rol parcial, Portafolio, Independencia.
 - Cifras: «USD 9.500», «25 %», punto de miles y coma decimal. Cifras de la casa que se mantienen: «155+ ejecutivos formados», «10+ empresas», «USD 20M+», «USD 1,5M+».
 - Los pares que se pueden buscar están en `docs/terminos.txt`. Los cambios solo de mayúsculas (Doble Agente, Primer Mandato, Diagnóstico de nivel) se revisan a mano, porque los scripts comparan sin distinguir mayúsculas.
-- Textos: tuteo, sin «·», sin exclamaciones, sin lenguaje de espías, sin punto final en titulares, botones ni rótulos. No se tocan cifras del libro, textos legales ni bios (pendientes de validar).
+- Textos: tuteo, sin «·», sin exclamaciones, sin lenguaje de espías, sin punto final en titulares, botones ni rótulos. No se tocan cifras del libro. Las páginas legales describen lo que la web hace (texto base, pendiente de revisión legal).
 
 ## 7. Decisiones del dueño
 - Congeladas el 15/11/2026:
@@ -61,8 +69,43 @@ Fuente del sistema: `DESIGN-SYSTEM.md` y `tokens.css` de la R3 (carpeta `sistema
   - Animaciones: el contador de cifras y el parallax se quedan, sutiles y quietos con `prefers-reduced-motion`. Entradas editoriales: un fundido de 8 px, una sola vez; el revelado por líneas solo en el titular del héroe.
   - Reseñas ocultas (15/11/2026). Nada de reseñas de ejemplo visibles: `TESTIMONIOS` está vacío y los textos inventados viven aparte en `EJEMPLOS_DE_FORMATO`, que ninguna página usa. La sección aparece sola cuando `src/content/testimonios.ts` tenga reseñas reales con `ejemplo: false` y fecha de permiso escrito en `permiso`; el componente también filtra y no pinta nada si no hay. Con pocas reseñas van como tarjetas fijas; el carrusel no rota solo y se carga diferido. Pasos en `PENDIENTES-WEB.md`.
   - Solo español. Fotos reales e ilustraciones propias. Bordes rectos, sin degradados ni sombras grandes. /toolkit queda fuera y redirige a /workbook.
-- Supuestos tomados en esta pasada, para confirmar (tabla «Cambios respecto de la web actual», filas 17 a 19): tamaño óptico del cuerpo automático (`font-optical-sizing: auto`), interlineado del cuerpo en pantalla de 1,55 (el libro usa 1,40) y párrafos separados por espacio, sin sangría.
+- Decisiones del dueño del 16/11/2026 (ronda R5):
+  1. Privacidad y términos en /privacidad y /terminos. Responsable: Future Founders, una marca de Soluciones Regenerativas LLC (Estados Unidos). Describen los formularios, la hoja de Google, el correo de confirmación, la baja con «baja», las calculadoras en el navegador y la ausencia de cookies de publicidad. Enlazadas en el pie y bajo cada formulario.
+  2. Pie: «© 2026 Future Founders | Soluciones Regenerativas LLC» (la barra es el filete vertical del sistema). Instagram `futurefounders.pe`. Sin YouTube.
+  3. Amazon: botón con el logotipo oficial a una tinta; `NEXT_PUBLIC_AMAZON_URL` con respaldo a la búsqueda del título.
+  4. PDF con Mercado Pago: botón con el isotipo oficial a una tinta; `NEXT_PUBLIC_CHECKOUT_URL` con respaldo a WhatsApp; texto de medios de pago.
+  5. Agenda: página de citas de Google Calendar; `NEXT_PUBLIC_AGENDA_URL` y /agenda con respaldo a WhatsApp; «Agenda 30 minutos» con icono de calendario.
+  6. Bios desde eddieajalcrina.com y lorenzoortiz.co, solo con hechos de esas webs, con la fuente en un comentario.
+  7. Cifras de la casa: de Future Founders (fundadores y participantes), con su nota.
+  8. Diagnóstico de nivel: cuatro preguntas, una por señal del libro (situación, comprobante, cobertura de tres meses y 1,2 veces, colchón); sin comprobante se salta la de cobertura. Resultado con plantilla, capítulo y un solo botón. El registro sigue igual (`nivel` «N: Nombre», `situacion`, `cobertura`, `colchon`).
+  9. Decisiones de diseño abiertas, elegidas por el asesor (tabla de abajo).
+  10. Reseñas ocultas y guardadas para reseñas reales con permiso (ver arriba).
+  11. Encabezado fijo con fondo y filete al desplazarse, con área segura y sin tapar anclas (sección 4).
+  12. «El método en 21 ideas» en /libro#metodo (reemplaza al índice; `#indice` sigue llegando), meta en magenta en las calculadoras y logos de perfil en `#F6F6F4`.
+  13. Pasada general: un solo propósito por sección, titulares que dicen la conclusión y cada mensaje dicho una vez (tabla de la sección 6 bis).
+- Decisiones de diseño abiertas, cerradas el 16/11/2026:
+
+| Tema | Elección | Motivo |
+|---|---|---|
+| Botones | Texto normal de 19 px en negrita, rectos, sin flecha, 56 a 60 px. Sin mayúsculas pequeñas | Papel sobre magenta da 4,16:1 y solo vale como texto grande; en mayúsculas pequeñas la letra baja de ese umbral. Las mayúsculas ya tienen dos voces (héroe y rótulos mono) |
+| Cuerpo de texto | Tamaño óptico automático, interlineado 1,55 en `.wt`, párrafos separados por 0,75 em sin sangría, medida máxima de 720 px | En pantalla, a 17 y 19 px y con líneas de 70 caracteres, 1,40 se cierra; la sangría es convención de papel. La entradilla (`.lead`) queda en 1,44 |
+| Meta en magenta | Sí, con marca en el dato del generador | Es uno de los usos del magenta en el libro |
+| Titular de /kit | «Calcula cuántos meses aguantas sin sueldo» | Dice el resultado, sirve a quien tiene empleo y a quien ya salió y deja atrás la pregunta que apelaba al miedo. Mismo cambio en metadatos e imagen para compartir |
+| Logos de perfil | Papel `#F6F6F4` | Un solo blanco en la paleta |
+| Titular del inicio | Se queda el del dueño, con su punto | Regla ya escrita |
 - Titular del héroe del inicio: «Tu experiencia puede trabajar para más de una empresa. O para la tuya.» Es texto del dueño y se respeta tal cual, con su punto (excepción a la regla de titulares sin punto final; la imagen para compartir lo muestra sin el punto final).
+
+## 6 bis. Dónde se dice cada cosa (consolidación R5)
+- «Subes de nivel cuando aparece una señal»: titular del Método de la portada. /programas lo cambia por lo que ofrece cada programa.
+- Fechas, cupos y condiciones por convocatoria: solo en `/programas#postular` y en el mensaje de éxito.
+- Los cuatro ejecutivos de Lima, Bogotá, Ciudad de México y Santiago y la lista «Qué aprendes»: solo en /libro.
+- Bios completas: portada. /libro: retrato, cargo, credencial y enlace a `/#nosotros`.
+- «Diecisiete de los 21 capítulos preparan tu primer cliente»: titular de la figura de la escalera. La Lectura de los niveles pasa a /libro, bajo las 21 ideas.
+- «Cinco plantillas, unas 2 horas»: rótulo bajo los botones del inicio y cifras del héroe de /kit.
+- «El workbook es gratis»: rótulo del héroe de /libro y rótulo de la sección Workbook.
+- «Se llena en una tableta, en la computadora o en papel»: formulario de descarga del workbook y «Dónde se llena» de cada plantilla.
+- «No es asesoría legal, tributaria ni financiera»: pie de todas las páginas y /terminos.
+- Arquetipos armados a partir de conversaciones reales: nota de la portada; /libro conserva el dato de los más de 30 ejecutivos.
 
 ## 8. Plantillas para contenido en serie
 - `/workbook/[id]`: héroe con el código y el título de la plantilla, fila de datos (tiempo, capítulo, nivel, ejemplo resuelto, páginas), «Para qué sirve», «Antes de empezar», «Arriba de la hoja», «Lo que trabaja el capítulo», «Necesitas antes», «Sabrás que terminaste cuando…», calculadora si la tiene y navegación anterior y siguiente. Los textos salen de `src/content/workbook.ts`, que se genera con `npm run workbook`.
@@ -70,16 +113,18 @@ Fuente del sistema: `DESIGN-SYSTEM.md` y `tokens.css` de la R3 (carpeta `sistema
 
 ## 9. Estructura del código
 - Tokens: `src/app/globals.css` (bloques `@theme` y `:root`). Clases de componentes en `@layer components`, con sus `@media` dentro.
-- Componentes base en `src/components/site/ui.tsx`: `Mono`, `Jn`, `Sc`, `Hero`, `SecHead`, `Arrow`, `LinkArrow`, `Icon`, `Aviso`, `Lvl`, `Lectura`, `Nota`, `Btn`.
-- Textos: `src/content/sitio.ts`, `programas.ts`, `actualizaciones.ts`, `testimonios.ts`; las páginas llevan su texto propio.
+- Componentes base en `src/components/site/ui.tsx`: `Mono`, `Jn`, `Sc`, `Hero`, `SecHead`, `Arrow`, `LinkArrow`, `Icon`, `Aviso`, `Lvl`, `Lectura`, `Nota`, `Btn`, `AgendaLink`, `PrivacidadLinea`, `MarcaLogo`.
+- Textos: `src/content/sitio.ts` (con `COPYRIGHT`, `RESPONSABLE`, `INSTAGRAM_URL`, `PRIVACIDAD_LINEA`, `SITUACIONES`, `CIFRAS_NOTA`), `programas.ts`, `actualizaciones.ts`, `testimonios.ts`, `legal.ts` (/privacidad y /terminos, plantilla `LegalPage.tsx`), `logos-terceros.ts` (trazados de Amazon y Mercado Pago con su fuente) e `ideas.ts` (generado por `npm run workbook` desde «La idea» de cada capítulo); las páginas llevan su texto propio.
+- Diagnóstico de nivel: preguntas, regla de nivel, siguiente paso y campos del registro en `src/lib/diagnostico.ts` (sin React). `npm test` recorre las 132 combinaciones (`scripts/test-diagnostico.mjs`).
 - Línea base al empezar (15/11/2026): 1 `!important` y 9 colores escritos a mano fuera de los tokens. Al cerrar esta pasada: 0 `!important` y 6 valores, todos en archivos donde el formato no admite variables (`layout.tsx` para el color del navegador, `og.tsx` para las imágenes generadas e `ilustraciones.ts`, que trae los SVG del libro), con los mismos valores de los tokens.
 - Contenido de origen que no se toca y se excluye de los barridos: `src/content/workbook.ts`, `scripts/` y el toolkit retirado (`src/app/toolkit`, `src/components/toolkit`).
 - En /libro, el subtítulo del héroe es el de la cubierta: «El método para ejecutivos con salario». Las muestras de páginas y la K.1 salen de los PDF finales de la R3 (`entrega/doble-agente-libro.pdf`, páginas 8 y 9, 12 y 13, 34 y 38, 41 y 42; `doble-agente-workbook.pdf`, página 8).
-- Revisión del asesor del 15/11/2026 convertida en reglas: sin pies visibles bajo imágenes (todo al texto alternativo); un solo botón magenta por vista; rótulos que se repetirían en cada fila van una vez como cabecera; en celular, los rótulos con varias partes van un dato por línea, sin filete; «a la vista» como máximo una vez por página; cargos de los arquetipos como en el libro (gerenta de finanzas, exvicepresidente comercial, directora de tecnología, socio de una pyme de reparto); botones de compra «Comprar en Amazon» y «Comprar el PDF».
+- Revisión del asesor del 15/11/2026 convertida en reglas: sin pies visibles bajo imágenes (todo al texto alternativo); un solo botón magenta por vista; rótulos que se repetirían en cada fila van una vez como cabecera; en celular, los rótulos con varias partes van un dato por línea, sin filete; «a la vista» como máximo una vez por página; cargos de los arquetipos como en el libro (gerenta de finanzas, exvicepresidente comercial, directora de tecnología, socio de una pyme de reparto); botones de compra con logotipo (sección 4).
 - Los valores de `origen` de `DownloadForm.tsx` y `EmailCta.tsx` («Página del kit», «Cierre de página») van a la columna «Origen» de la hoja de registros, no son textos visibles. Los campos de cada formulario están en `src/lib/registro.ts` y en `apps-script/Code.gs`, y se cambian en los dos.
 
 ## 10. Estado del rediseño
+- Ronda R5 de la web, 16/11/2026: las 13 decisiones del dueño de la sección 7, sobre la rama `claude/clever-edison-pcwxrr`, sin publicar. Capturas antes y después en la carpeta `web-r5` del proyecto del libro.
 - Ronda R4 de la web, modo «una sola pasada», 15/11/2026. Rama `claude/clever-edison-pcwxrr`, sin publicar.
 - Cerrado: sistema de tokens, componentes base, todas las rutas (/, /libro, /kit, /diagnostico, /programas, /workbook, /workbook/[id], /actualizaciones, 404), logotipo y favicon en papel, imágenes para compartir.
-- Pendiente: ver `PENDIENTES-WEB.md`. Esperando decisión del dueño: los supuestos de la sección 7.
+- Pendiente: ver `PENDIENTES-WEB.md` (enlaces de Amazon, Mercado Pago y Google Calendar; revisión legal; validación de bios y del diagnóstico).
 - Capturas finales y lámina antes y después: carpeta `web-r4` del proyecto del libro.

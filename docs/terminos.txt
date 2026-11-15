@@ -11,6 +11,11 @@ diagnóstico de nivel gratis => Diagnóstico de nivel
 
 # Programas
 Co-construcción => Coconstrucción
+Conversemos => Agenda 30 minutos
+
+# Compra y diagnóstico (decisiones del dueño, 16/11/2026)
+compra directa => Mercado Pago
+cinco preguntas => cuatro preguntas
 
 # Niveles de la escalera
 rol fraccional => rol parcial

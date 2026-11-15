@@ -5,33 +5,40 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 ## Bloquean la publicación definitiva
 
 - [ ] **Reseñas reales.** La sección de reseñas no se muestra (decisión del 15/11/2026): no se publican reseñas de ejemplo. El componente (`src/components/site/Testimonials.tsx`) y los datos (`src/content/testimonios.ts`) quedan listos para activarla. Pasos en «Cómo activar las reseñas», al final de este archivo.
-- [ ] **Enlace de Amazon.** Definir `NEXT_PUBLIC_AMAZON_URL` en el hosting. Sin ella, el botón lleva a la búsqueda del título en Amazon.
-- [ ] **Enlace de compra directa.** Elegir la pasarela y definir `NEXT_PUBLIC_CHECKOUT_URL`. Sin ella, el botón abre WhatsApp con el pedido del libro en PDF.
-- [ ] **Enlace de agenda.** Definir `NEXT_PUBLIC_AGENDA_URL` (Calendly, Cal.com u otro). Sin ella, «Agenda 30 minutos» y `/agenda` abren WhatsApp. El QR del cierre del libro apunta a `futurefounders.pe/agenda`, que redirige a esta agenda.
+- [ ] **Enlace de Amazon.** El botón «Comprar en» con el logotipo de Amazon ya está (16/11/2026). Falta definir `NEXT_PUBLIC_AMAZON_URL` en el hosting con la ficha del libro. Sin ella, el botón lleva a la búsqueda del título en Amazon.
+- [ ] **Logotipo de Amazon: normas de uso.** Es el logotipo oficial (archivo de Wikimedia Commons) a una tinta. Confirmar con las normas de marca de Amazon para autores; si piden la insignia oficial «Disponible en Amazon», cambiar los trazados en `src/content/logos-terceros.ts`.
+- [ ] **Enlace de Mercado Pago.** El botón «Pagar con» con el isotipo de Mercado Pago y el texto de medios de pago ya están (16/11/2026). Falta crear el enlace de pago en Mercado Pago y definir `NEXT_PUBLIC_CHECKOUT_URL`. Sin ella, el botón abre WhatsApp con el pedido del libro en PDF y /libro#formatos avisa que la compra se coordina por WhatsApp.
+- [ ] **Logotipo de Mercado Pago: versión oficial.** Hoy va el isotipo oficial a una tinta (de Simple Icons) con el nombre en texto. Al abrir la cuenta, descargar el kit de marca de Mercado Pago y, si publica una versión horizontal a una tinta, reemplazar los trazados en `src/content/logos-terceros.ts`.
+- [ ] **Enlace de agenda.** Crear la página de citas de Google Calendar («Agenda 30 minutos») y definir `NEXT_PUBLIC_AGENDA_URL`. Sin ella, «Agenda 30 minutos» y `/agenda` abren WhatsApp. El QR del cierre del libro apunta a `futurefounders.pe/agenda`, que redirige a esta agenda.
 - [ ] **Publicar el Apps Script y poner las dos variables en Vercel.** Los formularios (kit, workbook, diagnóstico, programas y el cierre de cada página) van a `/api/registro`, que reenvía al Apps Script de `apps-script/`. Pasos en `apps-script/README.md`: pegar el script en la hoja, ejecutar `configurar()`, publicarlo como aplicación web y poner `APPS_SCRIPT_URL` y `APPS_SCRIPT_SECRET` en Vercel. Sin ellas, los formularios ofrecen WhatsApp y los de descarga entregan el PDF en pantalla igual.
 - [x] **PDF del kit.** Copiar `entrega/doble-agente-kit.pdf` (paso N-05 del plan del libro) a `public/descargas/`. Mientras no esté, el formulario del kit entrega el workbook y avisa que el kit está en sus páginas 5 a 13.
 - [x] **PDF del workbook R2.** `public/descargas/doble-agente-workbook.pdf` es el de `entrega/` del 31 de octubre. Reemplazarlo por el workbook de la segunda edición cuando salga del build del libro, con el mismo nombre.
 - [ ] **Puerta de impresión.** Antes de mandar el libro a imprenta: cada plantilla con «Calculadora en línea» en el workbook tiene su calculadora en `/workbook/<id>` en producción (hoy: K.1, 1.1, 2.1, 5.1, 6.1, 9.1, 10.1, 11.1, 13.1, 14.1, 17.1, 18.1 y 19.1), y `futurefounders.pe/workbook`, `/kit`, `/actualizaciones` y `/agenda` responden.
-- [ ] **Privacidad y términos.** Redactar las dos páginas. Hoy los enlaces del pie abren un correo.
+- [x] **Privacidad y términos.** /privacidad y /terminos publicadas en la rama (16/11/2026), enlazadas en el pie y bajo cada formulario. Texto en `src/content/legal.ts`.
+- [ ] **Privacidad y términos: texto base, pendiente de revisión legal.** Que un abogado revise las dos páginas. Preguntas abiertas para el dueño: plazo de conservación de los datos, ley aplicable y jurisdicción, y política de devolución del PDF. Confirmar que el hosting no tiene activada analítica propia (la página dice que no hay cookies de publicidad ni de seguimiento; en el repo no hay analítica).
 
-## Rediseño R4 (15/11/2026): decisiones abiertas
+## Rediseño R4 y R5: decisiones de diseño
 
-- [ ] **Cuerpo de texto (filas 17 a 19 del sistema R3).** Se tomaron como supuesto: tamaño óptico automático, interlineado de 1,55 en pantalla (el libro usa 1,40) y párrafos separados por espacio, sin sangría. Confirmar o pedir los valores del libro.
-- [ ] **Botones en mayúsculas pequeñas.** La regla web los pide; el sistema R3 deja texto normal de 19 px en negrita. Quedó texto normal, sin flecha.
+- [x] **Cuerpo de texto.** Cerrado el 16/11/2026: tamaño óptico automático, interlineado de 1,55 en pantalla y párrafos separados por espacio, sin sangría (motivo en `docs/reglas-diseno.md`, sección 7).
+- [x] **Botones.** Cerrado el 16/11/2026: texto normal de 19 px en negrita, sin mayúsculas pequeñas ni flecha.
 - [ ] **Propuesta de titular del inicio (no aplicada).** Se mantiene el texto del dueño, «Tu experiencia puede trabajar para más de una empresa. O para la tuya.». Propuesta para evaluar, sin fragmento suelto ni punto final: «Tu experiencia puede trabajar para más de una empresa, incluida la tuya».
-- [ ] **Logos para perfiles (fila 33).** Las versiones para WhatsApp y redes de `logos/out` siguen con el blanco `#FFFFFF`; recolorear a `#F6F6F4` si se publican.
-- [ ] **Meta en las calculadoras.** La cifra de la meta todavía no va en magenta de texto con su raya, porque los datos de `workbook.ts` no marcan qué fila es la meta. Sumar la marca al generador si se quiere.
+- [x] **Logos para perfiles (fila 33).** Regenerados en `#F6F6F4` el 16/11/2026 (`logos/out`, el zip y las vistas en círculo). Los nombres de archivo con «blanco» no cambian.
+- [x] **Meta en las calculadoras.** La meta de la 1.1 va con filete lateral magenta y cifra en magenta de texto, marcada con `"meta": true` en `scripts/r2-overlay.json` (16/11/2026).
+- [x] **Titular de /kit.** «Calcula cuántos meses aguantas sin sueldo», también en metadatos e imagen para compartir (16/11/2026).
+
+- [ ] **Encabezado fijo en un iPhone con muesca.** El área segura (`env(safe-area-inset-top)`) está en el código, pero el emulador no la simula: probarlo en un teléfono real al publicar la vista previa.
 
 ## Validación de contenido (Eddie y Lorenzo)
 
-- [ ] Bio de Eddie: confirmar «La escalera de cuatro niveles del método es su idea» o quitar la frase.
-- [ ] Bios de Eddie y Lorenzo: validar el texto completo.
-- [ ] Cifras: confirmar si «USD 20M+ facturados» y «10+ empresas construidas» son de los fundadores o de los participantes.
-- [ ] Preguntas del diagnóstico de nivel (`/diagnostico`).
-- [x] Formatos de venta: el PDF del libro se vende por compra directa y el workbook es gratis (decisión R2). Queda abierto si habrá audiolibro.
-- [ ] Cifras de la casa: «155+ ejecutivos formados», «10+ empresas», «USD 20M+», «USD 1,5M+» (`sitio.ts`, `STATS`) y «más de 30 ejecutivos» del libro (`/libro`). Confirmarlas con el registro de los autores (WP-02).
-- [ ] Titular legal del pie: «© 2026 Future Founders» o Soluciones Regenerativas LLC.
-- [ ] URL de Instagram y YouTube para el pie.
+- [x] Bio de Eddie: la frase «La escalera de cuatro niveles del método es su idea» salió (no está en eddieajalcrina.com).
+- [ ] Bios de Eddie y Lorenzo: validar el texto nuevo (16/11/2026), escrito solo con datos de eddieajalcrina.com y lorenzoortiz.co. Salieron «Mentor de MIT» (la fuente dice «Docente»), «Singularity University Fellow», «vendió su primer activo» y «arquitecto de sistemas empresariales», que no están en las fuentes.
+- [ ] **Página de LinkedIn de la empresa.** El pie ya no enlaza el perfil personal de Eddie con el rótulo «LinkedIn». Si Future Founders abre una página de empresa, sumarla a la columna Contacto y a `sameAs` en `layout.tsx`.
+- [x] Cifras: son de Future Founders, suma de fundadores y participantes (decisión del dueño, 16/11/2026), con su nota bajo las cifras.
+- [ ] Diagnóstico de nivel: validar con Eddie y Lorenzo las cuatro preguntas nuevas y la regla de nivel (`src/lib/diagnostico.ts`).
+- [x] Formatos de venta: el PDF del libro se paga con Mercado Pago y el workbook es gratis. Queda abierto si habrá audiolibro.
+- [ ] «Más de 30 ejecutivos» del libro (`/libro`): confirmarlo con el registro de los autores (WP-02).
+- [x] Titular legal del pie: «© 2026 Future Founders | Soluciones Regenerativas LLC» (16/11/2026).
+- [x] Instagram en el pie (`https://www.instagram.com/futurefounders.pe/`). Sin YouTube (16/11/2026).
 
 ## Después del lanzamiento
 
@@ -42,7 +49,7 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 - [ ] **Segunda tanda de calculadoras (WP-05).** 3.1, 7.1, 12.1, 16.1 por país, K.3 por país y A.1 a D.1. Necesitan la revisión de un contador por país y el compromiso de actualizar cada año UF, UMA, salario mínimo y UVT.
 - [ ] **Registro mensual en línea (WP-06).** Con historial y hoja de cálculo descargable. Hoy cada calculadora descarga un CSV.
 - [ ] **Correo por país con la regla de la K.3 (WP-07).** La hoja de registros ya guarda el país; falta elegir con qué herramienta se envían los correos.
-- [ ] **«El método en 21 ideas» en `/libro#metodo` (WP-08).** El texto sale de «La idea» de cada capítulo.
+- [x] **«El método en 21 ideas» en `/libro#metodo` (WP-08).** Hecho el 16/11/2026: `src/content/ideas.ts` se genera con `npm run workbook` desde «La idea» de cada capítulo (primer párrafo). Reemplaza al índice; `/libro#indice` sigue llegando.
 
 ## Cómo se mantiene el workbook en la web
 
