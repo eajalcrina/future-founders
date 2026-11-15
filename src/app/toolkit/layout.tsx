@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, DM_Sans, Barlow_Condensed, Spline_Sans } from "next/font/google";
 
-// Tipografías propias del toolkit (sus calculadoras las usan por variable CSS).
-const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["latin"], weight: ["400", "500", "600", "700"] });
-const dmSans = DM_Sans({ variable: "--font-dm-sans", subsets: ["latin"], weight: ["400", "500", "700"] });
-const barlowCondensed = Barlow_Condensed({ variable: "--font-badge", subsets: ["latin"], weight: ["400", "500", "600", "700"] });
-const splineSans = Spline_Sans({ variable: "--font-spline", subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
+// El toolkit está retirado (next.config redirige /toolkit a /workbook). Sus calculadoras leen estas
+// variables de fuente; apuntan a las fuentes locales del sitio para que el build no dependa de Google Fonts.
+const FONT_VARS = {
+  "--font-space-grotesk": "var(--font-archivo)",
+  "--font-dm-sans": "var(--font-archivo)",
+  "--font-badge": "var(--font-archivo)",
+  "--font-spline": "var(--font-archivo)",
+} as React.CSSProperties;
 
 export const metadata: Metadata = {
   title: "Toolkit de calculadoras",
@@ -16,8 +18,8 @@ export const metadata: Metadata = {
 export default function ToolkitLayout({ children }: { children: React.ReactNode }) {
   return (
     <div
-      className={`${spaceGrotesk.variable} ${dmSans.variable} ${barlowCondensed.variable} ${splineSans.variable}`}
       style={{
+        ...FONT_VARS,
         position: "fixed",
         inset: 0,
         overflowY: "auto",
@@ -25,7 +27,7 @@ export default function ToolkitLayout({ children }: { children: React.ReactNode 
         background: "#F5F6FF",
         color: "#0B0B1E",
         zIndex: 50,
-        fontFamily: "var(--font-dm-sans), 'DM Sans', sans-serif",
+        fontFamily: "var(--font-dm-sans), sans-serif",
       }}
     >
       {children}
