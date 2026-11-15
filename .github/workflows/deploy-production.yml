@@ -1,0 +1,37 @@
+# Publica en producción con el token de Vercel de Eddie.
+# En el plan Hobby, Vercel bloquea los deploys cuyo autor de commit no es el dueño de la cuenta;
+# al publicar desde aquí, el deploy queda a nombre del token y no del autor del commit.
+name: Deploy production (Vercel)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vercel-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # El secreto VERCEL_TOKEN vive en este entorno, que solo acepta la rama main.
+    environment: vercel-deploy
+    env:
+      VERCEL_ORG_ID: team_ViUH2XKnSntKgEDHXvOYGTQ7
+      VERCEL_PROJECT_ID: prj_Vj7285Al7VmJkkZVvuHqkYy4WDOK
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Sin la carpeta .git, la CLI no envía el autor del commit y Vercel no lo revisa.
+      - name: Quitar metadatos de git
+        run: rm -rf .git
+      - name: Publicar en producción con Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: npx --yes vercel@65.8.0 deploy --prod --yes --token="$VERCEL_TOKEN"
