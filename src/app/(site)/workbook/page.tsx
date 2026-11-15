@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import DownloadForm from "@/components/site/DownloadForm";
-import { Hero as HeroHead, Icon, Mono, Nota, Sc } from "@/components/site/ui";
+import { Hero as HeroHead, Icon, Mono, Sc } from "@/components/site/ui";
 import { DESCARGAS } from "@/lib/descargas";
 import { PLANTILLAS, PARTES } from "@/content/workbook";
 import { partTemplates, timeLabel } from "@/content/workbook-util";
@@ -57,19 +57,18 @@ export default function WorkbookIndex() {
                 <span>Las plantillas con este icono hacen cuentas y tienen su calculadora en línea en su página.</span>
               </p>
             </div>
-          <h2 className="wh2 text-h2 mt-10 lg:mt-12">Kit «Plan de salida»</h2>
+            <h2 className="wh2 text-h2 mt-10 lg:mt-12">Kit «Plan de salida»</h2>
             <p className="text-recuadro text-ink2 mt-1">Va antes de la Parte 01 del libro</p>
-          <ul className="mt-4 border-b border-ink">
-            {kit.map((p) => (
-              <Row key={p.id} id={p.id} code={p.code} title={p.title} time={p.time} where="" calc={Boolean(p.calc)} />
-            ))}
-          </ul>
+            <ul className="mt-4 border-b border-ink">
+              {kit.map((p) => (
+                <Row key={p.id} id={p.id} code={p.code} title={p.title} time={p.time} where="" calc={Boolean(p.calc)} />
+              ))}
+            </ul>
           </div>
-          <div id="descarga" className="scroll-mt-6">
+          <div id="descarga">
             <DownloadForm producto="workbook" file={DESCARGAS.workbook} />
           </div>
         </div>
-
 
         {Object.entries(PARTES).map(([num, name]) => (
           <div key={num} className="mt-12 lg:mt-14">
@@ -95,7 +94,6 @@ export default function WorkbookIndex() {
             <Row key={p.id} id={p.id} code={p.code} title={p.title} time={p.time} where={p.where} calc={Boolean(p.calc)} />
           ))}
         </ul>
-        <Nota className="mt-8">El workbook se descarga gratis en esta página. Se llena en una tableta, en la computadora o en papel.</Nota>
       </div>
     </section>
   );

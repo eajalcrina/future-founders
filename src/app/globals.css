@@ -104,6 +104,10 @@
   --btn-h: 56px;
   --field-h: 56px;
   --focus-w: 3px;
+
+  /* encabezado fijo: alto sin animar (56 en celular, 72 en escritorio), sin contar el área segura del celular */
+  --header-h: 56px;
+  --logo-mark: 20px; /* alto óptico de los logotipos de Amazon y Mercado Pago en los botones de compra */
 }
 
 @media (min-width: 64rem) {
@@ -125,12 +129,15 @@
     --fs-portada: 8.5rem; /* 136 px */
     --fs-sc-min: 0.75rem;
     --btn-h: 60px;
+    --header-h: 72px;
   }
 }
 
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
+    /* las anclas quedan bajo el encabezado fijo, con 16 px de aire */
+    scroll-padding-top: calc(var(--header-h) + env(safe-area-inset-top) + 16px);
   }
   body {
     margin: 0;
@@ -174,6 +181,28 @@
     .wrap {
       padding-inline: 64px;
     }
+  }
+
+  /* ---------------------------------------------------------------- encabezado fijo */
+  /* fondo papel opaco y filete transparente arriba de la página; al desplazarse, filete de 1 px en tinta. Sin sombra */
+  .cab {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: var(--color-paper);
+    padding-top: env(safe-area-inset-top);
+    border-bottom: var(--filete) solid transparent;
+    transition: border-color 0.15s ease;
+  }
+  .cab[data-scrolled] {
+    border-bottom-color: var(--color-ink);
+  }
+  .cab-fila {
+    height: var(--header-h);
+  }
+  .cab-menu {
+    max-height: calc(100dvh - var(--header-h) - env(safe-area-inset-top));
+    overflow-y: auto;
   }
 
   /* ---------------------------------------------------------------- tipografía */
@@ -325,6 +354,62 @@
     background: var(--color-warm);
     border-color: var(--color-warm);
   }
+  /* botón de compra con el logotipo de la tienda: papel, filete de tinta y logotipo a una tinta; al pasar, se invierte.
+     Nunca en magenta (el magenta queda para el kit). Sobre tinta, papel sólido */
+  .btn-marca {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap; /* si la columna no alcanza, el nombre baja a una segunda línea dentro del botón */
+    gap: 0 8px;
+    min-height: var(--btn-h);
+    padding: 8px 12px;
+    white-space: nowrap;
+    cursor: pointer;
+    border-radius: 0;
+    background: var(--color-paper);
+    border: var(--filete-marco) solid var(--color-ink);
+    font-weight: 600;
+    font-size: var(--fs-boton2);
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .site .btn-marca {
+    color: var(--color-ink);
+  }
+  .site .btn-marca:hover {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .on-ink .btn-marca {
+    border-color: var(--color-paper);
+  }
+  .site .on-ink .btn-marca:hover {
+    background: var(--color-warm);
+    border-color: var(--color-warm);
+    color: var(--color-ink);
+  }
+  @media (min-width: 40rem) {
+    .btn-marca {
+      gap: 0 12px;
+      padding: 8px 26px;
+    }
+  }
+  .btn-marca .marca {
+    display: block;
+    height: var(--logo-mark);
+    width: auto;
+    flex: none;
+  }
+  /* el isotipo de Mercado Pago es un óvalo: un poco más alto para que pese igual que la palabra de Amazon */
+  .btn-marca .marca.mercadopago {
+    height: calc(var(--logo-mark) * 1.35);
+  }
+  /* la palabra de Amazon se apoya en la línea base del texto; la sonrisa queda debajo */
+  .btn-marca .marca.amazon {
+    height: calc(var(--logo-mark) * 1.3);
+    margin-top: 0.42em;
+  }
+
   /* variante compacta del encabezado */
   .btn.compact {
     min-height: 40px;
@@ -340,6 +425,9 @@
     .btn,
     .btn2 {
       padding: 0 30px;
+    }
+    .btn-marca {
+      padding: 8px 30px;
     }
     .btn.compact {
       min-height: 50px;
@@ -508,6 +596,16 @@
     margin-top: 2px;
   }
 
+  /* la meta en las calculadoras: filete lateral de 2 px en magenta, rótulo y cifra en magenta de texto (solo sobre papel) */
+  .calc-meta {
+    border-left: var(--filete-meta) solid var(--color-mag);
+    padding-left: 12px;
+  }
+  .calc-meta > label,
+  .calc-meta .field {
+    color: var(--color-magt);
+  }
+
   /* tablas como en el libro */
   .tabla {
     width: 100%;
@@ -661,6 +759,19 @@
 
     .xfade {
       animation: xfade 0.2s ease-out;
+    }
+    /* resultado del diagnóstico: los cuadrados del nivel se llenan uno tras otro, una vez */
+    .llena > span > span {
+      animation: xfade 0.3s ease-out both;
+    }
+    .llena > span > span:nth-child(2) {
+      animation-delay: 80ms;
+    }
+    .llena > span > span:nth-child(3) {
+      animation-delay: 160ms;
+    }
+    .llena > span > span:nth-child(4) {
+      animation-delay: 240ms;
     }
     @keyframes xfade {
       from {
