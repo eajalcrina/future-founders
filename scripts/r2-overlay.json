@@ -128,7 +128,8 @@
     {
      "field": "meta",
      "label": "Meta de runway base, en meses",
-     "ej": "9"
+     "ej": "9",
+     "meta": true
     },
     {
      "field": "colchon",

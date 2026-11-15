@@ -25,6 +25,8 @@ export type CalcRow = {
   opt?: boolean;
   /** Fila que solo se muestra dentro de una tabla. */
   hide?: boolean;
+  /** La meta que el libro marca en magenta (filete lateral y cifra en magenta de texto). Se marca en r2-overlay.json. */
+  meta?: boolean;
 };
 export type CalcBand = { band: string };
 export type CalcTable = { table: string; head: string[]; cells: string[][]; mark?: string };
@@ -347,7 +349,8 @@ export const PLANTILLAS: Plantilla[] = [
    {
     "field": "meta",
     "label": "Meta de runway base, en meses",
-    "ej": "9"
+    "ej": "9",
+    "meta": true
    },
    {
     "field": "colchon",

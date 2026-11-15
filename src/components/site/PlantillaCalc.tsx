@@ -129,7 +129,7 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
       style: { height: 48 },
     };
     return (
-      <div key={r.field} className="py-3 border-t border-ink20 grid gap-2">
+      <div key={r.field} className={`py-3 border-t border-ink20 grid gap-2 ${r.meta ? "calc-meta" : ""}`}>
         <label htmlFor={fid} className="text-recuadro leading-[1.35] font-semibold flex gap-2">
           {r.tag && <Letra tag={r.tag} />}
           <span>
