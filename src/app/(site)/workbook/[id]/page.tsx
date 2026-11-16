@@ -125,7 +125,8 @@ function TemplatePage({ p }: { p: Plantilla }) {
                 </p>
               </>
             )}
-            {p.trae && (
+            {/* Si «trae» solo nombra plantillas, ya lo dice «Necesitas antes»: no se repite */}
+            {p.trae && !(p.uses.length > 0 && soloPlantillas(p.trae)) && (
               <p className="text-recuadro mt-4 px-3 py-2.5 bg-warm inline-block">
                 <Sc text={p.trae} />
               </p>
@@ -214,7 +215,7 @@ function TemplatePage({ p }: { p: Plantilla }) {
               </p>
               <div className="mt-5">
                 {p.kind === "kit" ? (
-                  <Link href="/kit#formulario" className="btn w-full">
+                  <Link href="/kit" className="btn w-full">
                     Descarga el kit
                   </Link>
                 ) : (
@@ -271,6 +272,11 @@ function TemplatePage({ p }: { p: Plantilla }) {
       </nav>
     </>
   );
+}
+
+/** «Trae la K.1 y la K.3.», «Trae tu plantilla 7.1.»: el texto no dice nada más que los códigos de otras plantillas. */
+function soloPlantillas(t: string) {
+  return t.replace(/\b(Trae|tus?|la|las|plantillas?|y)\b/g, "").replace(/K\.\d+|\d+\.\d+/g, "").replace(/[\s.,]/g, "") === "";
 }
 
 export default async function WorkbookPage({ params }: { params: Promise<{ id: string }> }) {

@@ -104,7 +104,7 @@ export default function ProgramasPage() {
               </div>
             );
           })}
-          <Nota>Ningún programa promete ingresos ni plazos. Cada uno trabaja sobre tus números y tu mercado, y la decisión de cuándo avanzar es tuya.</Nota>
+          <Nota>Cada programa trabaja sobre tus números y tu mercado, y la decisión de cuándo avanzar es tuya.</Nota>
         </div>
       </section>
 

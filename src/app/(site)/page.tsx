@@ -98,9 +98,9 @@ function Method() {
           <Ladder />
         </div>
         <div className="flex flex-col lg:flex-row lg:justify-between lg:items-baseline gap-2 mt-6 lg:mt-8">
-          <p className="text-cuerpo text-ink2">El diagnóstico de nivel te ubica con tus números en {CUANTAS} preguntas.</p>
+          <p className="text-cuerpo text-ink2">El Diagnóstico de nivel te ubica con tus números en {CUANTAS} preguntas.</p>
           <LinkArrow href="/diagnostico" className="text-cuerpo">
-            Hacer el diagnóstico de nivel
+            Hacer el Diagnóstico de nivel
           </LinkArrow>
         </div>
       </div>
@@ -245,11 +245,11 @@ function Products() {
               <ul className="grid sm:grid-cols-2 gap-x-8 px-5 lg:px-8 py-2 lg:py-3 content-center">
                 {items.map((w) => (
                   <li key={w.name}>
-                    <Link href={w.href} className="group flex justify-between items-baseline gap-4 py-3">
+                    <Link href={w.href} className="group flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-baseline sm:gap-4 py-3">
                       <span className="text-cuerpo font-bold leading-[1.3]">
                         <span className="lnk">{w.name}</span>
                       </span>
-                      <Mono tone="gris" as="span" className="text-right shrink-0">
+                      <Mono tone="gris" as="span" className="sm:text-right sm:shrink-0">
                         {w.meta}
                       </Mono>
                     </Link>
@@ -278,29 +278,32 @@ function Founders() {
     <section id="nosotros" className="border-t border-ink" aria-labelledby="nos-t">
       <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24">
         <SecHead id="nos-t" className="max-w-[900px]" label={["Nosotros", "Autores del libro"]} title="Eddie y Lorenzo escribieron el libro y dirigen los programas" />
-        {/* Filas compartidas (subgrid): cargo, nombre, credencial, bio y enlaces arrancan a la misma altura en las dos columnas,
-            aunque solo una bio traiga credencial. */}
-        <div className="grid gap-y-10 lg:gap-x-16 lg:gap-y-0 lg:grid-cols-2 lg:grid-rows-[auto_auto_auto_auto_1fr] mt-8 lg:mt-14">
+        {/* Filas compartidas (subgrid): cargo, nombre y enlaces arrancan a la misma altura en las dos columnas.
+            La credencial va dentro del bloque de la bio, para que la bio quede pegada al nombre aunque solo una ficha la traiga. */}
+        <div className="grid gap-y-10 lg:gap-x-16 lg:gap-y-0 lg:grid-cols-2 lg:grid-rows-[auto_auto_auto_1fr] mt-8 lg:mt-14">
           {FOUNDERS.map((f) => (
             <article
               key={f.key}
-              className="rv grid sm:gap-x-8 sm:grid-cols-[200px_minmax(0,1fr)] sm:grid-rows-[auto_auto_auto_auto_1fr] lg:row-span-5 lg:grid-rows-subgrid xl:grid-cols-[240px_minmax(0,1fr)]"
+              className="rv grid sm:gap-x-8 sm:grid-cols-[200px_minmax(0,1fr)] sm:grid-rows-[auto_auto_auto_1fr] lg:row-span-4 lg:grid-rows-subgrid xl:grid-cols-[240px_minmax(0,1fr)]"
             >
               <Parallax
                 src={f.photo}
                 alt={`Retrato de ${f.name} en duotono`}
                 sizes="(min-width: 1280px) 240px, (min-width: 640px) 200px, 180px"
-                className="w-[180px] sm:w-full aspect-[240/296] bg-warm border border-ink sm:row-span-5 self-start"
+                className="w-[180px] sm:w-full aspect-[240/296] bg-warm border border-ink sm:row-span-4 self-start"
                 position="center 30%"
+                quieto
               />
               <Mono tone="gris" className="mt-4 sm:mt-0">
                 {f.role}
               </Mono>
               <h3 className="wh2 text-h2 mt-2 lg:mt-3">{f.name}</h3>
-              <div className={f.cred ? "text-cuerpo font-semibold mt-2" : ""}>{f.cred}</div>
-              <p className="wt mt-2.5 lg:mt-3">
-                <Sc text={f.bio} />
-              </p>
+              <div>
+                {f.cred ? <p className="text-cuerpo font-semibold mt-2.5 lg:mt-3">{f.cred}</p> : null}
+                <p className="wt mt-2.5 lg:mt-3">
+                  <Sc text={f.bio} />
+                </p>
+              </div>
               <p className="self-end pt-3 lg:pt-4 flex flex-wrap gap-x-6 gap-y-2">
                 <a href={f.webUrl} target="_blank" rel="noopener noreferrer" className="wm ul inline-flex items-end min-h-6">
                   {f.web}
