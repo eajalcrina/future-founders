@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useState, type KeyboardEvent } from "react";
-import { LEVELS, LOOK, SIGNAL, CHAPS, DO_NOW, WITH, HERE } from "@/content/sitio";
+import { LEVELS, LOOK, SIGNAL, CHAPS, DO_NOW, HERE } from "@/content/sitio";
 import { Figure, Jn, Lvl, Mono, Sc } from "./ui";
 
 // Colores de los tokens (globals.css). En el SVG van por la propiedad style, que admite variables.
@@ -46,31 +45,17 @@ function Panel({ k, mobile }: { k: number; mobile?: boolean }) {
   );
   const sig = (
     <div>
-      <div className="wm text-ink2">Señal para pasar al siguiente</div>
+      <div className="wm text-ink2">{k < 3 ? "Señal para pasar al siguiente" : "Para sostener el nivel 3"}</div>
       <p className="text-h3 leading-[1.35] font-bold mt-2">{SIGNAL[k]}</p>
       <div className="wm text-ink2 mt-[22px]">En el libro</div>
       <p className="text-cuerpo mt-1.5">{CHAPS[k]}</p>
     </div>
   );
+  // Los programas de cada nivel van una sola vez, en la sección Programas de la portada (R6).
   const items = (
-    <div>
-      <div className="wm text-ink2 mb-1.5">Te acompaña</div>
-      <ul>
-        {WITH[k].map((w) => (
-          <li key={w.name}>
-            <Link href={w.href} className="group flex justify-between items-baseline gap-4 py-3 border-t border-ink">
-              <span className="text-cuerpo font-bold">
-                <span className="lnk">{w.name}</span>
-              </span>
-              <span className="wm text-ink2 text-right whitespace-nowrap">{w.meta}</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-      <p className="bg-sage text-recuadro leading-[1.45] mt-4 px-3 py-2.5" style={{ borderTop: "var(--filete-fino) solid var(--color-saged)" }}>
-        {HERE[k]}
-      </p>
-    </div>
+    <p className="bg-sage text-recuadro leading-[1.45] px-3 py-2.5" style={{ borderTop: "var(--filete-fino) solid var(--color-saged)" }}>
+      {HERE[k]}
+    </p>
   );
   if (mobile)
     return (
@@ -85,7 +70,7 @@ function Panel({ k, mobile }: { k: number; mobile?: boolean }) {
       </div>
     );
   return (
-    <div className="xfade bg-warm grid gap-10 xl:gap-14 grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1.2fr)] px-10 pt-9 pb-10">
+    <div className="xfade bg-warm grid gap-10 xl:gap-14 grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] px-10 pt-9 pb-10">
       <div>
         {tag}
         <h3 className="ws text-figura mt-3.5">{head}</h3>
@@ -93,8 +78,10 @@ function Panel({ k, mobile }: { k: number; mobile?: boolean }) {
           <Sc text={body} />
         </p>
       </div>
-      {sig}
-      {items}
+      <div>
+        {sig}
+        <div className="mt-[22px]">{items}</div>
+      </div>
     </div>
   );
 }
@@ -209,13 +196,17 @@ export default function Ladder() {
             <Figure who="rodrigo" />
           </div>
         </div>
-        <div className="grid grid-cols-4">
-          {LOOK.map((t, k) => (
-            <div key={k} className="border-t border-ink pt-2.5 pr-5">
-              <div className="wm text-ink2">Cómo se ve</div>
-              <p className="text-recuadro leading-[1.4] mt-1.5">{t}</p>
-            </div>
-          ))}
+        {/* «Cómo se ve» va una vez, como cabecera de la fila (no se repite en cada columna). */}
+        <div className="border-t border-ink pt-2.5">
+          <div className="wm text-ink2">Cómo se ve cada nivel</div>
+          <div className="grid grid-cols-4">
+            {LOOK.map((t, k) => (
+              <p key={k} className="text-recuadro leading-[1.4] mt-1.5 pr-5">
+                <span className="sr-only">Nivel {k}, {LEVELS[k]}: </span>
+                {t}
+              </p>
+            ))}
+          </div>
         </div>
         <div id="panel-nivel" className="mt-9" role="region" aria-live="polite" aria-label={`Nivel ${sel}, ${LEVELS[sel]}`}>
           <Panel key={sel} k={sel} />

@@ -1,6 +1,6 @@
 # Reglas de diseño de futurefounders.pe
 
-Estado: **en curso** (16/11/2026, ronda R5). Camino visual: el sistema de «Doble Agente», ronda R3. Referencia: el propio libro (PDF final de la R3).
+Estado: **en curso** (16/11/2026, ronda R6). Camino visual: el sistema de «Doble Agente», ronda R3. Referencia: el propio libro (PDF final de la R3).
 
 Público: ejecutivos de 38 a 55 años en Latinoamérica (gerentes, directores y VP). Tono: editorial, sobrio, con datos concretos; tuteo, solo español.
 
@@ -50,9 +50,13 @@ Fuente del sistema: `DESIGN-SYSTEM.md` y `tokens.css` de la R3 (carpeta `sistema
 - /libro#formatos: dos tarjetas, «Ebook e impreso» (Amazon) y «Libro en PDF». Si Amazon da enlaces distintos para cada formato, se vuelven a separar.
 - En /kit, el botón del encabezado baja a `#formulario`.
 - Páginas legales: el subtítulo de cada bloque va fuera de `.wt` (Archivo, como en el resto del sitio); solo los párrafos van en serif.
+- Nosotros (R6): las dos fichas comparten filas con subgrid (cargo, nombre, credencial, bio y enlaces) y los enlaces de las webs y LinkedIn miden 24 px de alto como mínimo (tamaño de destino WCAG 2.2).
+- Accesibilidad (R6): los botones y enlaces repetidos llevan contexto para lectores de pantalla («Postular: Primer Mandato», «Ver la parte 01, Diagnóstico»); en `/workbook/k1` el titular de la figura de la calculadora es h2 (sigue al h1); en /kit, h3 bajo el h2 de la sección.
+- /programas#postular va sobre papel con filete superior: dos bloques contiguos con funciones distintas no comparten fondo, y el pie es papel cálido.
 - Línea de privacidad única bajo los cuatro formularios (`PrivacidadLinea`, texto en `PRIVACIDAD_LINEA` de `sitio.ts`), con el enlace a /privacidad.
 
 ## 5. Imágenes y diagramas
+- Retratos de Eddie y Lorenzo (R6): recortados sobre fondo sólido papel cálido `#E6E4E0`, el mismo del marco (`bg-warm`, filete de 1 px en tinta). El tamaño de las cabezas se iguala en el archivo, no con CSS: las dos a la misma escala y con el pelo al 12 % del alto, para que el parallax no corte la cabeza. Sin `zoom` en `Parallax`. En celular el retrato mide 180 px de ancho (proporción 240/296), no el ancho de la pantalla, porque la foto de origen tiene 600 px.
 - Fotos reales de Eddie y Lorenzo en duotono, ilustraciones propias del libro (ajedrez, puerta) y páginas reales del libro. Sin fotos de stock y sin pies de foto visibles (la descripción va en el texto alternativo).
 - El cuadrado magenta sobre la ilustración del inicio se mantiene (cuadrado de marca).
 - Escalera (marco 0.1) con los colores por token, el nivel elegido marcado en magenta y la ruta discontinua en tinta.
@@ -63,7 +67,7 @@ Fuente del sistema: `DESIGN-SYSTEM.md` y `tokens.css` de la R3 (carpeta `sistema
 - Cifras de la casa: son de Future Founders y suman la trayectoria de sus fundadores y la de los participantes de sus programas (nota `CIFRAS_NOTA` bajo las cifras, sin repetir el rótulo «Future Founders en cifras», que van justo después del héroe de la portada).
 - Bios de Eddie y Lorenzo: cargos «CEO y cofundador» y «COO y cofundador» (web anterior de Future Founders); el resto, solo con datos de eddieajalcrina.com y lorenzoortiz.co (comentario de fuente sobre `FOUNDERS`). Las bios completas viven una vez, en la portada (`/#nosotros`); /libro lleva la versión corta.
 - Nombres oficiales: Future Founders; Doble Agente; Kit «Plan de salida» (kit «Plan de salida» dentro de una oración); workbook; Diagnóstico de nivel; taller «Tu primer rol parcial», Primer Mandato, Portafolio, Sesiones individuales, Coconstrucción; niveles Salario, Primer rol parcial, Portafolio, Independencia.
-- Cifras: «USD 9.500», «25 %», punto de miles y coma decimal. Cifras de la casa que se mantienen: «155+ ejecutivos formados», «10+ empresas», «USD 20M+», «USD 1,5M+».
+- Cifras: «USD 9.500», «25 %», punto de miles y coma decimal. Cifras de la casa que se mantienen: «155+ ejecutivos formados», «10+ empresas», «USD 26M+ facturados», «USD 2,7M+ capital levantado» (R5c).
 - Los pares que se pueden buscar están en `docs/terminos.txt`. Los cambios solo de mayúsculas (Doble Agente, Primer Mandato, Diagnóstico de nivel) se revisan a mano, porque los scripts comparan sin distinguir mayúsculas.
 - Textos: tuteo, sin «·», sin exclamaciones, sin lenguaje de espías, sin punto final en titulares, botones ni rótulos. No se tocan cifras del libro. Las páginas legales describen lo que la web hace (texto base, pendiente de revisión legal).
 
@@ -113,6 +117,11 @@ Fuente del sistema: `DESIGN-SYSTEM.md` y `tokens.css` de la R3 (carpeta `sistema
 - «Se llena en una tableta, en la computadora o en papel»: formulario de descarga del workbook y «Dónde se llena» de cada plantilla.
 - «No es asesoría legal, tributaria ni financiera»: pie de todas las páginas y /terminos.
 - Arquetipos armados a partir de conversaciones reales: nota de la portada; /libro conserva el dato de los más de 30 ejecutivos.
+- Programas de cada nivel (R6): una vez en la portada, en la sección Programas, y en detalle en /programas. El panel de la escalera ya no repite «Te acompaña»; dice la señal, los capítulos y qué arquetipo empieza ahí. El resultado del Diagnóstico sí la conserva, porque ahí es la respuesta.
+- «Cómo se ve» bajo la escalera: un solo rótulo para la fila («Cómo se ve cada nivel»), no uno por columna.
+- «Señal para pasar al siguiente» (nivel 3: «Para sostener el nivel 3»): mismo rótulo en la escalera y en el Diagnóstico.
+- Cierre de la portada: habla de la K.1 y del envío del kit; «cinco plantillas, unas 2 horas» queda en el rótulo del héroe. Los dos cierres por correo usan el botón «Recibir el kit».
+- Programas: rótulo = tipo, titular = nombre oficial (Taller / Tu primer rol parcial, Programa / Primer Mandato, Mastermind / Portafolio, Acompañamiento / Sesiones individuales de transición, Sprint / Coconstrucción).
 
 ## 8. Plantillas para contenido en serie
 - `/workbook/[id]`: héroe con el código y el título de la plantilla, fila de datos (tiempo, capítulo, nivel, ejemplo resuelto, páginas), «Para qué sirve», «Antes de empezar», «Arriba de la hoja», «Lo que trabaja el capítulo», «Necesitas antes», «Sabrás que terminaste cuando…», calculadora si la tiene y navegación anterior y siguiente. Los textos salen de `src/content/workbook.ts`, que se genera con `npm run workbook`.
@@ -130,6 +139,7 @@ Fuente del sistema: `DESIGN-SYSTEM.md` y `tokens.css` de la R3 (carpeta `sistema
 - Los valores de `origen` de `DownloadForm.tsx` y `EmailCta.tsx` («Página del kit», «Cierre de página») van a la columna «Origen» de la hoja de registros, no son textos visibles. Los campos de cada formulario están en `src/lib/registro.ts` y en `apps-script/Code.gs`, y se cambian en los dos.
 
 ## 10. Estado del rediseño
+- Ronda R6, 16/11/2026: pasada de coherencia visual, propuesta de valor, accesibilidad, navegación y redundancias, con la voz sin IA, sobre la rama `claude/clever-edison-pcwxrr`. Capturas en la carpeta `web-r6` del proyecto del libro (`antes/` y `<ancho>_<ruta>.png`).
 - Ronda R5b, 16/11/2026: hallazgos de la revisión R5 (diff 214f3cb..4243531) que no eran decisión del dueño, sobre la misma rama y sin publicar. Capturas en `web-r5` (sobrescritas) y lámina `web-r5/antes-despues.png`.
 - Ronda R5 de la web, 16/11/2026: las 13 decisiones del dueño de la sección 7, sobre la rama `claude/clever-edison-pcwxrr`, sin publicar. Capturas antes y después en la carpeta `web-r5` del proyecto del libro.
 - Ronda R4 de la web, modo «una sola pasada», 15/11/2026. Rama `claude/clever-edison-pcwxrr`, sin publicar.

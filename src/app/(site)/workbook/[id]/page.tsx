@@ -231,7 +231,7 @@ function TemplatePage({ p }: { p: Plantilla }) {
       {p.id === "k1" && (
         <section id="calculadora" className="border-t border-ink" aria-label="Calculadora en línea de la K.1">
           <div className="wrap py-12 lg:py-[88px]">
-            <RunwayCalc />
+            <RunwayCalc nivel={2} />
           </div>
         </section>
       )}

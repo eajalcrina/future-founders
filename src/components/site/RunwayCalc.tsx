@@ -36,7 +36,9 @@ const EJ: Ej[] = [
 const MIN = 6;
 
 /** Calculadora K.1: runway = ahorro líquido ÷ costo de vida mensual, con el mínimo de 6 meses marcado. */
-export default function RunwayCalc() {
+export default function RunwayCalc({ nivel = 3 }: { nivel?: 2 | 3 }) {
+  // En /kit la figura vive bajo un h2 de sección; en /workbook/k1 sigue directo al h1.
+  const Titulo = nivel === 2 ? "h2" : "h3";
   const id = useId();
   const [ej, setEj] = useState<Ej>(EJ[0]);
   const [a, setA] = useState(EJ[0].a);
@@ -211,9 +213,9 @@ export default function RunwayCalc() {
           <Mono>
             <Jn parts={["Marco 1.1", "Tu runway"]} />
           </Mono>
-          <h3 className="ws text-figura mt-2" aria-live="polite">
+          <Titulo className="ws text-figura mt-2" aria-live="polite">
             {title}
-          </h3>
+          </Titulo>
           <p className="text-recuadro text-ink3 mt-1.5">
             {isEj ? `Runway de ${ej.name} en meses, con su costo de vida actual, frente al colchón mínimo de 6 meses` : "Tu runway en meses frente al colchón mínimo de 6 meses"}
           </p>

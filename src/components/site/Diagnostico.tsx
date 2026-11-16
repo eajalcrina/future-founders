@@ -192,7 +192,7 @@ function Result({ ans, onRestart, headRef }: { ans: Respuestas; onRestart: () =>
             <p className="text-recuadro leading-[1.45] text-ink2 mt-5">Anota tu nivel con la fecha en «Tu nivel en la escalera», al comienzo del workbook.</p>
           </div>
           <div>
-            <div className="wm text-ink2">{k < 3 ? "Para pasar al nivel siguiente" : "Para sostener el nivel 3"}</div>
+            <div className="wm text-ink2">{k < 3 ? "Señal para pasar al siguiente" : "Para sostener el nivel 3"}</div>
             <p className="text-h3 leading-[1.35] font-bold mt-2">{SIGNAL[k]}</p>
             <div className="wm text-ink2 mt-6 mb-1.5">Te acompaña</div>
             <ul>

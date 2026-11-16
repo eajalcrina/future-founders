@@ -77,7 +77,7 @@ export default function WorkbookIndex() {
                 Parte {num}, {name}
               </h2>
               <Link href={`/workbook/parte-${num}`} className="ul text-recuadro font-semibold whitespace-nowrap">
-                Ver la parte
+                Ver la parte<span className="sr-only"> {num}, {name}</span>
               </Link>
             </div>
             <ul className="mt-4 border-b border-ink">

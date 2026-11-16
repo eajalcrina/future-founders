@@ -87,11 +87,12 @@ export default function ProgramasPage() {
                               <a href={primary.href} target="_blank" rel="noopener noreferrer" className="btn2 w-full">
                                 <Icon name="calendario" size={18} />
                                 <span>{p.cta}</span>
-                                <span className="sr-only"> (se abre en otra pestaña)</span>
+                                <span className="sr-only"> para {p.name} (se abre en otra pestaña)</span>
                               </a>
                             ) : (
                               <a href={primary.href} className="btn2 w-full">
                                 {p.cta}
+                                <span className="sr-only">: {p.name}</span>
                               </a>
                             )}
                           </div>
@@ -107,7 +108,7 @@ export default function ProgramasPage() {
         </div>
       </section>
 
-      <section id="postular" className="bg-warm" aria-labelledby="postular-t">
+      <section id="postular" className="border-t border-ink" aria-labelledby="postular-t">
         {PROGRAMAS.map((p) => (
           <span key={p.id} id={`postular-${p.id}`} className="block" aria-hidden="true" />
         ))}

@@ -4,7 +4,7 @@ import EmailCta from "./EmailCta";
 /** Cierre de página sobre tinta: el kit «Plan de salida» por correo y la agenda como alternativa. */
 export default function FinalCta({
   title = "Empieza por tu runway",
-  text = "El kit «Plan de salida» trae cinco plantillas que llenas en unas 2 horas. La primera te dice en 20 minutos cuántos meses aguantas sin sueldo.",
+  text = "La K.1, la primera plantilla del kit «Plan de salida», te dice en 20 minutos cuántos meses aguantas sin sueldo. Deja tu correo y te enviamos el kit completo.",
   button = "Recibir el kit",
 }: {
   title?: string;

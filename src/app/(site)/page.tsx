@@ -278,35 +278,39 @@ function Founders() {
     <section id="nosotros" className="border-t border-ink" aria-labelledby="nos-t">
       <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24">
         <SecHead id="nos-t" className="max-w-[900px]" label={["Nosotros", "Autores del libro"]} title="Eddie y Lorenzo escribieron el libro y dirigen los programas" />
-        <div className="grid gap-10 lg:gap-16 lg:grid-cols-2 mt-8 lg:mt-14">
+        {/* Filas compartidas (subgrid): cargo, nombre, credencial, bio y enlaces arrancan a la misma altura en las dos columnas,
+            aunque solo una bio traiga credencial. */}
+        <div className="grid gap-y-10 lg:gap-x-16 lg:gap-y-0 lg:grid-cols-2 lg:grid-rows-[auto_auto_auto_auto_1fr] mt-8 lg:mt-14">
           {FOUNDERS.map((f) => (
-            <article key={f.key} className="rv grid gap-4 sm:gap-8 sm:grid-cols-[200px_minmax(0,1fr)] xl:grid-cols-[240px_minmax(0,1fr)]">
+            <article
+              key={f.key}
+              className="rv grid sm:gap-x-8 sm:grid-cols-[200px_minmax(0,1fr)] sm:grid-rows-[auto_auto_auto_auto_1fr] lg:row-span-5 lg:grid-rows-subgrid xl:grid-cols-[240px_minmax(0,1fr)]"
+            >
               <Parallax
                 src={f.photo}
                 alt={`Retrato de ${f.name} en duotono`}
-                sizes="(min-width: 1280px) 240px, (min-width: 640px) 200px, 100vw"
-                className="w-full aspect-square sm:aspect-[240/296] bg-warm border border-ink"
+                sizes="(min-width: 1280px) 240px, (min-width: 640px) 200px, 180px"
+                className="w-[180px] sm:w-full aspect-[240/296] bg-warm border border-ink sm:row-span-5 self-start"
                 position="center 30%"
-                zoom={f.zoom}
               />
-              <div className="flex flex-col">
-                <Mono tone="gris">{f.role}</Mono>
-                <h3 className="wh2 text-h2 mt-2 lg:mt-3">{f.name}</h3>
-                {f.cred ? <div className="text-cuerpo font-semibold mt-2">{f.cred}</div> : null}
-                <p className="wt mt-2.5 lg:mt-3">
-                  <Sc text={f.bio} />
-                </p>
-                <p className="mt-auto pt-3 lg:pt-4 flex flex-wrap gap-x-6 gap-y-2">
-                  <a href={f.webUrl} target="_blank" rel="noopener noreferrer" className="wm ul">
-                    {f.web}
-                    <span className="sr-only"> (se abre en otra pestaña)</span>
-                  </a>
-                  <a href={f.linkedin} target="_blank" rel="noopener noreferrer" className="wm ul">
-                    LinkedIn
-                    <span className="sr-only"> de {f.name} (se abre en otra pestaña)</span>
-                  </a>
-                </p>
-              </div>
+              <Mono tone="gris" className="mt-4 sm:mt-0">
+                {f.role}
+              </Mono>
+              <h3 className="wh2 text-h2 mt-2 lg:mt-3">{f.name}</h3>
+              <div className={f.cred ? "text-cuerpo font-semibold mt-2" : ""}>{f.cred}</div>
+              <p className="wt mt-2.5 lg:mt-3">
+                <Sc text={f.bio} />
+              </p>
+              <p className="self-end pt-3 lg:pt-4 flex flex-wrap gap-x-6 gap-y-2">
+                <a href={f.webUrl} target="_blank" rel="noopener noreferrer" className="wm ul inline-flex items-end min-h-6">
+                  {f.web}
+                  <span className="sr-only"> (se abre en otra pestaña)</span>
+                </a>
+                <a href={f.linkedin} target="_blank" rel="noopener noreferrer" className="wm ul inline-flex items-end min-h-6">
+                  LinkedIn
+                  <span className="sr-only"> de {f.name} (se abre en otra pestaña)</span>
+                </a>
+              </p>
             </article>
           ))}
         </div>

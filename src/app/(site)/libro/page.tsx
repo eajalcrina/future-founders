@@ -328,7 +328,7 @@ function Authors() {
         <div className="grid gap-8 lg:gap-16 sm:grid-cols-2 mt-8 lg:mt-11">
           {FOUNDERS.map((f) => (
             <div key={f.key} className="rv grid gap-5 grid-cols-[96px_minmax(0,1fr)] lg:grid-cols-[120px_minmax(0,1fr)] items-start">
-              <Parallax src={f.photo} alt={`Retrato de ${f.name} en duotono`} sizes="120px" className="w-full aspect-[160/196] bg-warm border border-ink" position="center 30%" zoom={f.zoom} />
+              <Parallax src={f.photo} alt={`Retrato de ${f.name} en duotono`} sizes="120px" className="w-full aspect-[160/196] bg-warm border border-ink" position="center 30%" />
               <div>
                 <Mono tone="gris">{f.role}</Mono>
                 <h3 className="wh2 text-h2 mt-2.5">{f.name}</h3>
