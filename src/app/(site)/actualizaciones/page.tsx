@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   alternates: { canonical: "/actualizaciones" },
 };
 
+/** La columna «Valor vigente» aparece cuando al menos una cifra tiene su valor del año; mientras tanto, el aviso va una vez bajo el titular. */
+const HAY_VIGENTE = ACTUALIZACIONES.some((c) => c.valores.some((v) => v.vigente));
+const COLS = HAY_VIGENTE ? "lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]" : "lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]";
+
 export default function ActualizacionesPage() {
   return (
     <>
@@ -18,7 +22,7 @@ export default function ActualizacionesPage() {
           <HeroHead id="act-h" label={["Doble Agente", "Anexos por país"]} title="Valores del año" />
           <p className="lead mt-5 lg:mt-7 max-w-[780px]">
             Las cifras que cambian cada año van marcadas «valor 2026» en el libro. Aquí está cada una con el capítulo o la plantilla que la usa y el sitio oficial donde
-            verificas la del año en que calculas.
+            verificas la del año en que calculas.{HAY_VIGENTE ? "" : " Cuando la autoridad fije el valor del año, lo sumamos a la tabla."}
           </p>
           <nav aria-label="Países" className="flex flex-wrap gap-x-6 gap-y-2 mt-7">
             {ACTUALIZACIONES.map((c) => (
@@ -42,16 +46,16 @@ export default function ActualizacionesPage() {
               </Mono>
             </div>
             <div className="mt-6 border-b border-t border-ink lg:border-t-0">
-              <div className="hidden lg:grid grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] gap-6 py-2 wm text-ink3 font-medium border-t border-b border-ink" aria-hidden="true">
+              <div className={`hidden lg:grid ${COLS} gap-6 py-2 wm text-ink3 font-medium border-t border-b border-ink`} aria-hidden="true">
                 <span>Cifra</span>
                 <span>Valor 2026 en el libro</span>
                 <span>Dónde se usa</span>
-                <span>Valor vigente</span>
+                {HAY_VIGENTE && <span>Valor vigente</span>}
                 <span>Dónde verificar</span>
               </div>
               <ul>
                 {c.valores.map((v) => (
-                  <li key={v.nombre} className="grid gap-x-6 gap-y-2 py-4 border-t border-ink3 first:border-t-0 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
+                  <li key={v.nombre} className={`grid gap-x-6 gap-y-2 py-4 border-t border-ink3 first:border-t-0 ${COLS}`}>
                     <span className="text-cuerpo font-bold leading-[1.35]">{v.nombre}</span>
                     <span className="text-cuerpo">
                       <span className="wm text-ink2 lg:hidden block">Valor 2026 en el libro</span>
@@ -61,10 +65,12 @@ export default function ActualizacionesPage() {
                       <span className="wm text-ink2 lg:hidden block">Dónde se usa</span>
                       {v.donde}
                     </span>
-                    <span className="text-recuadro leading-[1.4]">
-                      <span className="wm text-ink2 lg:hidden block">Valor vigente</span>
-                      {v.vigente ?? <span className="text-ink2">Se publica cuando la autoridad lo fija</span>}
-                    </span>
+                    {HAY_VIGENTE && (
+                      <span className="text-recuadro leading-[1.4]">
+                        <span className="wm text-ink2 lg:hidden block">Valor vigente</span>
+                        {v.vigente ?? <span className="text-ink2">Pendiente</span>}
+                      </span>
+                    )}
                     <span className="text-recuadro leading-[1.4]">
                       <span className="wm text-ink2 lg:hidden block">Dónde verificar</span>
                       <a href={v.fuente.href} target="_blank" rel="noopener noreferrer" className="ul font-semibold [overflow-wrap:anywhere]">
@@ -96,8 +102,7 @@ export default function ActualizacionesPage() {
         <div className="wrap py-10 lg:py-14 grid gap-3 max-w-[900px]">
           <p className="text-cuerpo font-bold">Última revisión: {REVISION}</p>
           <Nota>
-            Este libro es orientación general. No es asesoría legal, tributaria ni financiera, y las reglas cambian entre países y con el tiempo. Antes de firmar un contrato,
-            aceptar un rol o emitir tu primer comprobante, valida tu caso con un especialista.
+            Las reglas cambian entre países y con el tiempo. Antes de firmar un contrato, aceptar un rol o emitir tu primer comprobante, valida tu caso con un especialista.
           </Nota>
           <p className="text-recuadro">
             Si tu país no está aquí, el método funciona igual; lleva las preguntas de cada anexo a tu abogado o abogada laboral y a tu contador o contadora.{" "}

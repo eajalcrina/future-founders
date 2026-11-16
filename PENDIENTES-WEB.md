@@ -16,8 +16,14 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 - [ ] **Puerta de impresión.** Antes de mandar el libro a imprenta: cada plantilla con «Calculadora en línea» en el workbook tiene su calculadora en `/workbook/<id>` en producción (hoy: K.1, 1.1, 2.1, 5.1, 6.1, 9.1, 10.1, 11.1, 13.1, 14.1, 17.1, 18.1 y 19.1), y `futurefounders.pe/workbook`, `/kit`, `/actualizaciones` y `/agenda` responden.
 - [x] **Privacidad y términos.** /privacidad y /terminos publicadas en la rama (16/11/2026), enlazadas en el pie y bajo cada formulario. Texto en `src/content/legal.ts`.
 - [ ] **Entrega del PDF pagado con Mercado Pago.** Definir quién envía el archivo, en qué plazo y si hay devolución. Hoy la web no promete plazo ni forma de entrega (se quitó «Te llega por correo al confirmar el pago» de /libro y «la entrega es por correo» de /terminos, R5b): el envío sería manual. Con la decisión, sumar una línea a la tarjeta «Libro en PDF» y al bloque «Compras» de /terminos.
-- [ ] **Cifras de la casa frente a las webs personales.** «USD 20M+ facturados» convive en la portada con «cuyo portafolio facturó USD 26 millones en 2025» (bio de Eddie), y «USD 1,5M+ capital levantado» frente a «USD 2,7M levantados» en eddieajalcrina.com y lorenzoortiz.co. Opciones: actualizar las cifras, o precisar en `CIFRAS_NOTA` el periodo y qué suman.
+- [x] **Cifras de la casa frente a las webs personales.** Resuelto en la R5c (USD 26M+ y USD 2,7M+).
 - [ ] **Privacidad y términos: texto base, pendiente de revisión legal.** /privacidad ya nombra a Vercel como alojamiento que procesa cada envío (R5b). Que un abogado revise las dos páginas. Preguntas abiertas para el dueño: plazo de conservación de los datos, ley aplicable y jurisdicción, y política de devolución del PDF. Confirmar que el hosting no tiene activada analítica propia (la página dice que no hay cookies de publicidad ni de seguimiento; en el repo no hay analítica).
+
+## Ronda R6 (16/11/2026): preguntas abiertas
+
+- [ ] **PDF completo del libro en `public/`.** `public/Libro FF-MOD06.pdf` (174 páginas, «El manual para fundadores con salario», subido el 30/10/2026) se publica tal cual en `futurefounders.pe/Libro%20FF-MOD06.pdf`, aunque ninguna página lo enlaza. Mientras el PDF del libro se vende, ¿lo borramos del repositorio (opción A), lo movemos fuera de `public/` (opción B) o se queda (opción C)? No se tocó sin tu respuesta.
+- [ ] **Credencial de Lorenzo.** Eddie lleva una línea de credencial («Docente en MIT Professional Education desde 2022») y Lorenzo no, desde que salió la del Bio Business Playbook (R5c). Desde la R6b la credencial va pegada a la bio (cargo, nombre y enlaces alineados por filas), así que ya no deja hueco en la ficha de Lorenzo. ¿Se suma una credencial de lorenzoortiz.co (opción A), se quita la de Eddie y su dato pasa a la bio (opción B) o se deja así (opción C)?
+- [ ] **Tono de los retratos.** Los dos quedaron a la misma escala; la foto de Eddie tiene menos contraste que la de Lorenzo. Si hay una foto de Eddie de más resolución (más de 600 px), conviene reemplazarla.
 
 ## Rediseño R4 y R5: decisiones de diseño
 
@@ -46,7 +52,7 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 
 - [x] Bio de Eddie: la frase «La escalera de cuatro niveles del método es su idea» salió (no está en eddieajalcrina.com).
 - [ ] Credencial de Lorenzo: pasó de «Cofundador y COO del Fondo de Impacto» (se leía como el mismo cargo que «COO y cofundador») a «Coautor del Bio Business Playbook», que está en lorenzoortiz.co (R5b). Confirmar.
-- [ ] Bio de Eddie: para que se lea el «sin dejar el cargo», propuesta sin aplicar: «En 2021, todavía en Alicorp-Vitapro, cofundó Redesign Lab». Las fechas de su web lo sostienen (Alicorp-Vitapro de 2019 a 2023, Redesign Lab en 2021); falta que Eddie lo confirme.
+- [x] Bio de Eddie (aplicada en la R5c): para que se lea el «sin dejar el cargo»: «En 2021, todavía en Alicorp-Vitapro, cofundó Redesign Lab». Las fechas de su web lo sostienen (Alicorp-Vitapro de 2019 a 2023, Redesign Lab en 2021); falta que Eddie lo confirme.
 - [ ] Bios de Eddie y Lorenzo: validar el texto nuevo (16/11/2026), escrito solo con datos de eddieajalcrina.com y lorenzoortiz.co. Salieron «Mentor de MIT» (la fuente dice «Docente»), «Singularity University Fellow», «vendió su primer activo» y «arquitecto de sistemas empresariales», que no están en las fuentes.
 - [ ] **Página de LinkedIn de la empresa.** El pie ya no enlaza el perfil personal de Eddie con el rótulo «LinkedIn». Si Future Founders abre una página de empresa, sumarla a la columna Contacto y a `sameAs` en `layout.tsx`.
 - [x] Cifras: son de Future Founders, suma de fundadores y participantes (decisión del dueño, 16/11/2026), con su nota bajo las cifras.

@@ -319,7 +319,7 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
         {next && (
           <div className="mt-5">
             <span className="wm text-ink2 block">Siguiente plantilla</span>
-            <LinkArrow href={`/workbook/${next.id}`} className="text-recuadro mt-1">
+            <LinkArrow href={`/workbook/${next.id}`} className="text-recuadro mt-1 min-h-6">
               {next.code} {next.title}
             </LinkArrow>
           </div>

@@ -201,7 +201,7 @@ export const ARCH_NOTE =
 export type Product = { tag: string; name: string; desc: string; meta: string; cta: string; href: string };
 export const PRODUCTS: Product[][] = [
   [
-    { tag: "Gratis", name: "Kit «Plan de salida» y diagnóstico de nivel", desc: "Cinco plantillas para saber cuántos meses aguantas sin sueldo y un cuestionario que te dice en qué nivel estás.", meta: "Unas 2 horas", cta: "Descargar el kit", href: "/kit" },
+    { tag: "Gratis", name: "Kit «Plan de salida» y Diagnóstico de nivel", desc: "Cinco plantillas para saber cuántos meses aguantas sin sueldo y un cuestionario que te dice en qué nivel estás.", meta: "Unas 2 horas", cta: "Descargar el kit", href: "/kit" },
     { tag: "Libro", name: "Doble Agente", desc: "21 capítulos en cinco partes, con una plantilla del workbook por capítulo.", meta: "Ebook, impreso y PDF", cta: "Ver el libro", href: "/libro" },
     { tag: "Taller", name: "Tu primer rol parcial", desc: "Escribes tu oferta en una página y le pones precio, junto a ejecutivos que están en el mismo punto.", meta: "2 sesiones de 3 horas en vivo", cta: "Ver fechas", href: "/programas#taller" },
     { tag: "Programa", name: "Primer Mandato", desc: "Cohorte en vivo para llegar a tu primer comprobante, con oferta, precio, contrato modelo, 30 cuentas objetivo y 10 conversaciones.", meta: "8 semanas, de 12 a 20 personas", cta: "Ver la próxima cohorte", href: "/programas#primer-mandato" },
@@ -213,7 +213,7 @@ export const PRODUCTS: Product[][] = [
     { tag: "Acompañamiento", name: "Sesiones individuales de transición", desc: "Planificas tu salida midiendo las dos condiciones del punto de no retorno.", meta: "6 a 8 sesiones", cta: "Agenda 30 minutos", href: "/programas#sesiones" },
   ],
   [
-    { tag: "Coconstrucción", name: "Firma o producto propio", desc: "Convertimos tu portafolio en una firma o un producto, junto a ti, en un sprint de 90 días.", meta: "Sprint de 90 días", cta: "Agenda 30 minutos", href: "/programas#coconstruccion" },
+    { tag: "Sprint", name: "Coconstrucción", desc: "Convertimos tu portafolio en una firma o un producto, junto a ti, en un sprint de 90 días.", meta: "Sprint de 90 días", cta: "Agenda 30 minutos", href: "/programas#coconstruccion" },
   ],
 ];
 
@@ -246,7 +246,6 @@ export const FOUNDERS = [
     webUrl: "https://eddieajalcrina.com",
     linkedin: "https://www.linkedin.com/in/eddieajalcrina/",
     photo: "/img/eddie-ajalcrina.webp",
-    zoom: 1.22,
   },
   {
     key: "lorenzo",
@@ -258,7 +257,6 @@ export const FOUNDERS = [
     webUrl: "https://lorenzoortiz.co",
     linkedin: "https://www.linkedin.com/in/lorenzoortiz/",
     photo: "/img/lorenzo-ortiz.webp",
-    zoom: 1,
   },
 ];
 

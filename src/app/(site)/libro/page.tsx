@@ -285,7 +285,7 @@ function Workbook() {
 function Formats() {
   const fmts = [
     { n: "Ebook e impreso", w: "Amazon", d: "El ebook se lee en Kindle, en una tableta o en la computadora. El impreso es una edición de bolsillo ejecutivo de 150 × 220 mm, impresa por Amazon.", btn: <AmazonBtn className="w-full" /> },
-    { n: "Libro en PDF", w: CHECKOUT_URL ? "Mercado Pago" : "WhatsApp", d: CHECKOUT_URL ? "Para leer en una tableta o en la computadora. Te llega a tu correo en un plazo máximo de 6 horas después del pago." : "Para leer en una tableta o en la computadora, sin pasar por Amazon.", btn: <MercadoPagoBtn className="w-full" /> },
+    { n: "Libro en PDF", w: CHECKOUT_URL ? "Mercado Pago" : "PDF", d: CHECKOUT_URL ? "Para leer en una tableta o en la computadora. Te llega a tu correo en un plazo máximo de 6 horas después del pago." : "Para leer en una tableta o en la computadora, sin pasar por Amazon.", btn: <MercadoPagoBtn className="w-full" /> },
   ];
   return (
     <section id="formatos" className="bg-warm" aria-labelledby="formatos-t">
@@ -312,7 +312,7 @@ function Formats() {
           ))}
         </div>
         <Nota className="mt-6 lg:mt-8 max-w-[980px]">
-          El libro no promete ingresos ni plazos. Cada persona parte de un sueldo, un ahorro y un mercado distintos, y el libro te ayuda a medir los tuyos.
+          Cada persona parte de un sueldo, un ahorro y un mercado distintos, y el libro te ayuda a medir los tuyos.
         </Nota>
       </div>
     </section>
@@ -328,11 +328,11 @@ function Authors() {
         <div className="grid gap-8 lg:gap-16 sm:grid-cols-2 mt-8 lg:mt-11">
           {FOUNDERS.map((f) => (
             <div key={f.key} className="rv grid gap-5 grid-cols-[96px_minmax(0,1fr)] lg:grid-cols-[120px_minmax(0,1fr)] items-start">
-              <Parallax src={f.photo} alt={`Retrato de ${f.name} en duotono`} sizes="120px" className="w-full aspect-[160/196] bg-warm border border-ink" position="center 30%" zoom={f.zoom} />
+              <Parallax src={f.photo} alt={`Retrato de ${f.name} en duotono`} sizes="120px" className="w-full aspect-[160/196] bg-warm border border-ink" position="center 30%" quieto />
               <div>
                 <Mono tone="gris">{f.role}</Mono>
                 <h3 className="wh2 text-h2 mt-2.5">{f.name}</h3>
-                {f.cred ? <p className="text-cuerpo mt-2">{f.cred}</p> : null}
+                {f.cred ? <p className="text-cuerpo font-semibold mt-2">{f.cred}</p> : null}
               </div>
             </div>
           ))}

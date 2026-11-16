@@ -143,7 +143,7 @@ export default function KitPage() {
       <FinalCta
         title="Llénalo esta semana"
         text="La K.1 toma 20 minutos y te deja el dato del que parte todo el método."
-        button="Enviarme el kit"
+        button="Recibir el kit"
       />
     </>
   );
