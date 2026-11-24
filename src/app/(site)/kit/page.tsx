@@ -23,9 +23,6 @@ export default function KitPage() {
         <div className="wrap pt-10 pb-12 lg:pt-20 lg:pb-[104px] grid gap-10 lg:gap-24 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)] items-start">
           <div>
             <HeroHead id="kit-h" label={["Kit gratuito", "Plan de salida"]} title="Calcula cuántos meses aguantas sin sueldo" />
-            <p className="lead mt-6 lg:mt-8 max-w-[680px]">
-              Si tienes empleo, el kit te dice cuánto tiempo tendrías si tu cargo desaparece. Si ya saliste, ordena las decisiones de las primeras semanas.
-            </p>
             <dl className="rv-kids grid grid-cols-[1fr_auto_1fr] sm:grid-cols-3 gap-4 lg:gap-6 mt-8 lg:mt-11 max-w-[700px]">
               {[
                 ["5", "plantillas, K.1 a K.5"],
@@ -52,7 +49,6 @@ export default function KitPage() {
             className="max-w-[860px]"
             label={["Contenido", "K.1 a K.5"]}
             title="Cada plantilla termina en algo que puedes comprobar"
-            sub="Un número, una respuesta o una lista de nombres. Toca una plantilla para ver qué pide y qué datos necesitas."
           />
           <div className="hidden lg:grid lg:grid-cols-[92px_48px_340px_minmax(0,1fr)_100px] gap-6 mt-11 pb-2" aria-hidden="true">
             <span className="col-start-4">
@@ -103,7 +99,6 @@ export default function KitPage() {
             className="max-w-[900px]"
             label={["Calculadora", "Plantilla K.1"]}
             title="Prueba la K.1 con los números de Carmen o de Javier"
-            sub="Así funciona la primera plantilla del kit. Cambia los dos números por los tuyos y verás tu runway con un decimal."
           />
           <div className="mt-8 lg:mt-12">
             <RunwayCalc />

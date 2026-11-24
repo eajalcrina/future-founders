@@ -216,9 +216,6 @@ export default function RunwayCalc({ nivel = 3 }: { nivel?: 2 | 3 }) {
           <Titulo className="ws text-figura mt-2" aria-live="polite">
             {title}
           </Titulo>
-          <p className="text-recuadro text-ink3 mt-1.5">
-            {isEj ? `Runway de ${ej.name} en meses, con su costo de vida actual, frente al colchón mínimo de 6 meses` : "Tu runway en meses frente al colchón mínimo de 6 meses"}
-          </p>
         </div>
 
         <div className="relative mt-7 h-[124px] max-w-[620px]" role="img" aria-label={runway !== null ? `Barra: ${fmtNum(runway, 1)} meses de runway; el mínimo recomendado es 6.` : "Barra sin datos"}>

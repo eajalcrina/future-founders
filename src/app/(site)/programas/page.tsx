@@ -30,7 +30,7 @@ export default function ProgramasPage() {
         <div className="wrap pt-10 pb-12 lg:pt-20 lg:pb-[88px]">
           <HeroHead id="prog-h" label={["Programas", "Ordenados por nivel"]} title="Lo que te acompaña en cada nivel" className="max-w-[1100px]" />
           <p className="lead mt-5 lg:mt-8 max-w-[760px]">
-            Cinco programas, del taller de dos sesiones al sprint de 90 días. Cada uno dice para qué nivel es y qué necesitas tener antes.
+            Cinco programas, del taller de dos sesiones al sprint de 90 días.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-8 mt-7 lg:mt-9">
             <LinkArrow href="/diagnostico" className="text-cuerpo">
@@ -118,7 +118,7 @@ export default function ProgramasPage() {
               id="postular-t"
               label={["Postulación", "Fechas y cupos"]}
               title="Te escribimos con las fechas de la próxima convocatoria"
-              sub="Elige el programa. Las fechas, los cupos y las condiciones se publican con cada convocatoria y te las enviamos por correo."
+              sub="Las fechas, los cupos y las condiciones se publican con cada convocatoria."
             />
             <p className="text-cuerpo mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-2">
               <span>Si prefieres conversar antes,</span>

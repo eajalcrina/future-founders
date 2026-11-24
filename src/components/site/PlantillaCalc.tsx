@@ -5,7 +5,7 @@ import type { Aviso, CalcItem, CalcRow, CalcTable } from "@/content/workbook";
 import { VACIO, computeAll, evaluate, exampleInputs, formatVacio, formatVal, isInput, isRow, type Val } from "@/lib/calc";
 import { fmtNum, parseNum } from "@/lib/format";
 import { readSaved, writeSaved } from "@/lib/saved";
-import { Aviso as AvisoTxt, Icon, LinkArrow, Sc } from "./ui";
+import { Aviso as AvisoTxt, Detalle, Icon, LinkArrow, Sc } from "./ui";
 
 type Props = {
   id: string;
@@ -252,9 +252,8 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
         </span>
       </div>
       <div className="px-5 pt-3 pb-6">
-        <p className="text-recuadro leading-[1.45] text-ink2 pb-3">
-          Hace las cuentas de la {code} con las mismas filas del workbook. Escribe en tu moneda o en dólares, la misma en todo el workbook.
-        </p>
+        <p className="text-recuadro leading-[1.45] text-ink2">Escribe en tu moneda o en dólares, la misma en todo el workbook.</p>
+        <Detalle className="pb-1">Hace las cuentas de la {code} con las mismas filas del workbook.</Detalle>
         {pending.length > 0 && (
           <div className="mb-3 px-3 py-2.5 bg-warm text-recuadro leading-[1.4] filete-sup">
             Tienes datos guardados de otra plantilla: {pending.map((im) => `${im.label.split(" (")[0]} ${im.value}`).join("; ")}.{" "}

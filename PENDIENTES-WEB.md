@@ -19,6 +19,12 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 - [x] **Cifras de la casa frente a las webs personales.** Resuelto en la R5c (USD 26M+ y USD 2,7M+).
 - [ ] **Privacidad y términos: texto base, pendiente de revisión legal.** /privacidad ya nombra a Vercel como alojamiento que procesa cada envío (R5b). Que un abogado revise las dos páginas. Preguntas abiertas para el dueño: plazo de conservación de los datos, ley aplicable y jurisdicción, y política de devolución del PDF. Confirmar que el hosting no tiene activada analítica propia (la página dice que no hay cookies de publicidad ni de seguimiento; en el repo no hay analítica).
 
+## Ronda R7 (24/11/2026): sin textos sobreexplicativos
+
+- [x] **Regla general aplicada.** Textos sobreexplicativos quitados, recortados o movidos a «Detalle» en todas las rutas (regla en `docs/reglas-diseno.md`, sección 6 ter). Lista por página en `web-r7/CANDIDATOS.md`.
+- [ ] **Publicar.** Rama `claude/clever-edison-pcwxrr`, sin publicar: espera el «publica» del dueño.
+- [ ] **Decisiones abiertas para el dueño.** Se conservaron, por no ser claramente redundantes: la segunda línea del héroe de la portada («Avanzas con tu cargo a la vista y sin apostar tu estabilidad a un solo salto.»), la nota de /libro#formatos («Cada persona parte de un sueldo, un ahorro y un mercado distintos…») y la de /programas («Cada programa trabaja sobre tus números y tu mercado…»), que son la pareja de la R6b, y la frase del pie («Acompañamos a ejecutivos senior…»). Con la variable de Mercado Pago, la línea de 6 horas aparece dos veces en /libro#formatos (bajada y tarjeta del PDF): no se tocó por ser texto fijado por el dueño. ¿Se quita alguna?
+
 ## Ronda R6 (16/11/2026): preguntas abiertas
 
 - [ ] **PDF completo del libro en `public/`.** `public/Libro FF-MOD06.pdf` (174 páginas, «El manual para fundadores con salario», subido el 30/10/2026) se publica tal cual en `futurefounders.pe/Libro%20FF-MOD06.pdf`, aunque ninguna página lo enlaza. Mientras el PDF del libro se vende, ¿lo borramos del repositorio (opción A), lo movemos fuera de `public/` (opción B) o se queda (opción C)? No se tocó sin tu respuesta.

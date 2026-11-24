@@ -85,7 +85,6 @@ function Method() {
             className="max-w-[820px]"
             label={["El método"]}
             title="Subes de nivel cuando aparece una señal en tu estado de cuenta"
-            sub="Son cuatro niveles, de un sueldo a varios ingresos propios. Elige el peldaño que describe tu situación y mira qué te toca hacer ahora."
           />
         </div>
         <div className="mt-10 lg:mt-14 border-t border-ink pt-3">
@@ -163,12 +162,7 @@ function Who() {
           className="max-w-[980px]"
           label={["Para quién es"]}
           title="Tu punto de partida decide tu primera plantilla"
-          sub={
-            <>
-              <span className="block">Para gerentes, directores y VP de 38 a 55 años, con 12 a 25 años de carrera en empresas grandes de Latinoamérica.</span>
-              <span className="block mt-2">El libro sigue a cuatro arquetipos. Busca el que se parece a tu situación.</span>
-            </>
-          }
+          sub="Para gerentes, directores y VP de 38 a 55 años, con 12 a 25 años de carrera en empresas grandes de Latinoamérica."
         />
         <div className="rv-kids grid gap-4 lg:gap-6 md:grid-cols-2 2xl:grid-cols-4 mt-8 lg:mt-14">
           {ARCH.map((a) => (

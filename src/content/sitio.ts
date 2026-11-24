@@ -213,7 +213,7 @@ export const PRODUCTS: Product[][] = [
     { tag: "Acompañamiento", name: "Sesiones individuales de transición", desc: "Planificas tu salida midiendo las dos condiciones del punto de no retorno.", meta: "6 a 8 sesiones", cta: "Agenda 30 minutos", href: "/programas#sesiones" },
   ],
   [
-    { tag: "Sprint", name: "Coconstrucción", desc: "Convertimos tu portafolio en una firma o un producto, junto a ti, en un sprint de 90 días.", meta: "Sprint de 90 días", cta: "Agenda 30 minutos", href: "/programas#coconstruccion" },
+    { tag: "Sprint", name: "Coconstrucción", desc: "Convertimos tu portafolio en una firma o un producto, junto a ti.", meta: "Sprint de 90 días", cta: "Agenda 30 minutos", href: "/programas#coconstruccion" },
   ],
 ];
 

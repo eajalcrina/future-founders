@@ -44,11 +44,11 @@ const SAMPLES = [
   { src: "/img/muestra-plantilla-1-1.webp", alt: "Páginas 41 y 42 del capítulo 1: el ejemplo resuelto de la plantilla 1.1 y el cierre con las tres acciones" },
 ];
 
-const INCL: { icon: "plantilla" | "documento" | "accion" | "formula"; t: string; d: string }[] = [
+const INCL: { icon: "plantilla" | "documento" | "accion" | "formula"; t: string; d?: string }[] = [
   { icon: "plantilla", t: "Kit «Plan de salida»", d: "Cinco plantillas, K.1 a K.5, para tu runway, tu contrato, tu salida, tus primeros 30 días y tus primeras 20 llamadas." },
   { icon: "documento", t: "21 plantillas, una por capítulo", d: "Cada una toma de 15 a 40 minutos con los datos a mano y deja una decisión o un dato nuevo sobre tu situación." },
   { icon: "accion", t: "Las tres acciones de cada capítulo", d: "Lo que haces esa semana, escrito y con fecha." },
-  { icon: "formula", t: "Los cálculos de los cuatro arquetipos", d: "Las cuentas de Carmen, Javier, Andrea y Rodrigo, para que compares con las tuyas." },
+  { icon: "formula", t: "Los cálculos de los cuatro arquetipos" },
 ];
 
 const BOOK_LD = {
@@ -150,7 +150,7 @@ function Method() {
     <section id="metodo" className="border-t border-ink" aria-labelledby="metodo-t">
       <span id="indice" aria-hidden="true" />
       <div className="wrap pt-12 pb-14 lg:pt-[88px] lg:pb-24">
-        <SecHead id="metodo-t" className="max-w-[760px]" label={["El método"]} title="El método en 21 ideas" sub="Una idea por capítulo, en el orden del libro." />
+        <SecHead id="metodo-t" className="max-w-[760px]" label={["El método"]} title="El método en 21 ideas" />
         <div className="mt-8 lg:mt-12 border-b border-ink">
           {TOC.map((r, i) => (
             <ParteMetodo
@@ -224,7 +224,7 @@ function Samples() {
           className="max-w-[860px]"
           label={["Muestra", "Páginas del interior"]}
           title="Cada capítulo abre con un caso y cierra con su plantilla"
-          sub="El caso es de uno de los cuatro arquetipos. En el medio va un marco con nombre que explica la idea con números."
+          sub="En el medio va un marco con nombre que explica la idea con números."
         />
         <div className="rv-kids grid gap-8 lg:gap-x-10 lg:gap-y-12 md:grid-cols-2 mt-8 lg:mt-12">
           {SAMPLES.map((s) => (
@@ -258,7 +258,7 @@ function Workbook() {
                 </span>
                 <div>
                   <div className="wh3 text-h3">{x.t}</div>
-                  <p className="text-recuadro leading-[1.45] text-ink2 mt-1.5">{x.d}</p>
+                  {x.d && <p className="text-recuadro leading-[1.45] text-ink2 mt-1.5">{x.d}</p>}
                 </div>
               </li>
             ))}
@@ -285,7 +285,7 @@ function Workbook() {
 function Formats() {
   const fmts = [
     { n: "Ebook e impreso", w: "Amazon", d: "El ebook se lee en Kindle, en una tableta o en la computadora. El impreso es una edición de bolsillo ejecutivo de 150 × 220 mm, impresa por Amazon.", btn: <AmazonBtn className="w-full" /> },
-    { n: "Libro en PDF", w: CHECKOUT_URL ? "Mercado Pago" : "PDF", d: CHECKOUT_URL ? "Para leer en una tableta o en la computadora. Te llega a tu correo en un plazo máximo de 6 horas después del pago." : "Para leer en una tableta o en la computadora, sin pasar por Amazon.", btn: <MercadoPagoBtn className="w-full" /> },
+    { n: "Libro en PDF", w: CHECKOUT_URL ? "Mercado Pago" : "PDF", d: CHECKOUT_URL ? "Para leer en una tableta o en la computadora. Te llega a tu correo en un plazo máximo de 6 horas después del pago." : "Para leer en una tableta o en la computadora.", btn: <MercadoPagoBtn className="w-full" /> },
   ];
   return (
     <section id="formatos" className="bg-warm" aria-labelledby="formatos-t">

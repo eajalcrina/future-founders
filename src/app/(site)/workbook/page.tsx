@@ -49,7 +49,7 @@ export default function WorkbookIndex() {
         <div className="grid gap-10 lg:gap-24 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)] items-start mt-6 lg:mt-10">
           <div>
             <div className="lead max-w-[760px]">
-              <p>Cada capítulo del libro cierra con un código QR que lleva a su plantilla. Aquí ves para qué sirve cada una y en qué capítulo está.</p>
+              <p>Cada capítulo del libro cierra con un código QR que lleva a su plantilla.</p>
               <p className="mt-3 flex gap-2 items-baseline">
                 <span className="inline-block align-[-2px] shrink-0">
                   <Icon name="formula" size={16} />

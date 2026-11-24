@@ -55,9 +55,7 @@ function PartPage({ num }: { num: string }) {
     <section>
       <div className="wrap pt-10 pb-14 lg:pt-20 lg:pb-24">
         <HeroHead label={["Workbook", `Parte ${num}`]} title={PARTES[num]} />
-        <p className="lead mt-5 lg:mt-7 max-w-[760px]">
-          La Parte {num} tiene {items.length} capítulos y una plantilla por capítulo. Llénalas en orden, porque cada una usa datos de la anterior.
-        </p>
+        <p className="lead mt-5 lg:mt-7 max-w-[760px]">Llénalas en orden, porque cada una usa datos de la anterior.</p>
         <ul className="mt-10 border-b border-ink">
           {items.map((p) => (
             <li key={p.id}>
@@ -100,6 +98,9 @@ function TemplatePage({ p }: { p: Plantilla }) {
       : []),
   ];
   const hasCalc = Boolean(p.calc) && p.id !== "k1";
+  // R7: «Antes de empezar» y el recuadro «trae» no se pintan cuando solo repiten «Necesitas antes» o el texto de arriba.
+  const introVisible = Boolean(p.intro && p.purpose) && !(p.uses.length > 0 && soloPlantillas(p.intro ?? ""));
+  const traeVisible = Boolean(p.trae) && !(p.uses.length > 0 && soloPlantillas(p.trae ?? "")) && !cubierto(p.trae ?? "", introVisible ? (p.intro ?? "") : "", p.uses.map((u) => u.code));
   return (
     <>
       <section>
@@ -117,16 +118,15 @@ function TemplatePage({ p }: { p: Plantilla }) {
             <p className="ws text-figura mt-3">
               <Sc text={p.purpose ?? p.intro ?? ""} />
             </p>
-            {p.intro && p.purpose && (
+            {introVisible && (
               <>
                 <Mono className="mt-8">Antes de empezar</Mono>
                 <p className="wt mt-2.5">
-                  <Sc text={p.intro} />
+                  <Sc text={p.intro ?? ""} />
                 </p>
               </>
             )}
-            {/* Si «trae» solo nombra plantillas, ya lo dice «Necesitas antes»: no se repite */}
-            {p.trae && !(p.uses.length > 0 && soloPlantillas(p.trae)) && (
+            {traeVisible && p.trae && (
               <p className="text-recuadro mt-4 px-3 py-2.5 bg-warm inline-block">
                 <Sc text={p.trae} />
               </p>
@@ -211,7 +211,7 @@ function TemplatePage({ p }: { p: Plantilla }) {
               <p className="text-recuadro leading-[1.45] mt-2">
                 {p.kind === "kit"
                   ? "En el kit «Plan de salida» o en el workbook. Los dos se descargan gratis."
-                  : "En el workbook, en una tableta, en la computadora o en papel. La plantilla te dice en qué página del libro está su ejemplo resuelto."}
+                  : "En el workbook, en una tableta, en la computadora o en papel."}
               </p>
               <div className="mt-5">
                 {p.kind === "kit" ? (
@@ -274,9 +274,27 @@ function TemplatePage({ p }: { p: Plantilla }) {
   );
 }
 
-/** «Trae la K.1 y la K.3.», «Trae tu plantilla 7.1.»: el texto no dice nada más que los códigos de otras plantillas. */
+/** «Trae la K.1 y la K.3.», «Usa tus números de la K.1 y la K.3.»: el texto no dice nada más que los códigos de otras plantillas. */
 function soloPlantillas(t: string) {
-  return t.replace(/\b(Trae|tus?|la|las|plantillas?|y)\b/g, "").replace(/K\.\d+|\d+\.\d+/g, "").replace(/[\s.,]/g, "") === "";
+  return t.replace(/(?<![\p{L}])(Trae|Usa|tus?|la|las|de|números|plantillas?|y)(?![\p{L}])/gu, "").replace(/K\.\d+|\d+\.\d+/g, "").replace(/[\s.,]/g, "") === "";
+}
+
+const VACIAS = new Set(["trae", "tu", "de", "la", "el", "en", "al", "si", "es", "un", "ya", "tus", "las", "los", "del", "una", "con", "que", "para", "por", "también"]);
+
+/**
+ * «Trae tu contrato y el código de ética de tu empresa.» tras «Busca tu contrato, … el código de ética …»;
+ * «Trae la 11.1, tu lista de la 14.1 y tu mapa del comprador de la 8.1.» con las tres en «Necesitas antes».
+ * Cada parte del recuadro nombra una plantilla de «Necesitas antes» o solo usa palabras que ya están en «Antes de empezar».
+ */
+function cubierto(trae: string, intro: string, usos: string[]) {
+  const base = intro.toLowerCase();
+  const partes = trae.split(/,|\s(?:y|o)\s/).map((x) => x.trim()).filter(Boolean);
+  return partes.every((parte) => {
+    const codigos = parte.match(/K\.\d+|\d+\.\d+/g) ?? [];
+    if (codigos.length > 0) return codigos.every((c) => usos.includes(c) || intro.includes(c));
+    const palabras = (parte.toLowerCase().match(/\p{L}{2,}/gu) ?? []).filter((w) => !VACIAS.has(w));
+    return palabras.length > 0 && Boolean(base) && palabras.every((w) => new RegExp(`(?<!\\p{L})${w}(?!\\p{L})`, "u").test(base));
+  });
 }
 
 export default async function WorkbookPage({ params }: { params: Promise<{ id: string }> }) {

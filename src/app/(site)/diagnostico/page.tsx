@@ -22,8 +22,7 @@ export default function DiagnosticoPage() {
         <div>
           <HeroHead id="diag-h" label={["Gratis", `${CUANTAS} preguntas`]} title="Diagnóstico de nivel" />
           <p className="lead mt-5 lg:mt-7">
-            Responde con lo que ves hoy en tu estado de cuenta. El resultado te ubica en uno de los cuatro niveles de la escalera y te dice qué plantilla y qué capítulo
-            siguen.
+            Responde con lo que ves hoy en tu estado de cuenta. El resultado te dice qué plantilla y qué capítulo siguen.
           </p>
         </div>
         <div className="rv lg:col-start-2 lg:row-start-1 lg:row-span-2">

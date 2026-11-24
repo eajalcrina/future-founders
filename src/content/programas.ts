@@ -64,7 +64,7 @@ export const PROGRAMAS: Programa[] = [
     levelLabel: "Nivel 3",
     tag: "Sprint",
     name: "Coconstrucción",
-    desc: "Convertimos tu portafolio en una firma o un producto, junto a ti, en un sprint de 90 días.",
+    desc: "Convertimos tu portafolio en una firma o un producto, junto a ti.",
     format: "Sprint de 90 días",
     forWho: "Vives de tu portafolio y quieres que deje de depender solo de tus horas.",
     cta: "Agenda 30 minutos",

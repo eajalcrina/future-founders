@@ -1,6 +1,6 @@
 # Reglas de diseño de futurefounders.pe
 
-Estado: **en curso** (16/11/2026, ronda R6). Camino visual: el sistema de «Doble Agente», ronda R3. Referencia: el propio libro (PDF final de la R3).
+Estado: **en curso** (24/11/2026, ronda R7). Camino visual: el sistema de «Doble Agente», ronda R3. Referencia: el propio libro (PDF final de la R3).
 
 Público: ejecutivos de 38 a 55 años en Latinoamérica (gerentes, directores y VP). Tono: editorial, sobrio, con datos concretos; tuteo, solo español.
 
@@ -54,6 +54,7 @@ Fuente del sistema: `DESIGN-SYSTEM.md` y `tokens.css` de la R3 (carpeta `sistema
 - Accesibilidad (R6): los botones y enlaces repetidos llevan contexto para lectores de pantalla («Postular: Primer Mandato», «Ver la parte 01, Diagnóstico»); en `/workbook/k1` el titular de la figura de la calculadora es h2 (sigue al h1); en /kit, h3 bajo el h2 de la sección.
 - /programas#postular va sobre papel con filete superior: dos bloques contiguos con funciones distintas no comparten fondo, y el pie es papel cálido.
 - Línea de privacidad única bajo los cuatro formularios (`PrivacidadLinea`, texto en `PRIVACIDAD_LINEA` de `sitio.ts`), con el enlace a /privacidad.
+- Acordeón «Detalle» (`Detalle` en `ui.tsx`, R7): `details` y `summary` nativos, rótulo «Detalle» subrayado con el signo + que gira 45° al abrir, 44 px de alto como mínimo y el foco del sistema. Guarda un texto secundario útil que estorbaría entre un titular y su contenido (sección 6 ter). Hoy: la calculadora de cada plantilla del workbook.
 
 ## 5. Imágenes y diagramas
 - Retratos de Eddie y Lorenzo (R6): recortados sobre fondo sólido papel cálido `#E6E4E0`, el mismo del marco (`bg-warm`, filete de 1 px en tinta). El tamaño de las cabezas se iguala en el archivo, no con CSS: las dos a la misma escala y con el pelo al 12 % del alto, para que el parallax no corte la cabeza. Sin `zoom` en `Parallax`. Desde la R6b los retratos van quietos (`Parallax` con `quieto`, sin recorrido ni margen extra), para que el pelo no toque el filete del marco; el parallax sigue en la ilustración del inicio. El de Eddie se rehízo con borde suave y el suéter más oscuro (`web-r6/retrato/rehacer_eddie.py`, misma escala y encuadre). En celular el retrato mide 180 px de ancho (proporción 240/296), no el ancho de la pantalla, porque la foto de origen tiene 600 px.
@@ -117,14 +118,38 @@ Fuente del sistema: `DESIGN-SYSTEM.md` y `tokens.css` de la R3 (carpeta `sistema
 - «Se llena en una tableta, en la computadora o en papel»: formulario de descarga del workbook y «Dónde se llena» de cada plantilla.
 - «No es asesoría legal, tributaria ni financiera»: pie de todas las páginas y /terminos. La negación «no promete ingresos ni plazos» queda solo en el pie: las notas de /libro#formatos y /programas dicen solo lo que sí hace cada uno (R6b). /actualizaciones cierra con «Las reglas cambian… valida tu caso con un especialista», sin repetir el descargo.
 - /actualizaciones: la columna «Valor vigente» aparece solo cuando alguna cifra tiene `vigente`; mientras tanto, la entradilla lo dice una vez (R6b).
-- /workbook/[id]: el recuadro «trae» no se pinta cuando solo nombra plantillas que ya están en «Necesitas antes» (R6b). «Siguiente plantilla» mide 24 px de alto.
+- /workbook/[id]: el recuadro «trae» no se pinta cuando solo nombra plantillas que ya están en «Necesitas antes» (R6b), ni cuando cada parte suya ya está en «Antes de empezar» o en «Necesitas antes»; «Antes de empezar» no se pinta cuando solo nombra plantillas de «Necesitas antes» (R7, `soloPlantillas` y `cubierto` en la página; `workbook.ts` no se toca). Hoy el recuadro queda en la K.1 y la K.5. «Siguiente plantilla» mide 24 px de alto.
 - Portada, Programas: en celular el dato (duración, formato) va debajo del nombre del programa.
 - Arquetipos armados a partir de conversaciones reales: nota de la portada; /libro conserva el dato de los más de 30 ejecutivos.
 - Programas de cada nivel (R6): una vez en la portada, en la sección Programas, y en detalle en /programas. El panel de la escalera ya no repite «Te acompaña»; dice la señal, los capítulos y qué arquetipo empieza ahí. El resultado del Diagnóstico sí la conserva, porque ahí es la respuesta.
 - «Cómo se ve» bajo la escalera: un solo rótulo para la fila («Cómo se ve cada nivel»), no uno por columna.
 - «Señal para pasar al siguiente» (nivel 3: «Para sostener el nivel 3»): mismo rótulo en la escalera y en el Diagnóstico.
-- Cierre de la portada: habla de la K.1 y del envío del kit; «cinco plantillas, unas 2 horas» queda en el rótulo del héroe. Los dos cierres por correo usan el botón «Recibir el kit».
+- Cierre de la portada: habla de la K.1 (el envío del kit lo dice el formulario de al lado, R7); «cinco plantillas, unas 2 horas» queda en el rótulo del héroe. Los dos cierres por correo usan el botón «Recibir el kit».
 - Programas: rótulo = tipo, titular = nombre oficial (Taller / Tu primer rol parcial, Programa / Primer Mandato, Mastermind / Portafolio, Acompañamiento / Sesiones individuales de transición, Sprint / Coconstrucción).
+
+## 6 ter. Sin textos sobreexplicativos (regla general, 24/11/2026)
+Decisión del dueño (Lorenzo Ortiz), para todo el sitio y todos sus idiomas (hoy solo español), en textos visibles, metadatos e imágenes para compartir. Si el título o el subtítulo ya dice lo que hay en la sección, el texto que lo acompaña sobra. Directo al grano.
+
+Qué se quita:
+- Bajadas o descripciones cortas pegadas a un título que repiten lo que el título dice con otras palabras.
+- Frases que explican lo obvio de un bloque, un botón o un formulario («Déjanos tus datos y te enviaremos…», «Aquí encontrarás…», «En esta sección…», «Toca una plantilla para ver…»).
+- Descripciones de tarjetas que solo parafrasean el título de la tarjeta.
+- Textos que repiten algo que ya dice otra parte cercana de la misma página (una nota, una columna, la fila de datos de arriba).
+- Introducciones de página que anuncian lo que viene en vez de decirlo.
+
+Qué se conserva:
+- Datos, cifras, fechas, precios, plazos, entregables, condiciones y fuentes.
+- Preguntas frecuentes, metodología y contenido de fondo (lo que viene del libro: «La idea», «Antes de empezar», «Sabrás que terminaste cuando…»).
+- Cualquier texto que agregue una decisión, una condición o un dato que el título no dice.
+- Lo que el dueño fijó con fecha: titular del héroe, bios, cifras de la casa y su nota, textos legales, la línea de entrega del PDF en 6 horas, la línea de privacidad bajo los formularios y la baja con «baja».
+
+Cómo se aplica:
+- Prueba por texto: ¿agrega una cifra, un plazo, una condición, un entregable, una fuente o una decisión que el título no dice? Si sí, se queda. Si es mixto, se recorta a la parte con el dato, sin escribir palabras nuevas.
+- Si un texto secundario es útil pero estorba, no se borra: va al acordeón «Detalle» (sección 4) o a la página que corresponde.
+- No se inventa texto para reemplazar lo quitado y no se cambian datos.
+- El titular pasa a ser la entrada directa del contenido: `SecHead` sin `sub` deja el espacio normal entre titular y contenido (32 a 48 px), sin alturas reservadas.
+- Un `description` o un JSON-LD que reutilice una frase quitada no se vacía: se anota para el dueño.
+- La lista de la ronda R7 (qué se quitó, recortó y movió por página) está en la carpeta `web-r7` del proyecto (`CANDIDATOS.md`).
 
 ## 8. Plantillas para contenido en serie
 - `/workbook/[id]`: héroe con el código y el título de la plantilla, fila de datos (tiempo, capítulo, nivel, ejemplo resuelto, páginas), «Para qué sirve», «Antes de empezar», «Arriba de la hoja», «Lo que trabaja el capítulo», «Necesitas antes», «Sabrás que terminaste cuando…», calculadora si la tiene y navegación anterior y siguiente. Los textos salen de `src/content/workbook.ts`, que se genera con `npm run workbook`.
@@ -132,7 +157,7 @@ Fuente del sistema: `DESIGN-SYSTEM.md` y `tokens.css` de la R3 (carpeta `sistema
 
 ## 9. Estructura del código
 - Tokens: `src/app/globals.css` (bloques `@theme` y `:root`). Clases de componentes en `@layer components`, con sus `@media` dentro.
-- Componentes base en `src/components/site/ui.tsx`: `Mono`, `Jn`, `Sc`, `Hero`, `SecHead`, `Arrow`, `LinkArrow`, `Icon`, `Aviso`, `Lvl`, `Lectura`, `Nota`, `Btn`, `AgendaLink`, `PrivacidadLinea`, `MarcaLogo`.
+- Componentes base en `src/components/site/ui.tsx`: `Mono`, `Jn`, `Sc`, `Hero`, `SecHead`, `Detalle`, `Arrow`, `LinkArrow`, `Icon`, `Aviso`, `Lvl`, `Lectura`, `Nota`, `Btn`, `AgendaLink`, `PrivacidadLinea`, `MarcaLogo`.
 - Textos: `src/content/sitio.ts` (con `COPYRIGHT`, `RESPONSABLE`, `INSTAGRAM_URL`, `PRIVACIDAD_LINEA`, `SITUACIONES`, `CIFRAS_NOTA`), `programas.ts`, `actualizaciones.ts`, `testimonios.ts`, `legal.ts` (/privacidad y /terminos, plantilla `LegalPage.tsx`), `logos-terceros.ts` (trazados de Amazon y Mercado Pago con su fuente) e `ideas.ts` (generado por `npm run workbook` desde «La idea» de cada capítulo); las páginas llevan su texto propio.
 - Diagnóstico de nivel: preguntas, regla de nivel, siguiente paso y campos del registro en `src/lib/diagnostico.ts` (sin React). `npm test` recorre las 132 combinaciones (`scripts/test-diagnostico.mjs`).
 - Línea base al empezar (15/11/2026): 1 `!important` y 9 colores escritos a mano fuera de los tokens. Al cerrar esta pasada: 0 `!important` y 6 valores, todos en archivos donde el formato no admite variables (`layout.tsx` para el color del navegador, `og.tsx` para las imágenes generadas e `ilustraciones.ts`, que trae los SVG del libro), con los mismos valores de los tokens.
@@ -142,6 +167,7 @@ Fuente del sistema: `DESIGN-SYSTEM.md` y `tokens.css` de la R3 (carpeta `sistema
 - Los valores de `origen` de `DownloadForm.tsx` y `EmailCta.tsx` («Página del kit», «Cierre de página») van a la columna «Origen» de la hoja de registros, no son textos visibles. Los campos de cada formulario están en `src/lib/registro.ts` y en `apps-script/Code.gs`, y se cambian en los dos.
 
 ## 10. Estado del rediseño
+- Ronda R7, 24/11/2026: regla general «Sin textos sobreexplicativos» (sección 6 ter) aplicada a todas las rutas, sobre la rama `claude/clever-edison-pcwxrr`, sin publicar. Capturas y lista en la carpeta `web-r7` (`antes/`, `despues/`, `antes-despues.png`, `CANDIDATOS.md`).
 - Ronda R6b, 16/11/2026: hallazgos de la verificación R6 (Nosotros sin hueco, retratos quietos y recorte nuevo de Eddie, descargos una sola vez, /actualizaciones, workbook, celular).
 - Ronda R6, 16/11/2026: pasada de coherencia visual, propuesta de valor, accesibilidad, navegación y redundancias, con la voz sin IA, sobre la rama `claude/clever-edison-pcwxrr`. Capturas en la carpeta `web-r6` del proyecto del libro (`antes/` y `<ancho>_<ruta>.png`).
 - Ronda R5b, 16/11/2026: hallazgos de la revisión R5 (diff 214f3cb..4243531) que no eran decisión del dueño, sobre la misma rama y sin publicar. Capturas en `web-r5` (sobrescritas) y lámina `web-r5/antes-despues.png`.

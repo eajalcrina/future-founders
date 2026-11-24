@@ -126,6 +126,25 @@ export function SecHead({
   );
 }
 
+/**
+ * Acordeón «Detalle» (R7, 24/11/2026): guarda un texto secundario útil que estorbaría entre un titular y su contenido.
+ * Nativo (details/summary): se abre con teclado, el lector de pantalla anuncia si está abierto y el foco es el del sistema.
+ * El rótulo alcanza 44 px de alto para el dedo; el signo + gira 45° al abrir, como en /libro#metodo.
+ */
+export function Detalle({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return (
+    <details className={`detalle group/det ${className}`}>
+      <summary className="inline-flex items-center gap-2 min-h-11 cursor-pointer list-none text-recuadro font-semibold [&::-webkit-details-marker]:hidden">
+        <span className="ul">Detalle</span>
+        <span aria-hidden="true" className="inline-block transition-transform duration-150 group-open/det:rotate-45">
+          +
+        </span>
+      </summary>
+      <div className="text-recuadro leading-[1.45] text-ink2 pb-2">{children}</div>
+    </details>
+  );
+}
+
 /* ---------------------------------------------------------------- iconos */
 
 /** Icono «remisión» del sistema: trazo de 1,5, extremos cuadrados. Solo en enlaces de texto, nunca en botones. */

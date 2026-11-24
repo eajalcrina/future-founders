@@ -21,8 +21,7 @@ export default function ActualizacionesPage() {
         <div className="wrap pt-10 pb-12 lg:pt-20 lg:pb-[88px]">
           <HeroHead id="act-h" label={["Doble Agente", "Anexos por país"]} title="Valores del año" />
           <p className="lead mt-5 lg:mt-7 max-w-[780px]">
-            Las cifras que cambian cada año van marcadas «valor 2026» en el libro. Aquí está cada una con el capítulo o la plantilla que la usa y el sitio oficial donde
-            verificas la del año en que calculas.{HAY_VIGENTE ? "" : " Cuando la autoridad fije el valor del año, lo sumamos a la tabla."}
+            Las cifras que cambian cada año van marcadas «valor 2026» en el libro.{HAY_VIGENTE ? "" : " Cuando la autoridad fije el valor del año, lo sumamos a la tabla."}
           </p>
           <nav aria-label="Países" className="flex flex-wrap gap-x-6 gap-y-2 mt-7">
             {ACTUALIZACIONES.map((c) => (

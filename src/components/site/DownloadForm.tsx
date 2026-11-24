@@ -14,7 +14,7 @@ export type Producto = "kit" | "workbook";
 const COPY: Record<Producto, { h: string; intro: string; lead: string; button: string; next: string; wa: string }> = {
   kit: {
     h: "Descarga el kit",
-    intro: "Un PDF que puedes llenar, con los ejemplos de Carmen y Javier y la regla de cada país. Lo descargas aquí y te llega una copia al correo.",
+    intro: "Un PDF que puedes llenar, con los ejemplos de Carmen y Javier y la regla de cada país.",
     lead: "Página del kit",
     button: "Descargar el kit",
     next: "Empieza por la K.1: son 20 minutos y te deja el dato del que parte todo el método.",
@@ -22,7 +22,7 @@ const COPY: Record<Producto, { h: string; intro: string; lead: string; button: s
   },
   workbook: {
     h: "Descarga el workbook",
-    intro: "Las 31 plantillas del libro en un PDF. Se llena en una tableta, en la computadora o en papel. Lo descargas aquí y te llega una copia al correo.",
+    intro: "Las 31 plantillas del libro en un PDF. Se llena en una tableta, en la computadora o en papel.",
     lead: "Página del workbook",
     button: "Descargar el workbook",
     next: "Abre primero «Tu nivel en la escalera», al comienzo del workbook, y anota tu nivel con la fecha.",
