@@ -287,7 +287,8 @@ const VACIAS = new Set(["trae", "tu", "de", "la", "el", "en", "al", "si", "es", 
  * Cada parte del recuadro nombra una plantilla de «Necesitas antes» o solo usa palabras que ya están en «Antes de empezar».
  */
 function cubierto(trae: string, intro: string, usos: string[]) {
-  const base = intro.toLowerCase();
+  // Solo cuenta como cubierto por palabras si la introducción enumera materiales («Necesitas…», «Usa…», «Ten a la mano…», «Busca…»).
+  const base = /(?<!\p{L})(Necesitas|Usa|Ten|Busca)(?!\p{L})/u.test(intro) ? intro.toLowerCase() : "";
   const partes = trae.split(/,|\s(?:y|o)\s/).map((x) => x.trim()).filter(Boolean);
   return partes.every((parte) => {
     const codigos = parte.match(/K\.\d+|\d+\.\d+/g) ?? [];
