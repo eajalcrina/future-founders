@@ -29,8 +29,9 @@ export async function ogImage({ kicker, title, withCover = false }: { kicker: st
           <img src={logoSrc} width={136} height={56} alt="" />
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ fontFamily: "Mono", fontSize: 22, letterSpacing: "0.12em", textTransform: "uppercase", color: INK }}>{kicker}</div>
-            <div style={{ fontFamily: "Archivo", fontSize: coverSrc ? 88 : clean.length > 50 ? 80 : 96, lineHeight: 0.9, textTransform: "uppercase", marginTop: 22, letterSpacing: "-0.02em" }}>
-              {clean}
+            {/* en mayúsculas desde el texto: con textTransform la imagen mide las palabras en minúscula y deja espacios desiguales */}
+            <div style={{ fontFamily: "Archivo", fontSize: coverSrc ? 88 : clean.length > 50 ? 80 : 96, lineHeight: 0.9, marginTop: 22, letterSpacing: "-0.02em" }}>
+              {clean.toLocaleUpperCase("es")}
             </div>
           </div>
           <div style={{ display: "flex", fontFamily: "Mono", fontSize: 20, letterSpacing: "0.1em", textTransform: "uppercase", color: INK2, borderTop: `1px solid ${INK}`, paddingTop: 14 }}>
