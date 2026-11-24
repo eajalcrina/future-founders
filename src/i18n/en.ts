@@ -14,7 +14,8 @@ const TRADUCCION = "This is a translation. The Spanish version prevails.";
 const DESC =
   "Future Founders helps managers, directors and VPs in Latin America split their work into part-time roles, one at a time, until their own income covers their cost of living.";
 /** Titular del dueño, traducido fiel. Propuesta a confirmar (PENDIENTES-WEB.md). */
-const HERO_TITLE = "Your experience can work for more than one company. Or for your own.";
+/** Espacio duro en «Or for»: a 390, «OR» no queda suelto al final de la línea de «company.». */
+const HERO_TITLE = "Your experience can work for more than one company. Or\u00a0for your own.";
 const LEGAL = "Nothing on this site is legal, tax or financial advice, or a promise of income.";
 
 export const en: Dict = {
@@ -24,13 +25,15 @@ export const en: Dict = {
     nuevaPestana: " (opens in a new tab)",
     agenda: "Book 30 minutes",
     nota: "Note",
-    lectura: "Reading",
+    lectura: "How to read it",
+    /** Rótulo del campo trampa para bots (Trampa.tsx): no se ve ni se lee. */
+    trampa: "Website",
     detalle: "Details",
     /** «baja» es la palabra que lee apps-script/Code.gs para dar de baja: se queda en español. */
     privacidad: {
-      antes: "We use your data as our ",
+      antes: "We use your data as described in our ",
       enlace: "privacy policy",
-      despues: " explains. To stop receiving emails, reply with the word “baja”.",
+      despues: ". To stop receiving emails, reply with the word “baja”.",
     },
     enviando: "Sending...",
     nombre: "Name",
@@ -38,7 +41,7 @@ export const en: Dict = {
     pais: "Country",
     tuNombre: "Your name",
     correoEjemplo: "name@email.com",
-    correoInvalido: "Check your email: something is missing for it to be valid.",
+    correoInvalido: "Enter a valid email address.",
     whatsapp: "WhatsApp",
     nivel: "Level {k}",
     /** Lo que se envía es la etiqueta española de la misma posición (canonFormulario). */
@@ -179,7 +182,7 @@ export const en: Dict = {
       "Rodrigo works through this stage in chapter 19.",
     ],
     lectura:
-      "Most of the book is at level 0. The first four parts prepare your first client, which in our conversations is the step most executives put off. From the first client on, Part 05 works with the payments you actually receive.",
+      "Most of the book is at level 0. The first four parts prepare you for your first client, the step most executives we talk to put off. From the first client on, Part 05 works with the payments you actually receive.",
     arch: [
       {
         who: "carmen",
@@ -213,7 +216,7 @@ export const en: Dict = {
           ["Starting level", "0, Salary"],
         ],
         voice:
-          "His first settlement left out the prorated bonus for the year. He caught it while filling in K.3, checked it with an employment lawyer and asked for it in writing before signing.",
+          "The first version of his final settlement left out the prorated bonus for the year. He caught it while filling in K.3, checked it with an employment lawyer and asked for it in writing before signing.",
         start: "K.3 Your exit in numbers, before you sign",
         href: "/workbook/k3",
       },
@@ -273,7 +276,7 @@ export const en: Dict = {
       { prefix: "USD ", value: 26, suffix: "M+", label: "in billings" },
       { prefix: "USD ", value: 2.7, decimals: 1, suffix: "M+", label: "capital raised" },
     ],
-    cifrasNota: "They add up the track record of the founders and of the program participants.",
+    cifrasNota: "Combined track record of the founders and the program participants.",
     /** Bios: traducción fiel de es.ts (fuente: eddieajalcrina.com y lorenzoortiz.co). No agregar datos. */
     founders: {
       eddie: {
@@ -350,7 +353,7 @@ export const en: Dict = {
       wa: "the Doble Agente workbook",
       enEspanol: "The workbook and the email are in Spanish.",
     },
-    escribeNombre: "Write your name.",
+    escribeNombre: "Enter your name.",
     situacion: "What's your situation?",
     listo: "Done, {nombre}. Here is your PDF.",
     tambien: " We also sent it to {correo}.",
@@ -465,7 +468,7 @@ export const en: Dict = {
     hero: {
       label: ["For senior executives in Latin America", "A level-by-level method"],
       lead: "Future Founders helps managers, directors and VPs split their work into part-time roles, one at a time, until their own income covers their cost of living.",
-      lead2: "You move forward openly, with your job in view, and without betting your stability on a single leap.",
+      lead2: "You do it in the open, while you keep your job, without betting your stability on a single leap.",
       kitCorto: "Download the free kit",
       kitLargo: "Download the “Exit plan” kit",
       libro: "See the book",
@@ -477,14 +480,14 @@ export const en: Dict = {
       label: ["The method"],
       title: "You move up a level when a signal shows up in your bank statement",
       marco: ["Framework 0.1", "The ladder"],
-      h3: "Seventeen of the 21 chapters prepare your first client",
-      diag: "The Level check places you with your own numbers in {n} questions.",
+      h3: "Seventeen of the 21 chapters prepare you for your first client",
+      diag: "The Level check finds your level from your own numbers in {n} questions.",
       diagLink: "Take the Level check",
     },
     quien: {
       label: ["Who it's for"],
       title: "Your starting point decides your first template",
-      sub: "For managers, directors and VPs aged 38 to 55, with 12 to 25 years of career at large companies in Latin America.",
+      sub: "For managers, directors and VPs aged 38 to 55, with 12 to 25 years at large companies in Latin America.",
       nivelPartida: "Starting level: {k}",
       empiezaPor: "Start with",
     },
@@ -497,7 +500,7 @@ export const en: Dict = {
     },
     programas: {
       label: ["Programs", "By level"],
-      title: "Each level has its program, and you start for free",
+      title: "Each level has its own program, and you start for free",
       ver: "See the programs and apply",
       dudas: "Not sure where to start?",
     },
@@ -564,7 +567,7 @@ export const en: Dict = {
       label: ["What it's about"],
       title: "A plan to get paid for what you already know how to do",
       p: [
-        "If you run an area, you know how to solve problems that cost other companies hundreds of thousands of dollars. What's usually missing is a plan to get paid for that outside your job, and for the day a restructuring changes what you had planned.",
+        "If you run a department, you know how to solve problems that cost other companies hundreds of thousands of dollars. What's usually missing is a plan to get paid for that outside your job, and for the day a restructuring changes what you had planned.",
         "Four executives from Lima, Bogotá, Mexico City and Santiago work through the method with numbers you can check. Each chapter ends with a workbook template and three actions for the week.",
       ],
       aprender: "In these pages you'll learn to",
@@ -586,7 +589,7 @@ export const en: Dict = {
     },
     workbook: {
       label: ["Workbook", "Free"],
-      title: "The book explains and the workbook is where you do it",
+      title: "The book explains the method and the workbook is where you apply it",
       sub: "The templates that do math have their own online calculator.",
       ver: "See the templates and download the workbook",
       imgAlt: "Page 8 of the workbook: template K.1, Your runway today, with Carmen's and Javier's liquid savings and cost of living and space for your numbers",
@@ -595,13 +598,13 @@ export const en: Dict = {
       label: ["Formats", "Where to buy"],
       title: "Ebook and paperback on Amazon, PDF with Mercado Pago",
       subPago:
-        "The PDF edition is paid with Mercado Pago: credit card, debit card or account balance. After payment we send the PDF to the email you registered with Mercado Pago, within 6 hours at most.",
+        "The PDF edition is paid with Mercado Pago: credit card, debit card or account balance. After payment we send the PDF to the email you registered with Mercado Pago, within 6 hours.",
       subWa:
         "The PDF edition will be paid with Mercado Pago: credit card, debit card or account balance. While we set up online payment, you can order the PDF on WhatsApp.",
       ebookN: "Ebook and paperback",
       ebookD: "The ebook reads on Kindle, a tablet or a computer. The paperback is an executive pocket edition, 150 × 220 mm, printed by Amazon.",
       pdfN: "PDF edition",
-      pdfDPago: "To read on a tablet or a computer. It reaches your email within 6 hours of payment at most.",
+      pdfDPago: "To read on a tablet or a computer. You get it by email within 6 hours of payment.",
       pdfD: "To read on a tablet or a computer.",
       nota: "Everyone starts from a different salary, savings and market, and the book helps you measure yours.",
       enEspanol: "All three editions are in Spanish.",
@@ -625,11 +628,12 @@ export const en: Dict = {
     },
     hero: {
       label: ["Free kit", "Exit plan"],
-      title: "Work out how many months you can last without a salary",
+      /** Espacio duro en «last without»: con text-wrap: balance, «WITHOUT» quedaba solo en una línea a 1440 y a 390. */
+      title: "Work out how many months you can last\u00a0without a salary",
       datos: [
         ["5", "templates, K.1 to K.5"],
         ["2", "hours, approximately"],
-        ["4", "countries with their general rule"],
+        ["4", "countries, each with its general rule"],
       ],
     },
     plantillas: {
@@ -652,7 +656,7 @@ export const en: Dict = {
       empleoD: "K.1, K.2 and K.3, then on to chapter 1. K.4 and K.5 come before chapter 5.",
       saliste: "If you've already left",
       salisteD: "Start with K.3 before you sign, go back to K.1 and continue with chapter 5.",
-      paises: "The rules for Peru, Mexico, Colombia and Chile are each country's general rule. The book's appendix explains the exceptions and where to check the regulation in force.",
+      paises: "The rules for Peru, Mexico, Colombia and Chile are each country's general rule. The book's appendix explains the exceptions and where to check the current regulations.",
     },
     cierre: {
       title: "Fill it in this week",
@@ -697,7 +701,7 @@ export const en: Dict = {
           ],
         },
         colchon: {
-          text: "How many months of that cost of living do your liquid savings cover today?",
+          text: "How many months of your cost of living do your liquid savings cover today?",
           help: "That's your runway: the money you can use within a week without a big penalty, divided by your monthly cost of living.",
           options: ["Less than 3", "From 3 to less than 6", "6 or more", "I haven't calculated it"],
         },
@@ -715,7 +719,7 @@ export const en: Dict = {
       pasos: {
         salio: {
           capitulo: "Chapter 5",
-          body: "Before you sign your exit, fill in K.3 and write down the deadline to challenge or claim. Review your settlement with an employment lawyer, then recalculate your runway with K.1.",
+          body: "Before you sign your exit, fill in K.3 and write down the deadline to challenge or claim. Review your final settlement with an employment lawyer, then recalculate your runway with K.1.",
           boton: "Open K.3",
         },
         proyecto: {
@@ -747,7 +751,7 @@ export const en: Dict = {
     },
     resultado: {
       tuResultado: "Your result",
-      titulo: "Level {k}: {nombre}",
+      titulo: "Level {k}, {nombre}",
       nivelDe: "Level {k} of 3",
       siguientePaso: "Your next step",
       delLibro: "{capitulo} of the book",
@@ -765,7 +769,7 @@ export const en: Dict = {
       enviar: "Send",
       error: "We couldn't register your details right now. Write to us on {wa} and we'll reply with your next step.",
       waMensaje: "Hi, I took the Level check and came out at level {k}, {nombre}.",
-      enEspanol: "The email and the kit are in Spanish.",
+      enEspanol: "The kit and the email are in Spanish.",
     },
   },
 
@@ -777,7 +781,7 @@ export const en: Dict = {
     },
     hero: {
       label: ["Programs", "By level"],
-      title: "What supports you at each level",
+      title: "Support at every level",
       lead: "Five programs, from a two-session workshop to a 90-day sprint.",
       diag: "Don't know your level? Take the Level check",
       kit: "Level 0: start with the free kit",
@@ -789,9 +793,9 @@ export const en: Dict = {
     postularSr: ": {nombre}",
     nota: "Each program works on your numbers and your market, and the decision of when to move forward is yours.",
     postular: {
-      label: ["Applications", "Dates and places"],
-      title: "We'll write to you with the dates of the next intake",
-      sub: "Dates, places and conditions are published with each intake.",
+      label: ["Applications", "Dates and spots"],
+      title: "We'll email you the dates of the next round",
+      sub: "Dates, spots and conditions are published with each round.",
       conversar: "Prefer to talk first?",
       wa: "or write to us on WhatsApp",
       waMensaje: "Hi, I'd like information about the Future Founders programs.",
@@ -847,12 +851,12 @@ export const en: Dict = {
       programa: "Program",
       opcion: "{tag}: {nombre}",
       mensaje: "Your situation in two lines (optional)",
-      mensajePh: "Role, years of career and which level of the ladder you think you're at",
+      mensajePh: "Your role, years of experience and the level of the ladder you think you're at",
       verFechas: "I want to see the dates",
       enviar: "Send application",
       recibida: "We received your application to {nombre}.",
-      teEscribimos: "We'll write to {correo} with the dates, places and conditions of the next intake.",
-      invalido: "Write your name and a valid email.",
+      teEscribimos: "We'll write to {correo} with the dates, spots and conditions of the next round.",
+      invalido: "Enter your name and a valid email.",
       error: "We couldn't register your application right now. Write to us on {wa} and we'll reply with the dates.",
       waMensaje: "Hi, I'm {nombre}. I'd like to apply to {programa}.",
       enEspanol: "The confirmation email is in Spanish.",
@@ -867,6 +871,7 @@ export const en: Dict = {
       parteTitulo: "Workbook, Part {n}: {nombre}",
       parteDescripcion: "The workbook templates for Part {n}, {nombre}, of Doble Agente.",
       plantillaTitulo: "Template {code}: {titulo}",
+      plantillaTituloCierre: "Closing template: {titulo}",
       conCalculadora: " With an online calculator.",
     },
     tipo: { kit: "“Exit plan” kit", capitulo: "Part {n}", anexo: "Country appendix", cierre: "Closing of the book" },
@@ -891,6 +896,8 @@ export const en: Dict = {
     plantilla: {
       workbook: "Workbook",
       plantilla: "Template {code}",
+      /** Rótulo de la plantilla de cierre: «Closing template», no «Template Closing». */
+      plantillaCierre: "Closing template",
       tiempo: "Time",
       enLibro: "In the book",
       nivel: "Level",
@@ -929,7 +936,7 @@ export const en: Dict = {
     label: ["Doble Agente", "Country appendices"],
     title: "Annual figures",
     lead: "The figures that change every year are marked “valor 2026” (2026 value) in the book.",
-    leadPendiente: " When the authority sets this year's value, we add it to the table.",
+    leadPendiente: " When each authority sets this year's value, we add it to the table.",
     paises: "Countries",
     cols: { cifra: "Figure", v2026: "2026 value in the book", donde: "Where it's used", vigente: "Current value", verificar: "Where to check" },
     pendiente: "Pending",
@@ -1069,7 +1076,7 @@ export const en: Dict = {
         {
           h: "What we use it for",
           p: [
-            "To send you a confirmation email with the PDF you asked for or with the reply to your application, to let the team know your registration arrived and to write to you about the book and the programs. We don't sell or hand over your data.",
+            "To send you a confirmation email with the PDF you asked for or with the reply to your application, to let the team know your registration arrived and to write to you about the book and the programs. We don't sell or share your data.",
           ],
         },
         {
@@ -1130,10 +1137,10 @@ export const en: Dict = {
           h: "Purchases",
           p: [
             "The ebook and the paperback are bought on Amazon, under Amazon's terms. The PDF edition is paid with Mercado Pago, under Mercado Pago's terms.",
-            `After payment with Mercado Pago we send the PDF to the email you registered with the payment, within 6 hours at most. If it doesn't arrive in that time or the file won't open, write to us at ${EMAIL} and we'll send it again. If we can't deliver it, we refund the full payment. Because it's a digital product, once the PDF has been delivered there's only a refund if the file has a defect we can't fix.`,
+            `After payment with Mercado Pago we send the PDF to the email you registered with the payment, within 6 hours. If it doesn't arrive in that time or the file won't open, write to us at ${EMAIL} and we'll send it again. If we can't deliver it, we refund the full payment. Because it's a digital product, once the PDF has been delivered there's only a refund if the file has a defect we can't fix.`,
           ],
         },
-        { h: "Programs", p: ["The dates, places, price and conditions of each program are announced with each intake."] },
+        { h: "Programs", p: ["The dates, spots, price and conditions of each program are announced with each round."] },
         {
           h: "Use of the material",
           p: [
@@ -1170,7 +1177,7 @@ export const en: Dict = {
       alt: "Future Founders “Exit plan” kit: work out how many months you can last without a salary with five free templates",
     },
     diagnostico: { kicker: "Free, four questions", title: "Level check", alt: "Future Founders Level check: four questions to find out which level of the ladder you're at" },
-    programas: { kicker: "Programs by level", title: "What supports you at each level", alt: "Future Founders programs, by level of the ladder" },
+    programas: { kicker: "Programs by level", title: "Support at every level", alt: "Future Founders programs, by level of the ladder" },
     workbook: { kicker: "Doble Agente, free workbook", title: "The workbook templates", alt: "Doble Agente workbook: the book's templates, free" },
     actualizaciones: { kicker: "Doble Agente, country appendices", title: "Annual figures", alt: "Annual figures for the Doble Agente country appendices" },
     privacidad: { kicker: "Legal", title: "Privacy policy", alt: "Future Founders privacy policy" },

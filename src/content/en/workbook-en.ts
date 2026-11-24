@@ -101,7 +101,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "1-1": {
     "title": "Your three runways",
     "time": "25 minutes",
-    "purpose": "You leave with your three runways, your goal and the month you reach it.",
+    "purpose": "You'll come away with your three runways, your goal and the month you reach it.",
     "intro": "Use your numbers from K.1 and K.3.",
     "trae": "Bring K.1 and K.3.",
     "where": "Chapter 1, The risk you don't see",
@@ -195,7 +195,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "2-1": {
     "title": "Your three spending figures",
     "time": "40 minutes",
-    "purpose": "You leave with your current cost of living, your cost of living without a job and your floor, with your runway recalculated.",
+    "purpose": "You'll come away with your current cost of living, your cost of living without a job and your floor, with your runway recalculated.",
     "intro": "You need three months of statements from all your cards and accounts, and last year's annual payments. Write down the amounts per month, in your currency or in dollars, but the same one across the whole workbook. The book uses USD 1 = S/ 3.60 = COP 4,000 = MXN 18.50 = CLP 950.",
     "trae": "Bring three months of statements and last year's annual payments.",
     "where": "Chapter 2, Your real cost of living",
@@ -280,7 +280,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "3-1": {
     "title": "Inventory of judgment and market value",
     "time": "30 minutes",
-    "purpose": "You leave with five achievements you can talk about and your reference value for one day a week.",
+    "purpose": "You'll come away with five achievements you can talk about and your reference value for one day a week.",
     "intro": "You need your CV, your LinkedIn profile and two salary guides for your country. Write each achievement without your employer's amounts, clients, suppliers or documents.",
     "trae": "Bring your CV, your LinkedIn profile and two salary guides for your country.",
     "where": "Chapter 3, Your executive judgment is sellable",
@@ -301,7 +301,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "4-1": {
     "title": "Conflict of interest map",
     "time": "30 minutes",
-    "purpose": "You leave with your conflict map, the draft of your request and your questions for the legal consultation.",
+    "purpose": "You'll come away with your conflict map, the draft of your request and your questions for the legal consultation.",
     "intro": "You need your completed K.2, your contract, the code of ethics and your company's outside activities policy. Each row gets an answer or an action. If you've already left your company, skip “The authorization” and fill in the last section.",
     "trae": "Bring your completed K.2, your contract and the outside activities policy.",
     "where": "Chapter 4, Fair play: contract, conflict of interest and transparency",
@@ -322,7 +322,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "5-1": {
     "title": "Your cash flow without a salary and your decision line",
     "time": "30 minutes",
-    "purpose": "You leave with six months projected in two scenarios and your decision line in writing.",
+    "purpose": "You'll come away with six months projected in two scenarios and your decision line in writing.",
     "intro": "You need your balance from K.1, your floor from K.4 or chapter 2 and the likely date of your first role. Write the amounts in your currency or in dollars, but the same one across the whole workbook; the book uses USD 1 = S/ 3.60 = COP 4,000 = MXN 18.50 = CLP 950. If you still have a job, use your cost of living without a job and don't count severance.",
     "trae": "Bring your balance from K.1 and your floor from K.4 or chapter 2.",
     "where": "Chapter 5, If you're let go tomorrow",
@@ -486,7 +486,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "6-1": {
     "title": "Map of USD 100,000 problems",
     "time": "30 minutes",
-    "purpose": "You leave with a problem that passes the four filters, with its annual cost and its monthly cost of inaction.",
+    "purpose": "You'll come away with a problem that passes the four filters, with its annual cost and its monthly cost of inaction.",
     "intro": "You need your template 3.1 and one public figure for each sector you have in mind. Write first the problem that costs the client the most; the other two go below.",
     "trae": "Bring your template 3.1.",
     "where": "Chapter 6, The USD 100,000 problem",
@@ -524,7 +524,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "7-1": {
     "title": "Segmentation matrix",
     "time": "30 minutes",
-    "purpose": "You leave with your entry point and its score, its neighbors and a list of 10 named companies.",
+    "purpose": "You'll come away with your entry point and its score, its neighbors and a list of 10 named companies.",
     "intro": "Use the problem from your template 6.1. Write three to five segments, run each one through the conflict filter and score the ones that pass. At the end, write down the winner and the 10 named companies.",
     "trae": "Bring your template 6.1 and your template 4.1.",
     "where": "Chapter 7, Your entry point",
@@ -545,7 +545,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "8-1": {
     "title": "Buyer map",
     "time": "25 minutes",
-    "purpose": "You leave with a map of who decides at your client, the order of your conversations and your estimated timeline.",
+    "purpose": "You'll come away with a map of who decides at your client, the order of your conversations and your estimated timeline.",
     "intro": "Use the company where you have a contact in your entry point (7.1). In each row write who it is, the job they want to get done, what they fear, what they need to see and when they come into the process. One person can play two roles.",
     "trae": "Bring your template 7.1.",
     "where": "Chapter 8, Who decides and why they buy",
@@ -566,7 +566,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "9-1": {
     "title": "Quick TAM",
     "time": "25 minutes",
-    "purpose": "You leave with how many clients you need, what share of the market they are and your decision: continue, widen or rethink.",
+    "purpose": "You'll come away with how many clients you need, what share of the market they are and your decision: continue, widen or rethink.",
     "intro": "Use your entry point from template 7.1. Count your named clients in a public source before you fill in the numbers, and write the amounts in dollars.",
     "trae": "Bring your template 7.1.",
     "where": "Chapter 9, Is the market big enough?",
@@ -636,7 +636,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "10-1": {
     "title": "Quantified proposal",
     "time": "30 minutes",
-    "purpose": "You leave with your price range, with its floor and ceiling, and your result in one sentence with a figure.",
+    "purpose": "You'll come away with your price range, with its floor and ceiling, and your result in one sentence with a figure.",
     "intro": "Use the problem and the cost from template 6.1 and your floor cost of living from 2.1. Calculate the ceiling first, with figures the client can check, and then the floor, with yours. The figures go in dollars: A and B are per year and the rest per month.",
     "trae": "Bring your template 6.1 and your floor cost of living from 2.1.",
     "where": "Chapter 10, Your value proposition, in numbers",
@@ -645,7 +645,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
     "chapter": "Your value proposition, in numbers",
     "summary": [
       "Your ceiling is the annual value your work leaves the client, divided by 5 and by 12 months. Carmen's is USD 2,500 a month.",
-      "Your floor is your floor cost of living divided by 5 and by your country's net factor, for each weekly day. Carmen's is USD 2,133.",
+      "Your floor is your floor cost of living divided by 5 and by your country's net factor, for each day a week you work. Carmen's is USD 2,133.",
       "Your price goes between the two. Carmen has a range with one day a week; with two, the floor goes above the ceiling."
     ],
     "check": [
@@ -671,7 +671,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
         "note": "Or the spending agreed in K.4 if you've already left, like Javier."
       },
       "E": {
-        "label": "Net floor per weekly day",
+        "label": "Net floor for one day a week",
         "show": "D ÷ 5"
       },
       "F": {
@@ -685,7 +685,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
         }
       },
       "G": {
-        "label": "Gross monthly floor per weekly day",
+        "label": "Gross monthly floor for one day a week",
         "show": "E ÷ F"
       },
       "dias": {
@@ -713,7 +713,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "11-1": {
     "title": "Your role on one page and its price",
     "time": "35 minutes",
-    "purpose": "You leave with your one-pager with its fee, its premium and the ten clauses of your contract.",
+    "purpose": "You'll come away with your one-pager with its fee, its premium and the ten clauses of your contract.",
     "intro": "Use your range from template 10.1 and a public salary guide for your country. Calculate the fee first and check that it falls within your range; then write your one-pager and check off the clauses with your model contract beside you.",
     "trae": "Bring your range from 10.1 and a salary guide for your country.",
     "where": "Chapter 11, Your first part-time role: format, price and contract",
@@ -791,7 +791,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "12-1": {
     "title": "Product sheet",
     "time": "30 minutes",
-    "purpose": "You leave with your product sheet with its price, its hours in the first year and the status of your validation.",
+    "purpose": "You'll come away with your product sheet with its price, its hours in the first year and the status of your validation.",
     "intro": "Use your deliverables from recent months and the TAM from template 9.1. Start with what repeats: if you can't find anything identical in three deliverables, note it under “Your decision” and continue with part-time roles. The figures go in dollars.",
     "trae": "Bring your last three deliverables and your TAM from 9.1.",
     "where": "Chapter 12, From service to product",
@@ -812,7 +812,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "13-1": {
     "title": "Unit economics",
     "time": "35 minutes",
-    "purpose": "You leave with your LTV, your CAC and how much your net income changes with the clients you plan to win.",
+    "purpose": "You'll come away with your LTV, your CAC and how much your net income changes with the clients you plan to win.",
     "intro": "You need your business's income and costs for the last three months, in dollars per month. Fill in the first column with your current clients and the second with the segment you want to win. If your path is a part-time role, go straight to the three-line version at the end of this template.",
     "trae": "Bring your business's income and costs for the last three months, or your fee from 11.1 if your path is a part-time role.",
     "where": "Chapter 13, Unit economics",
@@ -831,7 +831,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
     ],
     "calc": {
       "a1": {
-        "label": "Income per client per month"
+        "label": "Revenue per client per month"
       },
       "b1": {
         "label": "Variable costs per client"
@@ -841,11 +841,11 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
         "show": "A − B"
       },
       "cp1": {
-        "label": "Margin on income",
+        "label": "Margin as a share of revenue",
         "show": "C ÷ A"
       },
       "d1": {
-        "label": "Average lifetime in months"
+        "label": "Average client lifetime, in months"
       },
       "e1": {
         "label": "LTV",
@@ -863,7 +863,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
         "show": "F ÷ C"
       },
       "a2": {
-        "label": "Income per client per month"
+        "label": "Revenue per client per month"
       },
       "b2": {
         "label": "Variable costs per client"
@@ -873,11 +873,11 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
         "show": "A − B"
       },
       "cp2": {
-        "label": "Margin on income",
+        "label": "Margin as a share of revenue",
         "show": "C ÷ A"
       },
       "d2": {
-        "label": "Average lifetime in months"
+        "label": "Average client lifetime, in months"
       },
       "e2": {
         "label": "LTV",
@@ -955,7 +955,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "14-1": {
     "title": "Your 30 accounts",
     "time": "30 minutes",
-    "purpose": "You leave with your 30 accounts, their split by group and your funnel.",
+    "purpose": "You'll come away with your 30 accounts, their split by group and your funnel.",
     "intro": "Use your list from K.5 as a starting point. Before you write, cross out the accounts your conflict map (4.1) or your exit agreement prevents you from contacting. Write your three-sentence message first, fill in the split by group and then write one account per row, with the same number in the list's three tables.",
     "trae": "Bring your list from K.5.",
     "where": "Chapter 14, Your network as a channel",
@@ -983,7 +983,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
         "label": "Colleagues who already work on their own"
       },
       "g_firmas": {
-        "label": "Search firms and consultancies"
+        "label": "Search and consulting firms"
       },
       "g_gremio": {
         "label": "Trade group, association and university"
@@ -1035,8 +1035,8 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "15-1": {
     "title": "Script for the diagnostic conversation",
     "time": "25 minutes",
-    "purpose": "You leave with your question script and the sheet to note what you confirmed in each meeting.",
-    "intro": "Write your questions before the meeting and bring this sheet printed or on your tablet. Before the meeting, tick the three control boxes. Ask about past facts: what happened, how much it cost them, who solved it. After the meeting, fill in the next sheet.",
+    "purpose": "You'll come away with your question script and the sheet to note what you confirmed in each meeting.",
+    "intro": "Write your questions before the meeting and bring this sheet printed or on your tablet. Before the meeting, check the three control boxes. Ask about past facts: what happened, how much it cost them, who solved it. After the meeting, fill in the next sheet.",
     "trae": "Bring 11.1, your list from 14.1 and your buyer map from 8.1.",
     "where": "Chapter 15, The diagnostic conversation",
     "level": "Level 0",
@@ -1066,7 +1066,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "16-1": {
     "title": "Proposal, contract and first invoice",
     "time": "40 minutes",
-    "purpose": "You leave with your disclosure, your contract and your first invoice, with the reserve for tax.",
+    "purpose": "You'll come away with your disclosure, your contract and your first invoice, with the reserve for tax.",
     "intro": "Have at hand your employment contract or your exit agreement, 4.1, 11.1 and your tax registration number. Fill in the three parts in order: the disclosure comes before the client's approval, the signature before the first day of work and the invoice at the close of the first month. When you issue the first one, also write the date in “Your level on the ladder”, at the start of the workbook.",
     "trae": "Bring 4.1 and 11.1.",
     "where": "Chapter 16, The first contract and the first invoice",
@@ -1087,7 +1087,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "17-1": {
     "title": "Weekly schedule and home agreements",
     "time": "25 minutes",
-    "purpose": "You leave with your eight-hour week, your three home agreements and your energy log.",
+    "purpose": "You'll come away with your eight-hour week, your three home agreements and your energy log.",
     "intro": "Keep your calendar for the next four weeks open. Each block has a day, a time and a purpose, outside your employer's hours. If the total goes over eight hours, decide what you delegate or put off before you continue. If you've already left, leave the employer hours blank and write down your days per client and the day you keep free.",
     "trae": "Bring your calendar for the next four weeks.",
     "where": "Chapter 17, Your schedule, your energy and your family",
@@ -1136,7 +1136,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "18-1": {
     "title": "Portfolio dashboard",
     "time": "30 minutes",
-    "purpose": "You leave with your dashboard showing the net, weight and renewal of each role, and your two gaps to the point of no return.",
+    "purpose": "You'll come away with your dashboard showing the net, weight and renewal of each role, and your two gaps to the point of no return.",
     "intro": "You need your contracts and your invoices from the last three months. First you fill in one column per role and then the bottom of the dashboard. Write everything in dollars per month.",
     "trae": "Bring your contracts and invoices.",
     "where": "Chapter 18, From first role to portfolio",
@@ -1245,7 +1245,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "19-1": {
     "title": "Point of no return",
     "time": "25 minutes",
-    "purpose": "You leave with your two conditions measured, what you're missing on each and the date of your next review.",
+    "purpose": "You'll come away with your two conditions measured, what you're missing on each and the date of your next review.",
     "intro": "Use your cost of living without a job from template 2.1 and your invoices from the last three months. Own income goes net of taxes and contributions, without counting your salary.",
     "trae": "Bring your template 2.1 and your invoices from the last three months.",
     "where": "Chapter 19, The point of no return",
@@ -1309,16 +1309,16 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
       "What you're missing"
     ],
     "avisos": [
-      "You meet: neither. You're missing: both. What you do: you stay at level 1 or 2. You work on the portfolio from chapter 18 and set aside a fixed amount for the cushion every month.",
-      "You meet: cushion. You're missing: income. What you do: you stay at your current level. You raise your income with the portfolio: price at renewals, one more role or a product. The cushion stays for emergencies and isn't used to cover the income gap.",
-      "You meet: income. You're missing: cushion. What you do: you save all the surplus above your cost of living until you close the gap, before any leap.",
-      "You meet: both. You're missing: nothing. What you do: you're at level 3. You review both conditions every month, as chapter 21 explains."
+      "You meet neither condition. Stay at level 1 or 2, work on the portfolio from chapter 18 and set aside a fixed amount for the cushion every month.",
+      "You meet the cushion condition but not the income one. Stay at your current level and raise your income with the portfolio: price at renewals, one more role or a product. The cushion stays for emergencies and isn't used to cover the income gap.",
+      "You meet the income condition but not the cushion one. Save all the surplus above your cost of living until you close the gap, before any leap.",
+      "You meet both conditions. You're at level 3: review both of them every month, as chapter 21 explains."
     ]
   },
   "20-1": {
     "title": "Script and comparison of options",
     "time": "35 minutes",
-    "purpose": "You leave with your written script, the effect of each option on your numbers and who will review what you sign.",
+    "purpose": "You'll come away with your written script, the effect of each option on your numbers and who will review what you sign.",
     "intro": "Use your updated K.3 and your template 19.1. Fill it in with the conversation that's closest, even if it's only the annual disclosure. The figures go in your currency or in dollars, the same one across the sheet.",
     "trae": "Bring your updated K.3 and your template 19.1.",
     "where": "Chapter 20, The conversation with your employer",
@@ -1339,7 +1339,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "21-1": {
     "title": "90-day plan or criteria for staying",
     "time": "30 minutes",
-    "purpose": "You leave with your 90-day plan or your criteria for staying, with their date, and your monthly review in the calendar.",
+    "purpose": "You'll come away with your 90-day plan or your criteria for staying, with their date, and your monthly review in the calendar.",
     "intro": "Fill in the version that matches your decision. Use your template 19.1, your 18.1 dashboard and the monthly log at the start of the workbook, with the figures in dollars.",
     "trae": "Bring your template 19.1 and your 18.1 dashboard.",
     "where": "Chapter 21, Independence: make the leap or stay",
@@ -1361,9 +1361,9 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "a-1": {
     "title": "Your rules in Peru",
     "time": "25 minutes",
-    "purpose": "You leave with your rules for Peru on one page.",
-    "intro": "Have at hand your contract, the internal work rules, your latest pay slips and your RUC record. Write the amounts in soles, in the same order as Carmen's example in Appendix A.",
-    "trae": "Bring your contract, the internal work rules, your latest pay slips and your RUC record.",
+    "purpose": "You'll come away with your rules for Peru on one page.",
+    "intro": "Have at hand your contract, the internal work rules, your latest pay stubs and your RUC record. Write the amounts in soles, in the same order as Carmen's example in Appendix A.",
+    "trae": "Bring your contract, the internal work rules, your latest pay stubs and your RUC record.",
     "where": "Appendix A, Peru",
     "who": "Carmen",
     "summary": [
@@ -1375,7 +1375,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "b-1": {
     "title": "Your rules in Mexico",
     "time": "25 minutes",
-    "purpose": "You leave with your rules for Mexico on one page.",
+    "purpose": "You'll come away with your rules for Mexico on one page.",
     "intro": "Have at hand your contract, your latest payroll receipts, your start date and the Compliance policy. Write the amounts in pesos, in the same order as Andrea's example in Appendix B.",
     "trae": "Bring your contract, your latest payroll receipts, your start date and the Compliance policy.",
     "where": "Appendix B, Mexico",
@@ -1389,7 +1389,7 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "c-1": {
     "title": "Your rules in Colombia",
     "time": "25 minutes",
-    "purpose": "You leave with your rules for Colombia on one page.",
+    "purpose": "You'll come away with your rules for Colombia on one page.",
     "intro": "Have at hand your contract, your final settlement and the value of the first contract you're going to sign. Write the amounts in pesos, in the same order as Javier's example in Appendix C.",
     "trae": "Bring your contract, your final settlement and the value of your first contract.",
     "where": "Appendix C, Colombia",
@@ -1403,9 +1403,9 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
   "d-1": {
     "title": "Your rules in Chile",
     "time": "25 minutes",
-    "purpose": "You leave with your rules for Chile on one page.",
-    "intro": "Have at hand your contract, your finiquito (final settlement) and your latest pay slip. Write the amounts in pesos, in the same order as Rodrigo's example in Appendix D.",
-    "trae": "Bring your contract, your finiquito and your latest pay slip.",
+    "purpose": "You'll come away with your rules for Chile on one page.",
+    "intro": "Have at hand your contract, your finiquito (final settlement) and your latest pay stub. Write the amounts in pesos, in the same order as Rodrigo's example in Appendix D.",
+    "trae": "Bring your contract, your finiquito and your latest pay stub.",
     "where": "Appendix D, Chile",
     "who": "Rodrigo",
     "summary": [
@@ -1418,8 +1418,8 @@ export const WORKBOOK_EN: Record<string, PlantillaEn> = {
     "code": "Closing",
     "title": "What to do on Monday",
     "time": "15 minutes",
-    "purpose": "You leave with your level written down with the date and the template you'll fill in this week.",
-    "intro": "The six steps from the book's closing, in the same order. Tick each one when you do it and write down what it asks for.",
+    "purpose": "You'll come away with your level written down with the date and the template you'll fill in this week.",
+    "intro": "The six steps from the book's closing, in the same order. Check each one off when you do it and write down what it asks for.",
     "where": "Closing of the book, What comes next",
     "who": "Carmen, Javier, Andrea and Rodrigo",
     "summary": [

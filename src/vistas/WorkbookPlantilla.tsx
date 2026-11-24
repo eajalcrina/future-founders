@@ -33,7 +33,7 @@ export function metadataPlantilla(id: string, locale: Locale): Metadata {
   if (!p) return {};
   return metaPagina("workbook", locale, {
     id,
-    title: f(t.plantillaTitulo, { code: p.code, titulo: p.title }),
+    title: f(p.kind === "cierre" ? t.plantillaTituloCierre : t.plantillaTitulo, { code: p.code, titulo: p.title }),
     description: `${p.purpose ?? p.intro ?? ""} ${p.where}.${p.calc ? t.conCalculadora : ""}`.replace(/<\/?em>/g, "").trim(),
   });
 }
@@ -124,7 +124,7 @@ function TemplatePage({ p, t, locale }: P & { p: Plantilla }) {
     <>
       <section>
         <div className="wrap pt-10 pb-12 lg:pt-20 lg:pb-[88px]">
-          <HeroHead label={[w.workbook, kindLabel(p, t.workbook.tipo), f(w.plantilla, { code: p.code })]} title={p.title} className="max-w-[1150px]" />
+          <HeroHead label={[w.workbook, kindLabel(p, t.workbook.tipo), f(p.kind === "cierre" ? w.plantillaCierre : w.plantilla, { code: p.code })]} title={p.title} className="max-w-[1150px]" />
           <Meta items={meta} />
         </div>
       </section>

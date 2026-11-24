@@ -22,6 +22,8 @@ export const es = {
     agenda: "Agenda 30 minutos",
     nota: "Nota",
     lectura: "Lectura",
+    /** Rótulo del campo trampa para bots (Trampa.tsx): no se ve ni se lee. */
+    trampa: "Sitio web",
     detalle: "Detalle",
     /** Línea única bajo los cuatro formularios; «enlace» lleva a la política de privacidad. */
     privacidad: {
@@ -709,7 +711,7 @@ export const es = {
           ],
         },
         colchon: {
-          text: "¿Cuántos meses de ese costo de vida cubre hoy tu ahorro líquido?",
+          text: "¿Cuántos meses de tu costo de vida cubre hoy tu ahorro líquido?",
           help: "Es tu runway: el dinero que puedes usar en una semana sin una penalidad grande, dividido entre tu costo de vida mensual.",
           options: ["Menos de 3", "De 3 a menos de 6", "6 o más", "No lo he calculado"],
         },
@@ -880,6 +882,7 @@ export const es = {
       parteTitulo: "Workbook, Parte {n}: {nombre}",
       parteDescripcion: "Las plantillas del workbook de la Parte {n}, {nombre}, de Doble Agente.",
       plantillaTitulo: "Plantilla {code}: {titulo}",
+      plantillaTituloCierre: "Plantilla {code}: {titulo}",
       conCalculadora: " Con calculadora en línea.",
     },
     /** Rótulo del tipo de plantilla (antes kindLabel en workbook-util.ts). */
@@ -905,6 +908,8 @@ export const es = {
     plantilla: {
       workbook: "Workbook",
       plantilla: "Plantilla {code}",
+      /** Rótulo de la plantilla de cierre (code «Cierre»). */
+      plantillaCierre: "Plantilla {code}",
       tiempo: "Tiempo",
       enLibro: "En el libro",
       nivel: "Nivel",

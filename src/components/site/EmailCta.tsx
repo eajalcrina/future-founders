@@ -37,7 +37,7 @@ export default function EmailCta({ locale, button, t, c }: { locale: Locale; but
 
   return (
     <form onSubmit={onSubmit} noValidate aria-describedby={`${id}-help`} className="relative">
-      <Trampa locale={locale} />
+      <Trampa label={c.trampa} />
       <label htmlFor={`${id}-email`} className="wm block text-ink20 mb-2">
         {t.tuCorreo}
       </label>

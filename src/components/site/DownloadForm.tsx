@@ -98,7 +98,7 @@ export default function DownloadForm({
         </div>
       ) : (
         <form onSubmit={onSubmit} noValidate className="relative grid gap-[18px] mt-6 lg:mt-[26px]">
-          <Trampa locale={locale} />
+          <Trampa label={cm.trampa} />
           <div>
             <label htmlFor={`${id}-name`} className="wm block text-ink2 mb-2">
               {cm.nombre}

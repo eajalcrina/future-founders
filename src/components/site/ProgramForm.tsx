@@ -82,7 +82,7 @@ export default function ProgramForm({
 
   return (
     <form onSubmit={onSubmit} noValidate className="relative border border-ink bg-paper px-5 py-7 lg:p-9 grid gap-[18px]">
-      <Trampa locale={locale} />
+      <Trampa label={c.trampa} />
       <div>
         <label htmlFor={`${id}-p`} className="wm block text-ink2 mb-2">
           {t.programa}
