@@ -68,7 +68,7 @@ El ebook en Print Replica se lee en tabletas Fire y en las apps de Kindle para c
 
 1. Entrar a author.amazon.com con la misma cuenta, reclamar el libro para cada autor.
 2. **Biografía:** las de `AMAZON-KDP.md`.
-3. **Foto:** `ficha/autor-eddie-ajalcrina.jpg` y `ficha/autor-lorenzo-ortiz.jpg`. Son de 600 × 600 px; si tienen originales más grandes, mejor usar esos.
+3. **Foto:** `ficha/autor-eddie-ajalcrina.jpg` y `ficha/autor-lorenzo-ortiz.jpg`. Son de 1200 × 1200 px, en gris sobre fondo claro, con la cabeza al mismo tamaño y altura en las dos.
 4. **Contenido A+ (opcional):** desde KDP, en la sección «Contenido A+», con las imágenes de `ficha/a-plus/` (970 × 600 px): la escalera de niveles, los arquetipos y el capítulo 1.
 5. **Logos:** `ficha/logos/` tiene el logo de Future Founders en PNG y SVG si los necesitan para el A+ o para la página de autor.
 
