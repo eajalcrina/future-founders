@@ -219,10 +219,13 @@ export function computeAll(items: CalcItem[], raw: Record<string, string>, local
   return env;
 }
 
+/** Signo de porcentaje: «25 %» en español, como el libro, y «25%» en inglés. */
+const pctSuf = (locale: NumLocale) => (locale === "en" ? "%" : " %");
+
 /** Formato de las salidas: idioma de las cifras y las palabras de «sí o no» y «mes» (diccionario, calc). */
 export type FmtCalc = { locale: NumLocale; si: string; no: string; mes: string; ninguno: string };
 
-/** Valor listo para mostrar, con el formato del libro (61.600; 7,0; 6,25 %; Sí) o el del inglés (61,600; 7.0; Yes). */
+/** Valor listo para mostrar, con el formato del libro (61.600; 7,0; 6,25 %; Sí) o el del inglés (61,600; 7.0; 6.25%; Yes). */
 /** Valor sin calcular todavía: la celda queda vacía (sin raya) y la vista pinta `formatVacio` atenuado. */
 export const VACIO = "";
 
@@ -237,14 +240,14 @@ export function formatVal(r: CalcRow, v: Val | undefined, fc: FmtCalc): string {
   if (fm === "mes") return v > 0 ? f(fc.mes, { n: fmtNum(v, 0, fc.locale) }) : fc.ninguno;
   const dec = r.dec ?? 0;
   const x = Math.abs(v) < 0.5 * 10 ** -dec ? 0 : v;
-  return fmtNum(x, dec, fc.locale) + (fm === "pct" ? " %" : "");
+  return fmtNum(x, dec, fc.locale) + (fm === "pct" ? pctSuf(fc.locale) : "");
 }
 
 /** Lo que se ve, atenuado, mientras una salida no tiene valor: cero en cifras y porcentajes; nada en los demás formatos. */
 export function formatVacio(r: CalcRow, locale: NumLocale = "es"): string {
   const fm = r.fmt ?? "num";
   if (fm === "num") return fmtNum(0, r.dec ?? 0, locale);
-  if (fm === "pct") return `${fmtNum(0, r.dec ?? 0, locale)} %`;
+  if (fm === "pct") return fmtNum(0, r.dec ?? 0, locale) + pctSuf(locale);
   return "";
 }
 

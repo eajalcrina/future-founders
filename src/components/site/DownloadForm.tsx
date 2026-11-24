@@ -98,7 +98,7 @@ export default function DownloadForm({
         </div>
       ) : (
         <form onSubmit={onSubmit} noValidate className="relative grid gap-[18px] mt-6 lg:mt-[26px]">
-          <Trampa />
+          <Trampa locale={locale} />
           <div>
             <label htmlFor={`${id}-name`} className="wm block text-ink2 mb-2">
               {cm.nombre}
@@ -170,7 +170,7 @@ export default function DownloadForm({
           <button type="submit" className="btn w-full mt-2" disabled={state === "sending"}>
             {state === "sending" ? cm.enviando : c.button}
           </button>
-          <PrivacidadLinea c={cm} locale={locale} className="text-ink2" />
+          <PrivacidadLinea c={cm} locale={locale} className="text-ink2" aviso={c.enEspanol} />
         </form>
       )}
     </div>

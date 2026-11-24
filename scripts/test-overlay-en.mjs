@@ -40,6 +40,7 @@ for (const p of PLANTILLAS) {
     falta(`${p.id}: toda la plantilla`);
     continue;
   }
+  if (!/^[A-Z]?\.?\d*\.?\d+$|^K\.\d$/.test(p.code) && !o.code) falta(`${p.id}.code`);
   for (const campo of ["title", "time", "purpose", "intro", "trae", "where", "level", "who"])
     if (p[campo] !== null && p[campo] !== undefined && p[campo] !== "" && !o[campo]) falta(`${p.id}.${campo}`);
   if (p.chapter && !o.chapter) falta(`${p.id}.chapter`);

@@ -10,6 +10,8 @@ export default function LegalPage({ doc, id }: { doc: Legal; id: string }) {
         <Mono tone="gris" as="p" className="mt-5 lg:mt-7">
           {doc.vigente}
         </Mono>
+        {/* Solo en inglés: «This is a translation. The Spanish version prevails.» (en español, vacío) */}
+        {doc.aviso && <p className="text-cuerpo mt-3">{doc.aviso}</p>}
         {/* El subtítulo queda fuera de `.wt` para que tome Archivo, como en el resto del sitio; solo los párrafos van en serif */}
         <div className="mt-8 lg:mt-12 max-w-[720px] border-b border-ink">
           {doc.bloques.map((b) => (

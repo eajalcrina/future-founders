@@ -210,8 +210,19 @@ export function Lvl({ on, size = 9, fg = "var(--color-ink)", off = "var(--color-
 
 /* ---------------------------------------------------------------- figuras */
 
-export function Scene({ who, className = "", style }: { who: "carmen" | "javier" | "andrea" | "rodrigo"; className?: string; style?: CSSProperties }) {
-  return <div className={`svgfit ${className}`} style={style} dangerouslySetInnerHTML={{ __html: SVG[`scene_${who}`] }} />;
+/**
+ * Las escenas traen del libro su texto alternativo y una cuenta escrita a mano («61.600 ÷ 8.800»), en español.
+ * En inglés se cambian al pintar: el texto alternativo y las cifras de los textos del dibujo (61,600 ÷ 8,800).
+ */
+function sceneEn(svg: string): string {
+  return svg
+    .replace(/Ilustración lineal de /g, "Line illustration of ")
+    .replace(/>[^<]+</g, (t) => t.replace(/(\d)([.,])(\d)/g, (_, a: string, sep: string, b: string) => `${a}${sep === "." ? "," : "."}${b}`));
+}
+
+export function Scene({ who, className = "", style, locale = "es" }: { who: "carmen" | "javier" | "andrea" | "rodrigo"; className?: string; style?: CSSProperties; locale?: Locale }) {
+  const svg = SVG[`scene_${who}`];
+  return <div className={`svgfit ${className}`} style={style} dangerouslySetInnerHTML={{ __html: locale === "en" ? sceneEn(svg) : svg }} />;
 }
 
 export function Figure({ who, className = "", style }: { who: "carmen" | "javier" | "andrea" | "rodrigo"; className?: string; style?: CSSProperties }) {
@@ -295,10 +306,14 @@ export function AgendaLink({ c, kind = "link", className = "" }: { c: Comun; kin
   );
 }
 
-/** Línea de privacidad bajo cada formulario, con el enlace a /privacidad. */
-export function PrivacidadLinea({ c, locale, className = "", id }: { c: Comun; locale: Locale; className?: string; id?: string }) {
+/**
+ * Línea de privacidad bajo cada formulario, con el enlace a /privacidad. `aviso` (solo en inglés) va antes, en su propia
+ * línea, para decir qué sigue en español («The kit and the email are in Spanish.»); vacío, no se pinta.
+ */
+export function PrivacidadLinea({ c, locale, className = "", id, aviso }: { c: Comun; locale: Locale; className?: string; id?: string; aviso?: string }) {
   return (
     <p id={id} className={`text-recuadro leading-[1.45] ${className}`}>
+      {aviso && <span className="block">{aviso}</span>}
       {c.privacidad.antes}
       <Link href={lh(locale, "/privacidad")} className="ul">
         {c.privacidad.enlace}

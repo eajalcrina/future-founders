@@ -34,6 +34,8 @@ function listaLd(t: Dict, locale: Locale) {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: t.inicio.listaLd,
+    // Solo en /en: el idioma de la lista (el español queda como estaba).
+    ...(locale === "en" ? { inLanguage: "en" } : {}),
     itemListElement: t.sitio.products.flat().map((p, i) => ({ "@type": "ListItem", position: i + 1, name: p.name, url: `${SITE_URL}${lh(locale, p.href)}` })),
   };
 }
@@ -123,7 +125,7 @@ function ArchCard({ a, t, locale }: P & { a: Dict["sitio"]["arch"][number] }) {
   return (
     <article className="bg-sage p-5 lg:p-6 flex flex-col h-full">
       <div className="flex gap-4 lg:gap-5 items-start">
-        <Scene who={a.who} className="shrink-0 w-[104px] xl:w-[132px]" />
+        <Scene who={a.who} className="shrink-0 w-[104px] xl:w-[132px]" locale={locale} />
         <div className="min-w-0 flex-1">
           <Mono tone="salvia">{a.tag}</Mono>
           <div className="flex justify-between items-baseline gap-3 mt-2">

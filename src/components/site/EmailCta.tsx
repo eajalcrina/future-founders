@@ -37,7 +37,7 @@ export default function EmailCta({ locale, button, t, c }: { locale: Locale; but
 
   return (
     <form onSubmit={onSubmit} noValidate aria-describedby={`${id}-help`} className="relative">
-      <Trampa />
+      <Trampa locale={locale} />
       <label htmlFor={`${id}-email`} className="wm block text-ink20 mb-2">
         {t.tuCorreo}
       </label>
@@ -69,7 +69,7 @@ export default function EmailCta({ locale, button, t, c }: { locale: Locale; but
           </Aviso>
         )}
       </div>
-      <PrivacidadLinea c={c} locale={locale} id={`${id}-help`} className="text-ink20 mt-3.5" />
+      <PrivacidadLinea c={c} locale={locale} id={`${id}-help`} className="text-ink20 mt-3.5" aviso={t.enEspanol} />
     </form>
   );
 }

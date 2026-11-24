@@ -19,6 +19,17 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 - [x] **Cifras de la casa frente a las webs personales.** Resuelto en la R5c (USD 26M+ y USD 2,7M+).
 - [ ] **Privacidad y términos: texto base, pendiente de revisión legal.** /privacidad ya nombra a Vercel como alojamiento que procesa cada envío (R5b). Que un abogado revise las dos páginas. Preguntas abiertas para el dueño: plazo de conservación de los datos, ley aplicable y jurisdicción, y política de devolución del PDF. Confirmar que el hosting no tiene activada analítica propia (la página dice que no hay cookies de publicidad ni de seguimiento; en el repo no hay analítica).
 
+## Sitio en inglés (24/11/2026): decisiones a confirmar
+
+- [ ] **Titular del héroe en inglés.** Traducción fiel del texto del dueño: «Your experience can work for more than one company. Or for your own.» (con su punto, como el español; la imagen para compartir lo muestra sin el punto final). Propuesta a confirmar.
+- [ ] **Nombre del diagnóstico.** Se eligió «Level check» (no «Level diagnostic»), para que no choque con la Parte 01 «Diagnosis» ni con «the diagnostic conversation» del capítulo 15. La URL sigue siendo /en/diagnostic.
+- [ ] **Nombres de los programas.** Primer Mandato => First Mandate; mastermind «Portafolio» => Portfolio mastermind; Sesiones individuales de transición => One-on-one transition sessions; Coconstrucción => Co-building; taller «Tu primer rol parcial» => “Your first part-time role” workshop. ¿Se traducen o quedan en español como nombres propios?
+- [ ] **Kit y otros términos.** Kit «Plan de salida» => “Exit plan” kit; CVM sin sigla en inglés («monthly cost of living», «floor cost of living», «cost of living without a job»); comprobante => invoice; colchón => cushion; Valores del año => Annual figures; Agenda 30 minutos => Book 30 minutes. Glosario completo en `docs/terminos.txt`, sección «English».
+- [ ] **Idioma de los programas.** La web en inglés no dice en qué idioma se dictan los programas ni las sesiones. Si se dictan solo en español, sumar una línea en /en/programs (clave nueva en `programas`, vacía en español).
+- [ ] **Correos y Apps Script.** Los correos de confirmación siguen en español y cada formulario en inglés lo avisa. Para guardar el idioma en la hoja, sumar `idioma` a `FORMULARIOS` en `apps-script/Code.gs` y redesplegar (sección 11 de las reglas).
+- [ ] **Legales en inglés.** /en/privacy y /en/terms abren con «This is a translation. The Spanish version prevails.» (supuesto del dueño, sección 11 de las reglas). Que la revisión legal cubra también esa línea.
+- [ ] **Publicar.** Junto con la R7, una sola publicación cuando el dueño lo pida.
+
 ## Ronda R7 (24/11/2026): sin textos sobreexplicativos
 
 - [x] **Regla general aplicada.** Textos sobreexplicativos quitados, recortados o movidos a «Detalle» en todas las rutas (regla en `docs/reglas-diseno.md`, sección 6 ter). Lista por página en `web-r7/CANDIDATOS.md`.

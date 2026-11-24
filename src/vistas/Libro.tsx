@@ -89,6 +89,8 @@ function Hero({ t }: P) {
           <Mono tone="gris" className="mt-4 lg:mt-5">
             <Jn parts={h.formatos} />
           </Mono>
+          {/* Solo en inglés: el libro y el workbook están en español (en español, vacío) */}
+          {h.enEspanol && <p className="text-recuadro text-ink2 mt-2">{h.enEspanol}</p>}
         </div>
       </div>
     </section>
@@ -284,7 +286,7 @@ function Formats({ t }: P) {
           className="max-w-[860px]"
           label={fo.label}
           title={fo.title}
-          sub={CHECKOUT_URL ? fo.subPago : fo.subWa}
+          sub={[CHECKOUT_URL ? fo.subPago : fo.subWa, fo.enEspanol].filter(Boolean).join(" ")}
         />
         <div className="rv-kids grid grid-cols-[minmax(0,1fr)] gap-5 lg:gap-6 md:grid-cols-2 mt-8 lg:mt-12">
           {fmts.map((f) => (

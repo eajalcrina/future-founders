@@ -241,7 +241,7 @@ export default function RunwayCalc({ nivel = 3, locale, t, c }: { nivel?: 2 | 3;
           <Lectura label={c.lectura} text={<Sc text={ej.lectura} />} />
           <div className="bg-sage px-4 pt-4 pb-5">
             <div className="flex gap-3.5 items-start">
-              <Scene who={ej.key} className="w-[96px] shrink-0" />
+              <Scene who={ej.key} className="w-[96px] shrink-0" locale={locale} />
               <div>
                 <div className="wm text-saged">{ej.name}</div>
                 <p className="text-recuadro leading-[1.4] mt-1.5 text-ink2">

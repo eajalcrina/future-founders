@@ -258,7 +258,7 @@ function SendResult({ k, ans, canon, locale, r: tr, c, td }: DiagProps & { k: nu
         </p>
       ) : (
         <form onSubmit={onSubmit} noValidate className="relative grid gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-end mt-4">
-          <Trampa />
+          <Trampa locale={locale} />
           <div>
             <label htmlFor={`${id}-n`} className="wm block text-ink2 mb-2">
               {c.nombre}
@@ -293,7 +293,7 @@ function SendResult({ k, ans, canon, locale, r: tr, c, td }: DiagProps & { k: nu
           </Aviso>
         )}
       </div>
-      <PrivacidadLinea c={c} locale={locale} className="text-ink2 mt-3" />
+      <PrivacidadLinea c={c} locale={locale} className="text-ink2 mt-3" aviso={tr.enEspanol} />
     </div>
   );
 }

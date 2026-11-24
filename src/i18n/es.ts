@@ -338,6 +338,8 @@ export const es = {
     promociones: "Si no lo ves en unos minutos, revisa la carpeta de promociones.",
     error: "No pudimos registrar tu correo en este momento. Pídenos el kit por {wa} y te lo enviamos.",
     waMensaje: "Hola, quiero recibir el kit «Plan de salida».",
+    /** Aviso de que algo sigue en español: vacío en español (no se pinta); en inglés, una línea. */
+    enEspanol: "",
   },
   descarga: {
     kit: {
@@ -346,6 +348,7 @@ export const es = {
       button: "Descargar el kit",
       next: "Empieza por la K.1: son 20 minutos y te deja el dato del que parte todo el método.",
       wa: "el kit «Plan de salida»",
+      enEspanol: "",
     },
     workbook: {
       h: "Descarga el workbook",
@@ -353,6 +356,7 @@ export const es = {
       button: "Descargar el workbook",
       next: "Abre primero «Tu nivel en la escalera», al comienzo del workbook, y anota tu nivel con la fecha.",
       wa: "el workbook de Doble Agente",
+      enEspanol: "",
     },
     escribeNombre: "Escribe tu nombre.",
     situacion: "¿En qué situación estás?",
@@ -564,6 +568,7 @@ export const es = {
       autores: "Eddie Ajalcriña y Lorenzo Ortiz",
       lead: "Durante dos décadas construiste tu carrera en empresas grandes. Este libro te ayuda a convertir esa experiencia en ingresos propios, paso a paso y sin ocultárselo a tu empleador.",
       formatos: ["Ebook", "Impreso", "PDF", "Workbook gratis"],
+      enEspanol: "",
     },
     contratapa: {
       label: ["De qué trata"],
@@ -609,6 +614,7 @@ export const es = {
       pdfDPago: "Para leer en una tableta o en la computadora. Te llega a tu correo en un plazo máximo de 6 horas después del pago.",
       pdfD: "Para leer en una tableta o en la computadora.",
       nota: "Cada persona parte de un sueldo, un ahorro y un mercado distintos, y el libro te ayuda a medir los tuyos.",
+      enEspanol: "",
     },
     autores: {
       label: ["Autores"],
@@ -771,6 +777,7 @@ export const es = {
       enviar: "Enviar",
       error: "No pudimos registrar tus datos en este momento. Escríbenos por {wa} y te respondemos con tu siguiente paso.",
       waMensaje: "Hola, hice el diagnóstico y salí en el nivel {k}, {nombre}.",
+      enEspanol: "",
     },
   },
 
@@ -861,6 +868,7 @@ export const es = {
       invalido: "Escribe tu nombre y un correo válido.",
       error: "No pudimos registrar tu postulación en este momento. Escríbenos por {wa} y te respondemos con las fechas.",
       waMensaje: "Hola, soy {nombre}. Quiero postular a {programa}.",
+      enEspanol: "",
     },
   },
 
@@ -1058,6 +1066,8 @@ export const es = {
         "Qué datos guarda Future Founders cuando llenas un formulario, dónde se guardan, para qué se usan y cómo dejas de recibir correos o pides que los borremos.",
       label: ["Legal", "Privacidad"],
       vigente: VIGENTE,
+      /** En inglés: «This is a translation. The Spanish version prevails.» En español, vacío. */
+      aviso: "",
       bloques: [
         { h: "Quién responde por tus datos", p: [`${RESPONSABLE}. Contacto: ${EMAIL}.`] },
         {
@@ -1116,6 +1126,8 @@ export const es = {
         "Condiciones de uso de futurefounders.pe: qué ofrece el sitio, cómo se compra el libro, el alcance de las calculadoras y el diagnóstico, y el uso del material.",
       label: ["Legal", "Términos"],
       vigente: VIGENTE,
+      /** En inglés: «This is a translation. The Spanish version prevails.» En español, vacío. */
+      aviso: "",
       bloques: [
         { h: "Quién opera el sitio", p: [`${RESPONSABLE}. Contacto: ${EMAIL}.`] },
         {
@@ -1212,7 +1224,7 @@ export type Valor = {
 };
 export type Pais = { id: string; pais: string; anexo: string; valores: Valor[]; tramites: string[] };
 export type Bloque = { h: string; p: string[] };
-export type Legal = { title: string; description: string; label: string[]; vigente: string; bloques: Bloque[] };
+export type Legal = { title: string; description: string; label: string[]; vigente: string; aviso: string; bloques: Bloque[] };
 
 /** Forma de los diccionarios. en.ts se declara con este tipo: una clave que falte o sobre rompe el build. */
 export type Dict = typeof es;

@@ -22,6 +22,8 @@ export type FilaEn = {
 };
 
 export type PlantillaEn = {
+  /** Código visible, solo cuando no es neutro («Cierre» → «Closing»); K.1, 1.1 o A.1 no cambian. */
+  code?: string;
   title?: string;
   time?: string;
   purpose?: string;
@@ -86,6 +88,7 @@ function plantillaEn(p: Plantilla): Plantilla {
   if (!o) return { ...p, part: p.part && { ...p.part, name: PARTES_EN[p.part.num] ?? p.part.name } };
   return {
     ...p,
+    code: o.code ?? p.code,
     title: o.title ?? p.title,
     time: o.time ?? p.time,
     purpose: p.purpose === null ? null : (o.purpose ?? p.purpose),

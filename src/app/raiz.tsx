@@ -99,6 +99,20 @@ export function orgLd(locale: Locale) {
 const JS_FLAG =
   "document.documentElement.classList.add('js');setTimeout(function(){if(!window.__rv)document.documentElement.classList.remove('js')},2500);";
 
+/** Solo en /en: el sitio en inglés como WebSite con inLanguage «en» (el libro sigue con inLanguage «es» en /en/book). */
+function sitioEnLd() {
+  const t = dict("en");
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Future Founders",
+    url: `${SITE_URL}${ruta("inicio", "en")}`,
+    inLanguage: "en",
+    description: t.meta.descripcion,
+    publisher: { "@type": "Organization", name: "Future Founders", url: SITE_URL },
+  };
+}
+
 export function Raiz({ locale, children }: { locale: Locale; children: React.ReactNode }) {
   const ld = orgLd(locale);
   return (
@@ -106,6 +120,7 @@ export function Raiz({ locale, children }: { locale: Locale; children: React.Rea
       <head>
         <script dangerouslySetInnerHTML={{ __html: JS_FLAG }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, "\\u003c") }} />
+        {locale === "en" && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(sitioEnLd()).replace(/</g, "\\u003c") }} />}
       </head>
       <body>{children}</body>
     </html>
