@@ -1,3 +1,4 @@
+// Inglés del sitio. Diccionarios (src/i18n/es.ts y en.ts): mismas listas con el mismo largo.
 // Overlay en inglés del workbook (src/content/en/workbook-en.ts e ideas-en.ts): avisa qué plantillas, campos,
 // partes e ideas no tienen todavía su texto en inglés (en /en se muestran en español) y qué entradas sobran
 // o no calzan con el workbook generado (id que no existe, fila que no existe, listas de otro largo).
@@ -10,6 +11,9 @@ const { PLANTILLAS, PARTES } = await import("../src/content/workbook.ts");
 const { IDEAS } = await import("../src/content/ideas.ts");
 const { WORKBOOK_EN, PARTES_EN } = await import("../src/content/en/workbook-en.ts");
 const { IDEAS_EN } = await import("../src/content/en/ideas-en.ts");
+
+const { es } = await import("../src/i18n/es.ts");
+const { en } = await import("../src/i18n/en.ts");
 
 const strict = process.argv.includes("--strict");
 const faltan = [];
@@ -70,6 +74,15 @@ for (const p of PLANTILLAS) {
     largo(p.id, `tables[${i}].rows`, tb.cells.map((c) => c[0]), x?.rows);
   });
 }
+
+// Diccionarios: el tipo Dict ya exige las mismas claves; aquí se exige además el mismo largo en cada lista,
+// porque varias valen por posición (países y situaciones que se envían en español, niveles, opciones del diagnóstico).
+(function mismoLargo(a, b, ruta) {
+  if (Array.isArray(a)) {
+    if (!Array.isArray(b) || a.length !== b.length) return error(`diccionario: ${ruta} tiene ${Array.isArray(b) ? b.length : "otro tipo"} elementos en inglés y ${a.length} en español`);
+    a.forEach((x, i) => mismoLargo(x, b[i], `${ruta}[${i}]`));
+  } else if (a && typeof a === "object") for (const k of Object.keys(a)) mismoLargo(a[k], b?.[k], ruta ? `${ruta}.${k}` : k);
+})(es, en, "");
 
 const porPlantilla = new Set(faltan.map((m) => m.split(/[.:]/)[0]));
 for (const e of errores) console.log("FALLA", e);

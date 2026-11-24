@@ -135,7 +135,8 @@ function ArchCard({ a, t, locale }: P & { a: Dict["sitio"]["arch"][number] }) {
       </div>
       <dl className="mt-5">
         {a.rows.map(([l, v], i) => {
-          const fuerte = q.fuertes.includes(l);
+          // Runway y nivel de partida (las dos últimas filas de la ficha) van en negrita.
+          const fuerte = i >= a.rows.length - 2;
           return (
             <div
               key={l}
@@ -336,7 +337,7 @@ function Founders({ t }: P) {
 }
 
 /** Cifras de la casa, a un scroll del titular: franja con filete arriba y abajo, sin titular grande. */
-function Stats({ t }: P) {
+function Stats({ t, locale }: P) {
   return (
     <section className="border-t border-ink" aria-labelledby="cifras-t">
       <div className="wrap pt-8 pb-10 lg:pt-12 lg:pb-14">
@@ -348,7 +349,7 @@ function Stats({ t }: P) {
             <div key={s.label} className="border-t border-ink pt-3 lg:pt-4 flex flex-col-reverse justify-end">
               <dt className="text-cuerpo mt-2 lg:mt-3 text-ink2">{s.label}</dt>
               <dd className="num text-kpi lg:text-display-lg m-0 whitespace-nowrap">
-                <CountUp value={s.value} decimals={s.decimals} prefix={s.prefix} suffix={s.suffix} />
+                <CountUp value={s.value} decimals={s.decimals} prefix={s.prefix} suffix={s.suffix} locale={locale} />
               </dd>
             </div>
           ))}

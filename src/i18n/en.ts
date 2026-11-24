@@ -5,8 +5,7 @@
 // Las cifras de las calculadoras no se escriben aquí: se formatean con el idioma (61,600 y 7.0).
 
 import { EMAIL } from "../content/sitio";
-import type { ProgramaId } from "../content/programas";
-import type { Arch, Dict, Legal, Pais, Programa, Stat, TocExtremo } from "./es";
+import type { Dict } from "./es";
 
 // TODO-EN: traducir.
 const RESPONSABLE = "Future Founders, una marca de Soluciones Regenerativas LLC (Estados Unidos)";
@@ -263,7 +262,7 @@ export const en: Dict = {
         start: "19.1 El punto de no retorno",
         href: "/workbook/19-1",
       },
-    ] as Arch[],
+    ],
     archNote:
       "Carmen, Javier, Andrea y Rodrigo son arquetipos del libro, armados a partir de conversaciones con ejecutivos. No son personas reales.",
     products: [
@@ -283,7 +282,7 @@ export const en: Dict = {
       { value: 10, suffix: "+", label: "empresas construidas" },
       { prefix: "USD ", value: 26, suffix: "M+", label: "facturados" },
       { prefix: "USD ", value: 2.7, decimals: 1, suffix: "M+", label: "capital levantado" },
-    ] as Stat[],
+    ],
     cifrasNota: "Suman la trayectoria de los fundadores y la de los participantes de los programas.",
     /**
      * Bios de los fundadores. Fuente: eddieajalcrina.com y lorenzoortiz.co, leídas el 15/11/2026; no agregar datos que no estén ahí.
@@ -510,8 +509,6 @@ export const en: Dict = {
       sub: "Para gerentes, directores y VP de 38 a 55 años, con 12 a 25 años de carrera en empresas grandes de Latinoamérica.",
       nivelPartida: "Nivel de partida: {k}",
       empiezaPor: "Empieza por",
-      /** Filas en negrita de la ficha (las dos últimas de cada arquetipo). */
-      fuertes: ["Runway", "Nivel de partida"],
     },
     libro: {
       portadaAlt: "Portada de Doble Agente, libro y workbook, 2.ª edición",
@@ -560,9 +557,9 @@ export const en: Dict = {
         "03": [["10", "Tu propuesta de valor, en números"], ["11", "Tu primer rol parcial: formato, precio y contrato"], ["12", "De servicio a producto"], ["13", "La unidad económica"]],
         "04": [["14", "Tu red como canal"], ["15", "La conversación de diagnóstico"], ["16", "El primer contrato y el primer comprobante"], ["17", "Tu agenda, tu energía y tu familia"]],
         "05": [["18", "Del primer rol al portafolio"], ["19", "El punto de no retorno"], ["20", "La conversación con tu empleador"], ["21", "Independencia: saltar o quedarte"]],
-      } as Record<string, [string, string][]>,
+      },
       cierre: { n1: "Cierre", n2: "y anexos", items: [["", "Lo que sigue"], ["", "Anexos por país: Perú, México, Colombia y Chile"], ["", "Glosario e índices"]] },
-    } as { apertura: TocExtremo; capitulos: Record<string, [string, string][]>; cierre: TocExtremo },
+    },
     muestras: [
       "Páginas 8 y 9 del libro: los cuatro arquetipos, Carmen, Javier, Andrea y Rodrigo, con sus números de partida",
       "Páginas 12 y 13 del libro: el marco 0.1, la escalera de cuatro niveles con la ruta de los 21 capítulos",
@@ -870,7 +867,7 @@ export const en: Dict = {
         forWho: "Vives de tu portafolio y quieres que deje de depender solo de tus horas.",
         cta: "Agenda 30 minutos",
       },
-    } as Record<ProgramaId, Programa>,
+    },
     form: {
       programa: "Programa",
       opcion: "{tag}: {nombre}",
@@ -1067,7 +1064,7 @@ export const en: Dict = {
           "Datos personales: la Ley 21.719 modifica de forma amplia la Ley 19.628 y crea la Agencia de Protección de Datos Personales. Al 30 de octubre de 2026 su entrada en vigencia estaba fijada para el 1 de diciembre de 2026 y había un proyecto para postergarla. Confirma en LeyChile la fecha vigente antes de preparar tu política de datos.",
         ],
       },
-    ] as Pais[],
+    ],
   },
 
   /**
@@ -1134,7 +1131,7 @@ export const en: Dict = {
         },
         { h: "Cambios", p: ["Si esta política cambia, publicamos aquí la versión nueva con su fecha."] },
       ],
-    } as Legal,
+    },
     terminos: {
       title: "Términos de uso",
       description:
@@ -1180,7 +1177,7 @@ export const en: Dict = {
         },
         { h: "Cambios", p: ["Estos términos pueden cambiar. La versión vigente es la publicada aquí, con su fecha."] },
       ],
-    } as Legal,
+    },
   },
 
   // TODO-EN: traducir (hoy repite el español como marcador).

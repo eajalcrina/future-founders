@@ -97,5 +97,22 @@ console.log(`\n${checked} salidas comparadas, ${fails} fallas.`);
   say(parseNum("61,600", "en") === 61600 && parseNum("7.0", "en") === 7 && parseNum("61,600.5", "en") === 61600.5, "lectura en inglés: 61,600 y 7.0");
   say(fmtNum(61600, 0, "en") === "61,600" && fmtNum(7, 1, "en") === "7.0" && fmtNum(61600) === "61.600" && fmtNum(7, 1) === "7,0", "formato: 61.600 y 7,0 en español; 61,600 y 7.0 en inglés");
 }
-console.log(`Prueba en inglés (K.1): ${fails} fallas en total.`);
+// Todas las calculadoras: el ejemplo escrito en inglés da los mismos valores que en español.
+{
+  let filas = 0;
+  for (const p of PLANTILLAS) {
+    if (!p.calc) continue;
+    const a = computeAll(p.calc, exampleInputs(p.calc, "es"), "es");
+    const b = computeAll(p.calc, exampleInputs(p.calc, "en"), "en");
+    for (const r of p.calc.filter(isRow)) {
+      filas++;
+      const x = a[r.field];
+      const y = b[r.field];
+      const igual = typeof x === "number" ? (Number.isNaN(x) ? Number.isNaN(y) : Math.abs(x - y) < 1e-9) : x === y;
+      if (!igual) say(false, `${p.code} ${r.field}: ${x} en español y ${y} en inglés`);
+    }
+  }
+  console.log(`Inglés: ${filas} filas de las calculadoras dan lo mismo que en español.`);
+}
+console.log(`Prueba en inglés (K.1 y calculadoras): ${fails} fallas en total.`);
 process.exit(fails ? 1 : 0);

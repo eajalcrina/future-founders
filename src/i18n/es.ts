@@ -494,8 +494,6 @@ export const es = {
       sub: "Para gerentes, directores y VP de 38 a 55 años, con 12 a 25 años de carrera en empresas grandes de Latinoamérica.",
       nivelPartida: "Nivel de partida: {k}",
       empiezaPor: "Empieza por",
-      /** Filas en negrita de la ficha (las dos últimas de cada arquetipo). */
-      fuertes: ["Runway", "Nivel de partida"],
     },
     libro: {
       portadaAlt: "Portada de Doble Agente, libro y workbook, 2.ª edición",

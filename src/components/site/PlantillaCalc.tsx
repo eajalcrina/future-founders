@@ -45,8 +45,8 @@ export default function PlantillaCalc({ locale, t, detalle, id, code, calc, avis
   const uid = useId();
   const fc: FmtCalc = { locale, si: t.si, no: t.no, mes: t.mes, ninguno: t.ninguno };
   const example = useMemo(() => exampleInputs(calc, locale), [calc, locale]);
-  // Las listas desplegables guardan el valor del libro («0,75»): no se reescriben al cambiar de idioma.
-  const fijos = useMemo(() => new Set(calc.filter(isRow).filter((r) => r.kind === "select").map((r) => r.field)), [calc]);
+  // Al cambiar de idioma no se reescriben las listas desplegables (guardan el valor del libro, «0,75») ni los textos («2026»).
+  const fijos = useMemo(() => new Set(calc.filter(isRow).filter((r) => r.kind === "select" || r.kind === "text").map((r) => r.field)), [calc]);
   const inputs = useMemo(() => calc.filter(isRow).filter(isInput), [calc]);
   const [raw, setRaw] = useState<Record<string, string>>(example);
   const [loaded, setLoaded] = useState(false);

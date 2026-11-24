@@ -2,10 +2,24 @@
 
 import { useEffect, useRef } from "react";
 
-import { fmtNum as fmt } from "@/lib/format";
+import { fmtNum, type NumLocale } from "@/lib/format";
 
 /** Cifra que cuenta de 0 a su valor al entrar en pantalla (1,2 s). El HTML del servidor ya trae el valor final. */
-export default function CountUp({ value, decimals = 0, prefix = "", suffix = "" }: { value: number; decimals?: number; prefix?: string; suffix?: string }) {
+export default function CountUp({
+  value,
+  decimals = 0,
+  prefix = "",
+  suffix = "",
+  locale = "es",
+}: {
+  value: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+  /** Formato de la cifra: 2,7 en español; 2.7 en inglés. */
+  locale?: NumLocale;
+}) {
+  const fmt = (v: number, d: number) => fmtNum(v, d, locale);
   const ref = useRef<HTMLSpanElement>(null);
   const final = `${prefix}${fmt(value, decimals)}${suffix}`;
 
@@ -39,7 +53,8 @@ export default function CountUp({ value, decimals = 0, prefix = "", suffix = "" 
       cancelAnimationFrame(raf);
       paint(value);
     };
-  }, [value, decimals, prefix, suffix]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value, decimals, prefix, suffix, locale]);
 
   return (
     <span className="tab">
