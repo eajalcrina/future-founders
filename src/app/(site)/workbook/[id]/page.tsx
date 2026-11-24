@@ -291,6 +291,8 @@ function cubierto(trae: string, intro: string, usos: string[]) {
   const base = /(?<!\p{L})(Necesitas|Usa|Ten|Busca)(?!\p{L})/u.test(intro) ? intro.toLowerCase() : "";
   const partes = trae.split(/,|\s(?:y|o)\s/).map((x) => x.trim()).filter(Boolean);
   return partes.every((parte) => {
+    // Una condición («… si tu ruta es un rol parcial») es un dato que «Necesitas antes» no dice: el recuadro se queda.
+    if (/(?<!\p{L})si(?!\p{L})/u.test(parte)) return false;
     const codigos = parte.match(/K\.\d+|\d+\.\d+/g) ?? [];
     if (codigos.length > 0) return codigos.every((c) => usos.includes(c) || intro.includes(c));
     const palabras = (parte.toLowerCase().match(/\p{L}{2,}/gu) ?? []).filter((w) => !VACIAS.has(w));
