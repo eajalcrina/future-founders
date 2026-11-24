@@ -10,7 +10,9 @@ type Campo = { max: number; requerido?: boolean };
 
 /**
  * Campos que acepta cada formulario, con su largo máximo. Lo que no está aquí se descarta.
- * Mantener alineado con FORMULARIOS en apps-script/Code.gs.
+ * Mantener alineado con FORMULARIOS en apps-script/Code.gs. Los valores van en español en los dos idiomas.
+ * `idioma` («es» o «en») viaja al script, que hoy lo ignora: validar_ solo lee los campos de FORMULARIOS,
+ * así que no cambia columnas ni correos. Para guardarlo, sumar ['idioma', 'Idioma', 5, false] en Code.gs y redesplegar.
  */
 export const CAMPOS: Record<Formulario, Record<string, Campo>> = {
   kit: {
@@ -19,6 +21,7 @@ export const CAMPOS: Record<Formulario, Record<string, Campo>> = {
     correo: { max: 254, requerido: true },
     situacion: { max: 60 },
     pais: { max: 40 },
+    idioma: { max: 5 },
   },
   workbook: {
     origen: { max: 80 },
@@ -26,6 +29,7 @@ export const CAMPOS: Record<Formulario, Record<string, Campo>> = {
     correo: { max: 254, requerido: true },
     situacion: { max: 60 },
     pais: { max: 40 },
+    idioma: { max: 5 },
   },
   diagnostico: {
     nombre: { max: 100 },
@@ -34,6 +38,7 @@ export const CAMPOS: Record<Formulario, Record<string, Campo>> = {
     situacion: { max: 120 },
     cobertura: { max: 120 },
     colchon: { max: 120 },
+    idioma: { max: 5 },
   },
   programa: {
     programa: { max: 80, requerido: true },
@@ -42,6 +47,7 @@ export const CAMPOS: Record<Formulario, Record<string, Campo>> = {
     correo: { max: 254, requerido: true },
     pais: { max: 40 },
     mensaje: { max: 500 },
+    idioma: { max: 5 },
   },
 };
 

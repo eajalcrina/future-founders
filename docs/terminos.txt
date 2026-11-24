@@ -33,3 +33,51 @@ Eddie Ajalcriña & Lorenzo Ortiz => Eddie Ajalcriña y Lorenzo Ortiz
 # Cifras
 USD 9500 => USD 9.500
 25% => 25 %
+
+# ------------------------------------------------------------------ English (sitio /en)
+# Glosario en inglés, congelado el 24/11/2026 (etapa 2 del sitio bilingüe). Vale para src/i18n/en.ts y los overlays de src/content/en/.
+# Las líneas «#en malo => bueno» son los pares del inglés: van comentadas para que los scripts no las apliquen al español
+# (y los pares de arriba no se aplican al inglés). Para revisar /en: grep '^#en ' docs/terminos.txt | sed 's/^#en //' > terminos-en.txt.
+#
+# Libro: Doble Agente (no se traduce; el libro está en español). Subtítulo, solo donde ayude: (The method for salaried executives).
+# Niveles: Level 0 Salary / Level 1 First part-time role / Level 2 Portfolio / Level 3 Independence. «Nivel 0, Salario» => «Level 0, Salary».
+# Escalera => the ladder. Señal => signal. Marco 0.1 => Framework 0.1. Plantilla => template. Parte 01 => Part 01. Anexo A => Appendix A.
+# Kit «Plan de salida» => “Exit plan” kit (en una oración: the “Exit plan” kit). Comillas del inglés: “ ” (no « »).
+# workbook => workbook (minúscula dentro de una oración). Diagnóstico de nivel => Level check (nombre propio, con mayúscula).
+#   Parte 01 «Diagnóstico» => Part 01 “Diagnosis”; capítulo 15 => the diagnostic conversation (no chocan con Level check).
+# Programas: taller «Tu primer rol parcial» => “Your first part-time role” workshop; Primer Mandato => First Mandate;
+#   mastermind «Portafolio» => Portfolio mastermind; Sesiones individuales de transición => One-on-one transition sessions;
+#   Coconstrucción => Co-building. Agenda 30 minutos => Book 30 minutes.
+# runway => runway. CVM (costo de vida mensual) => monthly cost of living; sin sigla en inglés: CVM piso => floor cost of living,
+#   CVM sin empleo => cost of living without a job.
+# Ahorro líquido => liquid savings. Colchón => cushion. Ingresos propios => own income. Rol parcial => part-time role.
+# Comprobante => invoice. Punto de no retorno => point of no return. Regla de valor => value rule. Indemnización => severance.
+# Liquidación => final settlement. Consejo asesor => advisory board. Valores del año => Annual figures.
+# Cupos => spots. Convocatoria => round (no «intake»). Boletas de pago => pay stubs. Marcar una casilla => check (inglés de EE. UU.).
+# Arquetipos (rótulos): Carmen «Employed», Javier «Just laid off», Andrea «In a regulated sector», Rodrigo «Runs his own business».
+#   Cargos: finance manager at a mid-sized mining company in Lima; former commercial VP at a consumer goods multinational in Bogotá;
+#   technology director at a large bank in Mexico City; partner in a delivery business in Santiago.
+# Cifras: USD 9,500; 25%; 7.0 months; S/ 5,500; MXN 315.04; COP 1,750,905; CLP 39,500 (coma de miles, punto decimal, % pegado).
+# Leyes con su nombre oficial en español: Ley N.º 29733, Ley N.º 29571 (y las demás leyes y entidades de cada país).
+# Lo que sigue en español se avisa una vez por bloque: «The kit and the email are in Spanish.»
+#
+#en fractional role => part-time role
+#en fractional roles => part-time roles
+#en level diagnostic => Level check
+#en level diagnosis => Level check
+#en exit plan kit => “Exit plan” kit
+#en Double Agent => Doble Agente
+#en co-construction => Co-building
+#en cocreation => Co-building
+#en severance pay => severance
+#en intake => round
+#en pay slip => pay stub
+#en buffer => cushion
+#en appendices by country => country appendices
+#en leverage => (prohibida)
+#en unlock => (prohibida)
+#en empower => (prohibida)
+#en seamless => (prohibida)
+#en robust => (prohibida)
+#en game-changer => (prohibida)
+#en delve => (prohibida)

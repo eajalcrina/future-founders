@@ -2,33 +2,23 @@
 
 import { useId, useState } from "react";
 import { enviarRegistro, leerTrampa, EMAIL_RE } from "@/lib/registro";
-import { SITUACIONES, whatsappUrl } from "@/content/sitio";
-import { Aviso, PrivacidadLinea } from "./ui";
+import { whatsappUrl } from "@/content/sitio";
+import type { Dict } from "@/i18n/es";
+import { f } from "@/i18n/f";
+import type { Locale } from "@/i18n/rutas";
+import { Aviso, ConWa, PrivacidadLinea, type Comun } from "./ui";
 import Trampa from "./Trampa";
-
-const SIT = SITUACIONES.map((s) => s.corto);
-const COUNTRIES = ["Perú", "México", "Colombia", "Chile", "Otro país"];
 
 export type Producto = "kit" | "workbook";
 
-const COPY: Record<Producto, { h: string; intro: string; lead: string; button: string; next: string; wa: string }> = {
-  kit: {
-    h: "Descarga el kit",
-    intro: "Un PDF que puedes llenar, con los ejemplos de Carmen y Javier y la regla de cada país. Lo descargas aquí y te llega una copia al correo.",
-    lead: "Página del kit",
-    button: "Descargar el kit",
-    next: "Empieza por la K.1: son 20 minutos y te deja el dato del que parte todo el método.",
-    wa: "el kit «Plan de salida»",
-  },
-  workbook: {
-    h: "Descarga el workbook",
-    intro: "Las 31 plantillas del libro en un PDF. Se llena en una tableta, en la computadora o en papel. Lo descargas aquí y te llega una copia al correo.",
-    lead: "Página del workbook",
-    button: "Descargar el workbook",
-    next: "Abre primero «Tu nivel en la escalera», al comienzo del workbook, y anota tu nivel con la fecha.",
-    wa: "el workbook de Doble Agente",
-  },
-};
+/** Etiquetas en español que se envían a /api/registro (situación corta y país), en el mismo orden que las del idioma. */
+export type Canon = { situaciones: string[]; paises: string[] };
+
+/**
+ * Origen del registro en la hoja: dato interno en español (lo lee apps-script/Code.gs), con la ruta
+ * de la página para saber el idioma. No se muestra.
+ */
+const ORIGEN: Record<Producto, string> = { kit: "Página del kit", workbook: "Página del workbook" };
 
 /**
  * Formulario de descarga del kit o del workbook: nombre, correo, situación y país.
@@ -36,20 +26,32 @@ const COPY: Record<Producto, { h: string; intro: string; lead: string; button: s
  * `file` es la ruta pública del PDF; `fallback` se usa si ese PDF todavía no está publicado.
  */
 export default function DownloadForm({
+  locale,
+  t,
+  c: cm,
+  situaciones,
+  canon,
   producto,
   file,
   fallback,
 }: {
+  locale: Locale;
+  t: Dict["descarga"];
+  c: Comun;
+  /** Situaciones del idioma de la página; `canon` trae las españolas, que son las que se envían. */
+  situaciones: { corto: string }[];
+  canon: Canon;
   producto: Producto;
   file: string;
   fallback?: { file: string; label: string; note: string };
 }) {
-  const c = COPY[producto];
+  const c = t[producto];
   const id = useId();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [sit, setSit] = useState(SIT[0]);
-  const [country, setCountry] = useState(COUNTRIES[0]);
+  // Se guarda el índice: lo que se envía es la etiqueta española (canon), sea cual sea el idioma.
+  const [sit, setSit] = useState(0);
+  const [country, setCountry] = useState(0);
   const [state, setState] = useState<"idle" | "sending" | "done">("idle");
   const [sent, setSent] = useState(false);
   const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
@@ -57,8 +59,8 @@ export default function DownloadForm({
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     const er: typeof errors = {};
-    if (!name.trim()) er.name = "Escribe tu nombre.";
-    if (!EMAIL_RE.test(email.trim())) er.email = "Revisa el correo: falta algo para que sea válido.";
+    if (!name.trim()) er.name = t.escribeNombre;
+    if (!EMAIL_RE.test(email.trim())) er.email = cm.correoInvalido;
     setErrors(er);
     if (er.name || er.email) {
       document.getElementById(`${id}-${er.name ? "name" : "email"}`)?.focus();
@@ -66,7 +68,8 @@ export default function DownloadForm({
     }
     const trampa = leerTrampa(e.currentTarget);
     setState("sending");
-    const r = await enviarRegistro(producto, { origen: c.lead, nombre: name.trim(), correo: email.trim(), situacion: sit, pais: country }, trampa);
+    const origen = locale === "es" ? ORIGEN[producto] : `${ORIGEN[producto]} (${locale})`;
+    const r = await enviarRegistro(producto, { origen, nombre: name.trim(), correo: email.trim(), situacion: canon.situaciones[sit], pais: canon.paises[country], idioma: locale }, trampa);
     setSent(r.ok);
     setState("done");
   }
@@ -79,35 +82,32 @@ export default function DownloadForm({
       {state === "done" ? (
         <div role="status" className="mt-7 border-t border-ink pt-5">
           <p className="text-h3 font-bold">
-            Listo, {name.trim().split(/\s+/)[0]}. Aquí está tu PDF.{sent ? ` También te lo enviamos a ${email.trim()}.` : ""}
+            {f(t.listo, { nombre: name.trim().split(/\s+/)[0] })}
+            {sent ? f(t.tambien, { correo: email.trim() }) : ""}
           </p>
           <a href={fallback ? fallback.file : file} download className="btn w-full mt-5">
-            {fallback ? fallback.label : "Descargar el PDF"}
+            {fallback ? fallback.label : t.descargarPdf}
           </a>
           {fallback && <p className="text-recuadro leading-[1.45] mt-3">{fallback.note}</p>}
           <p className="text-recuadro text-ink2 mt-3">{c.next}</p>
           {!sent && (
             <Aviso className="mt-4">
-              No pudimos registrar tu correo en este momento. Si quieres recibir las novedades del libro, escríbenos por{" "}
-              <a className="ul font-bold" href={whatsappUrl(`Hola, soy ${name.trim()}. Descargué ${c.wa} y quiero recibir las novedades en ${email.trim()}.`)} target="_blank" rel="noopener noreferrer">
-                WhatsApp
-              </a>
-              .
+              <ConWa texto={t.error} wa={cm.whatsapp} href={whatsappUrl(f(t.waMensaje, { nombre: name.trim(), producto: c.wa, correo: email.trim() }))} />
             </Aviso>
           )}
         </div>
       ) : (
         <form onSubmit={onSubmit} noValidate className="relative grid gap-[18px] mt-6 lg:mt-[26px]">
-          <Trampa />
+          <Trampa label={cm.trampa} />
           <div>
             <label htmlFor={`${id}-name`} className="wm block text-ink2 mb-2">
-              Nombre
+              {cm.nombre}
             </label>
             <input
               id={`${id}-name`}
               className="field"
               autoComplete="name"
-              placeholder="Tu nombre"
+              placeholder={cm.tuNombre}
               value={name}
               onChange={(e) => setName(e.target.value)}
               aria-invalid={Boolean(errors.name)}
@@ -121,14 +121,14 @@ export default function DownloadForm({
           </div>
           <div>
             <label htmlFor={`${id}-email`} className="wm block text-ink2 mb-2">
-              Correo
+              {cm.correo}
             </label>
             <input
               id={`${id}-email`}
               type="email"
               className="field"
               autoComplete="email"
-              placeholder="nombre@correo.com"
+              placeholder={cm.correoEjemplo}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               aria-invalid={Boolean(errors.email)}
@@ -141,34 +141,36 @@ export default function DownloadForm({
             )}
           </div>
           <fieldset className="m-0 p-0 border-0">
-            <legend className="wm text-ink2 mb-2">¿En qué situación estás?</legend>
+            <legend className="wm text-ink2 mb-2">{t.situacion}</legend>
             <div className="grid grid-cols-1 sm:grid-cols-3">
-              {SIT.map((t, i) => (
+              {situaciones.map((s, i) => (
                 <label
-                  key={t}
+                  key={s.corto}
                   className={`opt relative min-h-[48px] flex items-center justify-center text-center px-1 border border-ink cursor-pointer text-recuadro font-semibold leading-tight whitespace-nowrap ${i ? "border-t-0 sm:border-t sm:border-l-0" : ""}`}
-                  style={sit === t ? { background: "var(--color-ink)", color: "var(--color-paper)" } : undefined}
+                  style={sit === i ? { background: "var(--color-ink)", color: "var(--color-paper)" } : undefined}
                 >
-                  <input type="radio" name={`${id}-sit`} value={t} checked={sit === t} onChange={() => setSit(t)} className="sr-only" />
-                  {t}
+                  <input type="radio" name={`${id}-sit`} value={s.corto} checked={sit === i} onChange={() => setSit(i)} className="sr-only" />
+                  {s.corto}
                 </label>
               ))}
             </div>
           </fieldset>
           <div>
             <label htmlFor={`${id}-country`} className="wm block text-ink2 mb-2">
-              País
+              {cm.pais}
             </label>
-            <select id={`${id}-country`} className="field" value={country} onChange={(e) => setCountry(e.target.value)} autoComplete="country-name">
-              {COUNTRIES.map((c) => (
-                <option key={c}>{c}</option>
+            <select id={`${id}-country`} className="field" value={country} onChange={(e) => setCountry(Number(e.target.value))} autoComplete="country-name">
+              {cm.paises.map((p, i) => (
+                <option key={p} value={i}>
+                  {p}
+                </option>
               ))}
             </select>
           </div>
           <button type="submit" className="btn w-full mt-2" disabled={state === "sending"}>
-            {state === "sending" ? "Enviando..." : c.button}
+            {state === "sending" ? cm.enviando : c.button}
           </button>
-          <PrivacidadLinea className="text-ink2" />
+          <PrivacidadLinea c={cm} locale={locale} className="text-ink2" aviso={c.enEspanol} />
         </form>
       )}
     </div>

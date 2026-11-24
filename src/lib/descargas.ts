@@ -17,11 +17,7 @@ export function publicado(href: string): boolean {
 }
 
 /** Mientras el PDF del kit no esté publicado, el formulario del kit entrega el workbook, que trae las mismas cinco plantillas. */
-export function kitFallback() {
+export function kitFallback(t: { fallbackLabel: string; fallbackNota: string }) {
   if (publicado(DESCARGAS.kit)) return undefined;
-  return {
-    file: DESCARGAS.workbook,
-    label: "Descargar el workbook con el kit",
-    note: "El kit K.1 a K.5 está al comienzo del workbook, en las páginas 5 a 13.",
-  };
+  return { file: DESCARGAS.workbook, label: t.fallbackLabel, note: t.fallbackNota };
 }

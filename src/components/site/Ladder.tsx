@@ -1,8 +1,12 @@
 "use client";
 
 import { useState, type KeyboardEvent } from "react";
-import { LEVELS, LOOK, SIGNAL, CHAPS, DO_NOW, HERE } from "@/content/sitio";
+import type { Dict } from "@/i18n/es";
+import { f } from "@/i18n/f";
 import { Figure, Jn, Lvl, Mono, Sc } from "./ui";
+
+type S = Pick<Dict["sitio"], "levels" | "look" | "signal" | "chaps" | "doNow" | "here">;
+type T = Dict["ladder"];
 
 // Colores de los tokens (globals.css). En el SVG van por la propiedad style, que admite variables.
 const PAPER = "var(--color-paper)", WARM = "var(--color-warm)", INK = "var(--color-ink)", INK2 = "var(--color-ink2)", INK3 = "var(--color-ink3)", INK20 = "var(--color-ink20)", MAG = "var(--color-mag)";
@@ -28,33 +32,34 @@ const STATIONS: [number, number][] = [
   [XS[2] + 230, RY[2]],
   [XS[3] + 200, RY[3]],
 ];
+/** Rótulos de capítulos sobre la ruta; el primero («Cap. 1 a 17») sale del diccionario. */
 const CHLABELS: [number, number, string, string][] = [
-  [150, RY[0] + 10, "Cap. 1 a 17", INK2],
+  [150, RY[0] + 10, "", INK2],
   [XS[1] + 200, RY[1] + 10, "18", INK2],
   [XS[2] + 170, RY[2] + 10, "19", INK2],
   [XS[2] + 230, RY[2] + 10, "20", INK2],
   [XS[3] + 200, RY[3] + 10, "21", INK20],
 ];
 
-function Panel({ k, mobile }: { k: number; mobile?: boolean }) {
-  const { head, body } = DO_NOW[k];
+function Panel({ k, mobile, t, s, nivel }: { k: number; mobile?: boolean; t: T; s: S; nivel: string }) {
+  const { head, body } = s.doNow[k];
   const tag = (
     <Mono>
-      <Jn parts={[`Nivel ${k}`, LEVELS[k]]} />
+      <Jn parts={[f(nivel, { k }), s.levels[k]]} />
     </Mono>
   );
   const sig = (
     <div>
-      <div className="wm text-ink2">{k < 3 ? "Señal para pasar al siguiente" : "Para sostener el nivel 3"}</div>
-      <p className="text-h3 leading-[1.35] font-bold mt-2">{SIGNAL[k]}</p>
-      <div className="wm text-ink2 mt-[22px]">En el libro</div>
-      <p className="text-cuerpo mt-1.5">{CHAPS[k]}</p>
+      <div className="wm text-ink2">{k < 3 ? t.senal : t.sostener}</div>
+      <p className="text-h3 leading-[1.35] font-bold mt-2">{s.signal[k]}</p>
+      <div className="wm text-ink2 mt-[22px]">{t.enLibro}</div>
+      <p className="text-cuerpo mt-1.5">{s.chaps[k]}</p>
     </div>
   );
   // Los programas de cada nivel van una sola vez, en la sección Programas de la portada (R6).
   const items = (
     <p className="bg-sage text-recuadro leading-[1.45] px-3 py-2.5" style={{ borderTop: "var(--filete-fino) solid var(--color-saged)" }}>
-      {HERE[k]}
+      {s.here[k]}
     </p>
   );
   if (mobile)
@@ -86,7 +91,7 @@ function Panel({ k, mobile }: { k: number; mobile?: boolean }) {
   );
 }
 
-export default function Ladder() {
+export default function Ladder({ t, sitio: s, nivel }: { t: T; sitio: S; nivel: string }) {
   const [sel, setSel] = useState(0);
   function onKey(e: KeyboardEvent<HTMLButtonElement>, v: string) {
     const keys: Record<string, number> = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
@@ -115,7 +120,7 @@ export default function Ladder() {
       {/* ------------------------------------------------ escritorio */}
       <div className="hidden lg:block">
         <div className="draw relative w-full" style={{ aspectRatio: `${CW} / ${SH}`, containerType: "inline-size" }}>
-          <div role="radiogroup" aria-label="Elige tu nivel en la escalera">
+          <div role="radiogroup" aria-label={t.elige}>
             {[0, 1, 2, 3].map((k) => (
               <button
                 key={k}
@@ -135,10 +140,10 @@ export default function Ladder() {
                 }}
               >
                 <span className="wm absolute" style={{ left: "6.1%", top: "18px", color: k === 3 ? INK20 : INK2, fontSize: "max(10px, 0.92cqw)" }}>
-                  Nivel {k}
+                  {f(nivel, { k })}
                 </span>
                 <span className="wh2 absolute whitespace-nowrap" style={{ left: "6.1%", top: "40px", fontSize: "2.6cqw" }}>
-                  {LEVELS[k]}
+                  {s.levels[k]}
                 </span>
               </button>
             ))}
@@ -163,22 +168,22 @@ export default function Ladder() {
             </g>
             <line x1="-10" y1={BASE} x2={CW + 10} y2={BASE} style={{ stroke: INK }} strokeWidth="1.5" />
           </svg>
-          {CHLABELS.map(([x, y, t, c]) => (
+          {CHLABELS.map(([x, y, rot, c], i) => (
             <span
-              key={t}
+              key={i}
               aria-hidden="true"
               className="wm absolute pointer-events-none"
               style={{
-                left: px(t.startsWith("Cap") ? x : x - 20),
+                left: px(i === 0 ? x : x - 20),
                 top: py(y),
-                width: t.startsWith("Cap") ? undefined : px(40),
-                textAlign: t.startsWith("Cap") ? "left" : "center",
+                width: i === 0 ? undefined : px(40),
+                textAlign: i === 0 ? "left" : "center",
                 color: c,
                 letterSpacing: ".06em",
                 fontSize: "max(10px, 0.92cqw)",
               }}
             >
-              {t}
+              {i === 0 ? t.capitulos : rot}
             </span>
           ))}
           {(["carmen", "andrea", "javier"] as const).map((who, i) => (
@@ -198,18 +203,18 @@ export default function Ladder() {
         </div>
         {/* «Cómo se ve» va una vez, como cabecera de la fila (no se repite en cada columna). */}
         <div className="border-t border-ink pt-2.5">
-          <div className="wm text-ink2">Cómo se ve cada nivel</div>
+          <div className="wm text-ink2">{t.comoSeVe}</div>
           <div className="grid grid-cols-4">
-            {LOOK.map((t, k) => (
+            {s.look.map((l, k) => (
               <p key={k} className="text-recuadro leading-[1.4] mt-1.5 pr-5">
-                <span className="sr-only">Nivel {k}, {LEVELS[k]}: </span>
-                {t}
+                <span className="sr-only">{f(t.nivelNombre, { k, nombre: s.levels[k] })}: </span>
+                {l}
               </p>
             ))}
           </div>
         </div>
-        <div id="panel-nivel" className="mt-9" role="region" aria-live="polite" aria-label={`Nivel ${sel}, ${LEVELS[sel]}`}>
-          <Panel key={sel} k={sel} />
+        <div id="panel-nivel" className="mt-9" role="region" aria-live="polite" aria-label={f(t.nivelNombre, { k: sel, nombre: s.levels[sel] })}>
+          <Panel key={sel} k={sel} t={t} s={s} nivel={nivel} />
         </div>
       </div>
 
@@ -224,7 +229,7 @@ export default function Ladder() {
           <line x1="326" y1="24" x2="326" y2="2" style={{ stroke: INK }} strokeWidth="1.4" />
           <path d="M326 2 L344 7 L326 12z" style={{ fill: MAG }} />
         </svg>
-        <div role="radiogroup" aria-label="Elige tu nivel en la escalera" className="mt-4">
+        <div role="radiogroup" aria-label={t.elige} className="mt-4">
           {[0, 1, 2, 3].map((k) => (
             <button
               key={k}
@@ -242,19 +247,19 @@ export default function Ladder() {
               <span className="num text-kpi">{k}</span>
               <span className="min-w-0">
                 <span className="wm block" style={{ color: k === 3 ? INK20 : INK2 }}>
-                  Nivel {k}
+                  {f(nivel, { k })}
                 </span>
-                <span className="block text-h3 font-bold mt-0.5">{LEVELS[k]}</span>
+                <span className="block text-h3 font-bold mt-0.5">{s.levels[k]}</span>
                 <span className="block text-recuadro leading-[1.35] mt-1" style={{ color: k === 3 ? INK20 : INK2 }}>
-                  {LOOK[k]}
+                  {s.look[k]}
                 </span>
               </span>
               <Lvl on={Array.from({ length: k + 1 }, (_, i) => i)} size={8} fg={k === 3 ? PAPER : INK} off={k === 3 ? INK20 : INK3} />
             </button>
           ))}
         </div>
-        <div id="panel-nivel-m" className="mt-4" role="region" aria-live="polite" aria-label={`Nivel ${sel}, ${LEVELS[sel]}`}>
-          <Panel key={sel} k={sel} mobile />
+        <div id="panel-nivel-m" className="mt-4" role="region" aria-live="polite" aria-label={f(t.nivelNombre, { k: sel, nombre: s.levels[sel] })}>
+          <Panel key={sel} k={sel} t={t} s={s} nivel={nivel} mobile />
         </div>
       </div>
     </div>

@@ -2,14 +2,31 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
-import { LEVELS, SIGNAL, WITH, agendaUrl, whatsappUrl } from "@/content/sitio";
-import { colchonCorto, nivelDe, pasoDe, registroDe, visibles, type Respuestas } from "@/lib/diagnostico";
+import { agendaUrl, whatsappUrl } from "@/content/sitio";
+import { colchonCorto, nivelDe, pasoDe, preguntas, registroDe, visibles, type Fichas, type Respuestas, type TextosDiag } from "@/lib/diagnostico";
 import { enviarRegistro, leerTrampa, EMAIL_RE } from "@/lib/registro";
-import { Aviso, Icon, Lvl, Mono, PrivacidadLinea, Sc } from "./ui";
+import type { Dict } from "@/i18n/es";
+import { f } from "@/i18n/f";
+import { lh, type Locale } from "@/i18n/rutas";
+import { Aviso, ConWa, Icon, Lvl, Mono, PrivacidadLinea, Sc, type Comun } from "./ui";
 import Trampa from "./Trampa";
 
+/** Lo que el diagnóstico recibe del servidor: textos del idioma, los españoles para el registro y las fichas de plantillas. */
+export type DiagProps = {
+  locale: Locale;
+  td: TextosDiag;
+  /** Textos españoles: el registro se envía siempre en español (lo lee apps-script/Code.gs). */
+  canon: TextosDiag;
+  fichas: Fichas;
+  r: Dict["diagnostico"]["resultado"];
+  c: Comun;
+  signal: string[];
+  with: Dict["sitio"]["with"];
+};
+
 /** Cuestionario de cuatro preguntas (tres si todavía no hay comprobante). Las preguntas y la regla viven en src/lib/diagnostico.ts. */
-export default function Diagnostico() {
+export default function Diagnostico(props: DiagProps) {
+  const { td } = props;
   const id = useId();
   const [step, setStep] = useState(0);
   const [ans, setAns] = useState<Respuestas>({});
@@ -25,7 +42,7 @@ export default function Diagnostico() {
     head.current?.focus();
   }, [step, done]);
 
-  const qs = visibles(ans);
+  const qs = visibles(preguntas(td), ans);
   const q = qs[Math.min(step, qs.length - 1)];
   const cur = ans[q.id] ?? null;
 
@@ -47,14 +64,12 @@ export default function Diagnostico() {
     setDone(false);
   }
 
-  if (done) return <Result ans={ans} onRestart={restart} headRef={head} />;
+  if (done) return <Result {...props} ans={ans} onRestart={restart} headRef={head} />;
 
   return (
     <div className="border border-ink bg-paper">
       <div className="flex justify-between items-center gap-4 px-5 lg:px-8 py-4 border-b border-ink">
-        <span className="wm">
-          Pregunta {step + 1} de {qs.length}
-        </span>
+        <span className="wm">{f(td.c.pregunta, { n: step + 1, total: qs.length })}</span>
         <span className="flex gap-1" aria-hidden="true">
           {qs.map((_, k) => (
             <span key={k} className="block h-[3px] w-6 sm:w-8" style={{ background: k <= step ? "var(--color-ink)" : "var(--color-ink20)" }} />
@@ -106,10 +121,10 @@ export default function Diagnostico() {
         </fieldset>
         <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-3 mt-7">
           <button type="button" className={`btn2 ${step === 0 ? "max-sm:hidden sm:invisible" : ""}`} onClick={() => setStep(Math.max(0, step - 1))} disabled={step === 0}>
-            Anterior
+            {td.c.anterior}
           </button>
           <button type="submit" className="btn" disabled={cur === null}>
-            {step < qs.length - 1 ? "Siguiente" : "Ver mi nivel"}
+            {step < qs.length - 1 ? td.c.siguiente : td.c.verNivel}
           </button>
         </div>
       </form>
@@ -117,13 +132,14 @@ export default function Diagnostico() {
   );
 }
 
-function Result({ ans, onRestart, headRef }: { ans: Respuestas; onRestart: () => void; headRef: React.RefObject<HTMLHeadingElement | null> }) {
-  const { level: k, why } = nivelDe(ans);
-  const paso = pasoDe(k, ans);
+function Result(props: DiagProps & { ans: Respuestas; onRestart: () => void; headRef: React.RefObject<HTMLHeadingElement | null> }) {
+  const { ans, onRestart, headRef, td, fichas, r: tr, locale, c } = props;
+  const { level: k, why } = nivelDe(ans, td);
+  const paso = pasoDe(k, ans, td, fichas);
   // Si el paso ya trae la K.1 (como plantilla o dentro del texto, como en la K.3), no se repite el aviso.
   const conK1 = paso.plantillas.some((p) => p.code === "K.1") || paso.body.includes("K.1");
   const avisoColchon = k < 3 && colchonCorto(ans) && !conK1;
-  const acompana = WITH.flat().filter((w) => paso.acompana.includes(w.href));
+  const acompana = props.with.flat().filter((w) => paso.acompana.includes(w.href));
   const dark = k === 3;
   return (
     <div className="grid gap-6">
@@ -133,9 +149,9 @@ function Result({ ans, onRestart, headRef }: { ans: Respuestas; onRestart: () =>
           style={{ background: dark ? "var(--color-ink)" : ["var(--color-paper)", "var(--color-warm)", "var(--color-ink20)"][k], color: dark ? "var(--color-paper)" : undefined }}
         >
           <div>
-            <Mono tone={dark ? "papel" : "ink"}>Tu resultado</Mono>
+            <Mono tone={dark ? "papel" : "ink"}>{tr.tuResultado}</Mono>
             <h2 ref={headRef} tabIndex={-1} className="wh2 text-display-md mt-2 outline-none">
-              Nivel {k}: {LEVELS[k]}
+              {f(tr.titulo, { k, nombre: td.levels[k] })}
             </h2>
           </div>
           <span className="llena inline-flex">
@@ -144,18 +160,18 @@ function Result({ ans, onRestart, headRef }: { ans: Respuestas; onRestart: () =>
               size={12}
               fg={dark ? "var(--color-paper)" : "var(--color-ink)"}
               off={dark ? "var(--color-ink20)" : "var(--color-ink3)"}
-              label={`Nivel ${k} de 3`}
+              label={f(tr.nivelDe, { k })}
             />
           </span>
         </div>
         <div className="px-5 lg:px-8 pt-6 pb-8 grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
           <div>
             <p className="lead">{why}</p>
-            <Mono className="mt-7">Tu siguiente paso</Mono>
+            <Mono className="mt-7">{tr.siguientePaso}</Mono>
             <ul className="mt-2">
               {paso.plantillas.map((p) => (
                 <li key={p.code} className="ws text-figura">
-                  <Link href={p.href} className="group">
+                  <Link href={lh(locale, p.href)} className="group">
                     <span className="lnk">
                       {p.code} <Sc text={p.title} />
                     </span>
@@ -163,42 +179,42 @@ function Result({ ans, onRestart, headRef }: { ans: Respuestas; onRestart: () =>
                 </li>
               ))}
             </ul>
-            <p className="text-recuadro text-ink2 mt-1.5">{paso.capitulo} del libro</p>
+            <p className="text-recuadro text-ink2 mt-1.5">{f(tr.delLibro, { capitulo: paso.capitulo })}</p>
             <p className="wt mt-3">
               <Sc text={paso.body} />
             </p>
             {avisoColchon && (
               <p className="text-recuadro leading-[1.45] mt-4 px-3 py-2.5 bg-warm">
-                Tu colchón no llega a 6 meses o no lo has calculado. Empieza por la K.1 del kit, que toma 20 minutos, y después sigue con {paso.plantillas.map((p) => `la ${p.code}`).join(" y ")}.
+                {f(tr.avisoColchon, { lista: paso.plantillas.map((p) => f(tr.la, { code: p.code })).join(tr.y) })}
               </p>
             )}
             <div className="mt-6">
               {avisoColchon ? (
-                <Link href="/workbook/k1" className="btn">
-                  Abrir la K.1
+                <Link href={lh(locale, "/workbook/k1")} className="btn">
+                  {tr.abrirK1}
                 </Link>
               ) : paso.boton === "agenda" ? (
-                <a href={agendaUrl()} target="_blank" rel="noopener noreferrer" className="btn">
+                <a href={agendaUrl(c.agendaWa)} target="_blank" rel="noopener noreferrer" className="btn">
                   <Icon name="calendario" size={18} />
-                  <span>Agenda 30 minutos</span>
-                  <span className="sr-only"> (se abre en otra pestaña)</span>
+                  <span>{c.agenda}</span>
+                  <span className="sr-only">{c.nuevaPestana}</span>
                 </a>
               ) : (
-                <Link href={paso.boton.href} className="btn">
+                <Link href={lh(locale, paso.boton.href)} className="btn">
                   {paso.boton.label}
                 </Link>
               )}
             </div>
-            <p className="text-recuadro leading-[1.45] text-ink2 mt-5">Anota tu nivel con la fecha en «Tu nivel en la escalera», al comienzo del workbook.</p>
+            <p className="text-recuadro leading-[1.45] text-ink2 mt-5">{tr.anota}</p>
           </div>
           <div>
-            <div className="wm text-ink2">{k < 3 ? "Señal para pasar al siguiente" : "Para sostener el nivel 3"}</div>
-            <p className="text-h3 leading-[1.35] font-bold mt-2">{SIGNAL[k]}</p>
-            <div className="wm text-ink2 mt-6 mb-1.5">Te acompaña</div>
+            <div className="wm text-ink2">{k < 3 ? tr.senal : tr.sostener}</div>
+            <p className="text-h3 leading-[1.35] font-bold mt-2">{props.signal[k]}</p>
+            <div className="wm text-ink2 mt-6 mb-1.5">{tr.acompana}</div>
             <ul>
               {acompana.map((w) => (
                 <li key={w.name}>
-                  <Link href={w.href} className="group block py-3 border-t border-ink">
+                  <Link href={lh(locale, w.href)} className="group block py-3 border-t border-ink">
                     <span className="block text-cuerpo font-bold leading-[1.3]">
                       <span className="lnk">{w.name}</span>
                     </span>
@@ -210,15 +226,15 @@ function Result({ ans, onRestart, headRef }: { ans: Respuestas; onRestart: () =>
           </div>
         </div>
       </div>
-      <SendResult k={k} ans={ans} />
+      <SendResult {...props} k={k} ans={ans} />
       <button type="button" onClick={onRestart} className="ul justify-self-start text-recuadro font-semibold">
-        Volver a empezar el diagnóstico
+        {tr.volver}
       </button>
     </div>
   );
 }
 
-function SendResult({ k, ans }: { k: number; ans: Respuestas }) {
+function SendResult({ k, ans, canon, locale, r: tr, c, td }: DiagProps & { k: number; ans: Respuestas }) {
   const id = useId();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -229,59 +245,55 @@ function SendResult({ k, ans }: { k: number; ans: Respuestas }) {
     if (!EMAIL_RE.test(email.trim())) return setState("invalid");
     const trampa = leerTrampa(e.currentTarget);
     setState("sending");
-    const r = await enviarRegistro("diagnostico", { nombre: name.trim(), correo: email.trim(), ...registroDe(k, ans) }, trampa);
+    const r = await enviarRegistro("diagnostico", { nombre: name.trim(), correo: email.trim(), ...registroDe(k, ans, canon), idioma: locale }, trampa);
     setState(r.ok ? "ok" : "error");
   }
 
   return (
     <div className="bg-warm px-5 lg:px-8 py-6 lg:py-7">
-      <h3 className="ws text-figura">Recibe tu resultado y el kit en tu correo</h3>
+      <h3 className="ws text-figura">{tr.enviarTitulo}</h3>
       {state === "ok" ? (
         <p role="status" className="text-cuerpo mt-3">
-          Listo. Te enviamos tu nivel y el kit «Plan de salida» a {email.trim()}.
+          {f(tr.enviado, { correo: email.trim() })}
         </p>
       ) : (
         <form onSubmit={onSubmit} noValidate className="relative grid gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-end mt-4">
-          <Trampa />
+          <Trampa label={c.trampa} />
           <div>
             <label htmlFor={`${id}-n`} className="wm block text-ink2 mb-2">
-              Nombre
+              {c.nombre}
             </label>
-            <input id={`${id}-n`} className="field" autoComplete="name" placeholder="Tu nombre" value={name} onChange={(e) => setName(e.target.value)} />
+            <input id={`${id}-n`} className="field" autoComplete="name" placeholder={c.tuNombre} value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div>
             <label htmlFor={`${id}-e`} className="wm block text-ink2 mb-2">
-              Correo
+              {c.correo}
             </label>
             <input
               id={`${id}-e`}
               type="email"
               className="field"
               autoComplete="email"
-              placeholder="nombre@correo.com"
+              placeholder={c.correoEjemplo}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               aria-invalid={state === "invalid"}
             />
           </div>
           <button type="submit" className="btn2" disabled={state === "sending"}>
-            {state === "sending" ? "Enviando..." : "Enviar"}
+            {state === "sending" ? c.enviando : tr.enviar}
           </button>
         </form>
       )}
       <div aria-live="polite">
-        {state === "invalid" && <Aviso className="mt-3">Revisa el correo: falta algo para que sea válido.</Aviso>}
+        {state === "invalid" && <Aviso className="mt-3">{c.correoInvalido}</Aviso>}
         {state === "error" && (
           <Aviso className="mt-3">
-            No pudimos registrar tus datos en este momento. Escríbenos por{" "}
-            <a className="ul font-bold" href={whatsappUrl(`Hola, hice el diagnóstico y salí en el nivel ${k}, ${LEVELS[k]}.`)} target="_blank" rel="noopener noreferrer">
-              WhatsApp
-            </a>{" "}
-            y te respondemos con tu siguiente paso.
+            <ConWa texto={tr.error} wa={c.whatsapp} href={whatsappUrl(f(tr.waMensaje, { k, nombre: td.levels[k] }))} />
           </Aviso>
         )}
       </div>
-      <PrivacidadLinea className="text-ink2 mt-3" />
+      <PrivacidadLinea c={c} locale={locale} className="text-ink2 mt-3" aviso={tr.enEspanol} />
     </div>
   );
 }

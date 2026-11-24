@@ -2,12 +2,19 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { Aviso, CalcItem, CalcRow, CalcTable } from "@/content/workbook";
-import { VACIO, computeAll, evaluate, exampleInputs, formatVacio, formatVal, isInput, isRow, type Val } from "@/lib/calc";
-import { fmtNum, parseNum } from "@/lib/format";
+import { VACIO, computeAll, evaluate, exampleInputs, formatVacio, formatVal, isInput, isRow, type FmtCalc, type Val } from "@/lib/calc";
+import { fmtNum, parseNum, sepDecimal } from "@/lib/format";
 import { readSaved, writeSaved } from "@/lib/saved";
-import { Aviso as AvisoTxt, Icon, LinkArrow, Sc } from "./ui";
+import type { Dict } from "@/i18n/es";
+import { f } from "@/i18n/f";
+import { lh, type Locale } from "@/i18n/rutas";
+import { Aviso as AvisoTxt, Detalle, Icon, LinkArrow, Sc } from "./ui";
 
 type Props = {
+  locale: Locale;
+  t: Dict["calc"];
+  /** Rótulo del acordeón «Detalle» (comun.detalle). */
+  detalle: string;
   id: string;
   code: string;
   calc: CalcItem[];
@@ -34,9 +41,12 @@ function Letra({ tag }: { tag: string }) {
 }
 
 /** Calculadora en línea de una plantilla del workbook, con el ejemplo del libro cargado. */
-export default function PlantillaCalc({ id, code, calc, avisos, who, check, next }: Props) {
+export default function PlantillaCalc({ locale, t, detalle, id, code, calc, avisos, who, check, next }: Props) {
   const uid = useId();
-  const example = useMemo(() => exampleInputs(calc), [calc]);
+  const fc: FmtCalc = { locale, si: t.si, no: t.no, mes: t.mes, ninguno: t.ninguno };
+  const example = useMemo(() => exampleInputs(calc, locale), [calc, locale]);
+  // Al cambiar de idioma no se reescriben las listas desplegables (guardan el valor del libro, «0,75») ni los textos («2026»).
+  const fijos = useMemo(() => new Set(calc.filter(isRow).filter((r) => r.kind === "select" || r.kind === "text").map((r) => r.field)), [calc]);
   const inputs = useMemo(() => calc.filter(isRow).filter(isInput), [calc]);
   const [raw, setRaw] = useState<Record<string, string>>(example);
   const [loaded, setLoaded] = useState(false);
@@ -44,35 +54,35 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
   const firstRef = useRef<HTMLInputElement>(null);
 
   const isExample = sameInputs(raw, example);
-  const vals = useMemo(() => computeAll(calc, raw), [calc, raw]);
-  const arch = who ?? "el arquetipo";
+  const vals = useMemo(() => computeAll(calc, raw, locale), [calc, raw, locale]);
+  const arch = who ?? t.arquetipo;
 
   // Al abrir: tus números guardados, si los hay; si no, el ejemplo. Y lo que se puede traer de otras plantillas.
   useEffect(() => {
-    const mine = readSaved(id);
+    const mine = readSaved(id, locale, fijos);
     // Se lee del almacenamiento del navegador después de montar, para que el HTML estático y el del cliente coincidan.
     if (mine && Object.keys(mine.v).length) setRaw({ ...example, ...mine.v });
     const found: typeof imports = [];
     for (const r of inputs) {
       if (!r.from) continue;
       const [srcId, field] = r.from.split(":");
-      const s = readSaved(srcId);
+      const s = readSaved(srcId, locale);
       const v = s?.out[field] ?? s?.v[field];
       if (v === undefined || v === "") continue;
-      const text = typeof v === "number" ? fmtNum(v, Number.isInteger(v) ? 0 : 2) : String(v);
+      const text = typeof v === "number" ? fmtNum(v, Number.isInteger(v) ? 0 : 2, locale) : String(v);
       found.push({ field: r.field, label: r.label, value: text, src: srcId });
     }
     setImports(found);
     setLoaded(true);
-  }, [id, example, inputs]);
+  }, [id, example, inputs, locale, fijos]);
 
   // Guarda tus números (no el ejemplo) y las salidas, para que otras plantillas los traigan.
   useEffect(() => {
     if (!loaded || isExample) return;
     const out: Record<string, Val> = {};
     for (const r of calc.filter(isRow)) if (r.expr) out[r.field] = vals[r.field];
-    writeSaved(id, { v: raw, out });
-  }, [loaded, isExample, raw, vals, calc, id]);
+    writeSaved(id, { v: raw, out }, locale);
+  }, [loaded, isExample, raw, vals, calc, id, locale]);
 
   function set(field: string, v: string) {
     setRaw((o) => ({ ...o, [field]: v }));
@@ -93,15 +103,17 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
   }
   function csv() {
     const esc = (s: string) => `"${s.replace(/"/g, '""')}"`;
-    const lines = [["Fila", "Valor"].map(esc).join(";")];
+    // Español: «;» separa columnas (la coma es decimal). Inglés: «,», como espera una hoja en inglés.
+    const sep = locale === "en" ? "," : ";";
+    const lines = [[t.csvFila, t.csvValor].map(esc).join(sep)];
     for (const r of calc.filter(isRow)) {
-      const v = r.expr ? formatVal(r, vals[r.field]) : (raw[r.field] ?? "");
-      lines.push([esc(`${r.tag ? r.tag + " " : ""}${r.label}`), esc(v + (r.unit && v !== VACIO ? ` ${r.unit}` : ""))].join(";"));
+      const v = r.expr ? formatVal(r, vals[r.field], fc) : (raw[r.field] ?? "");
+      lines.push([esc(`${r.tag ? r.tag + " " : ""}${r.label}`), esc(v + (r.unit && v !== VACIO ? ` ${r.unit}` : ""))].join(sep));
     }
     const blob = new Blob(["﻿" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = `doble-agente-${id}.csv`;
+    a.download = f(t.csvArchivo, { id });
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -138,7 +150,7 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
         </label>
         {r.kind === "select" ? (
           <select {...common} value={raw[r.field] ?? ""} onChange={(e) => set(r.field, e.target.value)}>
-            {!(r.options ?? []).some((o) => o.value === raw[r.field]) && <option value={raw[r.field] ?? ""}>{raw[r.field] || "Elige"}</option>}
+            {!(r.options ?? []).some((o) => o.value === raw[r.field]) && <option value={raw[r.field] ?? ""}>{raw[r.field] || t.elige}</option>}
             {(r.options ?? []).map((o) => (
               <option key={o.value} value={o.value}>
                 {o.label}
@@ -156,8 +168,8 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
             onChange={(e) => set(r.field, r.kind === "text" ? e.target.value : e.target.value.replace(/[^\d.,\s-]/g, ""))}
             onBlur={() => {
               if (r.kind === "text") return;
-              const n = parseNum(raw[r.field] ?? "");
-              if (Number.isFinite(n)) set(r.field, fmtNum(n, n % 1 ? (String(raw[r.field]).split(",")[1]?.length ?? 2) : 0));
+              const n = parseNum(raw[r.field] ?? "", locale);
+              if (Number.isFinite(n)) set(r.field, fmtNum(n, n % 1 ? (String(raw[r.field]).split(sepDecimal(locale))[1]?.length ?? 2) : 0, locale));
             }}
           />
         )}
@@ -171,7 +183,7 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
   };
 
   const output = (r: CalcRow) => {
-    const v = formatVal(r, vals[r.field]);
+    const v = formatVal(r, vals[r.field], fc);
     return (
       <div key={r.field} className="py-3 border-t border-ink20 flex justify-between items-baseline gap-4">
         <div className="min-w-0">
@@ -184,22 +196,22 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
           {r.show && <div className="font-mono text-rotulo text-ink3 mt-1">= {r.show}</div>}
         </div>
         <output className={`num text-kpi whitespace-nowrap text-right ${v === VACIO ? "text-ink3" : ""}`}>
-          {v === VACIO ? formatVacio(r) : v}
-          {r.unit && (v !== VACIO || formatVacio(r) !== "") && <span className="text-recuadro font-semibold font-stretch-normal tracking-normal ml-1.5">{r.unit}</span>}
+          {v === VACIO ? formatVacio(r, locale) : v}
+          {r.unit && (v !== VACIO || formatVacio(r, locale) !== "") && <span className="text-recuadro font-semibold font-stretch-normal tracking-normal ml-1.5">{r.unit}</span>}
         </output>
       </div>
     );
   };
 
-  const table = (t: CalcTable) => {
-    const lim = t.mark ? vals[t.mark] : undefined;
+  const table = (tb: CalcTable) => {
+    const lim = tb.mark ? vals[tb.mark] : undefined;
     return (
-      <div key={t.table} className="py-3 border-t border-ink20">
-        <div className="text-recuadro font-semibold">{t.table}</div>
+      <div key={tb.table} className="py-3 border-t border-ink20">
+        <div className="text-recuadro font-semibold">{tb.table}</div>
         <table className="tabla mt-2">
           <thead>
             <tr>
-              {t.head.map((h, i) => (
+              {tb.head.map((h, i) => (
                 <th key={h} scope="col" className={i ? "n" : ""}>
                   {h}
                 </th>
@@ -207,7 +219,7 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
             </tr>
           </thead>
           <tbody>
-            {t.cells.map(([label, ...cs]) => {
+            {tb.cells.map(([label, ...cs]) => {
               const first = cs[0];
               const below = typeof lim === "number" && typeof vals[first] === "number" && (vals[first] as number) < lim;
               return (
@@ -217,7 +229,7 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
                     {below && (
                       <span className="flex gap-1.5 items-center text-recuadro font-semibold mt-0.5">
                         <Icon name="error" size={14} />
-                        bajo el saldo mínimo
+                        {t.bajoMinimo}
                       </span>
                     )}
                   </th>
@@ -225,7 +237,7 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
                     const r = calc.find((x) => isRow(x) && x.field === c) as CalcRow | undefined;
                     return (
                       <td key={c} className="n font-semibold">
-                        {r ? formatVal(r, vals[c]) : VACIO}
+                        {r ? formatVal(r, vals[c], fc) : VACIO}
                       </td>
                     );
                   })}
@@ -244,22 +256,23 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
         <div className="flex gap-2.5 items-center">
           <Icon name="formula" size={16} />
           <h2 id={`${uid}-h`} className="text-recuadro font-bold">
-            Calculadora en línea
+            {t.titulo}
           </h2>
         </div>
         <span className="wm text-ink2 text-right" aria-live="polite">
-          {isExample ? `Ejemplo con ${arch}` : "Tus números"}
+          {isExample ? f(t.ejemploCon, { nombre: arch }) : t.tusNumeros}
         </span>
       </div>
       <div className="px-5 pt-3 pb-6">
-        <p className="text-recuadro leading-[1.45] text-ink2 pb-3">
-          Hace las cuentas de la {code} con las mismas filas del workbook. Escribe en tu moneda o en dólares, la misma en todo el workbook.
-        </p>
+        <p className="text-recuadro leading-[1.45] text-ink2">{t.moneda}</p>
+        <Detalle label={detalle} className="pb-1">
+          {f(t.detalle, { code })}
+        </Detalle>
         {pending.length > 0 && (
           <div className="mb-3 px-3 py-2.5 bg-warm text-recuadro leading-[1.4] filete-sup">
-            Tienes datos guardados de otra plantilla: {pending.map((im) => `${im.label.split(" (")[0]} ${im.value}`).join("; ")}.{" "}
+            {f(t.guardados, { lista: pending.map((im) => `${im.label.split(" (")[0]} ${im.value}`).join("; ") })}{" "}
             <button type="button" onClick={bring} className="ul font-bold">
-              Traerlos aquí
+              {t.traer}
             </button>
           </div>
         )}
@@ -288,22 +301,22 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
         <div className="flex flex-col gap-3 mt-6">
           {isExample ? (
             <button type="button" onClick={mine} className="btn2 w-full">
-              Calcular con mis números
+              {t.misNumeros}
             </button>
           ) : (
             <button type="button" onClick={() => setRaw(example)} className="btn2 w-full">
-              Volver al ejemplo de {arch}
+              {f(t.volver, { nombre: arch })}
             </button>
           )}
           <button type="button" onClick={csv} className="ul self-center text-recuadro font-semibold">
-            Descargar mis números (CSV)
+            {t.csv}
           </button>
         </div>
-        <p className="text-recuadro leading-[1.45] text-ink2 mt-4">Tus números se guardan solo en este navegador. No necesitas cuenta.</p>
+        <p className="text-recuadro leading-[1.45] text-ink2 mt-4">{t.navegador}</p>
 
         {check.length > 0 && (
           <div className="mt-6 pt-4 border-t border-ink">
-            <div className="wm text-ink2">Sabrás que terminaste cuando…</div>
+            <div className="wm text-ink2">{t.terminaste}</div>
             <ul className="mt-2 grid gap-1.5">
               {check.map((c) => (
                 <li key={c} className="grid grid-cols-[20px_minmax(0,1fr)] text-recuadro leading-[1.45]">
@@ -318,8 +331,8 @@ export default function PlantillaCalc({ id, code, calc, avisos, who, check, next
         )}
         {next && (
           <div className="mt-5">
-            <span className="wm text-ink2 block">Siguiente plantilla</span>
-            <LinkArrow href={`/workbook/${next.id}`} className="text-recuadro mt-1 min-h-6">
+            <span className="wm text-ink2 block">{t.siguiente}</span>
+            <LinkArrow href={lh(locale, `/workbook/${next.id}`)} className="text-recuadro mt-1 min-h-6">
               {next.code} {next.title}
             </LinkArrow>
           </div>
