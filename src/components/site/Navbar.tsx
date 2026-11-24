@@ -49,15 +49,15 @@ export default function Navbar({ locale, t, idioma }: { locale: Locale; t: Dict[
       <header className="cab" data-scrolled={scrolled || open ? "" : undefined}>
         <div className="wrap cab-fila flex items-center justify-between">
           <Link href={lh(locale, "/")} aria-label={t.inicioAria} onClick={() => setOpen(false)}>
-            <span className="lg:hidden">
+            <span className="xl:hidden">
               <Logo h={28} />
             </span>
-            <span className="hidden lg:block">
+            <span className="hidden xl:block">
               <Logo h={34} />
             </span>
           </Link>
 
-          <nav aria-label={t.principalAria} className="hidden lg:flex gap-9 items-center">
+          <nav aria-label={t.principalAria} className="hidden xl:flex gap-9 items-center">
             {nav.map((l) => (
               <Link
                 key={l.href}
@@ -70,7 +70,7 @@ export default function Navbar({ locale, t, idioma }: { locale: Locale; t: Dict[
             ))}
           </nav>
 
-          <div className="hidden lg:flex gap-7 items-center">
+          <div className="hidden xl:flex gap-7 items-center">
             <SelectorIdioma locale={locale} t={idioma} />
             <Link href={diag} className="text-recuadro font-semibold ul inline-flex items-center min-h-6" aria-current={pathname === diag ? "page" : undefined}>
               {t.diagnostico}
@@ -80,7 +80,7 @@ export default function Navbar({ locale, t, idioma }: { locale: Locale; t: Dict[
             </Link>
           </div>
 
-          <div className="flex lg:hidden gap-4 items-center">
+          <div className="flex xl:hidden gap-4 items-center">
             <Link href={kitHref} className="btn compact">
               {t.kitGratis}
             </Link>
@@ -104,7 +104,7 @@ export default function Navbar({ locale, t, idioma }: { locale: Locale; t: Dict[
         {identificar(pathname)?.pagina === "libro" && <ReadingProgress />}
 
         {open && (
-          <nav id="menu-movil" aria-label={t.menuAria} className="cab-menu lg:hidden absolute left-0 right-0 top-full bg-paper border-b border-ink">
+          <nav id="menu-movil" aria-label={t.menuAria} className="cab-menu xl:hidden absolute left-0 right-0 top-full bg-paper border-b border-ink">
             <ul className="wrap py-3">
               {[...nav, { label: t.diagnostico, href: diag }, { label: t.kitPlan, href: kit }].map((l) => (
                 <li key={l.href}>

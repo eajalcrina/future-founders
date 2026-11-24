@@ -31,12 +31,12 @@ Lista de lo que falta para pasar de vista previa a la web definitiva. Marca cada
 - [ ] **Publicar.** Junto con la R7, una sola publicación cuando el dueño lo pida.
 - [x] **Revisión del inglés (etapa 3, 24/11/2026).** Aplicados los 30 hallazgos del revisor en `en.ts` y `workbook-en.ts`, más «places» => «spots», «intake» => «round», «hand over» => «share» y «within 6 hours at most» => «within 6 hours» en los legales en inglés. En español, un solo cambio visible: «¿Cuántos meses de tu costo de vida…?» en el diagnóstico.
 - [ ] **Decisiones del dueño que el revisor cuestionó (se dejaron como están).** Quedan para confirmar con las alternativas del revisor:
-  - Titular del héroe: «Your experience can work for more than one company. Or for your own.» (solo se agregó el espacio duro en «Or for»). Alternativa del revisor: _por anotar_.
-  - «Book 30 minutes» (Agenda 30 minutos). Alternativa del revisor: _por anotar_.
-  - «own income» (ingresos propios). Alternativa del revisor: _por anotar_.
-  - «part-time role» (rol parcial). Alternativa del revisor: _por anotar_.
-  - Las bios de Eddie y Lorenzo en /en. Alternativa del revisor: _por anotar_.
-  - El aviso «All three editions are in Spanish.» en /en/book#formatos. Alternativa del revisor: _por anotar_.
+  - Titular del héroe: «Your experience can work for more than one company. Or for your own.» (solo se agregó el espacio duro en «Or for»). Alternativa del revisor: «Your experience can work for more than one company, or for your own company» (sin fragmento suelto ni punto final).
+  - «Book 30 minutes» (Agenda 30 minutos). Alternativa del revisor: «Schedule 30 minutes», porque «Book» se confunde con el libro.
+  - «own income» (ingresos propios). Alternativa del revisor: «independent income».
+  - «part-time role» (rol parcial). Alternativa del revisor: «fractional role», el término que este público usa en inglés («fractional CFO»).
+  - Las bios de Eddie y Lorenzo en /en. Alternativa del revisor: unificar «part of the Breca group» y «part of Grupo Breca» en «Grupo Breca» (pasa igual en español).
+  - El aviso «All three editions are in Spanish.» en /en/book#formatos. Alternativa del revisor: quitarlo, porque el héroe de /en/book ya lo dice. Falta decidir si se dice en qué idioma se dictan los programas.
 - [ ] **Héroe de /en a 390.** Con el espacio duro, el corte queda «COMPANY. OR FOR / YOUR OWN.»: «Or for your own.» mide 353 px y la línea tiene 350, así que la frase completa no cabe en una línea a 390. A 360 queda «COMPANY. / OR FOR / YOUR OWN.».
 
 ## Ronda R7 (24/11/2026): sin textos sobreexplicativos
