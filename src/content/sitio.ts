@@ -31,7 +31,7 @@ export const FOUNDERS = [
     web: "eddieajalcrina.com",
     webUrl: "https://eddieajalcrina.com",
     linkedin: "https://www.linkedin.com/in/eddieajalcrina/",
-    photo: "/img/eddie-ajalcrina.webp",
+    photo: "/img/eddie-ajalcrina-2026.webp",
   },
   {
     key: "lorenzo",
@@ -39,7 +39,7 @@ export const FOUNDERS = [
     web: "lorenzoortiz.co",
     webUrl: "https://lorenzoortiz.co",
     linkedin: "https://www.linkedin.com/in/lorenzoortiz/",
-    photo: "/img/lorenzo-ortiz.webp",
+    photo: "/img/lorenzo-ortiz-2026.webp",
   },
 ] as const;
 
