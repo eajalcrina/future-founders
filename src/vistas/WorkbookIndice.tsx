@@ -18,7 +18,7 @@ export function metadataWorkbook(locale: Locale): Metadata {
 function Row({ id, code, title, time, where, calc, locale, t }: { id: string; code: string; title: string; time: string; where: string; calc: boolean; locale: Locale; t: Dict["workbook"]["indice"] }) {
   return (
     <li>
-      <Link href={lh(locale, `/workbook/${id}`)} className="group grid grid-cols-[72px_minmax(0,1fr)_auto] lg:grid-cols-[96px_minmax(0,1fr)_minmax(0,1fr)_110px] gap-x-4 gap-y-1 items-baseline py-4 border-t border-ink">
+      <Link href={lh(locale, `/workbook/${id}`)} className="group grid grid-cols-[80px_minmax(0,1fr)_auto] lg:grid-cols-[96px_minmax(0,1fr)_minmax(0,1fr)_110px] gap-x-4 gap-y-1 items-baseline py-4 border-t border-ink">
         <span className="num text-h2">{code}</span>
         <span className="text-cuerpo font-bold leading-[1.3]">
           <span className="lnk">

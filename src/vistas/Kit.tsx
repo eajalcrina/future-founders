@@ -21,7 +21,7 @@ export default function Kit({ locale }: { locale: Locale }) {
   return (
     <>
       <section aria-labelledby="kit-h">
-        <div className="wrap pt-10 pb-12 lg:pt-20 lg:pb-[104px] grid gap-10 xl:gap-24 xl:grid-cols-[minmax(0,1fr)_minmax(0,520px)] items-start">
+        <div className="wrap pt-10 pb-12 lg:pt-20 lg:pb-[104px] grid gap-10 min-[1400px]:gap-24 min-[1400px]:grid-cols-[minmax(0,1fr)_minmax(0,520px)] items-start">
           <div>
             <HeroHead id="kit-h" label={k.hero.label} title={k.hero.title} />
             <dl className="rv-kids grid grid-cols-[1fr_auto_1fr] sm:grid-cols-3 gap-4 lg:gap-6 mt-8 lg:mt-11 max-w-[700px]">
