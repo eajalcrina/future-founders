@@ -2,7 +2,12 @@ import Link from "next/link";
 import type { ReactNode, CSSProperties } from "react";
 import { SVG, ICON_PATHS } from "@/content/ilustraciones";
 import { AMAZON, MERCADO_PAGO } from "@/content/logos-terceros";
-import { PRIVACIDAD_LINEA, agendaUrl } from "@/content/sitio";
+import { agendaUrl } from "@/content/sitio";
+import { lh, type Locale } from "@/i18n/rutas";
+import type { Dict } from "@/i18n/es";
+
+/** Textos comunes del diccionario (comun). Los componentes de este archivo los reciben por props: ui.tsx no carga diccionarios. */
+export type Comun = Dict["comun"];
 
 /* ---------------------------------------------------------------- texto */
 
@@ -131,11 +136,11 @@ export function SecHead({
  * Nativo (details/summary): se abre con teclado, el lector de pantalla anuncia si está abierto y el foco es el del sistema.
  * El rótulo alcanza 44 px de alto para el dedo; el signo + gira 45° al abrir, como en /libro#metodo.
  */
-export function Detalle({ children, className = "" }: { children: ReactNode; className?: string }) {
+export function Detalle({ children, label, className = "" }: { children: ReactNode; label: string; className?: string }) {
   return (
     <details className={`detalle group/det ${className}`}>
       <summary className="inline-flex items-center gap-2 min-h-11 cursor-pointer list-none text-recuadro font-semibold [&::-webkit-details-marker]:hidden">
-        <span className="ul">Detalle</span>
+        <span className="ul">{label}</span>
         <span aria-hidden="true" className="inline-block transition-transform duration-150 group-open/det:rotate-45">
           +
         </span>
@@ -234,17 +239,19 @@ type BtnProps = {
   className?: string;
   external?: boolean;
   solidPaper?: boolean;
+  /** Aviso para lectores de pantalla en enlaces externos (comun.nuevaPestana). */
+  nuevaPestana?: string;
 };
 
 /** Botón sin flecha. El principal (kind 1, magenta) va una vez por vista. */
-export function Btn({ href, children, kind = 1, className = "", external, solidPaper }: BtnProps) {
+export function Btn({ href, children, kind = 1, className = "", external, solidPaper, nuevaPestana = "" }: BtnProps) {
   const cls = `${kind === 1 ? "btn" : "btn2"} ${solidPaper ? "solid-paper" : ""} ${className}`;
   const isExt = external ?? /^https?:/.test(href);
   if (isExt)
     return (
       <a className={cls} href={href} target="_blank" rel="noopener noreferrer">
         <span>{children}</span>
-        <span className="sr-only"> (se abre en otra pestaña)</span>
+        <span className="sr-only">{nuevaPestana}</span>
       </a>
     );
   if (href.startsWith("#"))
@@ -274,29 +281,29 @@ export function LinkArrow({ href, children, className = "" }: { href: string; ch
  * «Agenda 30 minutos» con el icono de calendario: abre la página de citas de Google Calendar
  * (NEXT_PUBLIC_AGENDA_URL) o, sin ella, WhatsApp. Siempre el mismo nombre. kind «link»: enlace subrayado; «btn2»: botón de línea.
  */
-export function AgendaLink({ kind = "link", className = "" }: { kind?: "link" | "btn2"; className?: string }) {
+export function AgendaLink({ c, kind = "link", className = "" }: { c: Comun; kind?: "link" | "btn2"; className?: string }) {
   // Como enlace, la fila se alinea por la línea base del texto (no por el icono), para apoyarse en la frase que lo rodea.
   const cls = kind === "btn2" ? `btn2 ${className}` : `ul inline-flex items-baseline gap-2 font-bold ${className}`;
   return (
-    <a href={agendaUrl()} target="_blank" rel="noopener noreferrer" className={cls}>
+    <a href={agendaUrl(c.agendaWa)} target="_blank" rel="noopener noreferrer" className={cls}>
       <span className="self-center">
         <Icon name="calendario" size={18} />
       </span>
-      <span>Agenda 30 minutos</span>
-      <span className="sr-only"> (se abre en otra pestaña)</span>
+      <span>{c.agenda}</span>
+      <span className="sr-only">{c.nuevaPestana}</span>
     </a>
   );
 }
 
 /** Línea de privacidad bajo cada formulario, con el enlace a /privacidad. */
-export function PrivacidadLinea({ className = "", id }: { className?: string; id?: string }) {
+export function PrivacidadLinea({ c, locale, className = "", id }: { c: Comun; locale: Locale; className?: string; id?: string }) {
   return (
     <p id={id} className={`text-recuadro leading-[1.45] ${className}`}>
-      {PRIVACIDAD_LINEA.antes}
-      <Link href="/privacidad" className="ul">
-        {PRIVACIDAD_LINEA.enlace}
+      {c.privacidad.antes}
+      <Link href={lh(locale, "/privacidad")} className="ul">
+        {c.privacidad.enlace}
       </Link>
-      {PRIVACIDAD_LINEA.despues}
+      {c.privacidad.despues}
     </p>
   );
 }
@@ -316,20 +323,20 @@ export function MarcaLogo({ marca }: { marca: "amazon" | "mercadopago" }) {
 }
 
 /** Recuadro Lectura del libro: siempre en papel cálido, icono de 16 px y texto de recuadro. */
-export function Lectura({ text, className = "" }: { text: ReactNode; className?: string }) {
+export function Lectura({ text, label, className = "" }: { text: ReactNode; label: string; className?: string }) {
   return (
     <aside className={`bg-warm px-4 pt-3.5 pb-4 lg:px-5 lg:pt-4 lg:pb-5 ${className}`}>
       <div className="flex gap-2 items-center">
         <Icon name="lectura" size={16} />
-        <span className="wm">Lectura</span>
+        <span className="wm">{label}</span>
       </div>
       <p className="text-recuadro leading-[1.375] mt-2">{text}</p>
     </aside>
   );
 }
 
-/** Nota o Fuente al pie: filete superior fino en tinta, icono «nota», rótulo y texto en tinta suave. */
-export function Nota({ children, className = "", label = "Nota" }: { children: ReactNode; className?: string; label?: "Nota" | "Fuente" }) {
+/** Nota al pie: filete superior fino en tinta, icono «nota», rótulo (comun.nota) y texto en tinta suave. */
+export function Nota({ children, label, className = "" }: { children: ReactNode; label: string; className?: string }) {
   return (
     <div className={`filete-sup grid grid-cols-[16px_minmax(0,1fr)] gap-x-2.5 gap-y-1 ${className}`}>
       <span className="mt-[1px]">
@@ -343,4 +350,18 @@ export function Nota({ children, className = "", label = "Nota" }: { children: R
 
 export function JsonLd({ data }: { data: object }) {
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }} />;
+}
+
+/** Texto del diccionario con {wa} donde va el enlace a WhatsApp («… escríbenos por {wa} y te respondemos …»). */
+export function ConWa({ texto, wa, href }: { texto: string; wa: string; href: string }) {
+  const [antes, despues = ""] = texto.split("{wa}");
+  return (
+    <>
+      {antes}
+      <a className="ul font-bold" href={href} target="_blank" rel="noopener noreferrer">
+        {wa}
+      </a>
+      {despues}
+    </>
+  );
 }

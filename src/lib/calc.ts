@@ -2,8 +2,10 @@
 // Acepta números (1.2), nombres de campo, textos entre comillas, + − × ÷ * /, paréntesis,
 // comparaciones (< <= > >= == !=), && || !, y las funciones min, max, ceil, floor, round, abs e if.
 
-import { fmtNum, parseNum } from "./format";
+import { fmtNum, parseNum, type NumLocale } from "./format";
 import type { CalcItem, CalcRow } from "../content/workbook";
+import type { CalcRowL } from "../content/workbook-i18n";
+import { f } from "../i18n/f";
 
 export type Val = number | string;
 type Node =
@@ -193,8 +195,11 @@ export function evaluate(src: string, env: Record<string, Val>): Val {
 export const isRow = (it: CalcItem): it is CalcRow => "field" in it;
 export const isInput = (r: CalcRow) => !r.expr;
 
-/** Lee las entradas (texto tal como se escribe) y calcula todas las filas en orden. */
-export function computeAll(items: CalcItem[], raw: Record<string, string>): Record<string, Val> {
+/**
+ * Lee las entradas (texto tal como se escribe, con el formato numérico del idioma) y calcula todas las filas en orden.
+ * Los valores de las listas desplegables son los del libro (es-PE, «0,75») en los dos idiomas.
+ */
+export function computeAll(items: CalcItem[], raw: Record<string, string>, locale: NumLocale = "es"): Record<string, Val> {
   const env: Record<string, Val> = {};
   for (const it of items) {
     if (!isRow(it)) continue;
@@ -209,37 +214,55 @@ export function computeAll(items: CalcItem[], raw: Record<string, string>): Reco
     const s = (raw[it.field] ?? "").trim();
     if (it.kind === "text") env[it.field] = s;
     else if (!s) env[it.field] = it.opt ? 0 : NaN;
-    else env[it.field] = parseNum(s);
+    else env[it.field] = parseNum(s, it.kind === "select" ? "es" : locale);
   }
   return env;
 }
 
-/** Valor listo para mostrar, con el formato del libro (61.600; 7,0; 6,25 %; Sí). */
+/** Formato de las salidas: idioma de las cifras y las palabras de «sí o no» y «mes» (diccionario, calc). */
+export type FmtCalc = { locale: NumLocale; si: string; no: string; mes: string; ninguno: string };
+
+/** Valor listo para mostrar, con el formato del libro (61.600; 7,0; 6,25 %; Sí) o el del inglés (61,600; 7.0; Yes). */
 /** Valor sin calcular todavía: la celda queda vacía (sin raya) y la vista pinta `formatVacio` atenuado. */
 export const VACIO = "";
 
-export function formatVal(r: CalcRow, v: Val | undefined): string {
-  const f = r.fmt ?? "num";
-  if (f === "text") return v === undefined || (typeof v === "number" && !Number.isFinite(v)) ? VACIO : String(v);
+export function formatVal(r: CalcRow, v: Val | undefined, fc: FmtCalc): string {
+  const fm = r.fmt ?? "num";
+  if (fm === "text") {
+    if (v === undefined || (typeof v === "number" && !Number.isFinite(v))) return VACIO;
+    return (r as CalcRowL).valores?.[String(v)] ?? String(v);
+  }
   if (typeof v !== "number" || !Number.isFinite(v)) return VACIO;
-  if (f === "sino") return v ? "Sí" : "No";
-  if (f === "mes") return v > 0 ? `mes ${fmtNum(v, 0)}` : "ninguno";
+  if (fm === "sino") return v ? fc.si : fc.no;
+  if (fm === "mes") return v > 0 ? f(fc.mes, { n: fmtNum(v, 0, fc.locale) }) : fc.ninguno;
   const dec = r.dec ?? 0;
   const x = Math.abs(v) < 0.5 * 10 ** -dec ? 0 : v;
-  return fmtNum(x, dec) + (f === "pct" ? " %" : "");
+  return fmtNum(x, dec, fc.locale) + (fm === "pct" ? " %" : "");
 }
 
 /** Lo que se ve, atenuado, mientras una salida no tiene valor: cero en cifras y porcentajes; nada en los demás formatos. */
-export function formatVacio(r: CalcRow): string {
-  const f = r.fmt ?? "num";
-  if (f === "num") return fmtNum(0, r.dec ?? 0);
-  if (f === "pct") return `${fmtNum(0, r.dec ?? 0)} %`;
+export function formatVacio(r: CalcRow, locale: NumLocale = "es"): string {
+  const fm = r.fmt ?? "num";
+  if (fm === "num") return fmtNum(0, r.dec ?? 0, locale);
+  if (fm === "pct") return `${fmtNum(0, r.dec ?? 0, locale)} %`;
   return "";
 }
 
-/** Valores del ejemplo del libro para las entradas. */
-export function exampleInputs(items: CalcItem[]): Record<string, string> {
+/**
+ * Valores del ejemplo del libro para las entradas. El libro los escribe en es-PE («61.600», «7,5»);
+ * en inglés las cifras se reescriben («61,600», «7.5»). Textos y valores de listas quedan igual.
+ */
+export function exampleInputs(items: CalcItem[], locale: NumLocale = "es"): Record<string, string> {
   const o: Record<string, string> = {};
-  for (const it of items) if (isRow(it) && isInput(it) && it.ej !== undefined) o[it.field] = it.ej;
+  for (const it of items) {
+    if (!isRow(it) || !isInput(it) || it.ej === undefined) continue;
+    if (locale === "es" || it.kind === "text" || it.kind === "select") {
+      o[it.field] = it.ej;
+      continue;
+    }
+    const n = parseNum(it.ej, "es");
+    const dec = it.ej.split(",")[1]?.length ?? 0;
+    o[it.field] = Number.isFinite(n) ? fmtNum(n, dec, locale) : it.ej;
+  }
   return o;
 }

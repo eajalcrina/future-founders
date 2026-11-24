@@ -1,16 +1,35 @@
 "use client";
 
 import { useEffect, useId, useState, useSyncExternalStore } from "react";
-import { PROGRAMAS } from "@/content/programas";
+import type { ProgramaId } from "@/content/programas";
 import { enviarRegistro, leerTrampa, EMAIL_RE } from "@/lib/registro";
 import { whatsappUrl } from "@/content/sitio";
-import { Aviso, PrivacidadLinea } from "./ui";
+import type { Dict } from "@/i18n/es";
+import { f } from "@/i18n/f";
+import type { Locale } from "@/i18n/rutas";
+import type { Canon } from "./DownloadForm";
+import { Aviso, ConWa, PrivacidadLinea, type Comun } from "./ui";
 import Trampa from "./Trampa";
 
-const COUNTRIES = ["Perú", "México", "Colombia", "Chile", "Otro país"];
+type Prog = { id: ProgramaId; level: number; cta: "fechas" | "postular" | "agenda"; tag: string; name: string };
 
-/** Postulación a un programa. Se preselecciona con el ancla #postular-<id>. */
-export default function ProgramForm() {
+/**
+ * Postulación a un programa. Se preselecciona con el ancla #postular-<id>.
+ * Lo que se envía va en español (canon): nombre del programa y país, como los lee apps-script/Code.gs.
+ */
+export default function ProgramForm({
+  locale,
+  t,
+  c,
+  programas: PROGRAMAS,
+  canon,
+}: {
+  locale: Locale;
+  t: Dict["programas"]["form"];
+  c: Comun;
+  programas: Prog[];
+  canon: Canon & { programas: Record<string, string> };
+}) {
   const id = useId();
   const hashProg = useSyncExternalStore(
     (cb) => {
@@ -26,7 +45,7 @@ export default function ProgramForm() {
   const [picked, setProg] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [country, setCountry] = useState(COUNTRIES[0]);
+  const [country, setCountry] = useState(0);
   const [msg, setMsg] = useState("");
   const [state, setState] = useState<"idle" | "sending" | "ok" | "error" | "invalid">("idle");
 
@@ -47,7 +66,7 @@ export default function ProgramForm() {
     setState("sending");
     const r = await enviarRegistro(
       "programa",
-      { programa: p.name, nivel: String(p.level), nombre: name.trim(), correo: email.trim(), pais: country, mensaje: msg.trim().slice(0, 500) },
+      { programa: canon.programas[p.id], nivel: String(p.level), nombre: name.trim(), correo: email.trim(), pais: canon.paises[country], mensaje: msg.trim().slice(0, 500), idioma: locale },
       trampa
     );
     setState(r.ok ? "ok" : "error");
@@ -56,8 +75,8 @@ export default function ProgramForm() {
   if (state === "ok")
     return (
       <div role="status" className="border border-ink bg-paper p-6 lg:p-8">
-        <p className="ws text-figura">Recibimos tu postulación a {p.name}.</p>
-        <p className="text-cuerpo text-ink2 mt-3">Te escribimos a {email.trim()} con las fechas, los cupos y las condiciones de la próxima convocatoria.</p>
+        <p className="ws text-figura">{f(t.recibida, { nombre: p.name })}</p>
+        <p className="text-cuerpo text-ink2 mt-3">{f(t.teEscribimos, { correo: email.trim() })}</p>
       </div>
     );
 
@@ -66,12 +85,12 @@ export default function ProgramForm() {
       <Trampa />
       <div>
         <label htmlFor={`${id}-p`} className="wm block text-ink2 mb-2">
-          Programa
+          {t.programa}
         </label>
         <select id={`${id}-p`} className="field" value={prog} onChange={(e) => setProg(e.target.value)}>
           {PROGRAMAS.map((x) => (
             <option key={x.id} value={x.id}>
-              {x.tag}: {x.name}
+              {f(t.opcion, { tag: x.tag, nombre: x.name })}
             </option>
           ))}
         </select>
@@ -79,20 +98,20 @@ export default function ProgramForm() {
       <div className="grid gap-[18px] sm:grid-cols-2">
         <div>
           <label htmlFor={`${id}-n`} className="wm block text-ink2 mb-2">
-            Nombre
+            {c.nombre}
           </label>
-          <input id={`${id}-n`} className="field" autoComplete="name" placeholder="Tu nombre" value={name} onChange={(e) => setName(e.target.value)} aria-invalid={state === "invalid" && !name.trim()} />
+          <input id={`${id}-n`} className="field" autoComplete="name" placeholder={c.tuNombre} value={name} onChange={(e) => setName(e.target.value)} aria-invalid={state === "invalid" && !name.trim()} />
         </div>
         <div>
           <label htmlFor={`${id}-e`} className="wm block text-ink2 mb-2">
-            Correo
+            {c.correo}
           </label>
           <input
             id={`${id}-e`}
             type="email"
             className="field"
             autoComplete="email"
-            placeholder="nombre@correo.com"
+            placeholder={c.correoEjemplo}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             aria-invalid={state === "invalid" && !EMAIL_RE.test(email.trim())}
@@ -101,36 +120,34 @@ export default function ProgramForm() {
       </div>
       <div>
         <label htmlFor={`${id}-c`} className="wm block text-ink2 mb-2">
-          País
+          {c.pais}
         </label>
-        <select id={`${id}-c`} className="field" value={country} onChange={(e) => setCountry(e.target.value)}>
-          {COUNTRIES.map((c) => (
-            <option key={c}>{c}</option>
+        <select id={`${id}-c`} className="field" value={country} onChange={(e) => setCountry(Number(e.target.value))}>
+          {c.paises.map((x, i) => (
+            <option key={x} value={i}>
+              {x}
+            </option>
           ))}
         </select>
       </div>
       <div>
         <label htmlFor={`${id}-m`} className="wm block text-ink2 mb-2">
-          Tu situación en dos líneas (opcional)
+          {t.mensaje}
         </label>
-        <textarea id={`${id}-m`} className="field" rows={3} value={msg} onChange={(e) => setMsg(e.target.value)} placeholder="Cargo, años de carrera y en qué nivel de la escalera crees que estás" />
+        <textarea id={`${id}-m`} className="field" rows={3} value={msg} onChange={(e) => setMsg(e.target.value)} placeholder={t.mensajePh} />
       </div>
       <button type="submit" className="btn w-full" disabled={state === "sending"}>
-        {state === "sending" ? "Enviando..." : p.cta === "Ver fechas" ? "Quiero ver las fechas" : "Enviar postulación"}
+        {state === "sending" ? c.enviando : p.cta === "fechas" ? t.verFechas : t.enviar}
       </button>
       <div aria-live="polite">
-        {state === "invalid" && <Aviso>Escribe tu nombre y un correo válido.</Aviso>}
+        {state === "invalid" && <Aviso>{t.invalido}</Aviso>}
         {state === "error" && (
           <Aviso>
-            No pudimos registrar tu postulación en este momento. Escríbenos por{" "}
-            <a className="ul font-bold" href={whatsappUrl(`Hola, soy ${name.trim()}. Quiero postular a ${p.name}.`)} target="_blank" rel="noopener noreferrer">
-              WhatsApp
-            </a>{" "}
-            y te respondemos con las fechas.
+            <ConWa texto={t.error} wa={c.whatsapp} href={whatsappUrl(f(t.waMensaje, { nombre: name.trim(), programa: p.name }))} />
           </Aviso>
         )}
       </div>
-      <PrivacidadLinea className="text-ink2" />
+      <PrivacidadLinea c={c} locale={locale} className="text-ink2" />
     </form>
   );
 }

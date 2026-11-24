@@ -7,7 +7,11 @@ register("./ts-hooks.mjs", import.meta.url);
 const { PLANTILLAS } = await import("../src/content/workbook.ts");
 const { computeAll, exampleInputs, formatVal, isRow, evaluate } = await import("../src/lib/calc.ts");
 
-const { parseNum } = await import("../src/lib/format.ts");
+const { parseNum, fmtNum } = await import("../src/lib/format.ts");
+const { es } = await import("../src/i18n/es.ts");
+const { en } = await import("../src/i18n/en.ts");
+const FC = { locale: "es", ...es.calc };
+const FC_EN = { locale: "en", ...en.calc };
 
 // Primera cifra de un texto del libro: «61.600 y 61.150» → «61.600», «Sí: 2.133 a 2.500» → «Sí».
 const lead = (s) => (/^(Sí|No|ninguno|mes \d+|[−-]?\d[\d.]*(?:,\d+)?(?:\s?%)?)(?=$|[\s:;(])/.exec(s.trim())?.[1] ?? s.trim());
@@ -66,7 +70,7 @@ for (const p of PLANTILLAS) {
   for (const r of rows) {
     if (!r.expr || r.ej === undefined) continue;
     checked++;
-    const got = formatVal(r, vals[r.field]);
+    const got = formatVal(r, vals[r.field], FC);
     const ok = sameVal(got, r.ej);
     const libro = r.ejLibro ?? r.ej;
     say(ok, `${p.code} ${r.field}: ${got}${ok ? (libro !== got ? ` (libro: ${libro})` : "") : ` (el libro dice ${libro})`}`);
@@ -80,4 +84,18 @@ for (const p of PLANTILLAS) {
   }
 }
 console.log(`\n${checked} salidas comparadas, ${fails} fallas.`);
+
+// Formato en inglés (/en): el ejemplo de la K.1 con las cifras en inglés, en las dos direcciones.
+{
+  const k1 = PLANTILLAS.find((p) => p.id === "k1");
+  const ej = exampleInputs(k1.calc, "en");
+  say(ej.A === "61,600" && ej.B === "8,800", `K.1 en inglés: el ejemplo se escribe ${ej.A} y ${ej.B} (61,600 y 8,800)`);
+  const vals = computeAll(k1.calc, ej, "en");
+  const salida = k1.calc.filter(isRow).find((r) => r.expr);
+  const got = formatVal(salida, vals[salida.field], FC_EN);
+  say(got === "7.0", `K.1 en inglés: runway ${got} (7.0)`);
+  say(parseNum("61,600", "en") === 61600 && parseNum("7.0", "en") === 7 && parseNum("61,600.5", "en") === 61600.5, "lectura en inglés: 61,600 y 7.0");
+  say(fmtNum(61600, 0, "en") === "61,600" && fmtNum(7, 1, "en") === "7.0" && fmtNum(61600) === "61.600" && fmtNum(7, 1) === "7,0", "formato: 61.600 y 7,0 en español; 61,600 y 7.0 en inglés");
+}
+console.log(`Prueba en inglés (K.1): ${fails} fallas en total.`);
 process.exit(fails ? 1 : 0);

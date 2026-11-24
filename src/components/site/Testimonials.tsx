@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useMedia } from "@/lib/useMedia";
 import { RESENAS_PUBLICABLES, type Testimonio } from "@/content/testimonios";
+import type { Dict } from "@/i18n/es";
+import { f } from "@/i18n/f";
 
 const INTERVAL = 6500;
 
@@ -18,7 +20,7 @@ function useVisible() {
  * y no pinta nada si no hay reseñas reales con permiso. Si todas caben en pantalla (una a tres
  * en escritorio) se muestran como tarjetas fijas, sin botones ni puntos.
  */
-export default function Testimonials({ items: todas }: { items: Testimonio[] }) {
+export default function Testimonials({ items: todas, t: tx }: { items: Testimonio[]; t: Dict["resenas"] }) {
   const items = RESENAS_PUBLICABLES(todas);
   const visible = useVisible();
   const max = Math.max(0, items.length - visible);
@@ -49,8 +51,8 @@ export default function Testimonials({ items: todas }: { items: Testimonio[] }) 
   return (
     <section
       ref={root}
-      aria-roledescription={fijas ? undefined : "carrusel"}
-      aria-label="Reseñas de participantes"
+      aria-roledescription={fijas ? undefined : tx.carrusel}
+      aria-label={tx.aria}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       onFocus={() => setFocus(true)}
@@ -61,17 +63,17 @@ export default function Testimonials({ items: todas }: { items: Testimonio[] }) 
       {!fijas && (
       <div className="flex items-center justify-end gap-4 mb-5">
         <div className="flex items-center gap-2">
-          <button type="button" className="tc" onClick={() => setPlaying(!autoplay)} aria-label={autoplay ? "Pausar el avance automático" : "Reanudar el avance automático"}>
+          <button type="button" className="tc" onClick={() => setPlaying(!autoplay)} aria-label={autoplay ? tx.pausar : tx.reanudar}>
             {autoplay ? (
               <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3h3v10H4zM9 3h3v10H9z" fill="currentColor" /></svg>
             ) : (
               <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5 13 8l-9 5.5z" fill="currentColor" /></svg>
             )}
           </button>
-          <button type="button" className="tc" onClick={() => go(i - 1)} aria-label="Reseña anterior">
+          <button type="button" className="tc" onClick={() => go(i - 1)} aria-label={tx.anterior}>
             <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H5M10.5 6.5 5 12l5.5 5.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" /></svg>
           </button>
-          <button type="button" className="tc" onClick={() => go(i + 1)} aria-label="Reseña siguiente">
+          <button type="button" className="tc" onClick={() => go(i + 1)} aria-label={tx.siguiente}>
             <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5 19 12l-5.5 5.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" /></svg>
           </button>
         </div>
@@ -93,8 +95,8 @@ export default function Testimonials({ items: todas }: { items: Testimonio[] }) 
               <li
                 key={t.nombre}
                 role="group"
-                aria-roledescription={fijas ? undefined : "diapositiva"}
-                aria-label={`${k + 1} de ${items.length}`}
+                aria-roledescription={fijas ? undefined : tx.diapositiva}
+                aria-label={f(tx.nDeTotal, { n: k + 1, total: items.length })}
                 aria-hidden={!shown}
                 inert={!shown}
                 className="shrink-0 px-0 md:pr-5"
@@ -119,13 +121,13 @@ export default function Testimonials({ items: todas }: { items: Testimonio[] }) 
       </div>
 
       {!fijas && (
-      <div className="flex gap-2 mt-5" role="group" aria-label="Elegir reseña">
+      <div className="flex gap-2 mt-5" role="group" aria-label={tx.elegir}>
         {Array.from({ length: pages }, (_, p) => (
           <button
             key={p}
             type="button"
             onClick={() => go(p)}
-            aria-label={`Ir a la reseña ${p + 1}`}
+            aria-label={f(tx.irA, { n: p + 1 })}
             aria-current={p === i ? "true" : undefined}
             className="h-11 flex items-center"
           >

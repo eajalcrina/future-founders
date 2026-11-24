@@ -7,7 +7,21 @@ import { useId, useState, type ReactNode } from "react";
  * En celular solo la Parte 01 llega abierta y las demás se abren con el botón, para que la lista
  * no ocupe nueve pantallas antes de la muestra y la compra.
  */
-export default function ParteMetodo({ code, head, verLabel, defaultOpen, children }: { code: string; head: ReactNode; verLabel: string; defaultOpen: boolean; children: ReactNode }) {
+export default function ParteMetodo({
+  code,
+  head,
+  verLabel,
+  ocultar,
+  defaultOpen,
+  children,
+}: {
+  code: string;
+  head: ReactNode;
+  verLabel: string;
+  ocultar: string;
+  defaultOpen: boolean;
+  children: ReactNode;
+}) {
   const [open, setOpen] = useState(defaultOpen);
   const id = useId();
   return (
@@ -22,7 +36,7 @@ export default function ParteMetodo({ code, head, verLabel, defaultOpen, childre
           aria-controls={id}
           onClick={() => setOpen((v) => !v)}
         >
-          {open ? "Ocultar" : verLabel}
+          {open ? ocultar : verLabel}
           <span aria-hidden="true" className={`inline-block transition-transform duration-150 ${open ? "rotate-45" : ""}`}>
             +
           </span>

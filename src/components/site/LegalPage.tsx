@@ -1,5 +1,5 @@
 import { Hero as HeroHead, Mono } from "./ui";
-import type { Legal } from "@/content/legal";
+import type { Legal } from "@/i18n/es";
 
 /** Plantilla de /privacidad y /terminos: héroe con rótulo «Legal», cuerpo a 720 px y la fecha de vigencia. Sin cierre ni animación. */
 export default function LegalPage({ doc, id }: { doc: Legal; id: string }) {

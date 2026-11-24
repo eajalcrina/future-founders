@@ -8,9 +8,10 @@
     "start": "next start",
     "lint": "eslint",
     "test:calc": "node --no-warnings scripts/test-calc.mjs",
-    "test": "npm run test:calc && npm run test:diagnostico",
+    "test": "npm run test:calc && npm run test:diagnostico && npm run test:overlay",
     "workbook": "python3 scripts/gen-workbook.py",
-    "test:diagnostico": "node --no-warnings scripts/test-diagnostico.mjs"
+    "test:diagnostico": "node --no-warnings scripts/test-diagnostico.mjs",
+    "test:overlay": "node --no-warnings scripts/test-overlay-en.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",
